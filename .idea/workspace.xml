@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Init commit">
+      <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostPreviewResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/SettingsResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiAuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiGeneralController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/CaptchaCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/GlobalSettings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/ModerationStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/Post.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/PostComment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/PostVote.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/Tag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/Tag2Post.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/404.0307462e.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/addComment.3bd0147c.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/addText.3e32e758.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/app.3fc87539.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/article.d31131f7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/articles.ab6c5fed.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/baseArticle.4b2c7168.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/baseButton.f7cd099c.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/baseNavbar.0c5366b4.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/calendar.7ef4a90f.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/calendarMonth.c4c06180.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/calendarTable.dc9a89bb.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/chunk-vendors.29736c43.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/comment.2e97f697.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/editPost.c8f88f38.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/errorModal.fbaa6531.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/login.6bc2a293.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/loginHeader.5b0e4dcc.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/loginRegistrationSuccess.a879d2f2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/mainPage.4f8b7404.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/moderationBlock.0feff8c7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/profile.9d56705d.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/settings.fa684121.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/socialBlock.b00d958f.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/stat.02b1e9f5.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/tags.95166178.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/userSection.c1ee68c4.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.3d291974.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.af3eb2e5.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.4661310e.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.59dbca61.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.1b4bd659.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.9880f0c6.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.01e822b3.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.f2842125.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.23699154.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.44803401.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.f5e9a4ea.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.fa18727a.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/default-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/icons-sprite.3d76bac4.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/404.47dd94cc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/404.47dd94cc.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addComment.8407ff71.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addComment.8407ff71.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addText.3b2c4c96.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addText.3b2c4c96.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.592ed325.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.592ed325.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/article.f9c6f0f2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/article.f9c6f0f2.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/articles.db25faa6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/articles.db25faa6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.d8032b02.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.d8032b02.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseButton.3a7bae3c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseButton.3a7bae3c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseNavbar.bbaecea2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseNavbar.bbaecea2.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendar.2db04d5a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendar.2db04d5a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.dd972471.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.dd972471.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarTable.25bd32c3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarTable.25bd32c3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/captcha.66dda667.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/captcha.66dda667.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.8772246c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.8772246c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/comment.7fb4fec6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/comment.7fb4fec6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/editPost.ce72759f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/editPost.ce72759f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.af33cefc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.af33cefc.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/inputEmail.25efc46a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/inputEmail.25efc46a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/inputPassword.638924f7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/inputPassword.638924f7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/login.61bd44e3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/login.61bd44e3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.f7468ba7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.f7468ba7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginHeader.c7e33100.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginHeader.c7e33100.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.b8dc9138.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.b8dc9138.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistrationSuccess.fbc6dbab.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistrationSuccess.fbc6dbab.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.11f05e9d.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.11f05e9d.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.5945ff7f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.5945ff7f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/mainPage.c9d5ccfd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/mainPage.c9d5ccfd.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/moderationBlock.b68add48.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/moderationBlock.b68add48.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/profile.1445a260.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/profile.1445a260.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/settings.7c2af028.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/settings.7c2af028.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/socialBlock.b5601ec6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/socialBlock.b5601ec6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/stat.ac1bf1f4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/stat.ac1bf1f4.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/tags.cc637194.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/tags.cc637194.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/userSection.847a5f80.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/userSection.847a5f80.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostPreviewResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostsListResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/SettingsResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/base/Storage.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiAuthController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiGeneralController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/CaptchaCode.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/GlobalSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/ModerationStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/Post.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/PostComment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/PostVote.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/Tag.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/Tag2Post.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/model/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/404.0307462e.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/addComment.3bd0147c.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/addText.3e32e758.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/app.3fc87539.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/article.d31131f7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/articles.ab6c5fed.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/baseArticle.4b2c7168.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/baseButton.f7cd099c.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/baseNavbar.0c5366b4.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/calendar.7ef4a90f.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/calendarMonth.c4c06180.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/calendarTable.dc9a89bb.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/chunk-vendors.29736c43.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/comment.2e97f697.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/editPost.c8f88f38.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/errorModal.fbaa6531.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/login.6bc2a293.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/loginHeader.5b0e4dcc.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/loginRegistrationSuccess.a879d2f2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/mainPage.4f8b7404.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/moderationBlock.0feff8c7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/profile.9d56705d.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/settings.fa684121.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/socialBlock.b00d958f.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/stat.02b1e9f5.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/tags.95166178.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/userSection.c1ee68c4.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.3d291974.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.af3eb2e5.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.4661310e.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.59dbca61.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.1b4bd659.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.9880f0c6.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.01e822b3.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.f2842125.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.23699154.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.44803401.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.f5e9a4ea.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.fa18727a.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/img/default-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/img/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/img/icons-sprite.3d76bac4.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/404.47dd94cc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/404.47dd94cc.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/addComment.8407ff71.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/addComment.8407ff71.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/addText.3b2c4c96.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/addText.3b2c4c96.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/app.592ed325.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/app.592ed325.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/article.f9c6f0f2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/article.f9c6f0f2.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/articles.db25faa6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/articles.db25faa6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseArticle.d8032b02.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseArticle.d8032b02.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseButton.3a7bae3c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseButton.3a7bae3c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseNavbar.bbaecea2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/baseNavbar.bbaecea2.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendar.2db04d5a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendar.2db04d5a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendarMonth.dd972471.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendarMonth.dd972471.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendarTable.25bd32c3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/calendarTable.25bd32c3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/captcha.66dda667.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/captcha.66dda667.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/chunk-vendors.8772246c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/chunk-vendors.8772246c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/comment.7fb4fec6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/comment.7fb4fec6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/editPost.ce72759f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/editPost.ce72759f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/errorModal.af33cefc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/errorModal.af33cefc.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/inputEmail.25efc46a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/inputEmail.25efc46a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/inputPassword.638924f7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/inputPassword.638924f7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/login.61bd44e3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/login.61bd44e3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginChange.f7468ba7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginChange.f7468ba7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginHeader.c7e33100.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginHeader.c7e33100.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRegistration.b8dc9138.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRegistration.b8dc9138.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRegistrationSuccess.fbc6dbab.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRegistrationSuccess.fbc6dbab.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRestore.11f05e9d.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginRestore.11f05e9d.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginSignIn.5945ff7f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/loginSignIn.5945ff7f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/mainPage.c9d5ccfd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/mainPage.c9d5ccfd.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/moderationBlock.b68add48.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/moderationBlock.b68add48.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/profile.1445a260.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/profile.1445a260.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/settings.7c2af028.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/settings.7c2af028.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/socialBlock.b5601ec6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/socialBlock.b5601ec6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/stat.ac1bf1f4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/stat.ac1bf1f4.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/tags.cc637194.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/tags.cc637194.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/userSection.847a5f80.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/userSection.847a5f80.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/Computer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/MainPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/Music.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/MusicPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/config/SpringConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/ClassicalMusic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/JazzMusic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/RockMusic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/text" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/resourses/musicPlayer.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/musicPlayer.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/Computer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/MainPlayer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/Music.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/MusicPlayer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/config/SpringConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/ClassicalMusic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/JazzMusic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/RockMusic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../hs_err_pid8832.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/12.4_ToDoList.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/IndexController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/Storage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/TouristController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/Tourist.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/TouristRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/css/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/js/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/text" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/BookController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static\img" />
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\templates" />
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static" />
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static\" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MainApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.MainApplication" />
+      <module name="16_Blogs" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="" />
+      <created>1600204764031</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600204764031</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Doubled init.">
+      <created>1600207134056</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1600207134056</updated>
+    </task>
+    <task id="LOCAL-00002" summary="DB Blogs established.">
+      <created>1600983886350</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1600983886350</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Model filled.">
+      <created>1601113274722</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1601113274722</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Doubled init." />
+    <MESSAGE value="DB Blogs established." />
+    <MESSAGE value="Model filled." />
+    <MESSAGE value="Init commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init commit" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1600204916242" />
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser" timestamp="1602019226703">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1602019226703" />
+    <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.728@0.0.1366.728" timestamp="1602000993808" />
+    <state x="431" y="219" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1602000996446">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="431" y="219" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1366.728@0.0.1366.728" timestamp="1602000996446" />
+    <state width="1309" height="318" key="GridCell.Tab.0.bottom" timestamp="1602019359823">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602019359823" />
+    <state width="1309" height="318" key="GridCell.Tab.0.center" timestamp="1602019359823">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602019359823" />
+    <state width="1309" height="318" key="GridCell.Tab.0.left" timestamp="1602019359823">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602019359823" />
+    <state width="1309" height="318" key="GridCell.Tab.0.right" timestamp="1602019359823">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602019359823" />
+    <state x="34" y="0" key="SettingsEditor" timestamp="1600637003996">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1601113292460">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1601113292460" />
+    <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1602020228699" />
+  </component>
+</project>
