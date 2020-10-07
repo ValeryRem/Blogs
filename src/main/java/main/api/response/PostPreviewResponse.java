@@ -17,15 +17,6 @@ public class PostPreviewResponse {
     @Autowired
     private User user;
 
-   private int id; //": 31,
-   private String title;// "Заголовок поста",
-    private String announce; // "Текст анонса (часть основного текста) поста без HTML-тэгов (HTML тэги необходимо удалить из текста анонса)",
-    private int likeCount;//": 36,
-    private int dislikeCount; //": 3,
-    private  int commentCount; //": 15,
-    private int viewCount; //": 55,
-
-
     public PostPreviewResponse(Post post, User user) {
         this.post = post;
         this.user = user;
@@ -48,7 +39,7 @@ public class PostPreviewResponse {
     }
 
     public int getId() {
-        return id;
+        return post.getId();
     }
 
     public String getTitle() {

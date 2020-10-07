@@ -146,7 +146,11 @@ public class Post {
     public String getAnnounce() {
         String text = getText();
         text.replaceAll("<script>.*?</script>", "");
-        return text.substring(0,  text.length()/5);
+        if (text.length() <= 500) {
+            return text.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
+        } else {
+            return text.substring(0, 100);
+        }
     }
 
     public void setAnnounce(String announce) {
