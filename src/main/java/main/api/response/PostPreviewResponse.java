@@ -2,6 +2,8 @@ package main.api.response;
 
 import main.model.Post;
 import main.model.User;
+import main.service.PostService;
+import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Component;
@@ -10,20 +12,18 @@ import java.util.Date;
 
 @Component
 public class PostPreviewResponse {
-    @Autowired
-    private Post post;
+    private Integer postId;
     private Timestamp stamp;
     private Date date;
     @Autowired
-    private User user;
+    private PostService postService;
 
-    public PostPreviewResponse(Post post, User user) {
-        this.post = post;
-        this.user = user;
-    }
+//    public PostPreviewResponse(int postId) {
+//        this.postId = postId;
+//    }
 
     public Post getPost() {
-        return post;
+        return postService.getPosts().get(postId);
     }
 
     public Timestamp getStamp() {
@@ -34,35 +34,39 @@ public class PostPreviewResponse {
         return new Date(stamp.getTime());
     }
 
-    public User getUser() {
-        return user;
+    public Integer getUserId() {
+        return getPost().getUserId();
     }
 
-    public int getId() {
-        return post.getId();
+    public String userName(){
+        return new User(getPost().getUserId()).getName();
+    }
+
+    public int getPostId() {
+        return getPost().getId();
     }
 
     public String getTitle() {
-        return post.getTitle();
+        return getPost().getTitle();
     }
 
     public String getAnnounce() {
-        return post.getAnnounce();
+        return getPost().getAnnounce();
     }
 
     public int getLikeCount() {
-        return post.getLikeCount();
+        return getPost().getLikeCount();
     }
 
     public int getDislikeCount() {
-        return post.getDislikeCount();
+        return getPost().getDislikeCount();
     }
 
     public int getCommentCount() {
-        return post.getComments().size();
+        return getPost().getComments().size();
     }
 
     public int getViewCount() {
-        return post.getViewCount();
+        return getPost().getViewCount();
     }
 }

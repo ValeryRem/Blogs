@@ -1,7 +1,6 @@
 package main.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -11,7 +10,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @OneToOne(mappedBy = "post_id")// Caused by: org.hibernate.AnnotationException: Illegal attempt to map a non collection as a @OneToMany, @ManyToMany or @CollectionOfElements: main.model.User.id
-    private Integer id;
+    private Integer userId;
     @NotNull(message = "Name is mandatory")
     private String name;
     @NotNull(message = "Status is mandatory")
@@ -27,12 +26,16 @@ public class User {
     private String code;
     private String photo;
 
-    public Integer getId() {
-        return id;
+    public User(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {

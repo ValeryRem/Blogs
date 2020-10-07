@@ -16,7 +16,7 @@ public class Storage {
 
     @Autowired
     private PostRepository postRepository;
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
     @Transactional
     public void addPost (Post post) {
         Iterable<Post> postIterable = postRepository.findAll();

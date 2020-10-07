@@ -13,7 +13,6 @@ public class DefaultController {
         this.initResponse = initResponse;
     }
 
-
     @GetMapping("/")
     public String index(Model model) {
         System.out.println(initResponse.getTitle());
