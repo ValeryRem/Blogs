@@ -1,20 +1,20 @@
 package main.service;
 
+import main.api.response.PostResponse;
 import main.base.Storage;
 import main.model.Post;
 import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
 @Service
 public class PostService {
-    @Autowired
-    private Storage storage;
     public List<Post> posts;
-//    @Autowired
-//    private PostRepository postRepository;
     private Integer offset = 0;// - сдвиг от 0 для постраничного вывода
     private Integer limit = 5;// - количество постов, которое надо вывести
     private Integer mode = 1;// - режим вывода (сортировка):
@@ -22,12 +22,11 @@ public class PostService {
     private boolean popular = false;// - сортировать по убыванию количества комментариев
     private boolean best = true;// - сортировать по убыванию количества лайков
     private boolean early = false;// - сортировать по дате публикации, выводить сначала старые
+    @Autowired
+    private PostResponse postResponse;
 
-//    public PostRepository getPostRepository() {
-//        return postRepository;
-//    }
-    public List<Post> getPosts(){
-        return storage.getPosts();
+    public ResponseEntity<?> getPosts () {
+        return   postResponse.getPosts(offset, limit);
     }
 
     public int getOffset() {

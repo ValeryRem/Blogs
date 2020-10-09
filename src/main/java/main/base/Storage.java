@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Component
 public class Storage {
-//    private final int currentId = 1;
 
     @Autowired
     private PostRepository postRepository;
@@ -21,10 +20,6 @@ public class Storage {
     public void addPost (Post post) {
         Iterable<Post> postIterable = postRepository.findAll();
         postIterable.forEach(posts::add);
-//        indicatorOfDoubledSeat = touristList.stream().anyMatch(t -> t.getSeat().equals(tourist.getSeat()));
-//        if(indicatorOfDoubledSeat || !tourist.getBirthday().matches("\\d{4}-\\d{2}-\\d{2}") || !tourist.getName().matches("[a-zA-Z]*")) {
-//            return;
-//        }
         postRepository.save(post);
     }
 

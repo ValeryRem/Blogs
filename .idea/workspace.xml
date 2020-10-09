@@ -19,10 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="ApiPostController via PostService.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="ApiPostController with PostService &amp; DI of Storage.">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostPreviewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/model/PostPreview.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -77,18 +78,16 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostPreviewResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostPreviewResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostPreviewResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostPreviewResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/base/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/base/Storage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/model/Post.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/model/User.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602053012638</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ApiPostController with PostService &amp; DI of Storage.">
+      <created>1602106282152</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1602106282152</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -234,17 +240,18 @@
     <MESSAGE value="Init commit" />
     <MESSAGE value="ApiPostController setting." />
     <MESSAGE value="ApiPostController via PostService." />
-    <option name="LAST_COMMIT_MESSAGE" value="ApiPostController via PostService." />
+    <MESSAGE value="ApiPostController with PostService &amp; DI of Storage." />
+    <option name="LAST_COMMIT_MESSAGE" value="ApiPostController with PostService &amp; DI of Storage." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1600204916242" />
-    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser" timestamp="1602101838404">
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser" timestamp="1602224021198">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1602101838404" />
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1602224021198" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -257,30 +264,30 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="318" key="GridCell.Tab.0.bottom" timestamp="1602106003176">
+    <state width="1309" height="318" key="GridCell.Tab.0.bottom" timestamp="1602228744817">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602106003176" />
-    <state width="1309" height="318" key="GridCell.Tab.0.center" timestamp="1602106003176">
+    <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602228744817" />
+    <state width="1309" height="318" key="GridCell.Tab.0.center" timestamp="1602228744817">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602106003176" />
-    <state width="1309" height="318" key="GridCell.Tab.0.left" timestamp="1602106003175">
+    <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602228744817" />
+    <state width="1309" height="318" key="GridCell.Tab.0.left" timestamp="1602228744816">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602106003175" />
-    <state width="1309" height="318" key="GridCell.Tab.0.right" timestamp="1602106003176">
+    <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602228744816" />
+    <state width="1309" height="318" key="GridCell.Tab.0.right" timestamp="1602228744817">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602106003176" />
+    <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602228744817" />
     <state x="34" y="0" key="SettingsEditor" timestamp="1600637003996">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602053048895">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602106301190">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602053048895" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602106301190" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
