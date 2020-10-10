@@ -1,6 +1,7 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
+import main.api.response.PostPreviewResponse;
 import main.api.response.PostResponse;
 import main.api.response.SettingsResponse;
 import main.service.SettingsService;
@@ -16,7 +17,7 @@ public class ApiGeneralController {
     private final InitResponse initResponse;
     private final PostResponse postResponse;
 
-    public ApiGeneralController(SettingsService settingsService, InitResponse initResponse, PostResponse postResponse  ) {
+    public ApiGeneralController(SettingsService settingsService, InitResponse initResponse, PostResponse postResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;
         this.postResponse = postResponse;

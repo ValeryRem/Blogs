@@ -19,6 +19,7 @@ public class Storage {
     @Transactional
     public void addPost (Post post) {
         Iterable<Post> postIterable = postRepository.findAll();
+        posts.add(post);
         postIterable.forEach(posts::add);
         postRepository.save(post);
     }

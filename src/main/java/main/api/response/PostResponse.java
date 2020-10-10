@@ -28,12 +28,16 @@ public class PostResponse {
             result.add(post);
         }
         if (result.size() == 0) {
-            return new ResponseEntity<>("The list of posts is empty", HttpStatus.NO_CONTENT);
-        }
-        else if (offset + limit <= result.size()) {
-            return ResponseEntity.ok(result.subList(offset, offset + limit));
+                return new ResponseEntity<>("The list of posts is empty", HttpStatus.NO_CONTENT);
+            } else if (offset + limit <= result.size()) {
+                return ResponseEntity.ok(result.subList(offset, offset + limit));
         } else {
-            return ResponseEntity.ok(result.subList(offset, result.size()));
+                return ResponseEntity.ok(result.subList(offset, result.size()));
         }
+    }
+
+    public ResponseEntity<Post> getPostById (Integer postId) {
+        Post post = postRepository.findById(postId).get();
+        return new ResponseEntity<>(post, HttpStatus.FOUND);
     }
 }

@@ -17,17 +17,17 @@ public class PostPreviewResponse {
     private Date date;
     private Timestamp timestamp;
     private String postAnnounce;
-//    @Autowired
-    private PostPreview postPreview = new PostPreview(postId, user, date, timestamp, postAnnounce);
+    private final PostPreview postPreview = new PostPreview(postId, user, date, timestamp, postAnnounce);
 
     public ResponseEntity<?> getPostPreviewResponse() {
-        List<Object> list = new ArrayList<>();
-        list.add(postPreview.getUser());
-        list.add(postPreview.getPostId());
-        list.add(postPreview.getTimestamp());
-        list.add(postPreview.getDate());
-        list.add(postPreview.getPostAnnounce());
-             return ResponseEntity.ok(list);
+        return ResponseEntity.ok(postPreview);
+//        List<Object> list = new ArrayList<>();
+//        list.add(postPreview.getUser());
+//        list.add(postPreview.getPostId());
+//        list.add(postPreview.getTimestamp());
+//        list.add(postPreview.getDate());
+//        list.add(postPreview.getPostAnnounce());
+//             return ResponseEntity.ok(list);
     }
 }
 
