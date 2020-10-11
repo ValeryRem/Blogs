@@ -21,7 +21,6 @@ public class Post {
     @Column(name ="moderation_status")
     @NotNull(message = "moderation_status is mandatory")
     @Enumerated(EnumType.STRING)
-//    @OneToOne (mappedBy ="id") //Caused by: org.hibernate.AnnotationException: @Column(s) not allowed on a @OneToOne property: main.model.Post.moderationStatus
     private ModerationStatus moderationStatus = ModerationStatus.NEW;
 
     @Column(name ="moderator_id")

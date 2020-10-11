@@ -1,67 +1,63 @@
 package main.service;
 
+import main.api.response.PostPreviewResponse;
 import main.api.response.PostResponse;
 import main.api.response.PostsListResponse;
 import main.model.Post;
+import main.model.PostList;
+import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class PostService {
-    public List<Post> posts;
-    private Integer offset;// - сдвиг от 0 для постраничного вывода
-    private Integer limit;// - количество постов, которое надо вывести
-    private Integer mode;
-    private boolean recent;
-    private boolean popular;
-    private boolean best;
-    private boolean early;
+    private Integer count;
 
     @Autowired
-    private PostResponse postResponse;
-//    @Autowired
-    private PostsListResponse postsListResponse;
+    private PostRepository postRepository;
 
-    public ResponseEntity<?> getPosts () {
-         return postResponse.getPosts(offset, limit);
+    public ResponseEntity<?> getPosts(Integer offset, Integer limit, Integer mode) {
+        Iterable<Post> posts = postRepository.findAll();
+        List<Post> result = new ArrayList<>();
+        for (Post post : posts) {
+            result.add(post);
+        }
+        if (mode == 1) {
+            result.sort(Comparator.comparing(Post::getTime));
+        } else {
+            result.sort(Comparator.comparing(Post::getTime).reversed());
+        }
+        count = result.size();
+
+        if (count == 0) {
+                return new ResponseEntity<>("The list of posts is empty", HttpStatus.NO_CONTENT);
+            }
+        PostList postList;
+        if (offset + limit <= count) {
+            postList = new PostList(count, result.subList(offset, offset + limit));
+        } else {
+            postList = new PostList(count, result.subList(offset, count));
+        }
+        return ResponseEntity.ok(postList);
     }
 
     public ResponseEntity<Post> getPostById (Integer postId) {
-        return postResponse.getPostById(postId);
-    }
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getLimit() {
-        return limit;
+        try {
+            Post post = postRepository.findById(postId).get();
+            return new ResponseEntity<>(post, HttpStatus.FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public int getMode() {
-        // - режим вывода (сортировка):
-        return mode;
-    }
-
-    public boolean isRecent() {
-        // - сортировать по дате публикации, выводить сначала новые
-       return recent;
-    }
-
-    public boolean isPopular() {
-        // - сортировать по убыванию количества комментариев
-        return popular;
-    }
-
-    public boolean isBest() {
-        // - сортировать по убыванию количества лайков
-        return best;
-    }
-
-    public boolean isEarly() {
-        // - сортировать по дате публикации, выводить сначала старые
-        return early;
+    public Integer getCount() {
+        return count;
     }
 }

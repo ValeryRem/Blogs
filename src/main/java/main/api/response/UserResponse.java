@@ -5,6 +5,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserResponse {
+    private Integer userId;
+    private User user = new User(userId);
 
-    private User user;
+    public User getUser(Integer userId) {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

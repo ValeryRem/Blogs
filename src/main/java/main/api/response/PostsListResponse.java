@@ -1,20 +1,17 @@
 package main.api.response;
 
-import java.util.List;
+import main.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostsListResponse {
-    private final int count; // удобно сделать поля final, чтобы не подпортить после создания
-    private final List<PostPreviewResponse> posts;
-    public PostsListResponse(int count, List<PostPreviewResponse> posts) {
-        this.count = count;
-        this.posts = posts;
-    }
 
-    public int getCount() {
-        return count;
-    }
+    @Autowired
+    private PostService postService;
 
-    public List<PostPreviewResponse> getPosts() {
-        return posts;
+    public ResponseEntity<?> getPostListResponse(Integer offset, Integer limit, Integer mode) {
+        return postService.getPosts(offset, limit, mode);
     }
 }

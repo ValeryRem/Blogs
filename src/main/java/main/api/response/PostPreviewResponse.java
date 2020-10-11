@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class PostPreviewResponse {
@@ -21,13 +19,6 @@ public class PostPreviewResponse {
 
     public ResponseEntity<?> getPostPreviewResponse() {
         return ResponseEntity.ok(postPreview);
-//        List<Object> list = new ArrayList<>();
-//        list.add(postPreview.getUser());
-//        list.add(postPreview.getPostId());
-//        list.add(postPreview.getTimestamp());
-//        list.add(postPreview.getDate());
-//        list.add(postPreview.getPostAnnounce());
-//             return ResponseEntity.ok(list);
     }
 }
 
