@@ -35,17 +35,17 @@ public class PostService {
             result.sort(Comparator.comparing(Post::getTime).reversed());
         }
         count = result.size();
-
-        if (count == 0) {
-                return new ResponseEntity<>("The list of posts is empty", HttpStatus.NO_CONTENT);
-            }
         PostList postList;
+        if (count == 0) {
+            postList = new PostList(count, result);
+            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
+        }
         if (offset + limit <= count) {
             postList = new PostList(count, result.subList(offset, offset + limit));
         } else {
             postList = new PostList(count, result.subList(offset, count));
         }
-        return ResponseEntity.ok(postList);
+            return ResponseEntity.ok(postList);
     }
 
     public ResponseEntity<Post> getPostById (Integer postId) {

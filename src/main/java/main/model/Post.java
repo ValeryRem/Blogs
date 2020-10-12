@@ -143,13 +143,13 @@ public class Post {
     }
 
     public String getAnnounce() {
-        String text = getText();
-        text.replaceAll("<script>.*?</script>", "");
-        if (text.length() <= 500) {
-            return text.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
+        announce = getText();
+        if (announce.length() <= 500) {
+            announce = announce.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
         } else {
-            return text.substring(0, 100);
+            announce = announce.substring(0, 100);
         }
+        return announce.replaceAll("<script>.*?</script>", "");
     }
 
     public void setAnnounce(String announce) {
