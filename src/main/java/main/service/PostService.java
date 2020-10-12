@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,16 +22,26 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public ResponseEntity<?> getPosts(Integer offset, Integer limit, Integer mode) {
+    public ResponseEntity<?> getPosts(Integer offset, Integer limit, boolean mode, boolean recent,
+                                      boolean popular, boolean best, boolean early) {
         Iterable<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         for (Post post : posts) {
             result.add(post);
         }
-        if (mode == 1) {
-            result.sort(Comparator.comparing(Post::getTime));
-        } else {
-            result.sort(Comparator.comparing(Post::getTime).reversed());
+        if (mode) {
+            if (recent) {
+                result.sort(Comparator.comparing(Post::getTime).reversed());
+            }
+            if(popular){
+                result.sort(Comparator.comparing(Post::getViewCount));
+            }
+            if(best){
+                result.sort(Comparator.comparing(Post::getLikeCount));
+            }
+            if(early){
+                result.sort(Comparator.comparing(Post::getTime));
+            }
         }
         count = result.size();
         PostList postList;

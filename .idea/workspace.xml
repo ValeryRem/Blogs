@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="ApiPostController connected to PostResponse &amp; PostListResponse.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getAnnounce() in Post.class is improved.">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -76,8 +76,13 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/model/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiGeneralController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiGeneralController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/model/Post.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602453655032</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Method getAnnounce() in Post.class is improved.">
+      <created>1602490786668</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1602490786668</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,7 +267,8 @@
     <MESSAGE value="ApiPostPreviewController set up" />
     <MESSAGE value="ApiPostPreviewController connected to PostService &amp; PostResponse" />
     <MESSAGE value="ApiPostController connected to PostResponse &amp; PostListResponse." />
-    <option name="LAST_COMMIT_MESSAGE" value="ApiPostController connected to PostResponse &amp; PostListResponse." />
+    <MESSAGE value="Method getAnnounce() in Post.class is improved." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method getAnnounce() in Post.class is improved." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -278,30 +291,30 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="368" key="GridCell.Tab.0.bottom" timestamp="1602453235271">
+    <state width="1309" height="368" key="GridCell.Tab.0.bottom" timestamp="1602491227248">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602453235271" />
-    <state width="1309" height="368" key="GridCell.Tab.0.center" timestamp="1602453235271">
+    <state width="1309" height="368" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602491227248" />
+    <state width="1309" height="368" key="GridCell.Tab.0.center" timestamp="1602491227248">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602453235271" />
-    <state width="1309" height="368" key="GridCell.Tab.0.left" timestamp="1602453235271">
+    <state width="1309" height="368" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602491227248" />
+    <state width="1309" height="368" key="GridCell.Tab.0.left" timestamp="1602491227248">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602453235271" />
-    <state width="1309" height="368" key="GridCell.Tab.0.right" timestamp="1602453235271">
+    <state width="1309" height="368" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602491227248" />
+    <state width="1309" height="368" key="GridCell.Tab.0.right" timestamp="1602491227248">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602453235271" />
+    <state width="1309" height="368" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602491227248" />
     <state x="34" y="0" key="SettingsEditor" timestamp="1600637003996">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602453671297">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602490803172">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602453671297" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602490803172" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

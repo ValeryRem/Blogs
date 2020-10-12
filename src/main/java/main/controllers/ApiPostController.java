@@ -19,9 +19,15 @@ public class ApiPostController {
 
     @GetMapping("/post")
     @ResponseBody
-    private ResponseEntity<?> getPosts (@RequestParam(defaultValue = "0") Integer offset, @RequestParam(defaultValue = "5") Integer limit,
-        @RequestParam(defaultValue = "1") Integer mode){
-        return postsListResponse.getPostListResponse(offset, limit, mode);
+    private ResponseEntity<?> getPosts (@RequestParam(defaultValue = "0") Integer offset,
+                                        @RequestParam(defaultValue = "5") Integer limit,
+                                        @RequestParam(defaultValue = "true") boolean mode,
+                                        @RequestParam(defaultValue = "true") boolean recent,
+                                        @RequestParam(defaultValue = "true") boolean popular,
+                                        @RequestParam(defaultValue = "true") boolean best,
+                                        @RequestParam(defaultValue = "true") boolean early)
+    {
+        return postsListResponse.getPostListResponse(offset, limit, mode,  recent, popular, best, early);
     }
 
     @GetMapping("/post/{id}")
