@@ -1,6 +1,7 @@
 package main.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,42 +16,42 @@ public class Post {
     private Integer id;
 
     @Column(name ="is_active")
-    @NotNull(message = "isActive status is mandatory")
+    @NotEmpty(message = "isActive status is mandatory")
     private Integer isActive;
 
     @Column(name ="moderation_status")
-    @NotNull(message = "moderation_status is mandatory")
+    @NotEmpty(message = "moderation_status is mandatory")
     @Enumerated(EnumType.STRING)
     private ModerationStatus moderationStatus = ModerationStatus.NEW;
 
     @Column(name ="moderator_id")
     private Integer moderatorId;
 
-    @NotNull(message = "time of post is mandatory")
+    @NotEmpty(message = "time of post is mandatory")
     private Date time;
 
     @Column(name ="user_id")
-    @NotNull(message ="userId is mandatory")
+    @NotEmpty(message ="userId is mandatory")
     private Integer userId;
 
-    @NotNull(message ="title is mandatory")
+    @NotEmpty(message ="title is mandatory")
     private String title;
 
-    @NotNull(message ="text is mandatory")
+    @NotEmpty(message ="text is mandatory")
     private String text;
 
-    @NotNull(message ="announce is mandatory")
+    @NotEmpty(message ="announce is mandatory")
     private String announce;
 
-    @NotNull(message = "viewCount is mandatory")
+    @NotEmpty(message = "viewCount is mandatory")
     @Column(name ="view_count")
     private Integer viewCount;
 
-    @NotNull(message = "likeCount is mandatory")
+    @NotEmpty(message = "likeCount is mandatory")
     @Column(name ="like_count")
     private Integer likeCount;
 
-    @NotNull(message = "dislikeCount is mandatory")
+    @NotEmpty(message = "dislikeCount is mandatory")
     @Column(name ="dislike_count")
     private Integer dislikeCount;
 

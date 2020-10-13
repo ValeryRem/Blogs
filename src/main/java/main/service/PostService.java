@@ -21,6 +21,7 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+    private PostList postList;
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, boolean mode, boolean recent,
                                       boolean popular, boolean best, boolean early) {
@@ -34,17 +35,17 @@ public class PostService {
                 result.sort(Comparator.comparing(Post::getTime).reversed());
             }
             if(popular){
-                result.sort(Comparator.comparing(Post::getViewCount));
+                result.sort(Comparator.comparing(Post::getViewCount).reversed());
             }
             if(best){
-                result.sort(Comparator.comparing(Post::getLikeCount));
+                result.sort(Comparator.comparing(Post::getLikeCount).reversed());
             }
             if(early){
                 result.sort(Comparator.comparing(Post::getTime));
             }
         }
         count = result.size();
-        PostList postList;
+
         if (count == 0) {
             postList = new PostList(count, result);
             return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
@@ -65,6 +66,28 @@ public class PostService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit) {
+        Iterable<Post> posts = postRepository.findAll();
+        List<Post> result = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getText().contains(query)) {
+                result.add(post);
+            }
+        }
+        count = result.size();
+        if (count == 0) {
+            postList = new PostList(count, result);
+            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
+        }
+        if (limit <= count) {
+            postList = new PostList(count, result.subList(0, limit));
+        } else {
+            postList = new PostList(count, result);
+        }
+        return ResponseEntity.ok(postList);
+    }
+
 
     public Integer getCount() {
         return count;

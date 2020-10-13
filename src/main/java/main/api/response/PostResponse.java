@@ -1,6 +1,7 @@
 package main.api.response;
 
 import main.model.Post;
+import main.model.PostList;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,5 +14,9 @@ public class PostResponse {
 
     public ResponseEntity<Post> getPostById (Integer postId) {
         return postService.getPostById(postId);
+    }
+
+    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit) {
+        return postService.getPostBySearch(query, limit);
     }
 }
