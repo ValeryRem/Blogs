@@ -11,8 +11,7 @@ public class PostsListResponse {
     @Autowired
     private PostService postService;
 
-    public ResponseEntity<?> getPostListResponse(Integer offset, Integer limit, boolean mode, boolean recent,
-                                                 boolean popular, boolean best, boolean early) {
-        return postService.getPosts(offset, limit, mode, recent, popular, best, early);
+    public ResponseEntity<?> getPostListResponse(Integer offset, Integer limit, String mode) {
+        return postService.getPosts(offset, limit, mode);
     }
 }

@@ -23,21 +23,20 @@ public class ApiPostController {
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue = "0") Integer offset,
                                         @RequestParam(defaultValue = "5") Integer limit,
-                                        @RequestParam(defaultValue = "true") boolean mode,
-                                        @RequestParam(defaultValue = "1") boolean recent,
-                                        @RequestParam(defaultValue = "true") boolean popular,
-                                        @RequestParam(defaultValue = "true") boolean best,
-                                        @RequestParam(defaultValue = "true") boolean early){
-        return postsListResponse.getPostListResponse(offset, limit, mode,  recent, popular, best, early);
+                                        @RequestParam(defaultValue = "recent") String mode){
+        System.out.println("Method getPosts activated.");
+        return postsListResponse.getPostListResponse(offset, limit, mode);
     }
 
     @GetMapping("/post/{id}")
-    private ResponseEntity<Post> getPostById (@Value("${id}") Integer postId) {
+    private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
+        System.out.println("Method getPostById activated. ID requested: " + postId);
         return postResponse.getPostById(postId);
     }
 
     @GetMapping("/post/search")
-    private ResponseEntity<PostList> getPostBySearch (@Value("${search}") String query, Integer limit) {
+    private ResponseEntity<PostList> getPostBySearch (@Value("search") String query, Integer limit) {
+        System.out.println("Method getPostsBySearch activated. Query:" + query);
         return postResponse.getPostBySearch(query, limit);
     }
 }

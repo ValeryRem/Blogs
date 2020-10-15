@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="ApiPostController enlarged by getPostBySearch (String query, Integer limit).">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Value used in ApiPostController (getPostById &amp; getPostBySearch)">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -76,13 +76,11 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostsListResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostsListResponse.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/model/Post.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602624175711</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="@Value used in ApiPostController (getPostById &amp; getPostBySearch)">
+      <created>1602765313897</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1602765313897</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -284,7 +289,8 @@
     <MESSAGE value="Method getAnnounce() in Post.class is improved." />
     <MESSAGE value="Method getPosts() in ApiPostController is parameterized." />
     <MESSAGE value="ApiPostController enlarged by getPostBySearch (String query, Integer limit)." />
-    <option name="LAST_COMMIT_MESSAGE" value="ApiPostController enlarged by getPostBySearch (String query, Integer limit)." />
+    <MESSAGE value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
+    <option name="LAST_COMMIT_MESSAGE" value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -307,46 +313,46 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1602764748781">
+    <state width="1309" height="368" key="GridCell.Tab.0.bottom" timestamp="1602779839573">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602764748781" />
-    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1602764748781">
+    <state width="1309" height="368" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602779839573" />
+    <state width="1309" height="368" key="GridCell.Tab.0.center" timestamp="1602779839572">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602764748781" />
-    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1602764748781">
+    <state width="1309" height="368" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
+    <state width="1309" height="368" key="GridCell.Tab.0.left" timestamp="1602779839572">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602764748781" />
-    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1602764748781">
+    <state width="1309" height="368" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
+    <state width="1309" height="368" key="GridCell.Tab.0.right" timestamp="1602779839572">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602764748781" />
-    <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602764748782">
+    <state width="1309" height="368" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
+    <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602772499206">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602764748782" />
-    <state width="1309" height="356" key="GridCell.Tab.1.center" timestamp="1602764748782">
+    <state width="1309" height="356" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
+    <state width="1309" height="356" key="GridCell.Tab.1.center" timestamp="1602772499206">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1602764748782" />
-    <state width="1309" height="356" key="GridCell.Tab.1.left" timestamp="1602764748782">
+    <state width="1309" height="356" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
+    <state width="1309" height="356" key="GridCell.Tab.1.left" timestamp="1602772499205">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1602764748782" />
-    <state width="1309" height="356" key="GridCell.Tab.1.right" timestamp="1602764748782">
+    <state width="1309" height="356" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1602772499205" />
+    <state width="1309" height="356" key="GridCell.Tab.1.right" timestamp="1602772499206">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1602764748782" />
+    <state width="1309" height="356" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
     <state x="34" y="0" key="SettingsEditor" timestamp="1600637003996">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602624260585">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602765330908">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602624260585" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602765330908" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

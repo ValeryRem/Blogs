@@ -12,7 +12,7 @@ public class PostResponse {
     @Autowired
     private PostService postService;
 
-    public ResponseEntity<Post> getPostById (Integer postId) {
+    public ResponseEntity<?> getPostById (Integer postId) {
         return postService.getPostById(postId);
     }
 
