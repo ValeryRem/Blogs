@@ -1,8 +1,5 @@
 package main.service;
 
-import main.api.response.PostPreviewResponse;
-import main.api.response.PostResponse;
-import main.api.response.PostsListResponse;
 import main.model.Post;
 import main.model.PostList;
 import main.repository.PostRepository;
@@ -78,7 +75,7 @@ public class PostService {
         count = result.size();
         if (count == 0) {
             postList = new PostList(count, result);
-            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(postList, HttpStatus.NOT_FOUND);
         }
         if (limit <= count) {
             postList = new PostList(count, result.subList(0, limit));
