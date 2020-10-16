@@ -60,11 +60,14 @@ public class PostService {
             Post post = postRepository.findById(postId).get();
             return new ResponseEntity<>(post, HttpStatus.FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>("No posts available by this ID!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit) {
+    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit, Integer offset, String mode) {
+        if (query == null) {
+            getPosts(offset, limit, mode);
+        }
         Iterable<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         for (Post post : posts) {

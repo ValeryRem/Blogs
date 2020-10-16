@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Value used in ApiPostController (getPostById &amp; getPostBySearch)">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Developed ApiPostController by testing output of messages.">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -53,7 +53,9 @@
       <change afterPath="$PROJECT_DIR$/../hs_err_pid8832.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/TouristController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/TouristController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" afterDir="false" />
@@ -76,10 +78,14 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostsListResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostsListResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/PostResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/base/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/base/Storage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -259,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602765313897</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Developed ApiPostController by testing output of messages.">
+      <created>1602780179573</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1602780179573</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -290,7 +303,8 @@
     <MESSAGE value="Method getPosts() in ApiPostController is parameterized." />
     <MESSAGE value="ApiPostController enlarged by getPostBySearch (String query, Integer limit)." />
     <MESSAGE value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
-    <option name="LAST_COMMIT_MESSAGE" value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
+    <MESSAGE value="Developed ApiPostController by testing output of messages." />
+    <option name="LAST_COMMIT_MESSAGE" value="Developed ApiPostController by testing output of messages." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -313,50 +327,54 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="368" key="GridCell.Tab.0.bottom" timestamp="1602779839573">
+    <state width="1309" height="200" key="GridCell.Tab.0.bottom" timestamp="1602885520886">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602779839573" />
-    <state width="1309" height="368" key="GridCell.Tab.0.center" timestamp="1602779839572">
+    <state width="1309" height="200" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602885520886" />
+    <state width="1309" height="200" key="GridCell.Tab.0.center" timestamp="1602885520885">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
-    <state width="1309" height="368" key="GridCell.Tab.0.left" timestamp="1602779839572">
+    <state width="1309" height="200" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1602885520885" />
+    <state width="1309" height="200" key="GridCell.Tab.0.left" timestamp="1602885520885">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
-    <state width="1309" height="368" key="GridCell.Tab.0.right" timestamp="1602779839572">
+    <state width="1309" height="200" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1602885520885" />
+    <state width="1309" height="200" key="GridCell.Tab.0.right" timestamp="1602885520886">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="368" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602779839572" />
-    <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602772499206">
+    <state width="1309" height="200" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1602885520886" />
+    <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
-    <state width="1309" height="356" key="GridCell.Tab.1.center" timestamp="1602772499206">
+    <state width="1309" height="356" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
+    <state width="1309" height="356" key="GridCell.Tab.1.center" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
-    <state width="1309" height="356" key="GridCell.Tab.1.left" timestamp="1602772499205">
+    <state width="1309" height="356" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
+    <state width="1309" height="356" key="GridCell.Tab.1.left" timestamp="1602792443930">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1602772499205" />
-    <state width="1309" height="356" key="GridCell.Tab.1.right" timestamp="1602772499206">
+    <state width="1309" height="356" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1602792443930" />
+    <state width="1309" height="356" key="GridCell.Tab.1.right" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="356" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1602772499206" />
+    <state width="1309" height="356" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
     <state x="34" y="0" key="SettingsEditor" timestamp="1600637003996">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602765330908">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1602780190881">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602765330908" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1602780190881" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1602020228699" />
+    <state x="346" y="55" key="extract.method.dialog" timestamp="1602881987848">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="55" key="extract.method.dialog/0.0.1366.728@0.0.1366.728" timestamp="1602881987848" />
     <state x="370" y="62" key="refactoring.ChangeSignatureDialog" timestamp="1602763748336">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -15,16 +15,20 @@ public class Storage {
 
     @Autowired
     private PostRepository postRepository;
-    private final List<Post> posts = new ArrayList<>();
+
     @Transactional
     public void addPost (Post post) {
         Iterable<Post> postIterable = postRepository.findAll();
-        posts.add(post);
+        List<Post> posts = new ArrayList<>();
         postIterable.forEach(posts::add);
+        posts.add(post);
         postRepository.save(post);
     }
 
     public List<Post> getPosts() {
+        Iterable<Post> postIterable = postRepository.findAll();
+        List<Post> posts = new ArrayList<>();
+        postIterable.forEach(posts::add);
         return posts;
     }
 }

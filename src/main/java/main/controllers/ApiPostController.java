@@ -21,22 +21,23 @@ public class ApiPostController {
 
     @GetMapping("/post")
     @ResponseBody
-    private ResponseEntity<?> getPosts (@RequestParam(defaultValue = "0") Integer offset,
-                                        @RequestParam(defaultValue = "5") Integer limit,
-                                        @RequestParam(defaultValue = "recent") String mode){
+    private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
+                                        @RequestParam(defaultValue="5") Integer limit,
+                                        @RequestParam(defaultValue="recent") String mode){
         System.out.println("Method getPosts activated.");
         return postsListResponse.getPostListResponse(offset, limit, mode);
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/post/{id:\\d+}")
     private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
         System.out.println("Method getPostById activated. ID requested: " + postId);
         return postResponse.getPostById(postId);
     }
 
     @GetMapping("/post/search")
-    private ResponseEntity<PostList> getPostBySearch (@Value("search") String query, Integer limit) {
+    private ResponseEntity<PostList> getPostBySearch (@RequestParam(required=false) String query, Integer limit,
+                                                      Integer offset,  @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
-        return postResponse.getPostBySearch(query, limit);
+        return postResponse.getPostBySearch(query, limit, offset, mode);
     }
 }

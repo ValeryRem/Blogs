@@ -16,7 +16,7 @@ public class PostResponse {
         return postService.getPostById(postId);
     }
 
-    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit) {
-        return postService.getPostBySearch(query, limit);
+    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit, Integer offset, String mode) {
+        return postService.getPostBySearch(query, limit, offset, mode);
     }
 }
