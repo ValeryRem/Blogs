@@ -6,6 +6,9 @@ public class PostList {
     private List<Post> posts;
     private Integer count;
 
+    public PostList() {
+    }
+
     public PostList(Integer count, List<Post> posts) {
         this.count = count;
         this.posts = posts;

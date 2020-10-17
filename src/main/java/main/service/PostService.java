@@ -1,5 +1,6 @@
 package main.service;
 
+import main.model.ModerationStatus;
 import main.model.Post;
 import main.model.PostList;
 import main.repository.PostRepository;
@@ -8,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -18,7 +17,6 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
-    private PostList postList;
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         Iterable<Post> posts = postRepository.findAll();
@@ -27,63 +25,73 @@ public class PostService {
             result.add(post);
         }
 
-        switch (mode) {
-            case "popular":
-                result.sort(Comparator.comparing(Post::getViewCount).reversed());
-                break;
-            case "best":
-                result.sort(Comparator.comparing(Post::getLikeCount).reversed());
-                break;
-            case "early":
-                result.sort(Comparator.comparing(Post::getTime));
-                break;
-            default:
-                result.sort(Comparator.comparing(Post::getTime).reversed());
-        }
 
-        count = result.size();
-
-        if (count == 0) {
-            postList = new PostList(count, result);
-            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
-        }
-        if (offset + limit <= count) {
-            postList = new PostList(count, result.subList(offset, offset + limit));
-        } else {
-            postList = new PostList(count, result.subList(offset, count));
-        }
-            return ResponseEntity.ok(postList);
+        return processPosts(offset, limit, result, mode);
     }
 
     public ResponseEntity<?> getPostById (Integer postId) {
         try {
             Post post = postRepository.findById(postId).get();
             return new ResponseEntity<>(post, HttpStatus.FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (NoSuchElementException ex) {
+            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<PostList> getPostBySearch (String query, Integer limit, Integer offset, String mode) {
+    public ResponseEntity<?> getPostsBySearch (String query, Integer offset, Integer limit, String mode) {
+        List<Post> result = new ArrayList<>();
+        Iterable<Post> posts = postRepository.findAll();
+        ResponseEntity<?> responseEntity;
         if (query == null) {
-            getPosts(offset, limit, mode);
+           responseEntity = getPosts(offset, limit, mode);
+        } else {
+            for (Post post : posts) {
+                if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+                    result.add(post);
+                }
+            }
+            responseEntity = processPosts (limit, offset, result, mode);
         }
+        return responseEntity;
+    }
+
+    public ResponseEntity<PostList> getPostsByDate (Date date, Integer offset, Integer limit, String mode) {
         Iterable<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         for (Post post : posts) {
-            if (post.getText().contains(query)) {
+            if (post.getTime().equals(date) && post.getIsActive() == 1 &&
+                    post.getModerationStatus() == ModerationStatus.ACCEPTED ) {
                 result.add(post);
             }
         }
-        count = result.size();
+        return processPosts(limit, offset, result, mode);
+    }
+
+    private ResponseEntity<PostList> processPosts(int offset, Integer limit,  List<Post> posts, String mode) {
+        count = posts.size();
+        PostList postList;
+        switch (mode) {
+            case "popular":
+                posts.sort(Comparator.comparing(Post::getViewCount).reversed());
+                break;
+            case "best":
+                posts.sort(Comparator.comparing(Post::getLikeCount).reversed());
+                break;
+            case "early":
+                posts.sort(Comparator.comparing(Post::getTime));
+                break;
+            default:
+                posts.sort(Comparator.comparing(Post::getTime).reversed());
+        }
+
         if (count == 0) {
-            postList = new PostList(count, result);
+            postList = new PostList(count, posts);
             return new ResponseEntity<>(postList, HttpStatus.NOT_FOUND);
         }
         if (limit <= count) {
-            postList = new PostList(count, result.subList(0, limit));
+            postList = new PostList(count, posts.subList(offset, limit));
         } else {
-            postList = new PostList(count, result);
+            postList = new PostList(count, posts);
         }
         return ResponseEntity.ok(postList);
     }
