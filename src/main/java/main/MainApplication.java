@@ -5,16 +5,20 @@ import main.model.ModerationStatus;
 import main.model.Post;
 import main.model.PostComment;
 import main.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
 public class MainApplication {
-
-    private void setTestPost() {
+    @Autowired
+    @NotNull
+    private Storage storage;
+    private void setTestPost(Storage storage) {
         Post post = new Post("The test post", 1);
         post.setAnnounce("Testing post");
         PostComment comment1 = new PostComment();
@@ -32,14 +36,14 @@ public class MainApplication {
         post.setTime("2020-10-18");
         post.setUserId(22);
         post.setViewCount(111);
-        new Storage().addPost(post);
+        storage.addPost(post);
     }
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
     }
     {
-        setTestPost();
+        setTestPost(storage);
     }
 
 }

@@ -8,14 +8,21 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class Storage{
 
+    private final List<Post> posts = new ArrayList<>();
+
     @Autowired
     private PostRepository postRepository;
-    private List<Post> posts = new ArrayList<>();
+
+    @Autowired
+    public Storage storage;
+
+    public Storage(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Transactional
     public void addPost (Post post) {
