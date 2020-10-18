@@ -11,24 +11,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class Storage {
+public class Storage{
 
     @Autowired
     private PostRepository postRepository;
+    private List<Post> posts = new ArrayList<>();
 
     @Transactional
     public void addPost (Post post) {
         Iterable<Post> postIterable = postRepository.findAll();
-        List<Post> posts = new ArrayList<>();
-        postIterable.forEach(posts::add);
         posts.add(post);
+        postIterable.forEach(posts::add);
         postRepository.save(post);
     }
 
     public List<Post> getPosts() {
-        Iterable<Post> postIterable = postRepository.findAll();
-        List<Post> posts = new ArrayList<>();
-        postIterable.forEach(posts::add);
         return posts;
     }
 }

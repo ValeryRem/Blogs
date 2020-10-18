@@ -66,7 +66,7 @@ public class Post {
         this.id = id;
     }
 
-    @OneToOne(targetEntity=Post.class, mappedBy="id", fetch=FetchType.EAGER)
+    @OneToMany(targetEntity=Post.class, mappedBy="id", fetch=FetchType.EAGER)
     private List<PostComment> comments = new ArrayList<>();
 
     public List<PostComment> addComment(PostComment comment) {
@@ -127,7 +127,7 @@ public class Post {
         try {
             date = dateFormat.format(time);
         } catch (
-                DateTimeParseException e) {
+                IllegalArgumentException e) {
             date = "";
         }
         this.time = date;
