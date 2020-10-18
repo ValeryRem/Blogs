@@ -9,13 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
 public class PostService {
     private Integer count;
-
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     private PostRepository postRepository;
 
@@ -56,11 +58,17 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostsByDate (String date, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate (String time, Integer offset, Integer limit, String mode) {
         Iterable<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         ResponseEntity<?> responseEntity;
-        if (date == null) {
+        String date;
+        try {
+            date = dateFormat.format(time);
+        } catch (Exception e) {
+            date = "";
+        }
+        if (date.equals("")) {
             responseEntity = getPosts(offset, limit, mode);
         } else {
             for (Post post : posts) {
