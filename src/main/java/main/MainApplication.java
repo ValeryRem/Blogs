@@ -13,7 +13,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class MainApplication {
-    {
+
+    private void setTestPost() {
         Post post = new Post("The test post", 1);
         post.setAnnounce("Testing post");
         PostComment comment1 = new PostComment();
@@ -33,7 +34,12 @@ public class MainApplication {
         post.setViewCount(111);
         new Storage().addPost(post);
     }
+
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
     }
+    {
+        setTestPost();
+    }
+
 }

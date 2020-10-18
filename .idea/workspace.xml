@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Проблемы с меппингом @OneToOne(targetEntity=Post.class, mappedBy=&quot;id&quot;, fetch=FetchType.EAGER)&#10;                         private List&lt;PostComment&gt; comments = new ArrayList&lt;&gt;();.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -80,14 +80,6 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/model/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/base/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/base/Storage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/model/Post.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,7 +301,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603017960585</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)">
+      <created>1603047389616</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1603047389616</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -346,7 +345,8 @@
     <MESSAGE value="В классе Post введена проверка и форматирование ввода даты." />
     <MESSAGE value="В классах Post и PostService введена проверка и форматирование ввода даты." />
     <MESSAGE value="Проблемы с меппингом @OneToOne(targetEntity=Post.class, mappedBy=&quot;id&quot;, fetch=FetchType.EAGER)&#10;                         private List&lt;PostComment&gt; comments = new ArrayList&lt;&gt;();." />
-    <option name="LAST_COMMIT_MESSAGE" value="Проблемы с меппингом @OneToOne(targetEntity=Post.class, mappedBy=&quot;id&quot;, fetch=FetchType.EAGER)&#10;                         private List&lt;PostComment&gt; comments = new ArrayList&lt;&gt;();." />
+    <MESSAGE value=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)" />
+    <option name="LAST_COMMIT_MESSAGE" value=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -373,22 +373,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="227" key="GridCell.Tab.0.bottom" timestamp="1603047078462">
+    <state width="1309" height="227" key="GridCell.Tab.0.bottom" timestamp="1603047251343">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603047078462" />
-    <state width="1309" height="227" key="GridCell.Tab.0.center" timestamp="1603047078462">
+    <state width="1309" height="227" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603047251343" />
+    <state width="1309" height="227" key="GridCell.Tab.0.center" timestamp="1603047251343">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603047078462" />
-    <state width="1309" height="227" key="GridCell.Tab.0.left" timestamp="1603047078462">
+    <state width="1309" height="227" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603047251343" />
+    <state width="1309" height="227" key="GridCell.Tab.0.left" timestamp="1603047251343">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603047078462" />
-    <state width="1309" height="227" key="GridCell.Tab.0.right" timestamp="1603047078462">
+    <state width="1309" height="227" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603047251343" />
+    <state width="1309" height="227" key="GridCell.Tab.0.right" timestamp="1603047251343">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603047078462" />
+    <state width="1309" height="227" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603047251343" />
     <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -413,18 +413,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1603017967768">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1603047464772">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603017967768" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603047464772" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1602020228699" />
-    <state x="599" y="55" width="673" height="585" key="extract.method.dialog" timestamp="1602936297906">
+    <state x="599" y="55" width="673" height="585" key="extract.method.dialog" timestamp="1603047903684">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="599" y="55" width="673" height="585" key="extract.method.dialog/0.0.1366.728@0.0.1366.728" timestamp="1602936297906" />
+    <state x="599" y="55" width="673" height="585" key="extract.method.dialog/0.0.1366.728@0.0.1366.728" timestamp="1603047903684" />
     <state x="370" y="62" key="refactoring.ChangeSignatureDialog" timestamp="1602763748336">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
