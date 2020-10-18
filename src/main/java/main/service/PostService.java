@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -55,16 +56,22 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<PostList> getPostsByDate (Date date, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate (String date, Integer offset, Integer limit, String mode) {
         Iterable<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
-        for (Post post : posts) {
-            if (post.getTime().equals(date) && post.getIsActive() == 1 &&
-                    post.getModerationStatus() == ModerationStatus.ACCEPTED ) {
-                result.add(post);
+        ResponseEntity<?> responseEntity;
+        if (date == null) {
+            responseEntity = getPosts(offset, limit, mode);
+        } else {
+            for (Post post : posts) {
+                if (post.getTime().equals(date) && post.getIsActive() == 1 &&
+                        post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+                    result.add(post);
+                }
             }
+            responseEntity = processPosts (limit, offset, result, mode);
         }
-        return processPosts(limit, offset, result, mode);
+            return responseEntity;
     }
 
     private ResponseEntity<PostList> processPosts(int offset, Integer limit,  List<Post> posts, String mode) {

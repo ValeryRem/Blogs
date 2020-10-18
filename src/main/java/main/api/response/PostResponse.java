@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Component
@@ -22,7 +23,7 @@ public class PostResponse {
         return postService.getPostsBySearch(query, limit, offset, mode);
     }
 
-    public ResponseEntity<?> getPostByDate (Date date, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostByDate (String date, Integer offset, Integer limit, String mode) {
         return postService.getPostsByDate(date, offset, limit, mode);
     }
 }

@@ -2,7 +2,8 @@ package main.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Post {
     private Integer moderatorId;
 
     @NotEmpty(message = "time of post is mandatory")
-    private Date time;
+    private String time;
 
     @Column(name ="user_id")
     @NotEmpty(message ="userId is mandatory")
@@ -54,6 +55,8 @@ public class Post {
     @NotEmpty(message = "dislikeCount is mandatory")
     @Column(name ="dislike_count")
     private Integer dislikeCount;
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Post(ModerationStatus moderationStatus) {
         this.moderationStatus = moderationStatus;
@@ -111,12 +114,26 @@ public class Post {
         this.moderatorId = moderatorId;
     }
 
-    public Date getTime() {
-        return time;
+    public String getTime() {
+        String date;
+        try {
+            date = dateFormat.format(time);
+        } catch (
+                DateTimeParseException e) {
+            date = "";
+        }
+        return date;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(String time) {
+        String date;
+        try {
+            date = dateFormat.format(time);
+        } catch (
+                DateTimeParseException e) {
+            date = "";
+        }
+        this.time = date;
     }
 
     public Integer getUserId() {
