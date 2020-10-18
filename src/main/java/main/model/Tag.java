@@ -25,6 +25,10 @@ public class Tag {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(name.matches("#\\S+")) {
+            this.name = name;
+        } else {
+            this.name = "";
+        }
     }
 }

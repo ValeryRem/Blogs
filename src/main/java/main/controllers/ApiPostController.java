@@ -50,4 +50,13 @@ public class ApiPostController {
         System.out.println("Method getPostsByDate activated. Date:" + date );
         return postResponse.getPostByDate(date, offset, limit, mode);
     }
+
+    @GetMapping("/post/byTag")
+    private ResponseEntity<?> getPostsByTag(String tagName,
+                                            @RequestParam(defaultValue="0") Integer offset,
+                                            @RequestParam(defaultValue="5")Integer limit,
+                                            @RequestParam(defaultValue="recent") String mode) {
+        System.out.println("Method getPostsByTag used. Tag:" + tagName );
+        return postResponse.getPostByTag(tagName, offset, limit, mode);
+    }
 }

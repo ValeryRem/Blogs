@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,6 +18,9 @@ import java.util.*;
 @Service
 public class PostService {
     private Integer count;
+    private List<Post> result;
+    private Iterable<Post> posts;
+    private ResponseEntity<?> responseEntity;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     private PostRepository postRepository;
@@ -43,13 +47,11 @@ public class PostService {
 //    }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        Iterable<Post> posts = postRepository.findAll();
+        posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         for (Post post : posts) {
             result.add(post);
         }
-
-
         return processPosts(offset, limit, result, mode);
     }
 
@@ -63,9 +65,8 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
-        List<Post> result = new ArrayList<>();
-        Iterable<Post> posts = postRepository.findAll();
-        ResponseEntity<?> responseEntity;
+        result = new ArrayList<>();
+        posts = postRepository.findAll();
         if (query == null) {
             responseEntity = getPosts(offset, limit, mode);
         } else {
@@ -80,9 +81,8 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostsByDate(String time, Integer offset, Integer limit, String mode) {
-        Iterable<Post> posts = postRepository.findAll();
-        List<Post> result = new ArrayList<>();
-        ResponseEntity<?> responseEntity;
+        posts = postRepository.findAll();
+        result = new ArrayList<>();
         String date;
         try {
             date = dateFormat.format(time);
@@ -94,6 +94,34 @@ public class PostService {
         } else {
             for (Post post : posts) {
                 if (post.getTime().equals(date) && post.getIsActive() == 1 &&
+                        post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+                    result.add(post);
+                }
+            }
+            responseEntity = processPosts(limit, offset, result, mode);
+        }
+        return responseEntity;
+    }
+
+    public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
+        posts = postRepository.findAll();
+        result = new ArrayList<>();
+        String tag;
+        try {
+            if (tagName.matches("#\\S+")) {
+                tag = tagName;
+            } else {
+                tag = "";
+            }
+        }
+        catch (NullPointerException ex){
+            tag = "";
+        }
+        if (tag.equals("")) {
+            responseEntity = getPosts(offset, limit, mode);
+        } else {
+            for (Post post : posts) {
+                if (post.getTagName().equals(tag) && post.getIsActive() == 1 &&
                         post.getModerationStatus() == ModerationStatus.ACCEPTED) {
                     result.add(post);
                 }

@@ -42,6 +42,7 @@ public class MainApplication {
         post.setTime("2020-10-18");
         post.setUserId(22);
         post.setViewCount(111);
+        post.setTagName("#SpringApp");
         storage.addPost(post);
     }
 }

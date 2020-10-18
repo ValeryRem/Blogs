@@ -43,6 +43,9 @@ public class Post {
     @NotEmpty(message ="announce is mandatory")
     private String announce;
 
+    @Column(name ="tag")
+    private String tagName;
+
     @NotEmpty(message = "viewCount is mandatory")
     @Column(name ="view_count")
     private Integer viewCount;
@@ -201,5 +204,13 @@ public class Post {
 
     public void setComments(List<PostComment> comments) {
         this.comments = comments;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 }

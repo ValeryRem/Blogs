@@ -26,4 +26,8 @@ public class PostResponse {
     public ResponseEntity<?> getPostByDate (String date, Integer offset, Integer limit, String mode) {
         return postService.getPostsByDate(date, offset, limit, mode);
     }
+
+    public ResponseEntity<?> getPostByTag (String tagName, Integer offset, Integer limit, String mode){
+        return postService.getPostsByTag(tagName, offset, limit, mode);
+    }
 }
