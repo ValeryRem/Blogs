@@ -50,5 +50,4 @@ public class ApiPostController {
         System.out.println("Method getPostsByDate activated. Date:" + date );
         return postResponse.getPostByDate(date, offset, limit, mode);
     }
-
 }

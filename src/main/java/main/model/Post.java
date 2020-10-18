@@ -5,7 +5,6 @@ import javax.validation.constraints.NotEmpty;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -67,19 +66,17 @@ public class Post {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(targetEntity=Post.class, mappedBy="id", fetch=FetchType.EAGER)
     private List<PostComment> comments = new ArrayList<>();
 
-    public Post addComment(PostComment comment) {
+    public List<PostComment> addComment(PostComment comment) {
         comments.add(comment);
-        comment.setPost(this);
-        return this;
+        return comments;
     }
 
-    public Post removeComment(PostComment comment) {
+    public List<PostComment> removeComment(PostComment comment) {
         comments.remove(comment);
-        comment.setPost(null);
-        return this;
+        return comments;
     }
 
     public Integer getId() {
