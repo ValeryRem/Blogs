@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Введен меод setTestPost() в MainApplication.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="DI of PostRepository via Storage constructor. NPE.">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -80,9 +80,7 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/base/Storage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/base/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/base/Storage.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,7 +316,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603048221981</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="DI of PostRepository via Storage constructor. NPE.">
+      <created>1603052949764</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1603052949764</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -357,17 +362,18 @@
     <MESSAGE value="Проблемы с меппингом @OneToOne(targetEntity=Post.class, mappedBy=&quot;id&quot;, fetch=FetchType.EAGER)&#10;                         private List&lt;PostComment&gt; comments = new ArrayList&lt;&gt;();." />
     <MESSAGE value=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)" />
     <MESSAGE value="Введен меод setTestPost() в MainApplication." />
-    <option name="LAST_COMMIT_MESSAGE" value="Введен меод setTestPost() в MainApplication." />
+    <MESSAGE value="DI of PostRepository via Storage constructor. NPE." />
+    <option name="LAST_COMMIT_MESSAGE" value="DI of PostRepository via Storage constructor. NPE." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1600204916242" />
-    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser" timestamp="1603051084186">
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser" timestamp="1603052833813">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603051084186" />
+    <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603052833813" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -384,22 +390,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="227" key="GridCell.Tab.0.bottom" timestamp="1603052479144">
+    <state width="1309" height="227" key="GridCell.Tab.0.bottom" timestamp="1603053621824">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603052479144" />
-    <state width="1309" height="227" key="GridCell.Tab.0.center" timestamp="1603052479143">
+    <state width="1309" height="227" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603053621824" />
+    <state width="1309" height="227" key="GridCell.Tab.0.center" timestamp="1603053621824">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603052479143" />
-    <state width="1309" height="227" key="GridCell.Tab.0.left" timestamp="1603052479143">
+    <state width="1309" height="227" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603053621824" />
+    <state width="1309" height="227" key="GridCell.Tab.0.left" timestamp="1603053621823">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603052479143" />
-    <state width="1309" height="227" key="GridCell.Tab.0.right" timestamp="1603052479143">
+    <state width="1309" height="227" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603053621823" />
+    <state width="1309" height="227" key="GridCell.Tab.0.right" timestamp="1603053621824">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1309" height="227" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603052479143" />
+    <state width="1309" height="227" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603053621824" />
     <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -424,10 +430,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1603048234547">
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2" timestamp="1603052960181">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603048234547" />
+    <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603052960181" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

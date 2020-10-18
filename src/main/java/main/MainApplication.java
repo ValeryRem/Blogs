@@ -17,8 +17,14 @@ import java.util.List;
 public class MainApplication {
     @Autowired
     @NotNull
-    private Storage storage;
-    private void setTestPost(Storage storage) {
+    private static Storage storage;
+
+    public static void main(String[] args) {
+        SpringApplication.run(MainApplication.class, args);
+        setTestPost(storage);
+    }
+
+    private static void setTestPost(Storage storage) {
         Post post = new Post("The test post", 1);
         post.setAnnounce("Testing post");
         PostComment comment1 = new PostComment();
@@ -38,12 +44,4 @@ public class MainApplication {
         post.setViewCount(111);
         storage.addPost(post);
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class, args);
-    }
-    {
-        setTestPost(storage);
-    }
-
 }
