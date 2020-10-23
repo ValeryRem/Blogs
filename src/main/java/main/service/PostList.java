@@ -1,4 +1,6 @@
-package main.model;
+package main.service;
+
+import main.entity.Post;
 
 import java.util.List;
 

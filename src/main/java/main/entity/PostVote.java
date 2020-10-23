@@ -1,7 +1,6 @@
-package main.model;
+package main.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -21,6 +20,9 @@ public class PostVote {
     private Date time;
     @NotNull(message = "Value of the vote is mandatory")
     private Integer value;
+
+    public PostVote() {
+    }
 
     public Integer getId() {
         return id;

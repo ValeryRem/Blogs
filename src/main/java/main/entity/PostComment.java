@@ -1,36 +1,39 @@
-package main.model;
-
-import org.springframework.web.bind.annotation.Mapping;
+package main.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
+
 //@Embeddable
 @Entity
 @Table(name = "post_comments")
 public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name="comment_id")
+    private Integer commentId;
+
     @Column(name = "parent_id")
     private Integer parentId;
+
     @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
     private Integer postId;
+
     @Column(name = "user_id", nullable = false)
     private Integer userId;
-    @NotNull(message = "Time of the comment is mandatory")
-    private Date time;
-    @NotNull(message = "Text of the comment is mandatory")
+    private LocalDate time;
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
+    public PostComment() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PostComment )) return false;
-        return id != null && id.equals(((PostComment) o).getId());
+        return commentId != null && commentId.equals(((PostComment) o).getCommentId());
     }
 
     @Override
@@ -46,12 +49,12 @@ public class PostComment {
         this.post = post;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCommentId() {
+        return commentId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCommentId(Integer id) {
+        this.commentId = id;
     }
 
     public Integer getParentId() {
@@ -78,11 +81,11 @@ public class PostComment {
         this.userId = userId;
     }
 
-    public Date getTime() {
+    public LocalDate getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 

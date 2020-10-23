@@ -1,48 +1,43 @@
 package main;
 
 import main.base.Storage;
-import main.model.ModerationStatus;
-import main.model.Post;
-import main.model.PostComment;
-import main.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.entity.ModerationStatus;
+import main.entity.Post;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class MainApplication {
-    @Autowired
-    @NotNull
-    private static Storage storage;
+    private final Storage storage;
+
+    public MainApplication(Storage storage) {
+        this.storage = storage;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
-        setTestPost(storage);
     }
 
-    private static void setTestPost(Storage storage) {
-        Post post = new Post("The test post", 1);
-        post.setAnnounce("Testing post");
-        PostComment comment1 = new PostComment();
-        PostComment comment2 = new PostComment();
-        comment1.setText("Comment 1");
-        comment2.setText("Comment 2");
-        List<PostComment> listOfComments = Arrays.asList(comment1, comment2);
-        post.setComments(listOfComments);
+    @PostConstruct
+    public void init(){
+        insertTestPost();
+    }
+
+    private void insertTestPost() {
+        Post post = new Post();
+        post.setTitle("The test post");
         post.setDislikeCount(5);
-        post.setId(1);
+        post.setPostId(1);
         post.setIsActive(1);
         post.setLikeCount(10);
-        post.setModerationStatus(ModerationStatus.ACCEPTED);
+        post.setModerationStatus(ModerationStatus.NEW);
         post.setText("This is a testing text");
-        post.setTime("2020-10-18");
+        post.setTime(LocalDate.now());
         post.setUserId(22);
         post.setViewCount(111);
-        post.setTagName("#SpringApp");
         storage.addPost(post);
     }
 }

@@ -1,35 +1,38 @@
-package main.model;
+package main.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tag_2_post")
 public class Tag2Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "tag_2_post_id")
+    private Integer tag2postId;
 
-    @NotNull(message = "Value of postId is mandatory")
     @Column(name = "post_id")
+//    @OneToMany(mappedBy = "id")
     private Integer postId;
 
-    @NotNull(message = "Value of tagId is mandatory")
+//    @OneToMany(mappedBy = "Id")
     @Column(name = "tag_id")
     private Integer tagId;
 
+    public Tag2Post() {
+    }
+
     public Tag2Post(Integer id, Integer postId, Integer tagId) {
-        this.id = id;
+        this.tag2postId = id;
         this.postId = postId;
         this.tagId = tagId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getTag2postId() {
+        return tag2postId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTag2postId(Integer tag2postId) {
+        this.tag2postId = tag2postId;
     }
 
     public Integer getPostId() {

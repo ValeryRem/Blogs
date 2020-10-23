@@ -1,6 +1,6 @@
 package main.repository;
 
-import main.model.Post;
+import main.entity.Post;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

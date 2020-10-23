@@ -1,6 +1,6 @@
 package main.base;
 
-import main.model.Post;
+import main.entity.Post;
 import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

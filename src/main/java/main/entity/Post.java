@@ -1,9 +1,8 @@
-package main.model;
+package main.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,64 +11,50 @@ import java.util.List;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "id")
-    private Integer id;
+    @JoinColumn(name = "post_id")
+    private Integer postId;
 
     @Column(name ="is_active")
-    @NotEmpty(message = "isActive status is mandatory")
     private Integer isActive;
 
     @Column(name ="moderation_status")
-    @NotEmpty(message = "moderation_status is mandatory")
     @Enumerated(EnumType.STRING)
     private ModerationStatus moderationStatus = ModerationStatus.NEW;
 
     @Column(name ="moderator_id")
     private Integer moderatorId;
 
-    @NotEmpty(message = "time of post is mandatory")
-    private String time;
+    @DateTimeFormat(pattern = "YYYY-MM-dd")
+    private LocalDate time;
 
     @Column(name ="user_id")
-    @NotEmpty(message ="userId is mandatory")
     private Integer userId;
 
-    @NotEmpty(message ="title is mandatory")
     private String title;
-
-    @NotEmpty(message ="text is mandatory")
     private String text;
 
-    @NotEmpty(message ="announce is mandatory")
-    private String announce;
-
-    @Column(name ="tag")
-    private String tagName;
-
-    @NotEmpty(message = "viewCount is mandatory")
     @Column(name ="view_count")
     private Integer viewCount;
 
-    @NotEmpty(message = "likeCount is mandatory")
     @Column(name ="like_count")
     private Integer likeCount;
 
-    @NotEmpty(message = "dislikeCount is mandatory")
     @Column(name ="dislike_count")
     private Integer dislikeCount;
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public Post() {
+    }
 
     public Post(ModerationStatus moderationStatus) {
         this.moderationStatus = moderationStatus;
     }
 
-    public Post(String title, Integer id) {
+    public Post(String title, Integer postId) {
         this.title = title;
-        this.id = id;
+        this.postId = postId;
     }
 
-    @OneToMany(targetEntity=Post.class, mappedBy="id", fetch=FetchType.EAGER)
+    @OneToMany(fetch=FetchType.EAGER)
     private List<PostComment> comments = new ArrayList<>();
 
     public List<PostComment> addComment(PostComment comment) {
@@ -82,12 +67,12 @@ public class Post {
         return comments;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getPostId() {
+        return postId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPostId(Integer postId) {
+        this.postId = postId;
     }
 
     public Integer getIsActive() {
@@ -114,26 +99,12 @@ public class Post {
         this.moderatorId = moderatorId;
     }
 
-    public String getTime() {
-        String date;
-        try {
-            date = dateFormat.format(time);
-        } catch (
-                DateTimeParseException e) {
-            date = "";
-        }
-        return date;
+    public LocalDate  getTime() {
+        return time;
     }
 
-    public void setTime(String time) {
-        String date;
-        try {
-            date = dateFormat.format(time);
-        } catch (
-                IllegalArgumentException e) {
-            date = "";
-        }
-        this.time = date;
+    public void setTime(LocalDate time) {
+        this.time = time;
     }
 
     public Integer getUserId() {
@@ -161,17 +132,13 @@ public class Post {
     }
 
     public String getAnnounce() {
-        announce = getText();
+        String announce = getText();
         if (announce.length() <= 500) {
             announce = announce.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
         } else {
             announce = announce.substring(0, 100);
         }
         return announce.replaceAll("<script>.*?</script>", "");
-    }
-
-    public void setAnnounce(String announce) {
-        this.announce = announce;
     }
 
     public Integer getViewCount() {
@@ -204,13 +171,5 @@ public class Post {
 
     public void setComments(List<PostComment> comments) {
         this.comments = comments;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
     }
 }

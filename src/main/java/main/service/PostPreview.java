@@ -1,18 +1,22 @@
-package main.model;
+package main.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import main.entity.User;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class PostPreview {
-    private final Integer postId;
-    private final User user;
-    private final Date date;
-    private final Timestamp timestamp;
-    private final String postAnnounce;
+    private Integer postId;
+    private User user;
+    private LocalDate date;
+    private Timestamp timestamp;
+    private String postAnnounce;
 
-    public PostPreview(Integer postId, User user, Date date, Timestamp timestamp, String postAnnounce) {
+    public PostPreview() {
+    }
+
+    public PostPreview(Integer postId, User user, LocalDate date, Timestamp timestamp, String postAnnounce) {
         this.postId = postId;
         this.user = user;
         this.date = date;

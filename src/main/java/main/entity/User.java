@@ -1,7 +1,6 @@
-package main.model;
+package main.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -9,22 +8,20 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @OneToOne(mappedBy = "post_id")// Caused by: org.hibernate.AnnotationException: Illegal attempt to map a non collection as a @OneToMany, @ManyToMany or @CollectionOfElements: main.model.User.id
+    @Column(name = "user_id")
     private Integer userId;
-    @NotNull(message = "Name is mandatory")
     private String name;
-    @NotNull(message = "Status is mandatory")
     @Column(name = "is_moderator")
     private Integer isModerator;
     @Column(name = "reg_time")
-    @NotNull(message = "regTime is mandatory")
     private Date regTime;
-    @NotNull(message = "email is mandatory")
     private String email;
-    @NotNull(message = "password is mandatory")
     private String password;
     private String code;
     private String photo;
+
+    public User() {
+    }
 
     public User(Integer userId) {
         this.userId = userId;

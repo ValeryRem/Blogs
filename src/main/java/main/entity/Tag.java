@@ -1,7 +1,6 @@
-package main.model;
+package main.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tags")
@@ -9,8 +8,10 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank(message = "Name of the tag is mandatory")
     private String name;
+
+    public Tag() {
+    }
 
     public Integer getId() {
         return id;

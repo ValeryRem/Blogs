@@ -1,10 +1,7 @@
 package main.service;
 
-import main.base.Storage;
-import main.model.ModerationStatus;
-import main.model.Post;
-import main.model.PostComment;
-import main.model.PostList;
+import main.entity.ModerationStatus;
+import main.entity.Post;
 import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -22,29 +20,9 @@ public class PostService {
     private Iterable<Post> posts;
     private ResponseEntity<?> responseEntity;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private PostRepository postRepository;
-
-//    {
-//        Post post = new Post("The test post", 1);
-//        post.setAnnounce("Testing post");
-//        PostComment comment1 = new PostComment();
-//        PostComment comment2 = new PostComment();
-//        comment1.setText("Comment 1");
-//        comment2.setText("Comment 2");
-//        List<PostComment> listOfComments = Arrays.asList(comment1, comment2);
-//        post.setComments(listOfComments);
-//        post.setDislikeCount(5);
-//        post.setId(1);
-//        post.setIsActive(1);
-//        post.setLikeCount(10);
-//        post.setModerationStatus(ModerationStatus.ACCEPTED);
-//        post.setText("This is a testing text");
-//        post.setTime("2020-10-18");
-//        post.setUserId(22);
-//        post.setViewCount(111);
-//        new Storage().addPost(post);
-//    }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         posts = postRepository.findAll();
@@ -75,58 +53,40 @@ public class PostService {
                     result.add(post);
                 }
             }
-            responseEntity = processPosts(limit, offset, result, mode);
+            responseEntity = processPosts(offset, limit, result, mode);
         }
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostsByDate(String time, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
         posts = postRepository.findAll();
         result = new ArrayList<>();
-        String date;
-        try {
-            date = dateFormat.format(time);
-        } catch (Exception e) {
-            date = "";
-        }
-        if (date.equals("")) {
-            responseEntity = getPosts(offset, limit, mode);
-        } else {
-            for (Post post : posts) {
-                if (post.getTime().equals(date) && post.getIsActive() == 1 &&
-                        post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    result.add(post);
-                }
+        for (Post post : posts) {
+            if (post.getTime().equals(time) && post.getIsActive() == 1 &&
+                    post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+                result.add(post);
             }
-            responseEntity = processPosts(limit, offset, result, mode);
         }
-        return responseEntity;
+        return processPosts(offset, limit, result, mode);
     }
 
     public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
         posts = postRepository.findAll();
         result = new ArrayList<>();
-        String tag;
-        try {
-            if (tagName.matches("#\\S+")) {
-                tag = tagName;
-            } else {
-                tag = "";
-            }
-        }
-        catch (NullPointerException ex){
-            tag = "";
-        }
-        if (tag.equals("")) {
-            responseEntity = getPosts(offset, limit, mode);
-        } else {
-            for (Post post : posts) {
-                if (post.getTagName().equals(tag) && post.getIsActive() == 1 &&
-                        post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    result.add(post);
+        if (tagName.matches("#\\S+")) {
+            try {
+                for (Post post : posts) {
+                    if (post.getText().contains(tagName) && post.getIsActive() == 1 &&
+                            post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+                        result.add(post);
+                    }
                 }
+                responseEntity = processPosts(offset, limit, result, mode);
+            } catch (NullPointerException ex) {
+                responseEntity = getPosts(offset, limit, mode);
             }
-            responseEntity = processPosts(limit, offset, result, mode);
+        } else {
+            responseEntity = getPosts(offset, limit, mode);
         }
         return responseEntity;
     }

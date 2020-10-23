@@ -1,6 +1,6 @@
 package main.api.response;
 
-import main.model.User;
+import main.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component

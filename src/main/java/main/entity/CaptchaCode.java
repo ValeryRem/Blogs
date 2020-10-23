@@ -1,11 +1,11 @@
-package main.model;
+package main.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name = "capture_codes")
+@Table(name = "captcha_codes")
 public class CaptchaCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,9 @@ public class CaptchaCode {
     @NotBlank(message = "Secret code is mandatory")
     @Column(name = "secret_code")
     private Integer secretCode;
+
+    public CaptchaCode() {
+    }
 
     public Integer getId() {
         return id;
