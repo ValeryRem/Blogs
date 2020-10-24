@@ -3,6 +3,7 @@ package main;
 import main.base.Storage;
 import main.entity.ModerationStatus;
 import main.entity.Post;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @SpringBootApplication
 public class MainApplication {
+    @Autowired
     private final Storage storage;
 
     public MainApplication(Storage storage) {
@@ -28,7 +30,7 @@ public class MainApplication {
 
     private void insertTestPost() {
         Post post = new Post();
-        post.setTitle("The test post");
+        post.setTitle("The testing post");
         post.setDislikeCount(5);
         post.setPostId(1);
         post.setIsActive(1);

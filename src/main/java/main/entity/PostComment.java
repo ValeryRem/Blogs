@@ -3,7 +3,6 @@ package main.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-//@Embeddable
 @Entity
 @Table(name = "post_comments")
 public class PostComment {
@@ -23,9 +22,6 @@ public class PostComment {
     private LocalDate time;
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
-
     public PostComment() {
     }
 
@@ -39,14 +35,6 @@ public class PostComment {
     @Override
     public int hashCode() {
         return 31;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 
     public Integer getCommentId() {

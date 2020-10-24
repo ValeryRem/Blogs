@@ -12,6 +12,10 @@ public class PostResponse {
     @Autowired
     private PostService postService;
 
+    public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
+        return postService.getPosts(offset, limit, mode);
+    }
+
     public ResponseEntity<?> getPostById (Integer postId) {
         return postService.getPostById(postId);
     }

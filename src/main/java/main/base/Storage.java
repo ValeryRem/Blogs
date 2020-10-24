@@ -15,7 +15,7 @@ public class Storage{
     private final List<Post> posts = new ArrayList<>();
 
     @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Autowired
     public Storage storage;

@@ -3,6 +3,7 @@ package main.api.response;
 import main.service.PostPreview;
 import main.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public class PostPreviewResponse {
     private LocalDate date;
     private Timestamp timestamp;
     private String postAnnounce;
+
     private final PostPreview postPreview = new PostPreview(postId, user, date, timestamp, postAnnounce);
 
     public ResponseEntity<?> getPostPreviewResponse() {

@@ -18,7 +18,7 @@ public class Post {
     private Integer isActive;
 
     @Column(name ="moderation_status")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private ModerationStatus moderationStatus = ModerationStatus.NEW;
 
     @Column(name ="moderator_id")
@@ -54,7 +54,12 @@ public class Post {
         this.postId = postId;
     }
 
+    public Post(Integer postId) {
+        this.postId = postId;
+    }
+
     @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name = "post_id")
     private List<PostComment> comments = new ArrayList<>();
 
     public List<PostComment> addComment(PostComment comment) {

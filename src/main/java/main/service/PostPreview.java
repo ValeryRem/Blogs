@@ -1,6 +1,9 @@
 package main.service;
 
+import main.entity.Post;
 import main.entity.User;
+import main.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -13,6 +16,8 @@ public class PostPreview {
     private Timestamp timestamp;
     private String postAnnounce;
 
+    @Autowired
+    private PostRepository postRepository;
     public PostPreview() {
     }
 
@@ -39,6 +44,6 @@ public class PostPreview {
         return new Date();
     }
     public String getPostAnnounce() {
-        return postAnnounce;
+        return  postAnnounce;
     }
 }

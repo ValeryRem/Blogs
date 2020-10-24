@@ -2,36 +2,46 @@ package main.service;
 
 import main.entity.ModerationStatus;
 import main.entity.Post;
+import main.entity.Tag;
 import main.repository.PostRepository;
+import main.repository.Tag2PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
 public class PostService {
     private Integer count;
-    private List<Post> result;
+    private List<Post> postList;
     private Iterable<Post> posts;
     private ResponseEntity<?> responseEntity;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private  List<Object> objecttList; // output for listToShow
 
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private Tag2PostRepository tag2PostRepository;
+
+    @Autowired
+    private Tag tag;
+
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        posts = postRepository.findAll();
-        List<Post> result = new ArrayList<>();
-        for (Post post : posts) {
-            result.add(post);
+        objecttList = new ArrayList<>();
+        List<Post> postList = new ArrayList<>();
+        postRepository.findAll().forEach(postList :: add);
+        List<Post> sortedPosts = getSortedPosts(postList, mode);
+        for (Post post: sortedPosts) {
+            objecttList.add(new PostToShow(post));
         }
-        return processPosts(offset, limit, result, mode);
+        return getResponseEntity(objecttList, offset, limit);
     }
+
 
     public ResponseEntity<?> getPostById(Integer postId) {
         try {
@@ -43,82 +53,85 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
-        result = new ArrayList<>();
-        posts = postRepository.findAll();
+        objecttList = new ArrayList<>();
+        List<Post> postList = new ArrayList<>();
+        postRepository.findAll().forEach(postList :: add);
+        List<Post> sortedPosts = getSortedPosts(postList, mode);
         if (query == null) {
-            responseEntity = getPosts(offset, limit, mode);
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            for (Post post : posts) {
+            for (Post post : sortedPosts) {
                 if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    result.add(post);
+                    objecttList.add(new PostToShow(post));
                 }
             }
-            responseEntity = processPosts(offset, limit, result, mode);
+            responseEntity = getResponseEntity(objecttList, offset, limit);
         }
         return responseEntity;
     }
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
-        posts = postRepository.findAll();
-        result = new ArrayList<>();
-        for (Post post : posts) {
+        List<Post> postList = new ArrayList<>();
+        postRepository.findAll().forEach(postList :: add);
+        List<Post> sortdPosts = getSortedPosts(postList, mode);
+        objecttList = new ArrayList<>();
+        for (Post post : sortdPosts) {
             if (post.getTime().equals(time) && post.getIsActive() == 1 &&
                     post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                result.add(post);
+                objecttList.add(post);
             }
         }
-        return processPosts(offset, limit, result, mode);
+        return getResponseEntity(objecttList, offset, limit);
     }
 
     public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
-        posts = postRepository.findAll();
-        result = new ArrayList<>();
-        if (tagName.matches("#\\S+")) {
-            try {
-                for (Post post : posts) {
-                    if (post.getText().contains(tagName) && post.getIsActive() == 1 &&
-                            post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                        result.add(post);
-                    }
-                }
-                responseEntity = processPosts(offset, limit, result, mode);
-            } catch (NullPointerException ex) {
-                responseEntity = getPosts(offset, limit, mode);
-            }
-        } else {
-            responseEntity = getPosts(offset, limit, mode);
+        tag = new Tag(tagName);
+        Integer tagId = tag.getId();
+        List <Integer> postsId = tag2PostRepository.findByTagId(tagId);
+        List<Post> postList = new ArrayList<>();
+        for (Integer postId : postsId) {
+            postList.add(new Post(postId));
         }
-        return responseEntity;
+        List<Post> sortdPosts = getSortedPosts(postList, mode);
+        objecttList = new ArrayList<>();
+        return getResponseEntity(objecttList, offset, limit);
     }
 
-    private ResponseEntity<PostList> processPosts(int offset, Integer limit, List<Post> posts, String mode) {
-        count = posts.size();
-        PostList postList;
+    private List<Post> getSortedPosts(List<Post> postList, String mode) {
         switch (mode) {
             case "popular":
-                posts.sort(Comparator.comparing(Post::getViewCount).reversed());
+                postList.sort(Comparator.comparing(Post::getViewCount).reversed());
                 break;
             case "best":
-                posts.sort(Comparator.comparing(Post::getLikeCount).reversed());
+                postList.sort(Comparator.comparing(Post::getLikeCount).reversed());
                 break;
             case "early":
-                posts.sort(Comparator.comparing(Post::getTime));
+                postList.sort(Comparator.comparing(Post::getTime));
                 break;
             default:
-                posts.sort(Comparator.comparing(Post::getTime).reversed());
+                postList.sort(Comparator.comparing(Post::getTime).reversed());
         }
-
-        if (count == 0) {
-            postList = new PostList(count, posts);
-            return new ResponseEntity<>(postList, HttpStatus.NOT_FOUND);
-        }
-        if (limit <= count) {
-            postList = new PostList(count, posts.subList(offset, limit));
-        } else {
-            postList = new PostList(count, posts);
-        }
-        return ResponseEntity.ok(postList);
+        return postList;
     }
+
+    private ResponseEntity<?> getResponseEntity(List<Object> objecttList, Integer offset, Integer limit) {
+        count = objecttList.size();
+        if (count == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        //  output for ResponseEntity
+        List<Object> listToShow = new ArrayList<>();
+        if (limit <= count) {
+            listToShow.add(count);
+            listToShow.add(objecttList.subList(offset, limit));
+        } else {
+            listToShow.add(count);
+            listToShow.add(objecttList.subList(offset, count));
+        }
+        return new ResponseEntity<>(listToShow, HttpStatus.FOUND);
+    }
+
+
 
     public Integer getCount() {
         return count;
