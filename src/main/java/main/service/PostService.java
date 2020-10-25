@@ -42,7 +42,6 @@ public class PostService {
         return getResponseEntity(objecttList, offset, limit);
     }
 
-
     public ResponseEntity<?> getPostById(Integer postId) {
         try {
             Post post = postRepository.findById(postId).get();
@@ -73,9 +72,9 @@ public class PostService {
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
-        List<Post> sortdPosts = getSortedPosts(postList, mode);
+        List<Post> sortedPosts = getSortedPosts(postList, mode);
         objecttList = new ArrayList<>();
-        for (Post post : sortdPosts) {
+        for (Post post : sortedPosts) {
             if (post.getTime().equals(time) && post.getIsActive() == 1 &&
                     post.getModerationStatus() == ModerationStatus.ACCEPTED) {
                 objecttList.add(post);
@@ -87,13 +86,15 @@ public class PostService {
     public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
         tag = new Tag(tagName);
         Integer tagId = tag.getId();
-        List <Integer> postsId = tag2PostRepository.findByTagId(tagId);
+        List<Integer> postsId = new ArrayList<>();
+        tag2PostRepository.findAllById(Collections.singleton(tagId)).forEach(postsId::add);
         List<Post> postList = new ArrayList<>();
         for (Integer postId : postsId) {
-            postList.add(new Post(postId));
+            postList.add(postRepository.findById(postId).get());
         }
-        List<Post> sortdPosts = getSortedPosts(postList, mode);
+        List<Post> sortedPosts = getSortedPosts(postList, mode);
         objecttList = new ArrayList<>();
+        objecttList.add(sortedPosts);
         return getResponseEntity(objecttList, offset, limit);
     }
 

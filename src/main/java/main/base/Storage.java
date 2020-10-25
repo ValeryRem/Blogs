@@ -29,7 +29,7 @@ public class Storage{
         Iterable<Post> postIterable = postRepository.findAll();
         posts.add(post);
         postIterable.forEach(posts::add);
-        postRepository.save(post);
+        postRepository.saveAll(postIterable);//.save(post);
     }
 
     public List<Post> getPosts() {

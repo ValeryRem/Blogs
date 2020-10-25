@@ -38,7 +38,7 @@ public class MainApplication {
         post.setModerationStatus(ModerationStatus.NEW);
         post.setText("This is a testing text");
         post.setTime(LocalDate.now());
-        post.setUserId(22);
+        post.setUserId(1);
         post.setViewCount(111);
         storage.addPost(post);
     }

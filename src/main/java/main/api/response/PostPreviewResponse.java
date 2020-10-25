@@ -3,7 +3,6 @@ package main.api.response;
 import main.service.PostPreview;
 import main.entity.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.LocalDate;
