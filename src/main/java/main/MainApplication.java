@@ -1,8 +1,8 @@
 package main;
 
-import main.base.Storage;
 import main.entity.ModerationStatus;
 import main.entity.Post;
+import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,12 +12,18 @@ import java.time.LocalDate;
 
 @SpringBootApplication
 public class MainApplication {
+//    @Autowired
+//    private final Storage storage;
+//    public MainApplication(Storage storage) {
+//        this.storage = storage;
+//    }
     @Autowired
-    private final Storage storage;
+    private final PostRepository postRepository;
 
-    public MainApplication(Storage storage) {
-        this.storage = storage;
+    public MainApplication(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
@@ -37,9 +43,11 @@ public class MainApplication {
         post.setLikeCount(10);
         post.setModerationStatus(ModerationStatus.NEW);
         post.setText("This is a testing text");
+//        String announce = post.getAnnounce();
         post.setTime(LocalDate.now());
         post.setUserId(1);
         post.setViewCount(111);
-        storage.addPost(post);
+        postRepository.save(post);
+//        storage.addPost(post);
     }
 }

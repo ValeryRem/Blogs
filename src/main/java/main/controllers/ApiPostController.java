@@ -1,7 +1,6 @@
 package main.controllers;
 
 import main.api.response.PostResponse;
-import main.base.Storage;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,8 +15,8 @@ public class ApiPostController {
     @Autowired
     private PostResponse postResponse;
 
-    @Autowired
-    private static Storage storage;
+//    @Autowired
+//    private static Storage storage;
 
     @GetMapping("/post")
     @ResponseBody
@@ -53,11 +52,11 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byTag")
-    private ResponseEntity<?> getPostsByTag(String tagName,
+    private ResponseEntity<?> getPostsByTag(Integer tagId,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="5")Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsByTag used. Tag:" + tagName );
-        return postResponse.getPostByTag(tagName, offset, limit, mode);
+        System.out.println("Method getPostsByTag used. TagId:" + tagId );
+        return postResponse.getPostByTag(tagId, offset, limit, mode);
     }
 }

@@ -5,6 +5,7 @@ import main.entity.Post;
 import main.entity.Tag;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
+import main.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class PostService {
     private List<Post> postList;
     private Iterable<Post> posts;
     private ResponseEntity<?> responseEntity;
-    private  List<Object> objecttList; // output for listToShow
+    private  List<Object> objectList; // output for listToShow
 
     @Autowired
     private PostRepository postRepository;
@@ -31,15 +32,18 @@ public class PostService {
     @Autowired
     private Tag tag;
 
+    @Autowired
+    private TagRepository tagRepository;
+
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        objecttList = new ArrayList<>();
+        objectList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         for (Post post: sortedPosts) {
-            objecttList.add(new PostToShow(post));
+            objectList.add(new PostToShow(post));
         }
-        return getResponseEntity(objecttList, offset, limit);
+        return getResponseEntity(objectList, offset, limit);
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
@@ -52,7 +56,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
-        objecttList = new ArrayList<>();
+        objectList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
@@ -61,10 +65,10 @@ public class PostService {
         } else {
             for (Post post : sortedPosts) {
                 if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    objecttList.add(new PostToShow(post));
+                    objectList.add(new PostToShow(post));
                 }
             }
-            responseEntity = getResponseEntity(objecttList, offset, limit);
+            responseEntity = getResponseEntity(objectList, offset, limit);
         }
         return responseEntity;
     }
@@ -73,19 +77,20 @@ public class PostService {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
-        objecttList = new ArrayList<>();
+        objectList = new ArrayList<>();
         for (Post post : sortedPosts) {
             if (post.getTime().equals(time) && post.getIsActive() == 1 &&
                     post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                objecttList.add(post);
+                objectList.add(post);
             }
         }
-        return getResponseEntity(objecttList, offset, limit);
+        return getResponseEntity(objectList, offset, limit);
     }
 
-    public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
-        tag = new Tag(tagName);
-        Integer tagId = tag.getId();
+    public ResponseEntity<?> getPostsByTag(@RequestParam Integer tagId, Integer offset, Integer limit, String mode) {
+//        String tagName = tagRepository.findById(tagId).get();
+//        tag = new Tag(tagName);
+//        Integer tagId = tag.getId();
         List<Integer> postsId = new ArrayList<>();
         tag2PostRepository.findAllById(Collections.singleton(tagId)).forEach(postsId::add);
         List<Post> postList = new ArrayList<>();
@@ -93,9 +98,9 @@ public class PostService {
             postList.add(postRepository.findById(postId).get());
         }
         List<Post> sortedPosts = getSortedPosts(postList, mode);
-        objecttList = new ArrayList<>();
-        objecttList.add(sortedPosts);
-        return getResponseEntity(objecttList, offset, limit);
+        objectList = new ArrayList<>();
+        objectList.add(sortedPosts);
+        return getResponseEntity(objectList, offset, limit);
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -115,8 +120,8 @@ public class PostService {
         return postList;
     }
 
-    private ResponseEntity<?> getResponseEntity(List<Object> objecttList, Integer offset, Integer limit) {
-        count = objecttList.size();
+    private ResponseEntity<?> getResponseEntity(List<Object> objectList, Integer offset, Integer limit) {
+        count = objectList.size();
         if (count == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -124,15 +129,13 @@ public class PostService {
         List<Object> listToShow = new ArrayList<>();
         if (limit <= count) {
             listToShow.add(count);
-            listToShow.add(objecttList.subList(offset, limit));
+            listToShow.add(objectList.subList(offset, limit));
         } else {
             listToShow.add(count);
-            listToShow.add(objecttList.subList(offset, count));
+            listToShow.add(objectList.subList(offset, count));
         }
         return new ResponseEntity<>(listToShow, HttpStatus.FOUND);
     }
-
-
 
     public Integer getCount() {
         return count;

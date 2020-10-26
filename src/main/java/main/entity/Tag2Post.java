@@ -11,10 +11,8 @@ public class Tag2Post {
     private Integer tag2postId;
 
     @Column(name = "post_id")
-//    @OneToMany(mappedBy = "id")
     private Integer postId;
 
-//    @OneToMany(mappedBy = "Id")
     @Column(name = "tag_id")
     private Integer tagId;
 
