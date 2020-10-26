@@ -3,6 +3,7 @@ package main.service;
 import main.entity.ModerationStatus;
 import main.entity.Post;
 import main.entity.Tag;
+import main.entity.User;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
 import main.repository.TagRepository;
@@ -18,10 +19,9 @@ import java.util.*;
 @Service
 public class PostService {
     private Integer count;
-    private List<Post> postList;
-    private Iterable<Post> posts;
+//    private List<Post> postList;
+//    private Iterable<Post> posts;
     private ResponseEntity<?> responseEntity;
-    private  List<Object> objectList; // output for listToShow
 
     @Autowired
     private PostRepository postRepository;
@@ -36,12 +36,12 @@ public class PostService {
     private TagRepository tagRepository;
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        objectList = new ArrayList<>();
+        List<Object> objectList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         for (Post post: sortedPosts) {
-            objectList.add(new PostToShow(post));
+            objectList.add(getPostToShow(post));
         }
         return getResponseEntity(objectList, offset, limit);
     }
@@ -49,14 +49,14 @@ public class PostService {
     public ResponseEntity<?> getPostById(Integer postId) {
         try {
             Post post = postRepository.findById(postId).get();
-            return new ResponseEntity<>(post, HttpStatus.FOUND);
+            return new ResponseEntity<>(getPostToShow(post), HttpStatus.FOUND);
         } catch (NoSuchElementException ex) {
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
     }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
-        objectList = new ArrayList<>();
+        List<Object> objectList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
@@ -65,7 +65,7 @@ public class PostService {
         } else {
             for (Post post : sortedPosts) {
                 if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    objectList.add(new PostToShow(post));
+                    objectList.add(getPostToShow(post));
                 }
             }
             responseEntity = getResponseEntity(objectList, offset, limit);
@@ -77,20 +77,17 @@ public class PostService {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
-        objectList = new ArrayList<>();
+        List<Object> objectList = new ArrayList<>();
         for (Post post : sortedPosts) {
             if (post.getTime().equals(time) && post.getIsActive() == 1 &&
                     post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                objectList.add(post);
+                objectList.add(getPostToShow(post));
             }
         }
         return getResponseEntity(objectList, offset, limit);
     }
 
     public ResponseEntity<?> getPostsByTag(@RequestParam Integer tagId, Integer offset, Integer limit, String mode) {
-//        String tagName = tagRepository.findById(tagId).get();
-//        tag = new Tag(tagName);
-//        Integer tagId = tag.getId();
         List<Integer> postsId = new ArrayList<>();
         tag2PostRepository.findAllById(Collections.singleton(tagId)).forEach(postsId::add);
         List<Post> postList = new ArrayList<>();
@@ -98,7 +95,7 @@ public class PostService {
             postList.add(postRepository.findById(postId).get());
         }
         List<Post> sortedPosts = getSortedPosts(postList, mode);
-        objectList = new ArrayList<>();
+        List<Object>  objectList = new ArrayList<>();
         objectList.add(sortedPosts);
         return getResponseEntity(objectList, offset, limit);
     }
@@ -139,5 +136,21 @@ public class PostService {
 
     public Integer getCount() {
         return count;
+    }
+
+    private List<Object> getPostToShow(Post post) {
+        List<Object> postToShow = new ArrayList<>();
+        postToShow.add(post.getPostId());
+        postToShow.add(post.getTime());
+        postToShow.add(post.getTitle());
+        postToShow.add(post.getAnnounce());
+        List<Object> userToShow = new ArrayList<>();
+        userToShow.add(post.getUserId());
+        User user = new User(post.getUserId());
+        userToShow.add(user.getName());
+        postToShow.add(userToShow);
+        postToShow.add(post.getLikeCount());
+        postToShow.add(post.getViewCount());
+        return postToShow;
     }
 }

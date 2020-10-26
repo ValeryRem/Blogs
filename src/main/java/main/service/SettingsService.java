@@ -11,7 +11,6 @@ public class SettingsService {
         settingsResponse.setMultiuserMode(true);
         settingsResponse.setPostPremoderation(true);
         settingsResponse.setStatisticsIsPublic(true);
-//        settingsResponse.
         return settingsResponse;
     }
 }

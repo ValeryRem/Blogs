@@ -24,7 +24,6 @@ public class MainApplication {
         this.postRepository = postRepository;
     }
 
-
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
     }
@@ -42,7 +41,7 @@ public class MainApplication {
         post.setIsActive(1);
         post.setLikeCount(10);
         post.setModerationStatus(ModerationStatus.NEW);
-        post.setText("This is a testing text");
+        post.setText("This is a testing text to be processed by the code into announce.");
 //        String announce = post.getAnnounce();
         post.setTime(LocalDate.now());
         post.setUserId(1);
