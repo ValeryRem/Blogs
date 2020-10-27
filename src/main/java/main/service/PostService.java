@@ -1,9 +1,6 @@
 package main.service;
 
-import main.entity.ModerationStatus;
-import main.entity.Post;
-import main.entity.Tag;
-import main.entity.User;
+import main.entity.*;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
 import main.repository.TagRepository;
@@ -19,8 +16,6 @@ import java.util.*;
 @Service
 public class PostService {
     private Integer count;
-//    private List<Post> postList;
-//    private Iterable<Post> posts;
     private ResponseEntity<?> responseEntity;
 
     @Autowired
@@ -28,6 +23,9 @@ public class PostService {
 
     @Autowired
     private Tag2PostRepository tag2PostRepository;
+
+    @Autowired
+    private Tag2Post tag2Post;
 
     @Autowired
     private Tag tag;
@@ -86,15 +84,29 @@ public class PostService {
         }
         return getResponseEntity(objectList, offset, limit);
     }
-
-    public ResponseEntity<?> getPostsByTag(@RequestParam Integer tagId, Integer offset, Integer limit, String mode) {
-        List<Integer> postsId = new ArrayList<>();
-        tag2PostRepository.findAllById(Collections.singleton(tagId)).forEach(postsId::add);
-        List<Post> postList = new ArrayList<>();
-        for (Integer postId : postsId) {
-            postList.add(postRepository.findById(postId).get());
+//Field tag2Post in main.service.PostService required a bean of type 'main.entity.Tag2Post' that could not be found.
+    public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
+        Integer tagId = null;
+        Iterable<Tag> iterableTags = tagRepository.findAll();
+        for(Tag tag: iterableTags) {
+            if(tag.getName().equals(tagName)) {
+                tagId = tag.getId();
+                break;
+            }
         }
-        List<Post> sortedPosts = getSortedPosts(postList, mode);
+        List<Integer> postsId = new ArrayList<>();
+        Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+        for (Tag2Post tag2Post : tag2PostIterable) {
+            if(tag2Post.getTagId().equals(tagId)) {
+                postsId.add(tag2Post.getPostId());
+            }
+        }
+        List<Post> posts = new ArrayList<>();
+        for(Integer postId : postsId) {
+            Post post = postRepository.findById(postId).get();
+            posts.add(post);
+        }
+        List<Post> sortedPosts = getSortedPosts(posts, mode);
         List<Object>  objectList = new ArrayList<>();
         objectList.add(sortedPosts);
         return getResponseEntity(objectList, offset, limit);

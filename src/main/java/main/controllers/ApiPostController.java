@@ -48,11 +48,11 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byTag")
-    private ResponseEntity<?> getPostsByTag(Integer tagId,
+    private ResponseEntity<?> getPostsByTag(String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="5")Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsByTag used. TagId:" + tagId );
-        return postService.getPostsByTag(tagId, offset, limit, mode);
+        System.out.println("Method getPostsByTag used. TagId:" + tagName );
+        return postService.getPostsByTag(tagName, offset, limit, mode);
     }
 }

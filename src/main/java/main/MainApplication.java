@@ -42,11 +42,9 @@ public class MainApplication {
         post.setLikeCount(10);
         post.setModerationStatus(ModerationStatus.NEW);
         post.setText("This is a testing text to be processed by the code into announce.");
-//        String announce = post.getAnnounce();
         post.setTime(LocalDate.now());
         post.setUserId(1);
         post.setViewCount(111);
         postRepository.save(post);
-//        storage.addPost(post);
     }
 }

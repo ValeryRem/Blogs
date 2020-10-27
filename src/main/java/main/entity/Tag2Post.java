@@ -1,5 +1,7 @@
 package main.entity;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 
 @Entity
