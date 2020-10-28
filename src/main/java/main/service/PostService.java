@@ -5,7 +5,6 @@ import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
 import main.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,11 +12,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-//@ComponentScan(basePackages = {"entity", "repository"})
 public class PostService {
-    private Integer count;
     private Integer tagId;
-    private ResponseEntity<?> responseEntity;
+    private Integer count;
 
     @Autowired
     private PostRepository postRepository;
@@ -33,6 +30,16 @@ public class PostService {
 
     @Autowired
     private TagRepository tagRepository;
+
+    private List<Post> postList;
+    {
+        try {
+            postList = new ArrayList<>();
+            postRepository.findAll().forEach(postList::add);
+        } catch (NullPointerException ex){
+            postList = new ArrayList<>();
+        }
+    }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         List<Object> objectList = new ArrayList<>();
@@ -59,6 +66,7 @@ public class PostService {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
+        ResponseEntity<?> responseEntity;
         if (query == null) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -74,6 +82,7 @@ public class PostService {
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
         List<Post> postList = new ArrayList<>();
+        ResponseEntity<?> responseEntity;
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         List<Object> objectList = new ArrayList<>();
@@ -83,9 +92,14 @@ public class PostService {
                 objectList.add(getPostToShow(post));
             }
         }
-        return getResponseEntity(objectList, offset, limit);
+        if (objectList.size() == 0) {
+            responseEntity = new ResponseEntity<>("Post with the date " + time + " not found", HttpStatus.NOT_FOUND);
+        } else {
+            responseEntity = getResponseEntity(objectList, offset, limit);
+        }
+        return responseEntity;
     }
-//Field tag2Post in main.service.PostService required a bean of type 'main.entity.Tag2Post' that could not be found.
+
     public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
         Iterable<Tag> iterableTags = tagRepository.findAll();
         for(Tag tag: iterableTags) {
@@ -130,39 +144,48 @@ public class PostService {
     }
 
     private ResponseEntity<?> getResponseEntity(List<Object> objectList, Integer offset, Integer limit) {
-        count = objectList.size();
-        if (count == 0) {
+        if (objectList.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        //  output for ResponseEntity
+        count = getCount();
         List<Object> listToShow = new ArrayList<>();
+        TreeMap<String, Integer> countMap = new TreeMap<>();
+        countMap.put("count", count);
         if (limit <= count) {
-            listToShow.add(count);
             listToShow.add(objectList.subList(offset, limit));
         } else {
-            listToShow.add(count);
             listToShow.add(objectList.subList(offset, count));
         }
-        return new ResponseEntity<>(listToShow, HttpStatus.FOUND);
+        TreeMap<String, Object> treeMap = new TreeMap<>(countMap);
+        treeMap.put("posts", listToShow);
+        return new ResponseEntity<>(treeMap, HttpStatus.FOUND);
     }
 
     public Integer getCount() {
+        try {
+            postRepository.findAll().forEach(postList::add);
+            count = postList.size();
+        } catch (NullPointerException ex){
+            count = 0;
+        }
         return count;
     }
 
-    private List<Object> getPostToShow(Post post) {
-        List<Object> postToShow = new ArrayList<>();
-        postToShow.add(post.getPostId());
-        postToShow.add(post.getTime());
-        postToShow.add(post.getTitle());
-        postToShow.add(post.getAnnounce());
+    private LinkedHashMap  <String, Object> getPostToShow(Post post) {
+        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap <>();
+        postToShow.put("id", post.getPostId());
+        postToShow.put("timestamp", post.getTime());
         List<Object> userToShow = new ArrayList<>();
         userToShow.add(post.getUserId());
         User user = new User(post.getUserId());
         userToShow.add(user.getName());
-        postToShow.add(userToShow);
-        postToShow.add(post.getLikeCount());
-        postToShow.add(post.getViewCount());
+        postToShow.put("user", userToShow);
+        postToShow.put("title", post.getTitle());
+        postToShow.put("announce", post.getAnnounce());
+        postToShow.put("likeCount", post.getLikeCount());
+        postToShow.put("dislikeCount", post.getDislikeCount());
+        postToShow.put("commentCount", post.getComments().size());
+        postToShow.put("viewCount", post.getViewCount());
         return postToShow;
     }
 }

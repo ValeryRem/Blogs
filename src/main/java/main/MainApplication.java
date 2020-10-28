@@ -25,21 +25,37 @@ public class MainApplication {
 
     @PostConstruct
     public void init(){
-        insertTestPost();
+        insertTestPost1();
+        insertTestPost2();
     }
 
-    private void insertTestPost() {
-        Post post = new Post();
-        post.setTitle("The testing post");
-        post.setDislikeCount(5);
-        post.setPostId(1);
-        post.setIsActive(1);
-        post.setLikeCount(10);
-        post.setModerationStatus(ModerationStatus.NEW);
-        post.setText("This is a testing text to be processed by the code into announce.");
-        post.setTime(LocalDate.now());
-        post.setUserId(1);
-        post.setViewCount(111);
-        postRepository.save(post);
+    private void insertTestPost1() {
+        Post post1 = new Post();
+        post1.setTitle("The testing post #1");
+        post1.setDislikeCount(5);
+        post1.setPostId(1);
+        post1.setIsActive(1);
+        post1.setLikeCount(10);
+        post1.setModerationStatus(ModerationStatus.NEW);
+        post1.setText("This is a testing text #1 to be processed by the code into announce.");
+        post1.setTime(LocalDate.now());
+        post1.setUserId(1);
+        post1.setViewCount(111);
+        postRepository.save(post1);
+    }
+
+    private void insertTestPost2() {
+        Post post2 = new Post();
+        post2.setTitle("The testing post #2");
+        post2.setDislikeCount(15);
+        post2.setPostId(16);
+        post2.setIsActive(13);
+        post2.setLikeCount(102);
+        post2.setModerationStatus(ModerationStatus.NEW);
+        post2.setText("This is a testing text #2 to be processed by the code into announce.");
+        post2.setTime(LocalDate.now());
+        post2.setUserId(2);
+        post2.setViewCount(10);
+        postRepository.save(post2);
     }
 }
