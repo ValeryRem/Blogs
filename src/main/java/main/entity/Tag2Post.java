@@ -1,16 +1,18 @@
 package main.entity;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
+@Component
 @Entity
 @Table(name = "tag_2_post")
 public class Tag2Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "tag_2_post_id")
-    private Integer tag2postId;
+    private Integer tag2PostId;
 
     @Column(name = "post_id")
     private Integer postId;
@@ -21,18 +23,18 @@ public class Tag2Post {
     public Tag2Post() {
     }
 
-    public Tag2Post(Integer id, Integer postId, Integer tagId) {
-        this.tag2postId = id;
-        this.postId = postId;
-        this.tagId = tagId;
-    }
+//    public Tag2Post(Integer id, Integer postId, Integer tagId) {
+//        this.tag2postId = id;
+//        this.postId = postId;
+//        this.tagId = tagId;
+//    }
 
     public Integer getTag2postId() {
-        return tag2postId;
+        return tag2PostId;
     }
 
-    public void setTag2postId(Integer tag2postId) {
-        this.tag2postId = tag2postId;
+    public void setTag2postId(Integer tag2PostId) {
+        this.tag2PostId = tag2PostId;
     }
 
     public Integer getPostId() {

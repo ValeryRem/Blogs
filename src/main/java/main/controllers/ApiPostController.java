@@ -52,7 +52,7 @@ public class ApiPostController {
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="5")Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsByTag used. TagId:" + tagName );
+        System.out.println("Method getPostsByTag uses tag name:" + tagName);
         return postService.getPostsByTag(tagName, offset, limit, mode);
     }
 }

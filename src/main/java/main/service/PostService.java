@@ -5,17 +5,18 @@ import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
 import main.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
+//@ComponentScan(basePackages = {"entity", "repository"})
 public class PostService {
     private Integer count;
+    private Integer tagId;
     private ResponseEntity<?> responseEntity;
 
     @Autowired
@@ -85,8 +86,7 @@ public class PostService {
         return getResponseEntity(objectList, offset, limit);
     }
 //Field tag2Post in main.service.PostService required a bean of type 'main.entity.Tag2Post' that could not be found.
-    public ResponseEntity<?> getPostsByTag(@RequestParam String tagName, Integer offset, Integer limit, String mode) {
-        Integer tagId = null;
+    public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
         Iterable<Tag> iterableTags = tagRepository.findAll();
         for(Tag tag: iterableTags) {
             if(tag.getName().equals(tagName)) {

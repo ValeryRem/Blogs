@@ -12,13 +12,8 @@ import java.time.LocalDate;
 
 @SpringBootApplication
 public class MainApplication {
-//    @Autowired
-//    private final Storage storage;
-//    public MainApplication(Storage storage) {
-//        this.storage = storage;
-//    }
     @Autowired
-    private final PostRepository postRepository;
+    private PostRepository postRepository;
 
     public MainApplication(PostRepository postRepository) {
         this.postRepository = postRepository;

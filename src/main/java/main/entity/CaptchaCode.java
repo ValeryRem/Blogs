@@ -8,7 +8,7 @@ import java.util.Date;
 @Table(name = "captcha_codes")
 public class CaptchaCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Time of release is mandatory")
     private Date time;
