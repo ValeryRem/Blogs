@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Добавлена аннотация @Component в классы Tag2Post и Tag.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getPost(...) in PostService has been tuned to API.md.">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
@@ -394,7 +394,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603876872415</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Method getPost(...) in PostService has been tuned to API.md.">
+      <created>1603922199403</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1603922199403</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -417,7 +424,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="ApiPostPreviewController connected to PostService &amp; PostResponse" />
     <MESSAGE value="ApiPostController connected to PostResponse &amp; PostListResponse." />
     <MESSAGE value="Method getAnnounce() in Post.class is improved." />
     <MESSAGE value="Method getPosts() in ApiPostController is parameterized." />
@@ -442,7 +448,8 @@
     <MESSAGE value="PostPreviewResponse.class deleted.Still &quot;SQLException: Field 'announce' doesn't have a default value&quot; occurs." />
     <MESSAGE value="Tag2PostRepository corrected to &lt;Tag2Post, Integer&gt; params. However Field tag2Post in main.service.PostService required a bean of type 'main.entity.Tag2Post' that could not be found." />
     <MESSAGE value="Добавлена аннотация @Component в классы Tag2Post и Tag." />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлена аннотация @Component в классы Tag2Post и Tag." />
+    <MESSAGE value="Method getPost(...) in PostService has been tuned to API.md." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method getPost(...) in PostService has been tuned to API.md." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -453,11 +460,11 @@
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="387" y="184" key="#com.intellij.fileTypes.FileTypeChooser/0.40.1366.728@0.40.1366.728" timestamp="1603704457500" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1603825120798">
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1603963060581">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603294337364" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1603825120798" />
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1603963060581" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -483,26 +490,26 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1603921997685">
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1603966216245">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1603921997685" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1603921997685">
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1603966216245" />
+    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1603966216245">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1603921997685" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1603921997685">
+    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1603966216245" />
+    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1603966216245">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1603921997685" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1603921997685">
+    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1603966216245" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1603966216245">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1603921997685" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1603966216245" />
     <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -528,11 +535,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1603876884176">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1603922209471">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1603876884176" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1603922209471" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

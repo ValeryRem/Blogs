@@ -36,7 +36,7 @@ public class MainApplication {
         post1.setPostId(1);
         post1.setIsActive(1);
         post1.setLikeCount(10);
-        post1.setModerationStatus(ModerationStatus.NEW);
+        post1.setModerationStatus(ModerationStatus.ACCEPTED);
         post1.setText("This is a testing text #1 to be processed by the code into announce.");
         post1.setTime(LocalDate.now());
         post1.setUserId(1);
@@ -46,13 +46,13 @@ public class MainApplication {
 
     private void insertTestPost2() {
         Post post2 = new Post();
-        post2.setTitle("The testing post #2");
+        post2.setTitle("The second testing post");
         post2.setDislikeCount(15);
         post2.setPostId(16);
-        post2.setIsActive(13);
+        post2.setIsActive(1);
         post2.setLikeCount(102);
-        post2.setModerationStatus(ModerationStatus.NEW);
-        post2.setText("This is a testing text #2 to be processed by the code into announce.");
+        post2.setModerationStatus(ModerationStatus.ACCEPTED);
+        post2.setText("The second testing text #2 to be processed by the code into announce.");
         post2.setTime(LocalDate.now());
         post2.setUserId(2);
         post2.setViewCount(10);

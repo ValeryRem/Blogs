@@ -14,7 +14,6 @@ import java.util.*;
 @Service
 public class PostService {
     private Integer tagId;
-    private Integer count;
 
     @Autowired
     private PostRepository postRepository;
@@ -31,14 +30,7 @@ public class PostService {
     @Autowired
     private TagRepository tagRepository;
 
-    private List<Post> postList;
-    {
-        try {
-            postList = new ArrayList<>();
-            postRepository.findAll().forEach(postList::add);
-        } catch (NullPointerException ex){
-            postList = new ArrayList<>();
-        }
+    public PostService() {
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
@@ -55,7 +47,28 @@ public class PostService {
     public ResponseEntity<?> getPostById(Integer postId) {
         try {
             Post post = postRepository.findById(postId).get();
-            return new ResponseEntity<>(getPostToShow(post), HttpStatus.FOUND);
+            LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
+            if(post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
+            post.getTime().compareTo(LocalDate.now()) <= 0 ) {
+                postToShow.putAll(getPostToShow(post));
+                postToShow.put("comments", post.getComments());
+                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+                List<Integer> tagsId = new ArrayList<>();
+                for (Tag2Post tag2Post : tag2PostIterable) {
+                    if(tag2Post.getPostId().equals(postId)) {
+                       tagsId.add(tag2Post.getTagId());
+                    }
+                }
+                List<String> tags = new ArrayList<>();
+                Iterable<Tag> iterableTags = tagRepository.findAll();
+                for(Tag tag: iterableTags) {
+                    if(tagsId.contains(tag.getId())) {
+                        tags.add(tag.getName());
+                    }
+                }
+                postToShow.put("tags", tags);
+            }
+            return new ResponseEntity<>(postToShow, HttpStatus.FOUND);
         } catch (NoSuchElementException ex) {
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
@@ -81,8 +94,8 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
-        List<Post> postList = new ArrayList<>();
         ResponseEntity<?> responseEntity;
+        List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList :: add);
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         List<Object> objectList = new ArrayList<>();
@@ -144,17 +157,18 @@ public class PostService {
     }
 
     private ResponseEntity<?> getResponseEntity(List<Object> objectList, Integer offset, Integer limit) {
-        if (objectList.size() == 0) {
+
+        Integer countOfPosts = getCount();
+        if (countOfPosts == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        count = getCount();
         List<Object> listToShow = new ArrayList<>();
         TreeMap<String, Integer> countMap = new TreeMap<>();
-        countMap.put("count", count);
-        if (limit <= count) {
+        countMap.put("count", countOfPosts);
+        if (limit <= countOfPosts) {
             listToShow.add(objectList.subList(offset, limit));
         } else {
-            listToShow.add(objectList.subList(offset, count));
+            listToShow.add(objectList.subList(offset, countOfPosts));
         }
         TreeMap<String, Object> treeMap = new TreeMap<>(countMap);
         treeMap.put("posts", listToShow);
@@ -162,8 +176,10 @@ public class PostService {
     }
 
     public Integer getCount() {
+        int count;
         try {
-            postRepository.findAll().forEach(postList::add);
+            List<Post> postList = new ArrayList<>();
+            postRepository.findAll().forEach(postList :: add);
             count = postList.size();
         } catch (NullPointerException ex){
             count = 0;
