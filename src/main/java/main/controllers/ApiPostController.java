@@ -19,7 +19,7 @@ public class ApiPostController {
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
                                         @RequestParam(defaultValue="5") Integer limit,
                                         @RequestParam(defaultValue="recent") String mode){
-        System.out.println("Method getPosts activated. Number of posts: " + new PostService().getCount());
+        System.out.println("Method getPosts activated. Number of posts: " + postService.getCount());
         return postService.getPosts (offset, limit, mode);
     }
 
@@ -48,11 +48,19 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byTag")
-    private ResponseEntity<?> getPostsByTag(String tagName,
+    private ResponseEntity<?> getPostsByTag(@RequestParam String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="5")Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsByTag uses tag name:" + tagName);
         return postService.getPostsByTag(tagName, offset, limit, mode);
+    }
+
+    @GetMapping("/post/my")
+    private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="1") Integer myUserId, //defaultValue="1" then to be deleted.
+                                          @RequestParam(defaultValue="0") Integer offset,
+                                          @RequestParam(defaultValue="5")Integer limit) {
+        System.out.println("Method getMyPosts uses myUserId:" + myUserId);
+        return postService.getMyPosts(myUserId, offset, limit);
     }
 }

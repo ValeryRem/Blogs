@@ -1,13 +1,20 @@
 package main.service;
 
+import ch.qos.logback.core.hook.DelayingShutdownHook;
 import main.entity.*;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
 import main.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,18 +37,27 @@ public class PostService {
     @Autowired
     private TagRepository tagRepository;
 
+//    @Autowired
+//    @Enumerated(EnumType.STRING)
+//    ReleaseStatus status;
+
     public PostService() {
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         List<Object> objectList = new ArrayList<>();
-        List<Post> postList = new ArrayList<>();
-        postRepository.findAll().forEach(postList :: add);
+        List<Post> postList = getPostList();
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         for (Post post: sortedPosts) {
             objectList.add(getPostToShow(post));
         }
         return getResponseEntity(objectList, offset, limit);
+    }
+
+    private List<Post> getPostList() {
+        List<Post> postList = new ArrayList<>();
+        postRepository.findAll().forEach(postList::add);
+        return postList;
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
@@ -76,8 +92,7 @@ public class PostService {
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
         List<Object> objectList = new ArrayList<>();
-        List<Post> postList = new ArrayList<>();
-        postRepository.findAll().forEach(postList :: add);
+        List<Post> postList = getPostList();
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         ResponseEntity<?> responseEntity;
         if (query == null) {
@@ -95,8 +110,7 @@ public class PostService {
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
         ResponseEntity<?> responseEntity;
-        List<Post> postList = new ArrayList<>();
-        postRepository.findAll().forEach(postList :: add);
+        List<Post> postList = getPostList();
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         List<Object> objectList = new ArrayList<>();
         for (Post post : sortedPosts) {
@@ -136,7 +150,41 @@ public class PostService {
         List<Post> sortedPosts = getSortedPosts(posts, mode);
         List<Object>  objectList = new ArrayList<>();
         objectList.add(sortedPosts);
-        return getResponseEntity(objectList, offset, limit);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = getResponseEntity(objectList, offset, limit);
+        } catch (IndexOutOfBoundsException ex) {
+            responseEntity = new ResponseEntity<>("No content!", HttpStatus.NO_CONTENT);
+        }
+        return responseEntity;
+    }
+    public ResponseEntity<?> getMyPosts (Integer myUserId, Integer offset, Integer limit) {
+        ReleaseStatus status = null;
+        ResponseEntity<?> responseEntity;
+        List<Post> posts = getPostList();
+        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
+        List<Object>  objectList = new ArrayList<>();
+        for (Post post : posts) {
+            if(post.getUserId().equals(myUserId)) {
+                postToShow = getPostToShow(post);
+                if (post.getIsActive() == 0) {
+                    status = ReleaseStatus.INACTIVE;
+                }
+                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW)) {
+                    status = ReleaseStatus.PENDING;
+                }
+                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED)) {
+                    status = ReleaseStatus.DECLINED;
+                }
+                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)) {
+                    status = ReleaseStatus.PUBLISHED;
+                }
+                postToShow.put("status", status);
+            }
+            objectList.add(postToShow);
+        }
+        responseEntity = getResponseEntity(objectList, offset, limit);
+        return responseEntity;
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -157,10 +205,10 @@ public class PostService {
     }
 
     private ResponseEntity<?> getResponseEntity(List<Object> objectList, Integer offset, Integer limit) {
-
+        ResponseEntity<?> responseEntity;
         Integer countOfPosts = getCount();
         if (countOfPosts == 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Object> listToShow = new ArrayList<>();
         TreeMap<String, Integer> countMap = new TreeMap<>();
@@ -172,14 +220,14 @@ public class PostService {
         }
         TreeMap<String, Object> treeMap = new TreeMap<>(countMap);
         treeMap.put("posts", listToShow);
-        return new ResponseEntity<>(treeMap, HttpStatus.FOUND);
+        responseEntity = new ResponseEntity<>(treeMap, HttpStatus.FOUND);
+        return responseEntity;
     }
 
     public Integer getCount() {
         int count;
         try {
-            List<Post> postList = new ArrayList<>();
-            postRepository.findAll().forEach(postList :: add);
+            List<Post> postList = getPostList();
             count = postList.size();
         } catch (NullPointerException ex){
             count = 0;
