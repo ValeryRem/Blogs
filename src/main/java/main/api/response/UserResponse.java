@@ -1,9 +1,7 @@
 package main.api.response;
 
 import main.entity.User;
-import org.springframework.stereotype.Component;
 
-@Component
 public class UserResponse {
     private Integer userId;
     private User user = new User(userId);

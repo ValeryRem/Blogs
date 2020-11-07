@@ -3,9 +3,6 @@ package main.api.response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Embeddable;
-import javax.validation.Valid;
-
 @Component
 public class InitResponse {
     @Value("${blog.title}")

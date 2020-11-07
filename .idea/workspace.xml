@@ -19,10 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getPostById(...) in PostService tuned to meet API.md.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)">
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/entity/ReleaseStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -52,6 +54,40 @@
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/RockMusic.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringRestValidation/spring-rest-validation.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../hs_err_pid8832.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_dataformat_jackson_dataformat_yaml_2_9_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__de_ruedigermoeller_fst_2_57.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_buffer_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_codec_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_codec_dns_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_common_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_handler_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_resolver_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_resolver_dns_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_transport_4_1_41_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_projectreactor_reactor_core_3_2_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_reactivex_rxjava2_rxjava_2_2_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__javax_cache_cache_api_1_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_9_16.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_javassist_javassist_3_21_0_GA.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_jodd_jodd_bean_5_0_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_jodd_jodd_core_5_0_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_objenesis_objenesis_2_5_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_reactivestreams_reactive_streams_1_0_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_redisson_redisson_3_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_yaml_snakeyaml_1_23.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/skill-redis-java.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../skill-redis-java/skill-redis-java-47b5fbe375b22062eb6e84a1260e831109aae328/redis-demo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" afterDir="false" />
@@ -80,10 +116,14 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/ReleaseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/ReleaseStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,9 +139,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -123,7 +163,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Java/Модули Скиллбокс - 2018/Модуль 15/WebApplication" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../skill-redis-java" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -411,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603966450201</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)">
+      <created>1604073018463</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1604073018463</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -434,7 +481,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method getAnnounce() in Post.class is improved." />
     <MESSAGE value="Method getPosts() in ApiPostController is parameterized." />
     <MESSAGE value="ApiPostController enlarged by getPostBySearch (String query, Integer limit)." />
     <MESSAGE value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
@@ -459,7 +505,8 @@
     <MESSAGE value="Добавлена аннотация @Component в классы Tag2Post и Tag." />
     <MESSAGE value="Method getPost(...) in PostService has been tuned to API.md." />
     <MESSAGE value="Method getPostById(...) in PostService tuned to meet API.md." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method getPostById(...) in PostService tuned to meet API.md." />
+    <MESSAGE value="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -470,11 +517,11 @@
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="387" y="184" key="#com.intellij.fileTypes.FileTypeChooser/0.40.1366.728@0.40.1366.728" timestamp="1603704457500" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1603963060581">
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1604777635979">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603294337364" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1603963060581" />
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1604777635979" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -496,30 +543,31 @@
     </state>
     <state x="346" y="48" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1603016753582" />
     <state x="346" y="88" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.40.1366.728@0.40.1366.728" timestamp="1603716214267" />
-    <state x="409" y="58" key="FileChooserDialogImpl" timestamp="1602097734031">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="409" y="98" key="FileChooserDialogImpl" timestamp="1604686335998">
+      <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1604072689816">
+    <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1604779089859">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1604072689816" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1604072689815">
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1604779089859" />
+    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1604779089858">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1604072689815" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1604072689815">
+    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
+    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1604779089858">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1604072689815" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1604072689815">
+    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1604779089858">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1604072689815" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
     <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -545,11 +593,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1603966470959">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1604073029923">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1603966470959" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1604073029923" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

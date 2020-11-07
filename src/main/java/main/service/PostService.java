@@ -1,6 +1,8 @@
 package main.service;
 
 import ch.qos.logback.core.hook.DelayingShutdownHook;
+import main.api.response.PostAnnounceResponse;
+import main.api.response.PostsListResponse;
 import main.entity.*;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
@@ -28,11 +30,11 @@ public class PostService {
     @Autowired
     private Tag2PostRepository tag2PostRepository;
 
-    @Autowired
-    private Tag2Post tag2Post;
-
-    @Autowired
-    private Tag tag;
+//    @Autowired
+//    private Tag2Post tag2Post;
+//
+//    @Autowired
+//    private Tag tag;
 
     @Autowired
     private TagRepository tagRepository;
@@ -45,13 +47,13 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        List<Object> objectList = new ArrayList<>();
         List<Post> postList = getPostList();
-        List<Post> sortedPosts = getSortedPosts(postList, mode);
-        for (Post post: sortedPosts) {
-            objectList.add(getPostToShow(post));
+        List<PostAnnounceResponse> list = new ArrayList<>();
+        for (Post post : getSortedPosts(postList, mode)) {
+          list.add(new PostAnnounceResponse(post.getPostId()));
         }
-        return getResponseEntity(objectList, offset, limit);
+        PostsListResponse postsListResponse = new PostsListResponse(getCount(), list);
+        return getResponseEntity(postsListResponse, offset, limit);
     }
 
     private List<Post> getPostList() {
@@ -60,132 +62,132 @@ public class PostService {
         return postList;
     }
 
-    public ResponseEntity<?> getPostById(Integer postId) {
-        try {
-            Post post = postRepository.findById(postId).get();
-            LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
-            if(post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-            post.getTime().compareTo(LocalDate.now()) <= 0 ) {
-                postToShow.putAll(getPostToShow(post));
-                postToShow.put("comments", post.getComments());
-                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-                List<Integer> tagsId = new ArrayList<>();
-                for (Tag2Post tag2Post : tag2PostIterable) {
-                    if(tag2Post.getPostId().equals(postId)) {
-                       tagsId.add(tag2Post.getTagId());
-                    }
-                }
-                List<String> tags = new ArrayList<>();
-                Iterable<Tag> iterableTags = tagRepository.findAll();
-                for(Tag tag: iterableTags) {
-                    if(tagsId.contains(tag.getId())) {
-                        tags.add(tag.getName());
-                    }
-                }
-                postToShow.put("tags", tags);
-            }
-            return new ResponseEntity<>(postToShow, HttpStatus.FOUND);
-        } catch (NoSuchElementException ex) {
-            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
-        }
-    }
-
-    public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
-        List<Object> objectList = new ArrayList<>();
-        List<Post> postList = getPostList();
-        List<Post> sortedPosts = getSortedPosts(postList, mode);
-        ResponseEntity<?> responseEntity;
-        if (query == null) {
-            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            for (Post post : sortedPosts) {
-                if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    objectList.add(getPostToShow(post));
-                }
-            }
-            responseEntity = getResponseEntity(objectList, offset, limit);
-        }
-        return responseEntity;
-    }
-
-    public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
-        ResponseEntity<?> responseEntity;
-        List<Post> postList = getPostList();
-        List<Post> sortedPosts = getSortedPosts(postList, mode);
-        List<Object> objectList = new ArrayList<>();
-        for (Post post : sortedPosts) {
-            if (post.getTime().equals(time) && post.getIsActive() == 1 &&
-                    post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                objectList.add(getPostToShow(post));
-            }
-        }
-        if (objectList.size() == 0) {
-            responseEntity = new ResponseEntity<>("Post with the date " + time + " not found", HttpStatus.NOT_FOUND);
-        } else {
-            responseEntity = getResponseEntity(objectList, offset, limit);
-        }
-        return responseEntity;
-    }
-
-    public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
-        Iterable<Tag> iterableTags = tagRepository.findAll();
-        for(Tag tag: iterableTags) {
-            if(tag.getName().equals(tagName)) {
-                tagId = tag.getId();
-                break;
-            }
-        }
-        List<Integer> postsId = new ArrayList<>();
-        Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-        for (Tag2Post tag2Post : tag2PostIterable) {
-            if(tag2Post.getTagId().equals(tagId)) {
-                postsId.add(tag2Post.getPostId());
-            }
-        }
-        List<Post> posts = new ArrayList<>();
-        for(Integer postId : postsId) {
-            Post post = postRepository.findById(postId).get();
-            posts.add(post);
-        }
-        List<Post> sortedPosts = getSortedPosts(posts, mode);
-        List<Object>  objectList = new ArrayList<>();
-        objectList.add(sortedPosts);
-        ResponseEntity<?> responseEntity;
-        try {
-            responseEntity = getResponseEntity(objectList, offset, limit);
-        } catch (IndexOutOfBoundsException ex) {
-            responseEntity = new ResponseEntity<>("No content!", HttpStatus.NO_CONTENT);
-        }
-        return responseEntity;
-    }
-    public ResponseEntity<?> getMyPosts (Integer myUserId, Integer offset, Integer limit) {
-        ReleaseStatus status = null;
-        ResponseEntity<?> responseEntity;
-        List<Post> posts = getPostList();
-        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
-        List<Object>  objectList = new ArrayList<>();
-        for (Post post : posts) {
-            if(post.getUserId().equals(myUserId)) {
-                postToShow = getPostToShow(post);
-                if (post.getIsActive() == 0) {
-                    status = ReleaseStatus.INACTIVE;
-                }
-                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW)) {
-                    status = ReleaseStatus.PENDING;
-                }
-                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED)) {
-                    status = ReleaseStatus.DECLINED;
-                }
-                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)) {
-                    status = ReleaseStatus.PUBLISHED;
-                }
-                postToShow.put("status", status);
-            }
-            objectList.add(postToShow);
-        }
-        responseEntity = getResponseEntity(objectList, offset, limit);
-        return responseEntity;
-    }
+//    public ResponseEntity<?> getPostById(Integer postId) {
+//        try {
+//            Post post = postRepository.findById(postId).get();
+////            LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
+//            if(post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
+//            post.getTime().compareTo(LocalDate.now()) <= 0 ) {
+//                postToShow.putAll(getPostToShow(post));
+//                postToShow.put("comments", post.getComments());
+//                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+//                List<Integer> tagsId = new ArrayList<>();
+//                for (Tag2Post tag2Post : tag2PostIterable) {
+//                    if(tag2Post.getPostId().equals(postId)) {
+//                       tagsId.add(tag2Post.getTagId());
+//                    }
+//                }
+//                List<String> tags = new ArrayList<>();
+//                Iterable<Tag> iterableTags = tagRepository.findAll();
+//                for(Tag tag: iterableTags) {
+//                    if(tagsId.contains(tag.getId())) {
+//                        tags.add(tag.getName());
+//                    }
+//                }
+//                postToShow.put("tags", tags);
+//            }
+//            return new ResponseEntity<>(postToShow, HttpStatus.FOUND);
+//        } catch (NoSuchElementException ex) {
+//            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
+//        }
+//    }
+//
+//    public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
+//        List<Object> objectList = new ArrayList<>();
+//        List<Post> postList = getPostList();
+//        List<Post> sortedPosts = getSortedPosts(postList, mode);
+//        ResponseEntity<?> responseEntity;
+//        if (query == null) {
+//            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            for (Post post : sortedPosts) {
+//                if (post.getText().contains(query) && post.getIsActive() == 1 && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+//                    objectList.add(getPostToShow(post));
+//                }
+//            }
+//            responseEntity = getResponseEntity(objectList, offset, limit);
+//        }
+//        return responseEntity;
+//    }
+//
+//    public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
+//        ResponseEntity<?> responseEntity;
+//        List<Post> postList = getPostList();
+//        List<Post> sortedPosts = getSortedPosts(postList, mode);
+//        List<Object> objectList = new ArrayList<>();
+//        for (Post post : sortedPosts) {
+//            if (post.getTime().equals(time) && post.getIsActive() == 1 &&
+//                    post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+//                objectList.add(getPostToShow(post));
+//            }
+//        }
+//        if (objectList.size() == 0) {
+//            responseEntity = new ResponseEntity<>("Post with the date " + time + " not found", HttpStatus.NOT_FOUND);
+//        } else {
+//            responseEntity = getResponseEntity(objectList, offset, limit);
+//        }
+//        return responseEntity;
+//    }
+//
+//    public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
+//        Iterable<Tag> iterableTags = tagRepository.findAll();
+//        for(Tag tag: iterableTags) {
+//            if(tag.getName().equals(tagName)) {
+//                tagId = tag.getId();
+//                break;
+//            }
+//        }
+//        List<Integer> postsId = new ArrayList<>();
+//        Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+//        for (Tag2Post tag2Post : tag2PostIterable) {
+//            if(tag2Post.getTagId().equals(tagId)) {
+//                postsId.add(tag2Post.getPostId());
+//            }
+//        }
+//        List<Post> posts = new ArrayList<>();
+//        for(Integer postId : postsId) {
+//            Post post = postRepository.findById(postId).get();
+//            posts.add(post);
+//        }
+//        List<Post> sortedPosts = getSortedPosts(posts, mode);
+//        List<Object>  objectList = new ArrayList<>();
+//        objectList.add(sortedPosts);
+//        ResponseEntity<?> responseEntity;
+//        try {
+//            responseEntity = getResponseEntity(objectList, offset, limit);
+//        } catch (IndexOutOfBoundsException ex) {
+//            responseEntity = new ResponseEntity<>("No content!", HttpStatus.NO_CONTENT);
+//        }
+//        return responseEntity;
+//    }
+//    public ResponseEntity<?> getMyPosts (Integer myUserId, Integer offset, Integer limit) {
+//        ReleaseStatus status = ReleaseStatus.INACTIVE;
+//        ResponseEntity<?> responseEntity;
+//        List<Post> posts = getPostList();
+//        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
+//        List<Object>  objectList = new ArrayList<>();
+//        for (Post post : posts) {
+//            if(post.getUserId().equals(myUserId)) {
+//                postToShow = getPostToShow(post);
+////                if (post.getIsActive() == 0) {
+////                    status = ReleaseStatus.INACTIVE;
+////                }
+//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW)) {
+//                    status = ReleaseStatus.PENDING;
+//                }
+//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED)) {
+//                    status = ReleaseStatus.DECLINED;
+//                }
+//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)) {
+//                    status = ReleaseStatus.PUBLISHED;
+//                }
+//                postToShow.put("status", status);
+//            }
+//            objectList.add(postToShow);
+//        }
+//        responseEntity = getResponseEntity(objectList, offset, limit);
+//        return responseEntity;
+//    }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
         switch (mode) {
@@ -204,23 +206,20 @@ public class PostService {
         return postList;
     }
 
-    private ResponseEntity<?> getResponseEntity(List<Object> objectList, Integer offset, Integer limit) {
+    private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
         ResponseEntity<?> responseEntity;
         Integer countOfPosts = getCount();
+        List<PostAnnounceResponse> listToShow = postsListResponse.getList();
         if (countOfPosts == 0) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<Object> listToShow = new ArrayList<>();
-        TreeMap<String, Integer> countMap = new TreeMap<>();
-        countMap.put("count", countOfPosts);
-        if (limit <= countOfPosts) {
-            listToShow.add(objectList.subList(offset, limit));
         } else {
-            listToShow.add(objectList.subList(offset, countOfPosts));
+            if (limit <= countOfPosts) {
+                listToShow = listToShow.subList(offset, limit);
+            } else {
+                listToShow = listToShow.subList(offset, countOfPosts);
+            }
+            responseEntity = new ResponseEntity<>(new PostsListResponse(getCount(), listToShow), HttpStatus.FOUND);
         }
-        TreeMap<String, Object> treeMap = new TreeMap<>(countMap);
-        treeMap.put("posts", listToShow);
-        responseEntity = new ResponseEntity<>(treeMap, HttpStatus.FOUND);
         return responseEntity;
     }
 
@@ -233,23 +232,5 @@ public class PostService {
             count = 0;
         }
         return count;
-    }
-
-    private LinkedHashMap  <String, Object> getPostToShow(Post post) {
-        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap <>();
-        postToShow.put("id", post.getPostId());
-        postToShow.put("timestamp", post.getTime());
-        List<Object> userToShow = new ArrayList<>();
-        userToShow.add(post.getUserId());
-        User user = new User(post.getUserId());
-        userToShow.add(user.getName());
-        postToShow.put("user", userToShow);
-        postToShow.put("title", post.getTitle());
-        postToShow.put("announce", post.getAnnounce());
-        postToShow.put("likeCount", post.getLikeCount());
-        postToShow.put("dislikeCount", post.getDislikeCount());
-        postToShow.put("commentCount", post.getComments().size());
-        postToShow.put("viewCount", post.getViewCount());
-        return postToShow;
     }
 }
