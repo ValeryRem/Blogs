@@ -9,9 +9,9 @@ public class PostsListResponse {
     public PostsListResponse() {
     }
 
-    public PostsListResponse(int count, List<PostAnnounceResponse> list) {
+    public PostsListResponse(int count, List<PostAnnounceResponse> posts) {
         this.count = count;
-        this.posts = list;
+        this.posts = posts;
     }
 
     public int getCount() {
@@ -23,7 +23,7 @@ public class PostsListResponse {
         this.count = count;
     }
 
-    public List<PostAnnounceResponse> getList() {
+    public List<PostAnnounceResponse> getPosts() {
         return posts;
     }
 }

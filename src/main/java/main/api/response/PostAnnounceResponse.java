@@ -19,8 +19,6 @@ public class PostAnnounceResponse {
     private Integer viewCount;
 
     public PostAnnounceResponse(Post post)
-    //, LocalDate timestamp, String title, String announce,
-//                                Integer likeCount, Integer dislikeCount, Integer viewCount)
     {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
