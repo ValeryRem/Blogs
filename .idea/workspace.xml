@@ -19,12 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="PostsListResponse class set up.">
+      <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DiplomData/Контроллер-логика.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -116,15 +116,9 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/ReleaseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/ReleaseStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -458,7 +452,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604073018463</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="PostsListResponse class set up.">
+      <created>1604779404080</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1604779404081</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -481,7 +482,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method getPosts() in ApiPostController is parameterized." />
     <MESSAGE value="ApiPostController enlarged by getPostBySearch (String query, Integer limit)." />
     <MESSAGE value="@Value used in ApiPostController (getPostById &amp; getPostBySearch)" />
     <MESSAGE value="Developed ApiPostController by testing output of messages." />
@@ -506,7 +506,8 @@
     <MESSAGE value="Method getPost(...) in PostService has been tuned to API.md." />
     <MESSAGE value="Method getPostById(...) in PostService tuned to meet API.md." />
     <MESSAGE value="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)" />
+    <MESSAGE value="PostsListResponse class set up." />
+    <option name="LAST_COMMIT_MESSAGE" value="PostsListResponse class set up." />
   </component>
   <component name="WindowStateProjectService">
     <state x="132" y="8" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600204916242">
@@ -548,26 +549,26 @@
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
     <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1604779089859">
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom" timestamp="1604864360873">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1604779089859" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1604779089858">
+    <state width="1309" height="517" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1604864360873" />
+    <state width="1309" height="517" key="GridCell.Tab.0.center" timestamp="1604864360872">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1604779089858">
+    <state width="1309" height="517" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1604864360872" />
+    <state width="1309" height="517" key="GridCell.Tab.0.left" timestamp="1604864360872">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1604779089858">
+    <state width="1309" height="517" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1604864360872" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right" timestamp="1604864360872">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1604779089858" />
+    <state width="1309" height="517" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1604864360872" />
     <state width="1309" height="356" key="GridCell.Tab.1.bottom" timestamp="1602792443931">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -593,11 +594,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1604073029923">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1604779417054">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1604073029923" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1604779417054" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

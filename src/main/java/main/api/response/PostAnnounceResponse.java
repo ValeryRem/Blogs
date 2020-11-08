@@ -1,10 +1,13 @@
 package main.api.response;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import main.entity.Post;
 import main.entity.User;
+import main.service.PostService;
 
 import java.time.LocalDate;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostAnnounceResponse {
     private Integer id;
     private LocalDate timestamp;
@@ -15,12 +18,11 @@ public class PostAnnounceResponse {
     private Integer dislikeCount;
     private Integer viewCount;
 
-    public PostAnnounceResponse(Integer id)
+    public PostAnnounceResponse(Post post)
     //, LocalDate timestamp, String title, String announce,
 //                                Integer likeCount, Integer dislikeCount, Integer viewCount)
     {
-        this.id = id;
-        Post post = new Post(id);
+        this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.title = post.getTitle();
         this.announce = post.getAnnounce();

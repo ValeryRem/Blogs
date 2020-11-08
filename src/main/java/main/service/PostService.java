@@ -50,9 +50,9 @@ public class PostService {
         List<Post> postList = getPostList();
         List<PostAnnounceResponse> list = new ArrayList<>();
         for (Post post : getSortedPosts(postList, mode)) {
-          list.add(new PostAnnounceResponse(post.getPostId()));
+          list.add(new PostAnnounceResponse(post));
         }
-        PostsListResponse postsListResponse = new PostsListResponse(getCount(), list);
+        PostsListResponse postsListResponse = new PostsListResponse(postList.size(), list);
         return getResponseEntity(postsListResponse, offset, limit);
     }
 
@@ -60,6 +60,10 @@ public class PostService {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList::add);
         return postList;
+    }
+
+    public Post getPostById(Integer id) {
+        return postRepository.findById(id).get();
     }
 
 //    public ResponseEntity<?> getPostById(Integer postId) {
