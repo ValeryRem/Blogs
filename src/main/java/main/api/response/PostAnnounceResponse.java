@@ -7,7 +7,6 @@ import main.service.PostService;
 
 import java.time.LocalDate;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostAnnounceResponse {
     private Integer id;
     private LocalDate timestamp;
@@ -28,5 +27,37 @@ public class PostAnnounceResponse {
         this.dislikeCount = post.getDislikeCount();
         this.viewCount = post.getViewCount();
         this.user = new User(id);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public LocalDate getTimestamp() {
+        return timestamp;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAnnounce() {
+        return announce;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public Integer getDislikeCount() {
+        return dislikeCount;
+    }
+
+    public Integer getViewCount() {
+        return viewCount;
     }
 }
