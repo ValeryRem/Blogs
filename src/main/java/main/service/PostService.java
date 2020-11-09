@@ -24,18 +24,8 @@ public class PostService {
     @Autowired
     private Tag2PostRepository tag2PostRepository;
 
-//    @Autowired
-//    private Tag2Post tag2Post;
-//
-//    @Autowired
-//    private Tag tag;
-
     @Autowired
     private TagRepository tagRepository;
-
-//    @Autowired
-//    @Enumerated(EnumType.STRING)
-//    ReleaseStatus status;
 
     public PostService() {
     }
@@ -155,34 +145,23 @@ public class PostService {
         return responseEntity;
     }
 
-//    public ResponseEntity<?> getMyPosts (Integer myUserId, Integer offset, Integer limit) {
-//        ReleaseStatus status = ReleaseStatus.INACTIVE;
-//        ResponseEntity<?> responseEntity;
-//        List<Post> posts = getPostList();
-//        LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
-//        List<Object>  objectList = new ArrayList<>();
-//        for (Post post : posts) {
-//            if(post.getUserId().equals(myUserId)) {
-//                postToShow = getPostToShow(post);
-////                if (post.getIsActive() == 0) {
-////                    status = ReleaseStatus.INACTIVE;
-////                }
-//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW)) {
-//                    status = ReleaseStatus.PENDING;
-//                }
-//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED)) {
-//                    status = ReleaseStatus.DECLINED;
-//                }
-//                if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)) {
-//                    status = ReleaseStatus.PUBLISHED;
-//                }
-//                postToShow.put("status", status);
-//            }
-//            objectList.add(postToShow);
-//        }
-//        responseEntity = getResponseEntity(objectList, offset, limit);
-//        return responseEntity;
-//    }
+    public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
+        ResponseEntity<?> responseEntity;
+        List<Post> posts = getPostList();
+        List<PostAnnounceResponse> postsList = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getUserId().equals(myUserId))
+//                    && (post.getIsActive() == 0
+//                    || ((post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW))
+//                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
+//                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
+                {
+                postsList.add(new PostAnnounceResponse(post));
+            }
+        }
+        responseEntity = getResponseEntity(new PostsListResponse(postsList.size(), postsList), offset, limit);
+        return responseEntity;
+    }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
         switch (mode) {

@@ -54,7 +54,7 @@ public class MainApplication {
         post2.setModerationStatus(ModerationStatus.ACCEPTED);
         post2.setText("The second testing text #2 to be processed by the code into announce.");
         post2.setTime(LocalDate.now());
-        post2.setUserId(2);
+        post2.setUserId(1);
         post2.setViewCount(10);
         postRepository.save(post2);
     }
