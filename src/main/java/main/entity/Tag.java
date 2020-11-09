@@ -20,6 +20,10 @@ public class Tag {
         this.name = name;
     }
 
+    public Tag(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,7 @@
 package main.api.response;
 
+import org.hibernate.engine.transaction.jta.platform.internal.JBossAppServerJtaPlatform;
+
 import java.util.List;
 
 public class PostsListResponse {

@@ -1,6 +1,8 @@
 package main.service;
 
+import main.api.response.MyPostResponce;
 import main.api.response.PostAnnounceResponse;
+import main.api.response.PostByIdResponce;
 import main.api.response.PostsListResponse;
 import main.entity.*;
 import main.repository.PostRepository;
@@ -30,52 +32,21 @@ public class PostService {
     public PostService() {
     }
 
-    public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        List<Post> postList = getPostList();
-        List<PostAnnounceResponse> posts = new ArrayList<>();
-        for (Post post : getSortedPosts(postList, mode)) {
-          posts.add(new PostAnnounceResponse(post));
-        }
-        PostsListResponse postsListResponse = new PostsListResponse(postList.size(), posts);
-        return getResponseEntity(postsListResponse, offset, limit);
-    }
-
     private List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
         postRepository.findAll().forEach(postList::add);
         return postList;
     }
 
-
-//    public ResponseEntity<?> getPostById(Integer postId) {
-//        try {
-//            Post post = postRepository.findById(postId).get();
-////            LinkedHashMap  <String, Object> postToShow = new LinkedHashMap<>();
-//            if(post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-//            post.getTime().compareTo(LocalDate.now()) <= 0 ) {
-//                postToShow.putAll(getPostToShow(post));
-//                postToShow.put("comments", post.getComments());
-//                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-//                List<Integer> tagsId = new ArrayList<>();
-//                for (Tag2Post tag2Post : tag2PostIterable) {
-//                    if(tag2Post.getPostId().equals(postId)) {
-//                       tagsId.add(tag2Post.getTagId());
-//                    }
-//                }
-//                List<String> tags = new ArrayList<>();
-//                Iterable<Tag> iterableTags = tagRepository.findAll();
-//                for(Tag tag: iterableTags) {
-//                    if(tagsId.contains(tag.getId())) {
-//                        tags.add(tag.getName());
-//                    }
-//                }
-//                postToShow.put("tags", tags);
-//            }
-//            return new ResponseEntity<>(postToShow, HttpStatus.FOUND);
-//        } catch (NoSuchElementException ex) {
-//            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
-//        }
-//    }
+    public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
+        List<Post> postList = getPostList();
+        List<PostAnnounceResponse> posts = new ArrayList<>();
+        for (Post post : getSortedPosts(postList, mode)) {
+          posts.add(new PostAnnounceResponse(post));
+        }
+        PostsListResponse postsListResponse = new PostsListResponse(posts.size(), posts);
+        return getResponseEntity(postsListResponse, offset, limit);
+    }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
         List<Post> postList = getPostList();
@@ -148,7 +119,9 @@ public class PostService {
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
         ResponseEntity<?> responseEntity;
         List<Post> posts = getPostList();
-        List<PostAnnounceResponse> postsList = new ArrayList<>();
+        List<MyPostResponce> myPostsList = new ArrayList<>();
+        TreeMap<String, Object> map = new TreeMap<>();
+        int count = 0;
         for (Post post : posts) {
             if (post.getUserId().equals(myUserId))
 //                    && (post.getIsActive() == 0
@@ -156,11 +129,60 @@ public class PostService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
                 {
-                postsList.add(new PostAnnounceResponse(post));
+                myPostsList.add(new MyPostResponce(post));
+                count++;
             }
         }
-        responseEntity = getResponseEntity(new PostsListResponse(postsList.size(), postsList), offset, limit);
+        if (count == 0) {
+            responseEntity = new ResponseEntity<>("No my posts", HttpStatus.NOT_FOUND);
+        } else {
+            if (limit <= count) {
+                myPostsList = myPostsList.subList(offset, limit);
+            } else {
+                myPostsList = myPostsList.subList(offset, count);
+            }
+            map.put("count", count);
+            map.put("posts", myPostsList);
+            responseEntity = new ResponseEntity<>(map, HttpStatus.FOUND);
+        }
         return responseEntity;
+    }
+
+    public ResponseEntity<?> getPostById(Integer postId) {
+        List<Post> posts = getPostList();
+        Post post = null;
+        PostByIdResponce postByIdResponce = new PostByIdResponce(postId);
+        try {
+            for (Post p: posts) {
+                if(p.getPostId().equals(postId)) {
+                    post = p;
+                    break;
+                }
+            }
+//            Optional<Post> postOpt = posts.stream().filter(a->a.getPostId().equals(postId)).findAny();//postRepository.findById(postId).get();
+//            Post post = Optional.of(postOpt).get();
+            if(post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
+                    post.getTime().compareTo(LocalDate.now()) <= 0 ) {
+                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+                List<Integer> tagsId = new ArrayList<>();
+                for (Tag2Post tag2Post : tag2PostIterable) {
+                    if(tag2Post.getPostId().equals(postId)) {
+                        tagsId.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
+                    }
+                }
+                Iterable<Tag> iterableTags = tagRepository.findAll();
+                for(Tag tag: iterableTags) {
+                    if(tagsId.contains(tag.getId())) {
+                        postByIdResponce.getTags().add(tag); // добавляем тэги в объект вывода
+                    }
+                }
+            } else {
+                postByIdResponce = null;
+            }
+            return new ResponseEntity<>(postByIdResponce, HttpStatus.FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
+        }
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
