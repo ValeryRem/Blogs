@@ -152,17 +152,9 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
-//        List<Post> posts = getPostList();
         try {
-           Post post = postRepository.getOne(postId);
-           User user = new User(post.getUserId());//userRepository.getOne(post.getUserId());//
-           PostByIdResponce postByIdResponce = new PostByIdResponce(post, user);
-//            for (Post p : posts) {
-//                if (p.getPostId().equals(postId)) {
-//                    post = p;
-//                    break;
-//                }
-//            }
+            Post post = postRepository.getOne(postId);
+            PostByIdResponce postByIdResponce = new PostByIdResponce(post);
             if (post.getIsActive() && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTime().compareTo(LocalDate.now()) <= 0) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();

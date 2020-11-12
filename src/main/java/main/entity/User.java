@@ -33,15 +33,15 @@ public class User {
     private List<Post> postList;
 
     public User() {
+    }
+
+    public User(Integer userId) {
+        this.userId = userId;
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("id", getUserId());
         map.put("name", getName());
         map.put("photo", getPhoto());
         userSelect = map;
-    }
-
-    public User(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getUserId() {

@@ -47,12 +47,11 @@ public class PostByIdResponce {
     public PostByIdResponce() {
     }
 
-    public PostByIdResponce(Post post, User u) {
+    public PostByIdResponce(Post post) {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
-//        User u = userRepository.findById(post.getUserId()).get();//new User(post.getUserId());//
-        this.user = u.getUserSelect();
+        this.user = post.getUserShort();
         this.title = post.getTitle();
         this.text = post.getText();
         this.announce = post.getAnnounce();

@@ -52,13 +52,16 @@ public class Post {
     @Column(name ="view_count")
     private Integer viewCount;
 
-
-
     public Post() {
         User us = new User();
-        TreeMap<String, Object> map = us.getUserSelect();
-        map.remove("photo");
-        userMap = map;
+        userMap = new TreeMap<>();
+        try {
+            TreeMap<String, Object> map = us.getUserSelect();
+            map.remove("photo");
+            userMap.putAll(map);
+        } catch (NullPointerException npe) {
+            userMap = new TreeMap<>();
+        }
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -229,10 +232,10 @@ public class Post {
         this.user = user;
     }
 
-//    public TreeMap<String, Object> getUserShort() {
-//        TreeMap<String, Object> map = new TreeMap<>();
-//        map.put("id", userId);
-//        map.put("name", new User().getName());
-//        return map;
-//    }
+    public TreeMap<String, Object> getUserShort() {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", userId);
+        map.put("name", new User(getUserId()).getName());
+        return map;
+    }
 }
