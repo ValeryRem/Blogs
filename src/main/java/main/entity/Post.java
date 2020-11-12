@@ -13,6 +13,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
+//    @JoinTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
     private Integer postId;
 
     @Column(name ="is_active")
@@ -28,9 +29,14 @@ public class Post {
     @DateTimeFormat(pattern = "YYYY-MM-dd")
     private LocalDate time;
 
-    @Column(name ="user_id")
+    @Column(name ="id_of_user")
     private Integer userId;
-    private TreeMap<String, Object> user;
+
+    @ManyToOne (fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn (name="user")
+    private User user;
+
+    private TreeMap<String, Object> userMap;
     private String title;
     private String text;
 
@@ -46,11 +52,13 @@ public class Post {
     @Column(name ="view_count")
     private Integer viewCount;
 
+
+
     public Post() {
         User us = new User();
         TreeMap<String, Object> map = us.getUserSelect();
         map.remove("photo");
-        user = map;
+        userMap = map;
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -205,11 +213,19 @@ public class Post {
         isActive = active;
     }
 
-    public TreeMap<String, Object> getUser() {
+    public TreeMap<String, Object> getUserMap() {
+        return userMap;
+    }
+
+    public void setUserMap(TreeMap<String, Object> userMap) {
+        this.userMap = userMap;
+    }
+
+    public User getUser() {
         return user;
     }
 
-    public void setUser(TreeMap<String, Object> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

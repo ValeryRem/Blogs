@@ -32,15 +32,13 @@ public class PostService {
     private TagRepository tagRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public PostService() {
     }
 
     private List<Post> getPostList() {
-        List<Post> postList = new ArrayList<>();
-        postList.addAll(postRepository.findAll());
-        return postList;
+        return  new ArrayList<>(postRepository.findAll());
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
@@ -154,10 +152,10 @@ public class PostService {
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
-        List<Post> posts = getPostList();
+//        List<Post> posts = getPostList();
         try {
-           Post post = posts.stream().filter(a -> (a.getPostId().equals(postId))).findFirst().get();
-           User user = new User(post.getUserId());//userRepository.getOne(post.getUserId());
+           Post post = postRepository.getOne(postId);
+           User user = new User(post.getUserId());//userRepository.getOne(post.getUserId());//
            PostByIdResponce postByIdResponce = new PostByIdResponce(post, user);
 //            for (Post p : posts) {
 //                if (p.getPostId().equals(postId)) {
@@ -185,7 +183,6 @@ public class PostService {
         } catch (Exception ex) {
             System.err.println("Что-то пошло не так...");
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
-
         }
     }
 

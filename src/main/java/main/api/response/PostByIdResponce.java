@@ -41,15 +41,18 @@ public class PostByIdResponce {
     @Autowired
     Tag2PostRepository tag2PostRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     public PostByIdResponce() {
     }
 
-    public PostByIdResponce(Post post, User user) {
+    public PostByIdResponce(Post post, User u) {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
-//        User u = new User(post.getUserId());//userRepository.findById(post.getUserId()).get();
-        this.user = user.getUserSelect();
+//        User u = userRepository.findById(post.getUserId()).get();//new User(post.getUserId());//
+        this.user = u.getUserSelect();
         this.title = post.getTitle();
         this.text = post.getText();
         this.announce = post.getAnnounce();

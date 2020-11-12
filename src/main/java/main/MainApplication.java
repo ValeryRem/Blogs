@@ -37,8 +37,8 @@ public class MainApplication {
     }
 
     private void insertTestPost1() {
-        User u = new User(1);
-        u.setName("Lionel");
+//        User u = new User(1);
+//        u.setName("Lionel");
         Post post1 = new Post("The first testing post");
         post1.setDislikeCount(5);
         post1.setIsActive(true);

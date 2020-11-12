@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.TreeMap;
 
 @Entity
@@ -13,6 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "user_name")
     private String name;
 
     @Column(name = "is_moderator")
@@ -25,6 +28,9 @@ public class User {
     private String code;
     private URL photo;
     private TreeMap<String, Object> userSelect;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> postList;
 
     public User() {
         TreeMap<String, Object> map = new TreeMap<>();
@@ -110,5 +116,11 @@ public class User {
         this.userSelect = userSelect;
     }
 
+    public List<Post> getPostList() {
+        return postList;
+    }
 
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
+    }
 }
