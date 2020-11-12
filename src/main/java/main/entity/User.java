@@ -1,7 +1,10 @@
 package main.entity;
 
 import javax.persistence.*;
+import java.awt.*;
+import java.net.URL;
 import java.util.Date;
+import java.util.TreeMap;
 
 @Entity
 @Table(name = "users")
@@ -11,16 +14,24 @@ public class User {
     @Column(name = "user_id")
     private Integer userId;
     private String name;
+
     @Column(name = "is_moderator")
     private Integer isModerator;
+
     @Column(name = "reg_time")
     private Date regTime;
     private String email;
     private String password;
     private String code;
-    private String photo;
+    private URL photo;
+    private TreeMap<String, Object> userSelect;
 
     public User() {
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", getUserId());
+        map.put("name", getName());
+        map.put("photo", getPhoto());
+        userSelect = map;
     }
 
     public User(Integer userId) {
@@ -83,11 +94,21 @@ public class User {
         this.code = code;
     }
 
-    public String getPhoto() {
+    public URL getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(URL photo) {
         this.photo = photo;
     }
+
+    public TreeMap<String, Object> getUserSelect() {
+        return userSelect;
+    }
+
+    public void setUserSelect(TreeMap<String, Object> userSelect) {
+        this.userSelect = userSelect;
+    }
+
+
 }

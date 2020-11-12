@@ -2,6 +2,7 @@ package main.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.TreeMap;
 
 @Entity
 @Table(name = "post_comments")
@@ -18,11 +19,13 @@ public class PostComment {
     private Integer postId;
 
     @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    private TreeMap<String, Object> user;
     private LocalDate time;
     private String text;
 
     public PostComment() {
+        User us = new User();
+        user = us.getUserSelect();
     }
 
     @Override
@@ -61,12 +64,12 @@ public class PostComment {
         this.postId = postId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public TreeMap<String, Object> getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(TreeMap<String, Object> user) {
+        this.user = user;
     }
 
     public LocalDate getTime() {

@@ -1,7 +1,5 @@
 package main.api.response;
 
-import org.hibernate.engine.transaction.jta.platform.internal.JBossAppServerJtaPlatform;
-
 import java.util.List;
 
 public class PostsListResponse {
@@ -17,11 +15,10 @@ public class PostsListResponse {
     }
 
     public int getCount() {
-        return posts.size();
+        return count;
     }
 
     public void setCount(int count) {
-
         this.count = count;
     }
 
@@ -29,3 +26,4 @@ public class PostsListResponse {
         return posts;
     }
 }
+

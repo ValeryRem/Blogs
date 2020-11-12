@@ -57,9 +57,9 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/my")
-    private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="100") Integer myUserId, //defaultValue="100" to be deleted later on.
+    private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="1") Integer myUserId, //defaultValue="100" to be deleted later on.
                                           @RequestParam(defaultValue="0") Integer offset,
-                                          @RequestParam(defaultValue="2") Integer limit) {
+                                          @RequestParam(defaultValue="5") Integer limit) {
         System.out.println("Method getMyPosts uses myUserId:" + myUserId);
         return postService.getMyPosts(myUserId, offset, limit);
     }

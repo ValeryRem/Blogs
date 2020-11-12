@@ -4,12 +4,17 @@ import main.entity.*;
 import main.repository.CommentRepository;
 import main.repository.PostRepository;
 import main.repository.Tag2PostRepository;
+import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 //@Component
@@ -17,7 +22,7 @@ public class PostByIdResponce {
     private Integer id;
     private LocalDate timestamp;
     private boolean active;
-    private User user;
+    private TreeMap<String, Object> user;
     private String title;
     private String text;
     private String announce;
@@ -39,37 +44,44 @@ public class PostByIdResponce {
     public PostByIdResponce() {
     }
 
-    public PostByIdResponce(Integer id) {
-        this.id = id;
-        Post post = new Post(id);
+    public PostByIdResponce(Post post, User user) {
+        this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
-        this.user = new User(post.getUserId());
+//        User u = new User(post.getUserId());//userRepository.findById(post.getUserId()).get();
+        this.user = user.getUserSelect();
         this.title = post.getTitle();
         this.text = post.getText();
         this.announce = post.getAnnounce();
         this.likeCount = post.getLikeCount();
         this.dislikeCount = post.getDislikeCount();
         this.viewCount = post.getViewCount();
-        this.comments = getCommentList(id);
-        this.tags = getTags(id);
+        this.comments = getCommentList();
+        setTags(id);
     }
 
-    private List<PostComment> getCommentList(Integer postId) {
+    private List<PostComment> getCommentList() {
         List<PostComment> list = new ArrayList<>();
-        commentRepository.findAll().forEach(list::add);
-        return list.stream().filter(a -> (a.getPostId().equals(postId))).collect(Collectors.toList());
+        try {
+            commentRepository.findAll().forEach(list::add);
+            return list.stream().filter(a -> (a.getPostId().equals(id))).collect(Collectors.toList());
+        } catch (NullPointerException npe) {
+            return list;
+        }
     }
 
-    private List<Tag> getTags (Integer postId) {
+    public void setTags(Integer postId) {
         List<Tag> tagList = new ArrayList<>();
-        Iterable<Tag2Post> iterableTags = tag2PostRepository.findAll();
-        for(Tag2Post tag2Post: iterableTags) {
-            if(tag2Post.getPostId().equals(postId)) {
-                tagList.add(new Tag(tag2Post.getTagId()));
+        try {
+            Iterable<Tag2Post> iterableTags = tag2PostRepository.findAll();
+            for (Tag2Post tag2Post : iterableTags) {
+                if (tag2Post.getPostId().equals(postId)) {
+                    tagList.add(new Tag(tag2Post.getTagId()));
+                }
             }
+        } catch (NullPointerException ex){
         }
-        return tagList;
+        this.tags = tagList;
     }
 
     public Integer getId() {
@@ -84,7 +96,7 @@ public class PostByIdResponce {
         return active;
     }
 
-    public User getUser() {
+    public TreeMap<String, Object> getUser() {
         return user;
     }
 
@@ -117,6 +129,17 @@ public class PostByIdResponce {
     }
 
     public List<Tag> getTags() {
-        return tags;
+        List<Tag> tagList = new ArrayList<>();
+        try {
+            Iterable<Tag2Post> iterableTags = tag2PostRepository.findAll();
+            for (Tag2Post tag2Post : iterableTags) {
+                if (tag2Post.getPostId().equals(id)) {
+                    tagList.add(new Tag(tag2Post.getTagId()));
+                }
+            }
+            return  tagList;
+        } catch (NullPointerException ex){
+            return tagList;
+        }
     }
 }

@@ -5,17 +5,18 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Entity
 @Table(name = "posts")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "post_id")
+    @Column(name = "post_id")
     private Integer postId;
 
     @Column(name ="is_active")
-    private Integer isActive;
+    private boolean isActive;
 
     @Column(name ="moderation_status")
     @Enumerated(EnumType.ORDINAL)
@@ -29,12 +30,9 @@ public class Post {
 
     @Column(name ="user_id")
     private Integer userId;
-
+    private TreeMap<String, Object> user;
     private String title;
     private String text;
-
-    @Column(name ="view_count")
-    private Integer viewCount;
 
     @Column(name ="like_count")
     private Integer likeCount;
@@ -42,21 +40,30 @@ public class Post {
     @Column(name ="dislike_count")
     private Integer dislikeCount;
 
+    @Column(name = "comment_count")
+    private Integer commentCount;
+
+    @Column(name ="view_count")
+    private Integer viewCount;
+
     public Post() {
+        User us = new User();
+        TreeMap<String, Object> map = us.getUserSelect();
+        map.remove("photo");
+        user = map;
     }
 
     public Post(ModerationStatus moderationStatus) {
         this.moderationStatus = moderationStatus;
     }
 
-    public Post(String title, Integer postId) {
+    public Post(String title) {
         this.title = title;
-        this.postId = postId;
     }
 
-    public Post(Integer postId) {
-        this.postId = postId;
-    }
+//    public Post(Integer postId) {
+//        this.postId = postId;
+//    }
 
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "post_id")
@@ -80,11 +87,11 @@ public class Post {
         this.postId = postId;
     }
 
-    public Integer getIsActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -137,17 +144,15 @@ public class Post {
     }
 
     public String getAnnounce() {
-        String announce;
+        String announce = getText();//.replaceAll("[\\p{P}\\p{S}]", "");
         try {
-             announce = getText();
             if (announce.length() <= 500) {
                 announce = announce.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
             } else {
                 announce = announce.substring(0, 100);
-                announce.replaceAll("<script>.*?</script>", "");
             }
         } catch (NullPointerException ex) {
-            announce =  "No text of post!";
+           announce = "No text of post!";
         }
         return announce;
     }
@@ -183,4 +188,35 @@ public class Post {
     public void setComments(List<PostComment> comments) {
         this.comments = comments;
     }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public TreeMap<String, Object> getUser() {
+        return user;
+    }
+
+    public void setUser(TreeMap<String, Object> user) {
+        this.user = user;
+    }
+
+//    public TreeMap<String, Object> getUserShort() {
+//        TreeMap<String, Object> map = new TreeMap<>();
+//        map.put("id", userId);
+//        map.put("name", new User().getName());
+//        return map;
+//    }
 }
