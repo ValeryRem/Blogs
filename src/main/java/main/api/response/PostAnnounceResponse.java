@@ -18,17 +18,14 @@ public class PostAnnounceResponse {
 
         public PostAnnounceResponse(Post post)
         {
-            User  usr = new User(post.getUserId());
-            user = new TreeMap<>();
-            this.id = post.getPostId();
+            this.id = post.getUserId();
+            this.user = post.getUserMap();
             this.timestamp = post.getTime();
             this.title = post.getTitle();
             this.announce = post.getAnnounce();
             this.likeCount = post.getLikeCount();
             this.dislikeCount = post.getDislikeCount();
             this.viewCount = post.getViewCount();
-            user.put("id", post.getUserId());
-            user.put("name", usr.getName());
         }
 
         public Integer getId() {

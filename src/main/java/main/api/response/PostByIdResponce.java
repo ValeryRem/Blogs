@@ -51,7 +51,10 @@ public class PostByIdResponce {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
-        this.user = post.getUserShort();
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", post.getPostId());
+        map.put("name", new User(post.getUserId()).getName());
+        this.user = map;
         this.title = post.getTitle();
         this.text = post.getText();
         this.announce = post.getAnnounce();

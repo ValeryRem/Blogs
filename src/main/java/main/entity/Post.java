@@ -53,15 +53,6 @@ public class Post {
     private Integer viewCount;
 
     public Post() {
-        User us = new User();
-        userMap = new TreeMap<>();
-        try {
-            TreeMap<String, Object> map = us.getUserSelect();
-            map.remove("photo");
-            userMap.putAll(map);
-        } catch (NullPointerException npe) {
-            userMap = new TreeMap<>();
-        }
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -72,9 +63,9 @@ public class Post {
         this.title = title;
     }
 
-//    public Post(Integer postId) {
-//        this.postId = postId;
-//    }
+    public Post(Integer postId) {
+        this.postId = postId;
+    }
 
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "post_id")
@@ -217,6 +208,14 @@ public class Post {
     }
 
     public TreeMap<String, Object> getUserMap() {
+        User us = new User(userId);
+        userMap = new TreeMap<>();
+        try {
+            userMap.put("id", us.getUserId());
+            userMap.put("name", us.getName());
+        } catch (NullPointerException npe) {
+            userMap = new TreeMap<>();
+        }
         return userMap;
     }
 
@@ -232,10 +231,10 @@ public class Post {
         this.user = user;
     }
 
-    public TreeMap<String, Object> getUserShort() {
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", userId);
-        map.put("name", new User(getUserId()).getName());
-        return map;
-    }
+//    public TreeMap<String, Object> getUserShort() {
+//        TreeMap<String, Object> map = new TreeMap<>();
+//        map.put("id", userId);
+//        map.put("name", new User(getUserId()).getName());
+//        return map;
+//    }
 }

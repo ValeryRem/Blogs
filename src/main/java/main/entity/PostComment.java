@@ -19,13 +19,14 @@ public class PostComment {
     private Integer postId;
 
     @Column(name = "user_id", nullable = false)
-    private TreeMap<String, Object> user;
+    private TreeMap<String, Object> user = new TreeMap<>();
     private LocalDate time;
     private String text;
 
     public PostComment() {
-        User us = new User();
-        user = us.getUserSelect();
+        User us = new User(new Post(postId).getUserId());
+        user.put("id", us.getUserId());
+        user.put("name", us.getName());
     }
 
     @Override

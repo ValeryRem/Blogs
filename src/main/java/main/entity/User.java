@@ -27,7 +27,7 @@ public class User {
     private String password;
     private String code;
     private URL photo;
-    private TreeMap<String, Object> userSelect;
+//    private TreeMap<String, Object> userSelect;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
@@ -37,11 +37,11 @@ public class User {
 
     public User(Integer userId) {
         this.userId = userId;
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", getUserId());
-        map.put("name", getName());
-        map.put("photo", getPhoto());
-        userSelect = map;
+//        TreeMap<String, Object> map = new TreeMap<>();
+//        map.put("id", getUserId());
+//        map.put("name", getName());
+//        map.put("photo", getPhoto());
+//        userSelect = map;
     }
 
     public Integer getUserId() {
@@ -108,13 +108,13 @@ public class User {
         this.photo = photo;
     }
 
-    public TreeMap<String, Object> getUserSelect() {
-        return userSelect;
-    }
-
-    public void setUserSelect(TreeMap<String, Object> userSelect) {
-        this.userSelect = userSelect;
-    }
+//    public TreeMap<String, Object> getUserSelect() {
+//        return userSelect;
+//    }
+//
+//    public void setUserSelect(TreeMap<String, Object> userSelect) {
+//        this.userSelect = userSelect;
+//    }
 
     public List<Post> getPostList() {
         return postList;
