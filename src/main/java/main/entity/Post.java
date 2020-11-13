@@ -146,7 +146,7 @@ public class Post {
     }
 
     public String getAnnounce() {
-        String announce = getText();//.replaceAll("[\\p{P}\\p{S}]", "");
+        String announce = getText().replaceAll("[\\p{P}\\p{S}]", "");
         try {
             if (announce.length() <= 500) {
                 announce = announce.substring(0, text.length() / 5); // В анонс выводим 20% текста поста, но не более 100 знаков
