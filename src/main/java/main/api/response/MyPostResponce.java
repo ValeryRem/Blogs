@@ -7,35 +7,22 @@ import java.time.LocalDate;
 import java.util.TreeMap;
 
 public class MyPostResponce {
-    private Integer id;
-    private LocalDate timestamp;
+    private final Integer id;
+    private final LocalDate timestamp;
 
-    private String title;
-    private String announce;
+    private final String title;
+    private final String announce;
     private Integer likeCount;
     private Integer dislikeCount;
-    private Integer viewCount;
+    private final Integer viewCount;
     private TreeMap<String, Object> user;
-
-//    private User usr;
 
     public MyPostResponce (Post post) {
         this.id = post.getPostId();;
         this.timestamp = post.getTime();
         this.title = post.getTitle();
         this.announce = post.getAnnounce();
-        this.likeCount = post.getLikeCount();
-        this.dislikeCount = post.getDislikeCount();
         this.viewCount = post.getViewCount();
-        this.user = getUserMap(post);
-    }
-
-    private TreeMap<String, Object> getUserMap (Post post) {
-        user = new TreeMap<>();
-        User usr = new User(post.getUserId());
-        user.put("id", post.getUserId());
-        user.put("name", usr.getName());
-        return user;
     }
 
     public Integer getId() {
@@ -68,5 +55,17 @@ public class MyPostResponce {
 
     public Integer getViewCount() {
         return viewCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public void setDislikeCount(Integer dislikeCount) {
+        this.dislikeCount = dislikeCount;
+    }
+
+    public void setUser(TreeMap<String, Object> user) {
+        this.user = user;
     }
 }

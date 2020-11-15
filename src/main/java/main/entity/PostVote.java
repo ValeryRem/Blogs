@@ -2,6 +2,7 @@ package main.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ public class PostVote {
     @Column(name = "post_id")
     private Integer postId;
     @NotNull(message = "Time of the vote is mandatory")
-    private Date time;
+    private LocalDate time;
     @NotNull(message = "Value of the vote is mandatory")
     private Integer value;
 
@@ -40,19 +41,19 @@ public class PostVote {
         this.userId = userId;
     }
 
-    public Integer getPost_id() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.postId = post_id;
+    public void setPostId(Integer postId) {
+        this.postId = postId;
     }
 
-    public Date getTime() {
+    public LocalDate getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 

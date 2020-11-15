@@ -5,10 +5,7 @@ import main.api.response.PostAnnounceResponse;
 import main.api.response.PostByIdResponce;
 import main.api.response.PostsListResponse;
 import main.entity.*;
-import main.repository.PostRepository;
-import main.repository.Tag2PostRepository;
-import main.repository.TagRepository;
-import main.repository.UserRepository;
+import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -34,18 +31,33 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    PostVoteRepository postVoteRepository;
+
     public PostService() {
     }
 
     private List<Post> getPostList() {
-        return  new ArrayList<>(postRepository.findAll());
+        return  postRepository.findAll();
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         List<Post> postList = getPostList();
+        List<Post> postListSorted = getSortedPosts(postList, mode);
+        List<PostComment> commentList = commentRepository.findAll();
         List<PostAnnounceResponse> posts = new ArrayList<>();
-        for (Post post : getSortedPosts(postList, mode)) {
-            posts.add(new PostAnnounceResponse(post));
+        for (Post post : postListSorted) {
+            List<PostComment> commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                    collect(Collectors.toList());
+            int commentCountByPost = commenstByPost.size();
+            PostAnnounceResponse postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                    post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
+            postAnnounceResponse.setLikeCount(extractLikeCount(post));
+            postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
+            posts.add(postAnnounceResponse);
         }
         PostsListResponse postsListResponse = new PostsListResponse(getCount(), posts);
         return getResponseEntity(postsListResponse, offset, limit);
@@ -55,13 +67,18 @@ public class PostService {
         List<Post> postList = getPostList();
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         List<PostAnnounceResponse> posts = new ArrayList<>();
+        List<PostComment> commentList = commentRepository.findAll();
         ResponseEntity<?> responseEntity;
         if (query == null) {
             responseEntity = new ResponseEntity<>("Posts with the query " + query + " not found", HttpStatus.NOT_FOUND);
         } else {
             for (Post post : sortedPosts) {
                 if (post.getText().contains(query) && post.getIsActive() && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    posts.add(new PostAnnounceResponse(post));
+                    List<PostComment> commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                            collect(Collectors.toList());
+                    int commentCountByPost = commenstByPost.size();
+                    posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                            post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
                 }
             }
             responseEntity = getResponseEntity(new PostsListResponse(postList.size(), posts), offset, limit);
@@ -73,11 +90,17 @@ public class PostService {
         List<Post> postList = getPostList();
         List<Post> sortedPosts = getSortedPosts(postList, mode);
         List<PostAnnounceResponse> posts = new ArrayList<>();
+        List<PostComment> commentList = commentRepository.findAll();
         ResponseEntity<?> responseEntity;
         for (Post post : sortedPosts) {
             if (post.getTime().equals(time) && post.getIsActive() &&
                     post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                posts.add(new PostAnnounceResponse(post));
+                List<PostComment> commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                        collect(Collectors.toList());
+                int commentCountByPost = commenstByPost.size();
+
+                posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
             }
         }
         if (posts.size() == 0) {
@@ -108,9 +131,14 @@ public class PostService {
             List<Post> posts = new ArrayList<>();
             List<Post> sortedPosts = getSortedPosts(posts, mode);
             List<PostAnnounceResponse> postsList = new ArrayList<>();
+            List<PostComment> commentList = commentRepository.findAll();
             for (Integer postId : postsId) {
                 Post post = postRepository.findById(postId).get();
-                postsList.add(new PostAnnounceResponse(post));
+                List<PostComment> commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                        collect(Collectors.toList());
+                int commentCountByPost = commenstByPost.size();
+                postsList.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
             }
             responseEntity = getResponseEntity(new PostsListResponse(sortedPosts.size(), postsList), offset, limit);
         } catch (Exception ex) {
@@ -124,6 +152,7 @@ public class PostService {
         List<Post> posts = getPostList();
         List<MyPostResponce> myPostsList = new ArrayList<>();
         TreeMap<String, Object> map = new TreeMap<>();
+        MyPostResponce myPostResponce;
         int count = 0;
         for (Post post : posts) {
             if (post.getUserId().equals(myUserId))
@@ -132,7 +161,11 @@ public class PostService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
             {
-                myPostsList.add(new MyPostResponce(post));
+                myPostResponce = new MyPostResponce(post);
+                myPostResponce.setUser(getUser(post));
+                myPostResponce.setLikeCount(extractLikeCount(post));
+                myPostResponce.setDislikeCount(extractDislikeCount(post));
+                myPostsList.add(myPostResponce);
                 count++;
             }
         }
@@ -155,6 +188,10 @@ public class PostService {
         try {
             Post post = postRepository.getOne(postId);
             PostByIdResponce postByIdResponce = new PostByIdResponce(post);
+            postByIdResponce.setCommentList(getCommentList(postId));
+            postByIdResponce.setUser(getUser(post));
+            postByIdResponce.setLikeCount(extractLikeCount(post));
+            postByIdResponce.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTime().compareTo(LocalDate.now()) <= 0) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
@@ -184,7 +221,11 @@ public class PostService {
                 postList.sort(Comparator.comparing(Post::getViewCount).reversed());
                 break;
             case "best":
-                postList.sort(Comparator.comparing(Post::getLikeCount).reversed());
+                postList.sort((fp, sp) -> {
+                    if (extractLikeCount(fp).equals(extractLikeCount(sp))) return 0;
+                    else if (extractLikeCount(fp) < extractLikeCount(sp)) return 1;
+                    else return -1;
+                });
                 break;
             case "early":
                 postList.sort(Comparator.comparing(Post::getTime));
@@ -194,6 +235,15 @@ public class PostService {
         }
         return postList;
     }
+
+//    public Comparator<Post> CompareBiLikeCount = new Comparator<Post>() {
+//        @Override
+//        public int compare(Post fp, Post sp) {
+//            if (extractLikeCount(fp).equals(extractLikeCount(sp))) return 0;
+//            else if (extractLikeCount(fp) > extractLikeCount(sp)) return 1;
+//            else return -1;
+//        }
+//    };
 
     private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
         ResponseEntity<?> responseEntity;
@@ -221,5 +271,68 @@ public class PostService {
             count = 0;
         }
         return count;
+    }
+
+    private List<TreeMap<String, Object>> getCommentList(Integer postId) {
+        List<TreeMap<String, Object>> list = new LinkedList<>();
+        TreeMap<String, Object> comments = new TreeMap<>();
+        try {
+            List<PostComment> postComment  =  commentRepository.findAll();
+            List<PostComment> listComments = postComment.stream().filter(a -> (a.getPostId().equals(postId))).collect(Collectors.toList());
+            listComments.forEach(a -> {
+                TreeMap<String, Object> treeMap = new TreeMap<>();
+                treeMap.put("id", a.getCommentId());
+                treeMap.put("timestamp", a.getTime());
+                treeMap.put("text", a.getText());
+                LinkedHashMap<String, Object> map =  new LinkedHashMap<>();
+                map.put("id", a.getUserId());
+                User user = new User(a.getUserId());
+                map.put("name", user.getName());
+                map.put("photo", user.getPhoto());
+                treeMap.put("user", map);
+                comments.putAll(treeMap);
+                list.add(comments);
+            });
+            return list;
+        } catch (NullPointerException npe) {
+            return list;
+        }
+    }
+
+    private TreeMap<String, Object>  getUser (Post post){
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", post.getPostId());
+        try{
+            String userName = userRepository.findAll().stream().
+                    filter(a->(a.getUserId().equals(post.getUserId()))).
+                    findAny().
+                    get().
+                    getName();
+            map.put("name", userName);
+            return map;
+        }
+        catch (Exception ex) {
+            return map;
+        }
+    }
+
+    private Integer extractLikeCount(Post post) {
+        try {
+            List<PostVote> list = postVoteRepository.findAll();
+            List<PostVote> listVotes = list.stream().filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == 1).collect(Collectors.toList());
+            return listVotes.size();
+        } catch (NullPointerException ex) {
+            return 0;
+        }
+    }
+
+    private Integer extractDislikeCount(Post post) {
+        try {
+            List<PostVote> list = postVoteRepository.findAll();
+            List<PostVote> listVotes = list.stream().filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == -1).collect(Collectors.toList());
+            return listVotes.size();
+        } catch (NullPointerException ex) {
+            return 0;
+        }
     }
 }

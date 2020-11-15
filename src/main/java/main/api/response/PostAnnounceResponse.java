@@ -1,32 +1,33 @@
 package main.api.response;
 
-import main.entity.Post;
-import main.entity.User;
+import main.repository.CommentRepository;
+
 import java.time.LocalDate;
 import java.util.TreeMap;
-
 
 public class PostAnnounceResponse {
         private final Integer id;
         private final LocalDate timestamp;
-        private final TreeMap<String, Object> user ;
+        private final TreeMap<String, Object> user;
         private final String title;
         private final String announce;
-        private final Integer likeCount;
-        private final Integer dislikeCount;
+        private Integer likeCount;
+        private Integer dislikeCount;
+        private final Integer commentCount;
         private final Integer viewCount;
 
-        public PostAnnounceResponse(Post post)
-        {
-            this.id = post.getUserId();
-            this.user = post.getUserMap();
-            this.timestamp = post.getTime();
-            this.title = post.getTitle();
-            this.announce = post.getAnnounce();
-            this.likeCount = post.getLikeCount();
-            this.dislikeCount = post.getDislikeCount();
-            this.viewCount = post.getViewCount();
-        }
+        CommentRepository commentRepository;
+
+    public PostAnnounceResponse(Integer postId, LocalDate timestamp, String title, String announce,
+                                Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
+        this.id = postId;
+        this.timestamp = timestamp;
+        this.title = title;
+        this.announce = announce;
+        this.commentCount = commentCount;
+        this.viewCount = viewCount;
+        this.user = user;
+    }
 
         public Integer getId() {
             return id;
@@ -56,8 +57,28 @@ public class PostAnnounceResponse {
             return dislikeCount;
         }
 
+        public Integer getCommentCount() {
+            return commentCount;
+    }
+
         public Integer getViewCount() {
             return viewCount;
         }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
+
+    public void setDislikeCount(Integer dislikeCount) {
+        this.dislikeCount = dislikeCount;
+    }
+
+    public CommentRepository getCommentRepository() {
+        return commentRepository;
+    }
+
+    public void setCommentRepository(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+}
 

@@ -1,8 +1,11 @@
 package main.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.awt.*;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
@@ -13,35 +16,29 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
+    @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
     private Integer userId;
-
-    @Column(name = "user_name")
-    private String name;
 
     @Column(name = "is_moderator")
     private Integer isModerator;
 
     @Column(name = "reg_time")
-    private Date regTime;
+    @DateTimeFormat(pattern = "YYYY-MM-dd")
+    private LocalDate regTime;
+
+    @Column(name = "user_name")
+    @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
+    private String name;
     private String email;
     private String password;
     private String code;
     private URL photo;
-//    private TreeMap<String, Object> userSelect;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> postList;
 
     public User() {
     }
 
     public User(Integer userId) {
         this.userId = userId;
-//        TreeMap<String, Object> map = new TreeMap<>();
-//        map.put("id", getUserId());
-//        map.put("name", getName());
-//        map.put("photo", getPhoto());
-//        userSelect = map;
     }
 
     public Integer getUserId() {
@@ -68,11 +65,11 @@ public class User {
         this.isModerator = isModerator;
     }
 
-    public Date getRegTime() {
+    public LocalDate getRegTime() {
         return regTime;
     }
 
-    public void setRegTime(Date regTime) {
+    public void setRegTime(LocalDate regTime) {
         this.regTime = regTime;
     }
 
@@ -106,21 +103,5 @@ public class User {
 
     public void setPhoto(URL photo) {
         this.photo = photo;
-    }
-
-//    public TreeMap<String, Object> getUserSelect() {
-//        return userSelect;
-//    }
-//
-//    public void setUserSelect(TreeMap<String, Object> userSelect) {
-//        this.userSelect = userSelect;
-//    }
-
-    public List<Post> getPostList() {
-        return postList;
-    }
-
-    public void setPostList(List<Post> postList) {
-        this.postList = postList;
     }
 }

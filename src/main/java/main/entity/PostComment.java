@@ -19,14 +19,12 @@ public class PostComment {
     private Integer postId;
 
     @Column(name = "user_id", nullable = false)
-    private TreeMap<String, Object> user = new TreeMap<>();
+    private Integer userId;
     private LocalDate time;
     private String text;
 
     public PostComment() {
-        User us = new User(new Post(postId).getUserId());
-        user.put("id", us.getUserId());
-        user.put("name", us.getName());
+        userId = new Post(postId).getUserId();
     }
 
     @Override
@@ -65,14 +63,6 @@ public class PostComment {
         this.postId = postId;
     }
 
-    public TreeMap<String, Object> getUser() {
-        return user;
-    }
-
-    public void setUser(TreeMap<String, Object> user) {
-        this.user = user;
-    }
-
     public LocalDate getTime() {
         return time;
     }
@@ -87,5 +77,13 @@ public class PostComment {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

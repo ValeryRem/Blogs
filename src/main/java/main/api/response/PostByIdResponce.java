@@ -1,23 +1,16 @@
 package main.api.response;
 
 import main.entity.*;
-import main.repository.CommentRepository;
-import main.repository.PostRepository;
-import main.repository.Tag2PostRepository;
-import main.repository.UserRepository;
+import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
-import java.net.URL;
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-//@Component
 public class PostByIdResponce {
     private Integer id;
     private LocalDate timestamp;
@@ -25,11 +18,11 @@ public class PostByIdResponce {
     private TreeMap<String, Object> user;
     private String title;
     private String text;
-    private String announce;
+//    private String announce;
     private Integer likeCount;
     private Integer dislikeCount;
     private Integer viewCount;
-    private List<PostComment> comments;
+    private List<TreeMap<String, Object>> comments;
     private List<Tag> tags;
 
     @Autowired
@@ -44,6 +37,8 @@ public class PostByIdResponce {
     @Autowired
     UserRepository userRepository;
 
+
+
     public PostByIdResponce() {
     }
 
@@ -51,29 +46,44 @@ public class PostByIdResponce {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", post.getPostId());
-        map.put("name", new User(post.getUserId()).getName());
-        this.user = map;
+//        TreeMap<String, Object> map = new TreeMap<>();
+//        map.put("id", post.getPostId());
+//        map.put("name", new User(post.getUserId()).getName());
+//        this.user = map;
         this.title = post.getTitle();
         this.text = post.getText();
-        this.announce = post.getAnnounce();
-        this.likeCount = post.getLikeCount();
-        this.dislikeCount = post.getDislikeCount();
+//        this.announce = post.getAnnounce();
         this.viewCount = post.getViewCount();
-        this.comments = getCommentList();
         setTags(id);
     }
 
-    private List<PostComment> getCommentList() {
-        List<PostComment> list = new ArrayList<>();
-        try {
-            commentRepository.findAll().forEach(list::add);
-            return list.stream().filter(a -> (a.getPostId().equals(id))).collect(Collectors.toList());
-        } catch (NullPointerException npe) {
-            return list;
-        }
+    public void setCommentList(List<TreeMap<String, Object>> commentList) {
+        this.comments = commentList;
     }
+//        List<TreeMap<String, Object>> list = new ArrayList<>();
+//        TreeMap<String, Object> comments = new TreeMap<>();
+//        try {
+//            List<PostComment> postComment  =  commentRepository.findAll();
+//            List<PostComment> listComments = postComment.stream().filter(a -> (a.getPostId().equals(id))).collect(Collectors.toList());
+//            listComments.forEach(a -> {
+//                TreeMap<String, Object> treeMap = new TreeMap<>();
+//                treeMap.put("id", a.getCommentId());
+//                treeMap.put("timestamp", a.getTime());
+//                treeMap.put("text", a.getText());
+//                TreeMap<String, Object> map =  new TreeMap<>();
+//                map.put("id", a.getUserId());
+//                User user = new User(a.getUserId());
+//                treeMap.put("name", user.getName());
+//                treeMap.put("photo", user.getPhoto());
+//                treeMap.put("user", map);
+//                comments.putAll(treeMap);
+//                list.add(comments);
+//            });
+//            this.commentList = list;
+//        } catch (NullPointerException npe) {
+//            this.commentList = list;
+//        }
+//    }
 
     public void setTags(Integer postId) {
         List<Tag> tagList = new ArrayList<>();
@@ -113,9 +123,9 @@ public class PostByIdResponce {
         return text;
     }
 
-    public String getAnnounce() {
-        return announce;
-    }
+//    public String getAnnounce() {
+//        return announce;
+//    }
 
     public Integer getLikeCount() {
         return likeCount;
@@ -127,10 +137,6 @@ public class PostByIdResponce {
 
     public Integer getViewCount() {
         return viewCount;
-    }
-
-    public List<PostComment> getComments() {
-        return comments;
     }
 
     public List<Tag> getTags() {
@@ -146,5 +152,21 @@ public class PostByIdResponce {
         } catch (NullPointerException ex){
             return tagList;
         }
+    }
+
+    public List<TreeMap<String, Object>> getComments() {
+        return comments;
+    }
+
+    public void setUser(TreeMap<String, Object> user) {
+        this.user = user;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public void setDislikeCount(Integer dislikeCount) {
+        this.dislikeCount = dislikeCount;
     }
 }
