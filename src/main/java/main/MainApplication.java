@@ -36,28 +36,26 @@ public class MainApplication {
     }
 
     private void insertTestPost1() {
-        Post post1 = new Post("The first testing post");
+        Post post1 = new Post("The 5th testing post");
         post1.setIsActive(true);
-        post1.setModerationStatus(ModerationStatus.ACCEPTED);
-        post1.setText("This is a testing text #1 to be processed by the code into announce.");
+        post1.setModerationStatus(ModerationStatus.NEW);
+        post1.setText("This is a testing text #5 to be processed by the code into announce.");
         post1.setTime(LocalDate.now());
         post1.setUserId(1);
-        post1.setViewCount(111);
-        post1.setModeratorId(1);
+        post1.setViewCount(15);
+        post1.setModeratorId(2);
         postRepository.save(post1);
-        User user = new User(post1.getUserId());
-        user.setName("Ivan");
     }
 
     private void insertTestPost2() {
-        Post post2 = new Post("The second testing post");
+        Post post2 = new Post("The 6th testing post");
         post2.setIsActive(true);
-        post2.setModerationStatus(ModerationStatus.ACCEPTED);
-        post2.setText("The second testing text #2 to be processed by the code into announce.");
-        post2.setTime(LocalDate.of(2020, 11, 2));
+        post2.setModerationStatus(ModerationStatus.DECLINED);
+        post2.setText("The second testing text #6 to be processed by the code into announce.");
+        post2.setTime(LocalDate.of(2020, 11, 12));
         post2.setUserId(2);
-        post2.setModeratorId(2);
-        post2.setViewCount(10);
+        post2.setModeratorId(1);
+        post2.setViewCount(11);
         postRepository.save(post2);
     }
 }

@@ -17,7 +17,7 @@ public class ApiPostController {
     @GetMapping("/post")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
-                                        @RequestParam(defaultValue="7") Integer limit,
+                                        @RequestParam(defaultValue="5") Integer limit,
                                         @RequestParam(defaultValue="recent") String mode){
         System.out.println("Method getPosts activated. Number of posts: " + postService.getCount());
         return postService.getPosts (offset, limit, mode);
@@ -62,5 +62,18 @@ public class ApiPostController {
                                           @RequestParam(defaultValue="5") Integer limit) {
         System.out.println("Method getMyPosts uses myUserId:" + myUserId);
         return postService.getMyPosts(myUserId, offset, limit);
+    }
+
+    @GetMapping("/post/moderation")
+    private ResponseEntity<?> getPostsForModeration (@RequestParam(defaultValue="0") Integer offset,
+                                                     @RequestParam(defaultValue="1") Integer limit,
+                                                     @RequestParam(defaultValue="recent") String mode) {
+        System.out.println("Method getPostsForModeration is activated.");
+        return postService.getPostsForModeration(offset, limit, mode);
+    }
+
+    @GetMapping("/auth/check")
+    private ResponseEntity<?> getAuthCheck (@RequestParam(defaultValue="2") Integer userId) {
+        return postService.getAuthCheck(userId);
     }
 }

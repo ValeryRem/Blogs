@@ -16,7 +16,7 @@ public class PostAnnounceResponse {
         private final Integer commentCount;
         private final Integer viewCount;
 
-        CommentRepository commentRepository;
+//        private CommentRepository commentRepository;
 
     public PostAnnounceResponse(Integer postId, LocalDate timestamp, String title, String announce,
                                 Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
@@ -73,12 +73,12 @@ public class PostAnnounceResponse {
         this.dislikeCount = dislikeCount;
     }
 
-    public CommentRepository getCommentRepository() {
-        return commentRepository;
-    }
-
-    public void setCommentRepository(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+//    public CommentRepository getCommentRepository() {
+//        return commentRepository;
+//    }
+//
+//    public void setCommentRepository(CommentRepository commentRepository) {
+//        this.commentRepository = commentRepository;
+//    }
 }
 

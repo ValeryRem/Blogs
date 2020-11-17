@@ -3,12 +3,8 @@ package main.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
 
 @Entity
 @Table(name = "users")
@@ -20,7 +16,7 @@ public class User {
     private Integer userId;
 
     @Column(name = "is_moderator")
-    private Integer isModerator;
+    private boolean isModerator;
 
     @Column(name = "reg_time")
     @DateTimeFormat(pattern = "YYYY-MM-dd")
@@ -57,11 +53,11 @@ public class User {
         this.name = name;
     }
 
-    public Integer getIsModerator() {
+    public boolean getIsModerator() {
         return isModerator;
     }
 
-    public void setIsModerator(Integer isModerator) {
+    public void setIsModerator(boolean isModerator) {
         this.isModerator = isModerator;
     }
 

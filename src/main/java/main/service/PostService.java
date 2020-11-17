@@ -1,12 +1,10 @@
 package main.service;
 
-import main.api.response.MyPostResponce;
-import main.api.response.PostAnnounceResponse;
-import main.api.response.PostByIdResponce;
-import main.api.response.PostsListResponse;
+import main.api.response.*;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,8 @@ public class PostService {
     @Autowired
     PostVoteRepository postVoteRepository;
 
+    private boolean result;
+
     public PostService() {
     }
 
@@ -46,7 +46,9 @@ public class PostService {
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         List<Post> postList = getPostList();
-        List<Post> postListSorted = getSortedPosts(postList, mode);
+        List<Post> postsFiltered = postList.stream().filter(a -> (a.getModerationStatus().equals(ModerationStatus.ACCEPTED)
+         && a.isActive())).collect(Collectors.toList());
+        List<Post> postListSorted = getSortedPosts(postsFiltered, mode);
         List<PostComment> commentList = commentRepository.findAll();
         List<PostAnnounceResponse> posts = new ArrayList<>();
         for (Post post : postListSorted) {
@@ -148,40 +150,45 @@ public class PostService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-        ResponseEntity<?> responseEntity;
-        List<Post> posts = getPostList();
-        List<MyPostResponce> myPostsList = new ArrayList<>();
-        TreeMap<String, Object> map = new TreeMap<>();
-        MyPostResponce myPostResponce;
-        int count = 0;
-        for (Post post : posts) {
-            if (post.getUserId().equals(myUserId))
+        getAuthCheck(myUserId);
+        if (result) {
+            ResponseEntity<?> responseEntity;
+            List<Post> posts = getPostList();
+            List<MyPostResponce> myPostsList = new ArrayList<>();
+            TreeMap<String, Object> map = new TreeMap<>();
+            MyPostResponce myPostResponce;
+            int count = 0;
+            for (Post post : posts) {
+                if (post.getUserId().equals(myUserId))
 //                    && (post.getIsActive() == 0
 //                    || ((post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.NEW))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
-            {
-                myPostResponce = new MyPostResponce(post);
-                myPostResponce.setUser(getUser(post));
-                myPostResponce.setLikeCount(extractLikeCount(post));
-                myPostResponce.setDislikeCount(extractDislikeCount(post));
-                myPostsList.add(myPostResponce);
-                count++;
+                {
+                    myPostResponce = new MyPostResponce(post);
+                    myPostResponce.setUser(getUser(post));
+                    myPostResponce.setLikeCount(extractLikeCount(post));
+                    myPostResponce.setDislikeCount(extractDislikeCount(post));
+                    myPostsList.add(myPostResponce);
+                    count++;
+                }
             }
-        }
-        if (count == 0) {
-            responseEntity = new ResponseEntity<>("No my posts", HttpStatus.NOT_FOUND);
-        } else {
-            if (limit <= count) {
-                myPostsList = myPostsList.subList(offset, limit);
+            if (count == 0) {
+                responseEntity = new ResponseEntity<>("No my posts", HttpStatus.NOT_FOUND);
             } else {
-                myPostsList = myPostsList.subList(offset, count);
+                if (limit <= count) {
+                    myPostsList = myPostsList.subList(offset, limit);
+                } else {
+                    myPostsList = myPostsList.subList(offset, count);
+                }
+                map.put("count", count);
+                map.put("posts", myPostsList);
+                responseEntity = new ResponseEntity<>(map, HttpStatus.FOUND);
             }
-            map.put("count", count);
-            map.put("posts", myPostsList);
-            responseEntity = new ResponseEntity<>(map, HttpStatus.FOUND);
+            return responseEntity;
+        } else {
+            return new ResponseEntity<>("User not authorized", HttpStatus.NOT_FOUND);
         }
-        return responseEntity;
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
@@ -213,6 +220,58 @@ public class PostService {
             System.err.println("Что-то пошло не так...");
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
+    }
+
+    public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String mode) {
+        List<Post> postList = getPostList();
+        List<Post> postsFiltered = postList.stream().filter(a -> ((a.getModerationStatus().equals(ModerationStatus.NEW) ||
+                a.getModerationStatus().equals(ModerationStatus.DECLINED)) && a.isActive())).collect(Collectors.toList());
+        List<Post> postListSorted = getSortedPosts(postsFiltered, mode);
+        List<PostComment> commentList = commentRepository.findAll();
+        List<PostAnnounceResponse> posts = new ArrayList<>();
+        for (Post post : postListSorted) {
+            List<PostComment> commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                    collect(Collectors.toList());
+            int commentCountByPost = commenstByPost.size();
+            PostAnnounceResponse postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                    post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
+            postAnnounceResponse.setLikeCount(extractLikeCount(post));
+            postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
+            posts.add(postAnnounceResponse);
+        }
+        PostsListResponse postsListResponse = new PostsListResponse(getCount(), posts);
+        return getResponseEntity(postsListResponse, offset, limit);
+    }
+
+    public ResponseEntity<?> getAuthCheck (Integer userId) {
+        User u = userRepository.getOne(userId);
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", userId);
+        map.put("name", u.getName());
+        map.put("photo", u.getPhoto());
+        map.put("email", u.getEmail());
+        map.put("moderation", u.getIsModerator());
+        map.put("moderationCount", getModerationCount(u));
+        map.put("settings", u.getIsModerator());
+        result = u.getIsModerator();
+        if (result) {
+            AuthCheckResponse authCheckResponse = new AuthCheckResponse(result, map);
+            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    private Integer getModerationCount (User user) {
+        if (user.getIsModerator()) {
+            List<Post> list = getPostList().stream().
+                    filter(a -> (a.getModerationStatus().equals(ModerationStatus.NEW))).
+                    collect(Collectors.toList());
+            return list.size();
+        } else {
+            return 0;
+        }
+
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -247,8 +306,10 @@ public class PostService {
 
     private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
         ResponseEntity<?> responseEntity;
-        Integer countOfPosts = getCount();
+
         List<PostAnnounceResponse> listToShow = postsListResponse.getPosts();
+        Integer countOfPosts = listToShow.size();
+//        System.out.println("listToShow size: " + listToShow.size());
         if (countOfPosts == 0) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -301,7 +362,7 @@ public class PostService {
 
     private TreeMap<String, Object>  getUser (Post post){
         TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", post.getPostId());
+        map.put("id", post.getUserId());
         try{
             String userName = userRepository.findAll().stream().
                     filter(a->(a.getUserId().equals(post.getUserId()))).
