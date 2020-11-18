@@ -17,7 +17,7 @@ public class ApiPostController {
     @GetMapping("/post")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
-                                        @RequestParam(defaultValue="5") Integer limit,
+                                        @RequestParam(defaultValue="7") Integer limit,
                                         @RequestParam(defaultValue="recent") String mode){
         System.out.println("Method getPosts activated. Number of posts: " + postService.getCount());
         return postService.getPosts (offset, limit, mode);
@@ -39,7 +39,8 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byDate")
-    private ResponseEntity<?> getPostByDate (@DateTimeFormat(pattern = "YYYY-MM-dd") LocalDate date,
+    private ResponseEntity<?> getPostByDate (@DateTimeFormat(pattern = "YYYY-MM-dd")
+                                                 @RequestParam LocalDate date,
                                              @RequestParam(defaultValue="0") Integer offset,
                                              @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
@@ -76,4 +77,10 @@ public class ApiPostController {
     private ResponseEntity<?> getAuthCheck (@RequestParam(defaultValue="2") Integer userId) {
         return postService.getAuthCheck(userId);
     }
+
+    @GetMapping("/tag/")
+    private ResponseEntity<?> getTag (@RequestParam(defaultValue = "") String query) {
+        return postService.getTag(query);
+    }
 }
+
