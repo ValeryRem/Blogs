@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,51 +42,58 @@ public class PostService {
     }
 
     private List<Post> getPostList() {
-        return  postRepository.findAll();
+        return  postRepository.findAll().stream().
+                filter(a -> (a.isActive() && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
+                collect(Collectors.toList());
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
         var postList = getPostList();
-        var postsFiltered = postList.stream().filter(a -> (a.getModerationStatus().equals(ModerationStatus.ACCEPTED)
-         && a.isActive())).collect(Collectors.toList());
-        var postListSorted = getSortedPosts(postsFiltered, mode);
+        var postListSorted = getSortedPosts(postList, mode);
         var commentList = commentRepository.findAll();
-        List<PostAnnounceResponse> posts = new ArrayList<>();
+        List<PostAnnounceResponse> responseList = new ArrayList<>();
         for (Post post : postListSorted) {
-            var commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
-                    collect(Collectors.toList());
-            int commentCountByPost = commenstByPost.size();
+            int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
             var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
                     post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
             postAnnounceResponse.setLikeCount(extractLikeCount(post));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
-            posts.add(postAnnounceResponse);
+            responseList.add(postAnnounceResponse);
         }
-        var postsListResponse = new PostsListResponse(getCount(), posts);
+        var postsListResponse = new PostsListResponse(getCount(), responseList);
         return getResponseEntity(postsListResponse, offset, limit);
     }
 
     public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
         var postList = getPostList();
         var sortedPosts = getSortedPosts(postList, mode);
-        List<PostAnnounceResponse> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
-        ResponseEntity<?> responseEntity;
-        if (query == null) {
-            responseEntity = new ResponseEntity<>("Posts with the query " + query + " not found", HttpStatus.NOT_FOUND);
-        } else {
-            for (Post post : sortedPosts) {
-                if (post.getText().contains(query) && post.getIsActive() && post.getModerationStatus() == ModerationStatus.ACCEPTED) {
-                    var commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
-                            collect(Collectors.toList());
-                    int commentCountByPost = commenstByPost.size();
-                    posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                            post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
-                }
-            }
-            responseEntity = getResponseEntity(new PostsListResponse(postList.size(), posts), offset, limit);
-        }
-        return responseEntity;
+        List<PostAnnounceResponse> responseList;// = new ArrayList<>();
+        responseList = sortedPosts.stream().
+                filter(p -> p.getText().contains(query)).
+                map(p -> {
+            int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(p.getPostId())).count();
+            var postAnnounceResponse =  new PostAnnounceResponse(p.getPostId(), p.getTime(),
+                    p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUser(p));
+            postAnnounceResponse.setLikeCount(extractLikeCount(p));
+            postAnnounceResponse.setDislikeCount(extractDislikeCount(p));
+            return postAnnounceResponse;
+        }).
+                collect(Collectors.toList());
+
+//        for (Post post : sortedPosts) {
+//            if (post.getText().contains(query)) {
+//                int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
+//                var postAnnounceResponse =  new PostAnnounceResponse(post.getPostId(), post.getTime(),
+//                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
+//                postAnnounceResponse.setLikeCount(extractLikeCount(post));
+//                postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
+//                responseList.add(postAnnounceResponse);
+//            }
+//        }
+        var postsListResponse = new PostsListResponse(responseList.size(), responseList);
+        System.out.println("postsByQueryCount: " + responseList.size());// Testing printout
+        return  getResponseEntity(postsListResponse, offset, limit);
     }
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
@@ -96,8 +103,7 @@ public class PostService {
         var commentList = commentRepository.findAll();
         ResponseEntity<?> responseEntity;
         for (Post post : sortedPosts) {
-            if (post.getTime().equals(time) && post.getIsActive() &&
-                    post.getModerationStatus() == ModerationStatus.ACCEPTED) {
+            if (post.getTime().equals(time)) {
                 var commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
                         collect(Collectors.toList());
                 int commentCountByPost = commenstByPost.size();
@@ -136,7 +142,7 @@ public class PostService {
             List<PostAnnounceResponse> postsList = new ArrayList<>();
             var commentList = commentRepository.findAll();
             for (Integer postId : postsId) {
-                Post post = postRepository.findById(postId).get();
+                Post post = postRepository.getOne(postId);
                 var commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
                         collect(Collectors.toList());
                 int commentCountByPost = commenstByPost.size();
@@ -203,15 +209,15 @@ public class PostService {
             if (post.getIsActive() && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTime().compareTo(LocalDate.now()) <= 0) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-                var tagsId = new ArrayList<>();
+                var tagsIdList = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {
                     if (tag2Post.getPostId().equals(postId)) {
-                        tagsId.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
+                        tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
                     }
                 }
                 var iterableTags = tagRepository.findAll();
                 for (Tag tag : iterableTags) {
-                    if (tagsId.contains(tag.getId())) {
+                    if (tagsIdList.contains(tag.getId())) {
                         postByIdResponce.getTags().add(tag); // добавляем тэги в объект вывода
                     }
                 }
@@ -277,14 +283,34 @@ public class PostService {
     }
 
     public ResponseEntity<?> getTag (String query) {
-        var tags = tagRepository.findAll();
-        List<Tag> tagsSelected;
-        if(tags.contains(query)) {
-            tagsSelected = tags.stream().filter(a -> (query.contains(a.getName()))).collect(Collectors.toList());
-        } else {
-            tagsSelected = tags;
+        double ratioToCount;
+        var count = getCount();
+        List<Double> partialWeights = new ArrayList<>();
+        List<TreeMap <String, Object>> resultList = new ArrayList<>();
+        List<Post> postList = getPostList();
+        try {
+            String[] tagsSplit = query.split("(?=#)"); //Разбиваем строку запроса на теги с сохранением # в начале слов
+            for (String s : tagsSplit) {
+                s = s.trim();
+                String finalS = s;
+                int numberOfPostsWithTag = (int) postList.stream().
+                        filter(p -> p.getText().contains(finalS)).
+                        count();
+                ratioToCount = (double) numberOfPostsWithTag / count;
+                partialWeights.add(ratioToCount);
+            }
+
+            double maxPartialWeight = partialWeights.stream().max(Comparator.naturalOrder()).get();
+            for (int i = 0; i < partialWeights.size(); i++) {
+                TreeMap <String, Object> tagsAndWeights = new TreeMap<>();
+                tagsAndWeights.put("name", tagsSplit[i]);
+                tagsAndWeights.put("weight", partialWeights.get(i) / maxPartialWeight);
+                resultList.add(tagsAndWeights);
+            }
+            return new ResponseEntity<>(resultList, HttpStatus.FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(tagRepository.findAll(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(tagsSelected, HttpStatus.CREATED);
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -304,31 +330,27 @@ public class PostService {
         return postList;
     }
 
-//    public Comparator<Post> CompareBiLikeCount = new Comparator<Post>() {
-//        @Override
-//        public int compare(Post fp, Post sp) {
-//            if (extractLikeCount(fp).equals(extractLikeCount(sp))) return 0;
-//            else if (extractLikeCount(fp) > extractLikeCount(sp)) return 1;
-//            else return -1;
-//        }
-//    };
-
     private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
-        ResponseEntity<?> responseEntity;
-
-        List<PostAnnounceResponse> listToShow = postsListResponse.getPosts();
-        var countOfPosts = listToShow.size();
-        if (countOfPosts == 0) {
-            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            if (limit <= countOfPosts) {
-                listToShow = listToShow.subList(offset, limit);
+        try {
+            ResponseEntity<?> responseEntity;
+            List<PostAnnounceResponse> responseListToShow = new ArrayList<>();
+            var countOfPosts = postsListResponse.getCount();
+            if (limit <= 0) {
+                responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else if (limit == 1) {
+                responseListToShow.add(postsListResponse.getPostAnnounceResponseList().get(0));
+                responseEntity = new ResponseEntity<>(new PostsListResponse(1, responseListToShow), HttpStatus.PARTIAL_CONTENT);
+            } else if (limit < countOfPosts) {
+                responseListToShow = postsListResponse.getPostAnnounceResponseList().subList(offset, limit-1);
+                responseEntity = new ResponseEntity<>(new PostsListResponse(postsListResponse.getCount(), responseListToShow), HttpStatus.OK);
             } else {
-                listToShow = listToShow.subList(offset, countOfPosts);
+                responseListToShow = postsListResponse.getPostAnnounceResponseList().subList(offset, countOfPosts - 1);
+                responseEntity = new ResponseEntity<>(new PostsListResponse(postsListResponse.getCount(), responseListToShow), HttpStatus.OK);
             }
-            responseEntity = new ResponseEntity<>(new PostsListResponse(getCount(), listToShow), HttpStatus.FOUND);
+            return responseEntity;
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Something goes wrong...", HttpStatus.NOT_FOUND);
         }
-        return responseEntity;
     }
 
     public Integer getCount() {
@@ -343,7 +365,7 @@ public class PostService {
     }
 
     private List<TreeMap<String, Object>> getCommentList(Integer postId) {
-        List<TreeMap<String, Object>> list = new LinkedList<>();
+        List<TreeMap<String, Object>> list = new ArrayList<>();
         TreeMap<String, Object> comments = new TreeMap<>();
         try {
             var postComment  =  commentRepository.findAll();
@@ -353,12 +375,12 @@ public class PostService {
                 treeMap.put("id", a.getCommentId());
                 treeMap.put("timestamp", a.getTime());
                 treeMap.put("text", a.getText());
-                LinkedHashMap<String, Object> map =  new LinkedHashMap<>();
-                map.put("id", a.getUserId());
-                User user = new User(a.getUserId());
-                map.put("name", user.getName());
-                map.put("photo", user.getPhoto());
-                treeMap.put("user", map);
+                LinkedHashMap<String, Object> mapUser =  new LinkedHashMap<>();
+                mapUser.put("id", a.getUserId());
+                User user = userRepository.findById(a.getUserId()).get();
+                mapUser.put("name", user.getName());
+                mapUser.put("photo", user.getPhoto());
+                treeMap.put("user", mapUser);
                 comments.putAll(treeMap);
                 list.add(comments);
             });
@@ -374,9 +396,7 @@ public class PostService {
         try{
             String userName = userRepository.findAll().stream().
                     filter(a->(a.getUserId().equals(post.getUserId()))).
-                    findAny().
-                    get().
-                    getName();
+                    findAny().get().getName();
             map.put("name", userName);
             return map;
         }

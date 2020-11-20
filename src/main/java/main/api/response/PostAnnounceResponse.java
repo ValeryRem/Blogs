@@ -65,20 +65,13 @@ public class PostAnnounceResponse {
             return viewCount;
         }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
-    }
+        public void setLikeCount(Integer likeCount) {
+            this.likeCount = likeCount;
+        }
 
-    public void setDislikeCount(Integer dislikeCount) {
-        this.dislikeCount = dislikeCount;
-    }
+        public void setDislikeCount(Integer dislikeCount) {
+            this.dislikeCount = dislikeCount;
+        }
 
-//    public CommentRepository getCommentRepository() {
-//        return commentRepository;
-//    }
-//
-//    public void setCommentRepository(CommentRepository commentRepository) {
-//        this.commentRepository = commentRepository;
-//    }
 }
 

@@ -38,8 +38,8 @@ public class MainApplication {
     private void insertTestPost1() {
         Post post1 = new Post("The 5th testing post");
         post1.setIsActive(true);
-        post1.setModerationStatus(ModerationStatus.NEW);
-        post1.setText("This is a testing text #5 to be processed by the code into announce.");
+        post1.setModerationStatus(ModerationStatus.ACCEPTED);
+        post1.setText("This is a new testing text to be processed by the code into announce #Spring");
         post1.setTime(LocalDate.now());
         post1.setUserId(1);
         post1.setViewCount(15);
@@ -50,8 +50,8 @@ public class MainApplication {
     private void insertTestPost2() {
         Post post2 = new Post("The 6th testing post");
         post2.setIsActive(true);
-        post2.setModerationStatus(ModerationStatus.DECLINED);
-        post2.setText("The second testing text #6 to be processed by the code into announce.");
+        post2.setModerationStatus(ModerationStatus.ACCEPTED);
+        post2.setText("Another testing text to be processed by the code into announce #Java");
         post2.setTime(LocalDate.of(2020, 11, 12));
         post2.setUserId(2);
         post2.setModeratorId(1);

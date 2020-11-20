@@ -14,7 +14,7 @@ public class ApiPostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/post")
+    @GetMapping("/post/")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
                                         @RequestParam(defaultValue="7") Integer limit,
@@ -29,17 +29,17 @@ public class ApiPostController {
         return postService.getPostById(postId);
     }
 
-    @GetMapping("/post/search")
-    private ResponseEntity<?> getPostBySearch (@RequestParam(required=false) String query,
+    @GetMapping("/post/search/")
+    private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue = "new testing") String query,
                                                @RequestParam(defaultValue="0") Integer offset,
-                                               @RequestParam(defaultValue="3") Integer limit,
+                                               @RequestParam(defaultValue="2") Integer limit,
                                                @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
         return postService.getPostsBySearch(query, limit, offset, mode);
     }
 
     @GetMapping("/post/byDate")
-    private ResponseEntity<?> getPostByDate (@DateTimeFormat(pattern = "YYYY-MM-dd")
+    private ResponseEntity<?> getPostsByDate (@DateTimeFormat(pattern = "YYYY-MM-dd")
                                                  @RequestParam LocalDate date,
                                              @RequestParam(defaultValue="0") Integer offset,
                                              @RequestParam(defaultValue="5") Integer limit,
@@ -49,7 +49,7 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byTag")
-    private ResponseEntity<?> getPostsByTag(@RequestParam String tagName,
+    private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "#Java") String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="1") Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
@@ -79,7 +79,7 @@ public class ApiPostController {
     }
 
     @GetMapping("/tag/")
-    private ResponseEntity<?> getTag (@RequestParam(defaultValue = "") String query) {
+    private ResponseEntity<?> getTag (@RequestParam(defaultValue = "#PHP #Spring #Java")  String query) {
         return postService.getTag(query);
     }
 }

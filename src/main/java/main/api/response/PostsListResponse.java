@@ -4,14 +4,14 @@ import java.util.List;
 
 public class PostsListResponse {
     int count;
-    List<PostAnnounceResponse> posts;
+    List<PostAnnounceResponse> postAnnounceResponseList;
 
     public PostsListResponse() {
     }
 
-    public PostsListResponse(int count, List<PostAnnounceResponse> posts) {
+    public PostsListResponse(int count, List<PostAnnounceResponse> postAnnounceResponseList) {
         this.count = count;
-        this.posts = posts;
+        this.postAnnounceResponseList = postAnnounceResponseList;
     }
 
     public int getCount() {
@@ -22,8 +22,8 @@ public class PostsListResponse {
         this.count = count;
     }
 
-    public List<PostAnnounceResponse> getPosts() {
-        return posts;
+    public List<PostAnnounceResponse> getPostAnnounceResponseList() {
+        return postAnnounceResponseList;
     }
 }
 
