@@ -50,7 +50,7 @@ public class MainApplication {
     private void insertTestPost2() {
         Post post2 = new Post("The 6th testing post");
         post2.setIsActive(true);
-        post2.setModerationStatus(ModerationStatus.ACCEPTED);
+        post2.setModerationStatus(ModerationStatus.DECLINED);
         post2.setText("Another testing text to be processed by the code into announce #Java");
         post2.setTime(LocalDate.of(2020, 11, 12));
         post2.setUserId(2);

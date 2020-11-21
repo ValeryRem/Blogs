@@ -2,11 +2,15 @@ package main.controllers;
 
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
@@ -14,6 +18,12 @@ public class ApiPostController {
     @Autowired
     private PostService postService;
 
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        dateFormat.setLenient(false);
+//        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+//    }
     @GetMapping("/post/")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
@@ -32,15 +42,15 @@ public class ApiPostController {
     @GetMapping("/post/search/")
     private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue = "new testing") String query,
                                                @RequestParam(defaultValue="0") Integer offset,
-                                               @RequestParam(defaultValue="2") Integer limit,
+                                               @RequestParam(defaultValue="4") Integer limit,
                                                @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
-        return postService.getPostsBySearch(query, limit, offset, mode);
+        return postService.getPostsBySearch(query, offset, limit, mode);
     }
 
     @GetMapping("/post/byDate")
-    private ResponseEntity<?> getPostsByDate (@DateTimeFormat(pattern = "YYYY-MM-dd")
-                                                 @RequestParam LocalDate date,
+    private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue = "2020-11-17")
+                                                  @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date,
                                              @RequestParam(defaultValue="0") Integer offset,
                                              @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
@@ -67,7 +77,7 @@ public class ApiPostController {
 
     @GetMapping("/post/moderation")
     private ResponseEntity<?> getPostsForModeration (@RequestParam(defaultValue="0") Integer offset,
-                                                     @RequestParam(defaultValue="1") Integer limit,
+                                                     @RequestParam(defaultValue="3") Integer limit,
                                                      @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsForModeration is activated.");
         return postService.getPostsForModeration(offset, limit, mode);

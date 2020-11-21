@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method get/api/tag/ set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getTag (String query) supplemented by weights.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -52,11 +52,6 @@
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/JazzMusic.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/RockMusic.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringRestValidation/spring-rest-validation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../StringSelectTesting/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../StringSelectTesting/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../StringSelectTesting/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../StringSelectTesting/StringSelectTesting.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../StringSelectTesting/out/production/StringSelectTesting/com/company/Main.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../hs_err_pid8832.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.name" afterDir="false" />
@@ -110,6 +105,7 @@
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/Storage.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/TouristController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/Tourist.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/TouristRepository.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/css/styles.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/js/main.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/templates/index.html" beforeDir="false" />
@@ -121,8 +117,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostByIdResponce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostByIdResponce.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsListResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
@@ -216,13 +210,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Doubled init.">
-      <created>1600207134056</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1600207134056</updated>
     </task>
     <task id="LOCAL-00002" summary="DB Blogs established.">
       <created>1600983886350</created>
@@ -560,7 +547,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605682716422</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Method getTag (String query) supplemented by weights.">
+      <created>1605912547361</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1605912547376</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -583,7 +577,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="insertTestPost() with SQLException: Incorrect integer value: 'NEW' for column 'moderation_status'" />
     <MESSAGE value="Method getPostByTag set up." />
     <MESSAGE value="Method getPostByTag set up &amp; developed." />
     <MESSAGE value="Storage.class deleted. Direct connect to PostRepository set up. Still SQLException exists: Field 'announce' doesn't have a default value (?)." />
@@ -608,7 +601,8 @@
     <MESSAGE value="PostService added by response setting up methods." />
     <MESSAGE value="Methods getPostsForModeration and getAuthCheck set up." />
     <MESSAGE value="Method get/api/tag/ set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method get/api/tag/ set up." />
+    <MESSAGE value="Method getTag (String query) supplemented by weights." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method getTag (String query) supplemented by weights." />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="65" key="#Inspections" timestamp="1605169734926">
@@ -623,11 +617,11 @@
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="387" y="184" key="#com.intellij.fileTypes.FileTypeChooser/0.40.1366.728@0.40.1366.728" timestamp="1603704457500" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1605648771178">
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1605975242520">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603294337364" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1605648771178" />
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1605975242520" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -640,10 +634,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="431" y="219" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1366.728@0.0.1366.728" timestamp="1602000996446" />
-    <state x="155" y="40" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605906882008">
+    <state x="155" y="40" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605944466206">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
-    <state x="155" y="40" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.40.1366.728@0.40.1366.728" timestamp="1605906882008" />
+    <state x="155" y="40" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.40.1366.728@0.40.1366.728" timestamp="1605944466206" />
     <state x="346" y="88" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1603716214267">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
@@ -654,46 +648,46 @@
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
     <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
-    <state width="1309" height="397" key="GridCell.Tab.0.bottom" timestamp="1605912206972">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1605990247006">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="397" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1605912206972" />
-    <state width="1309" height="397" key="GridCell.Tab.0.center" timestamp="1605912206971">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1605990247006" />
+    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1605990247006">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="397" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1605912206971" />
-    <state width="1309" height="397" key="GridCell.Tab.0.left" timestamp="1605912206971">
+    <state width="1309" height="356" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1605990247006" />
+    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1605990247006">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="397" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1605912206971" />
-    <state width="1309" height="397" key="GridCell.Tab.0.right" timestamp="1605912206971">
+    <state width="1309" height="356" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1605990247006" />
+    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1605990247006">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="397" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1605912206971" />
-    <state width="1309" height="472" key="GridCell.Tab.1.bottom" timestamp="1605769405111">
+    <state width="1309" height="356" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1605990247006" />
+    <state width="1309" height="472" key="GridCell.Tab.1.bottom" timestamp="1605942736587">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="356" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
-    <state width="1309" height="472" key="GridCell.Tab.1.bottom/0.40.1366.728@0.40.1366.728" timestamp="1605769405111" />
-    <state width="1309" height="472" key="GridCell.Tab.1.center" timestamp="1605769405111">
+    <state width="1309" height="472" key="GridCell.Tab.1.bottom/0.40.1366.728@0.40.1366.728" timestamp="1605942736587" />
+    <state width="1309" height="472" key="GridCell.Tab.1.center" timestamp="1605942736586">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="356" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
-    <state width="1309" height="472" key="GridCell.Tab.1.center/0.40.1366.728@0.40.1366.728" timestamp="1605769405111" />
-    <state width="1309" height="472" key="GridCell.Tab.1.left" timestamp="1605769405110">
+    <state width="1309" height="472" key="GridCell.Tab.1.center/0.40.1366.728@0.40.1366.728" timestamp="1605942736586" />
+    <state width="1309" height="472" key="GridCell.Tab.1.left" timestamp="1605942736586">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="356" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1602792443930" />
-    <state width="1309" height="472" key="GridCell.Tab.1.left/0.40.1366.728@0.40.1366.728" timestamp="1605769405110" />
-    <state width="1309" height="472" key="GridCell.Tab.1.right" timestamp="1605769405111">
+    <state width="1309" height="472" key="GridCell.Tab.1.left/0.40.1366.728@0.40.1366.728" timestamp="1605942736586" />
+    <state width="1309" height="472" key="GridCell.Tab.1.right" timestamp="1605942736587">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="356" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1602792443931" />
-    <state width="1309" height="472" key="GridCell.Tab.1.right/0.40.1366.728@0.40.1366.728" timestamp="1605769405111" />
+    <state width="1309" height="472" key="GridCell.Tab.1.right/0.40.1366.728@0.40.1366.728" timestamp="1605942736587" />
     <state x="452" y="327" key="ReplaceDuplicatesPrompt" timestamp="1603973500887">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
@@ -703,11 +697,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1605682730251">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1605912563640">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1605682730251" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1605912563640" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

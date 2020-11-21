@@ -18,7 +18,7 @@ public class Post {
 
     @Column(name ="moderation_status")
     @Enumerated(EnumType.STRING)
-    private ModerationStatus moderationStatus = ModerationStatus.NEW;
+    private ModerationStatus moderationStatus;
 
     @Column(name ="moderator_id")
     private Integer moderatorId;
@@ -139,7 +139,7 @@ public class Post {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setActive(boolean activityMode) {
+        isActive = activityMode;
     }
 }
