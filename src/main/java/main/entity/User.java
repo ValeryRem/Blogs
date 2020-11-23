@@ -3,7 +3,6 @@ package main.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.net.URL;
 import java.time.LocalDate;
 
 @Entity
@@ -28,7 +27,7 @@ public class User {
     private String email;
     private String password;
     private String code;
-    private URL photo;
+    private String photo;
 
     public User() {
     }
@@ -93,11 +92,11 @@ public class User {
         this.code = code;
     }
 
-    public URL getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(URL photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 }

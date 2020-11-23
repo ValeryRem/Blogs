@@ -401,11 +401,11 @@ public class PostService {
                     filter(a->(a.getUserId().equals(post.getUserId()))).
                     findAny().get().getName();
             map.put("name", userName);
-            return map;
         }
         catch (Exception ex) {
-            return map;
+            ex.printStackTrace();
         }
+        return map;
     }
 
     private Integer extractLikeCount(Post post) {

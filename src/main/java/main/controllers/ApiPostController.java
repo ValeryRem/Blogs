@@ -2,15 +2,10 @@ package main.controllers;
 
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
@@ -18,12 +13,6 @@ public class ApiPostController {
     @Autowired
     private PostService postService;
 
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        dateFormat.setLenient(false);
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-//    }
     @GetMapping("/post/")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
@@ -83,10 +72,6 @@ public class ApiPostController {
         return postService.getPostsForModeration(offset, limit, mode);
     }
 
-    @GetMapping("/auth/check")
-    private ResponseEntity<?> getAuthCheck (@RequestParam(defaultValue="2") Integer userId) {
-        return postService.getAuthCheck(userId);
-    }
 
     @GetMapping("/tag/")
     private ResponseEntity<?> getTag (@RequestParam(defaultValue = "#PHP #Spring #Java")  String query) {
