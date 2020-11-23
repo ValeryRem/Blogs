@@ -1,5 +1,6 @@
 package main.controllers;
 
+import main.api.response.ResultResponse;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,15 @@ public class ApiAuthController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/check")
-    private ResponseEntity<?> getAuthCheck (@RequestParam(defaultValue="2") Integer userId) {
-        return postService.getAuthCheck(userId);
+    @GetMapping("check")
+    private ResponseEntity<?> getAuthCheck () {
+        return ResponseEntity.ok(new ResultResponse(false));
     }
+
+//    @GetMapping("/check")
+//    private ResponseEntity<?> getAuthCheck (@RequestParam(defaultValue="1") Integer userId) {
+//        return postService.getAuthCheck(userId);
+//    }
 
 }
 

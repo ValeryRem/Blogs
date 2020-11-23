@@ -71,11 +71,5 @@ public class ApiPostController {
         System.out.println("Method getPostsForModeration is activated.");
         return postService.getPostsForModeration(offset, limit, mode);
     }
-
-
-    @GetMapping("/tag/")
-    private ResponseEntity<?> getTag (@RequestParam(defaultValue = "#PHP #Spring #Java")  String query) {
-        return postService.getTag(query);
-    }
 }
 

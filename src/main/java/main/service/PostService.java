@@ -155,7 +155,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-        getAuthCheck(myUserId);
+//        getAuthCheck(myUserId);
         if (result) {
             ResponseEntity<?> responseEntity;
             var posts = getPostList();
@@ -253,25 +253,25 @@ public class PostService {
         }
     }
 
-    public ResponseEntity<?> getAuthCheck (Integer userId) {
-        User u = userRepository.getOne(userId);
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", userId);
-        map.put("name", u.getName());
-        map.put("photo", u.getPhoto());
-        map.put("email", u.getEmail());
-        map.put("moderation", u.getIsModerator());
-        map.put("moderationCount", getModerationCount(u));
-        map.put("settings", u.getIsModerator());
-        result = u.getIsModerator();
-
-        if (result) {
-            var authCheckResponse = new AuthCheckResponse(result, map);
-            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    public ResponseEntity<?> getAuthCheck (Integer userId) {
+//        User u = userRepository.getOne(userId);
+//        TreeMap<String, Object> map = new TreeMap<>();
+//        map.put("id", userId);
+//        map.put("name", u.getName());
+//        map.put("photo", u.getPhoto());
+//        map.put("email", u.getEmail());
+//        map.put("moderation", u.getIsModerator());
+//        map.put("moderationCount", getModerationCount(u));
+//        map.put("settings", u.getIsModerator());
+//        result = u.getIsModerator();
+//
+//        if (result) {
+//            var authCheckResponse = new AuthCheckResponse(result, map);
+//            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
+//        } else {
+//            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
     private Integer getModerationCount (User user) {
         if (user.getIsModerator()) {
