@@ -397,10 +397,8 @@ public class PostService {
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("id", post.getUserId());
         try{
-            String userName = userRepository.findAll().stream().
-                    filter(a->(a.getUserId().equals(post.getUserId()))).
-                    findAny().get().getName();
-            map.put("name", userName);
+           User user  = userRepository.getOne(post.getUserId());
+           map.put("name", user.getName());
         }
         catch (Exception ex) {
             ex.printStackTrace();
