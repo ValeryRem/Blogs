@@ -52,8 +52,8 @@ public class MainApplication {
         post2.setIsActive(true);
         post2.setModerationStatus(ModerationStatus.DECLINED);
         post2.setText("Another testing text to be processed by the code into announce #Java");
-        post2.setTime(LocalDate.of(2020, 11, 12));
-        post2.setUserId(2);
+        post2.setTime(LocalDate.of(2020, 10, 12));
+        post2.setUserId(1);
         post2.setModeratorId(1);
         post2.setViewCount(11);
         postRepository.save(post2);

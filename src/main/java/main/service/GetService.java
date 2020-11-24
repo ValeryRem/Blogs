@@ -345,7 +345,7 @@ public class GetService {
                     reduce((left, right) -> left + right).
                     get();
             map.put("viewsCount", viewMyPostsCount);
-            List<LocalDate> localDates =  postRepository.findAll().stream().
+            List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
                     map(p -> p.getTime()).collect(Collectors.toList());
             LocalDate minLocalDate = localDates.stream()
                     .min( Comparator.comparing( LocalDate::toEpochDay ))
