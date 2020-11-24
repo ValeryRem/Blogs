@@ -8,12 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class PostService {
+public class GetService {
     private Integer tagId;
 
     @Autowired
@@ -37,7 +39,7 @@ public class PostService {
 
     private boolean result;
 
-    public PostService() {
+    public GetService() {
     }
 
     private List<Post> getPostList() {
@@ -222,7 +224,7 @@ public class PostService {
             }
             return new ResponseEntity<>(postByIdResponce, HttpStatus.FOUND);
         } catch (Exception ex) {
-            System.err.println("Что-то пошло не так...");
+            ex.printStackTrace();
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
     }
@@ -253,25 +255,25 @@ public class PostService {
         }
     }
 
-//    public ResponseEntity<?> getAuthCheck (Integer userId) {
-//        User u = userRepository.getOne(userId);
-//        TreeMap<String, Object> map = new TreeMap<>();
-//        map.put("id", userId);
-//        map.put("name", u.getName());
-//        map.put("photo", u.getPhoto());
-//        map.put("email", u.getEmail());
-//        map.put("moderation", u.getIsModerator());
-//        map.put("moderationCount", getModerationCount(u));
-//        map.put("settings", u.getIsModerator());
-//        result = u.getIsModerator();
-//
-//        if (result) {
-//            var authCheckResponse = new AuthCheckResponse(result, map);
-//            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
-//        } else {
-//            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
-//        }
-//    }
+    public ResponseEntity<?> getAuthCheck (Integer userId) {
+        User u = userRepository.getOne(userId);
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put("id", userId);
+        map.put("name", u.getName());
+        map.put("photo", u.getPhoto());
+        map.put("email", u.getEmail());
+        map.put("moderation", u.getIsModerator());
+        map.put("moderationCount", getModerationCount(u));
+        map.put("settings", u.getIsModerator());
+        result = u.getIsModerator();
+
+        if (result) {
+            var authCheckResponse = new AuthCheckResponse(result, map);
+            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
+        }
+    }
 
     private Integer getModerationCount (User user) {
         if (user.getIsModerator()) {
@@ -312,8 +314,49 @@ public class PostService {
             }
             return new ResponseEntity<>(resultList, HttpStatus.FOUND);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>(tagRepository.findAll(), HttpStatus.OK);
         }
+    }
+
+    public ResponseEntity<?> getMyStatistics (Integer userId) {
+        User user = userRepository.getOne(userId);
+        result = user.getIsModerator();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        ResponseEntity<?> responseEntity;
+        if (result) {
+            int myPostsCount = (int) postRepository.findAll().stream().
+                    filter(a -> a.getUserId().equals(userId)).
+                    count();
+            map.put("postsCount", myPostsCount);
+            int myPostsLikeCount = (int) postVoteRepository.findAll().stream().
+                    filter(p -> p.getUserId().equals(userId) && p.getValue() == 1).
+                    count();
+            map.put("likesCount", myPostsLikeCount);
+            int myPostsDislikeCount = (int) postVoteRepository.findAll().stream().
+                    filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
+                    count();
+            map.put("disLikesCount", myPostsDislikeCount);
+            List<Integer> list = postRepository.findAll().stream().
+                    map(p -> p.getViewCount()).
+                    collect(Collectors.toList());
+
+            int viewMyPostsCount = list.stream().
+                    reduce((left, right) -> left + right).
+                    get();
+            map.put("viewsCount", viewMyPostsCount);
+            List<LocalDate> localDates =  postRepository.findAll().stream().
+                    map(p -> p.getTime()).collect(Collectors.toList());
+            LocalDate minLocalDate = localDates.stream()
+                    .min( Comparator.comparing( LocalDate::toEpochDay ))
+                    .get();
+//            Timestamp timestampMin = Timestamp.valueOf(minLocalDate.atTime(LocalTime.MIDNIGHT));
+            map.put("firstPublication", minLocalDate);
+            responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
+        }
+        return responseEntity;
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -352,6 +395,7 @@ public class PostService {
             }
             return responseEntity;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>("Something goes wrong...", HttpStatus.NOT_FOUND);
         }
     }
@@ -389,6 +433,7 @@ public class PostService {
             });
             return list;
         } catch (NullPointerException npe) {
+            npe.printStackTrace();
             return list;
         }
     }
@@ -409,9 +454,12 @@ public class PostService {
     private Integer extractLikeCount(Post post) {
         try {
             var list = postVoteRepository.findAll();
-            var listVotes = list.stream().filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == 1).collect(Collectors.toList());
+            var listVotes = list.stream().
+                    filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == 1).
+                    collect(Collectors.toList());
             return listVotes.size();
         } catch (NullPointerException ex) {
+            ex.printStackTrace();
             return 0;
         }
     }

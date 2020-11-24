@@ -2,7 +2,7 @@ package main.controllers;
 
 import main.api.response.InitResponse;
 import main.api.response.SettingsResponse;
-import main.service.PostService;
+import main.service.GetService;
 import main.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class ApiGeneralController {
     private final SettingsService settingsService;
     private final InitResponse initResponse;
     @Autowired
-    private PostService postService;
+    private GetService getService;
 
 
     public ApiGeneralController(SettingsService settingsService, InitResponse initResponse) {
@@ -36,9 +36,13 @@ public class ApiGeneralController {
         return initResponse;
     }
 
-    @GetMapping("/tag/")
+    @GetMapping("/tag")
     private ResponseEntity<?> getTag (@RequestParam(defaultValue = "#PHP #Spring #Java")  String query) {
-        return postService.getTag(query);
+        return getService.getTag(query);
     }
 
+    @GetMapping("/statistics/my")
+    private ResponseEntity <?> getMyStatistics (@RequestParam(defaultValue = "1") Integer userId) {
+        return getService.getMyStatistics(userId);
+    }
 }
