@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -338,20 +340,21 @@ public class GetService {
                     count();
             map.put("disLikesCount", myPostsDislikeCount);
             List<Integer> list = postRepository.findAll().stream().
-                    map(p -> p.getViewCount()).
+                    map(Post::getViewCount).
                     collect(Collectors.toList());
 
             int viewMyPostsCount = list.stream().
-                    reduce((left, right) -> left + right).
+                    reduce(Integer::sum).
                     get();
             map.put("viewsCount", viewMyPostsCount);
             List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-                    map(p -> p.getTime()).collect(Collectors.toList());
+                    map(Post::getTime).collect(Collectors.toList());
             LocalDate minLocalDate = localDates.stream()
                     .min( Comparator.comparing( LocalDate::toEpochDay ))
                     .get();
-//            Timestamp timestampMin = Timestamp.valueOf(minLocalDate.atTime(LocalTime.MIDNIGHT));
-            map.put("firstPublication", minLocalDate);
+            ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
+            long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
+            map.put("firstPublication", epoch);
             responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
