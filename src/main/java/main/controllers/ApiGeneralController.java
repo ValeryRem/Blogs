@@ -45,4 +45,9 @@ public class ApiGeneralController {
     private ResponseEntity <?> getMyStatistics (@RequestParam(defaultValue = "1") Integer userId) {
         return getService.getMyStatistics(userId);
     }
+
+    @GetMapping("/statistics/all")
+    private ResponseEntity <?> getAllStatistics () {
+        return getService.getAllStatistics ();
+    }
 }

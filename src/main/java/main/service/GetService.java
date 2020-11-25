@@ -324,42 +324,72 @@ public class GetService {
     public ResponseEntity<?> getMyStatistics (Integer userId) {
         User user = userRepository.getOne(userId);
         result = user.getIsModerator();
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> map;// = new LinkedHashMap<>();
         ResponseEntity<?> responseEntity;
         if (result) {
-            int myPostsCount = (int) postRepository.findAll().stream().
-                    filter(a -> a.getUserId().equals(userId)).
-                    count();
-            map.put("postsCount", myPostsCount);
-            int myPostsLikeCount = (int) postVoteRepository.findAll().stream().
-                    filter(p -> p.getUserId().equals(userId) && p.getValue() == 1).
-                    count();
-            map.put("likesCount", myPostsLikeCount);
-            int myPostsDislikeCount = (int) postVoteRepository.findAll().stream().
-                    filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
-                    count();
-            map.put("disLikesCount", myPostsDislikeCount);
-            List<Integer> list = postRepository.findAll().stream().
-                    map(Post::getViewCount).
-                    collect(Collectors.toList());
-
-            int viewMyPostsCount = list.stream().
-                    reduce(Integer::sum).
-                    get();
-            map.put("viewsCount", viewMyPostsCount);
-            List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-                    map(Post::getTime).collect(Collectors.toList());
-            LocalDate minLocalDate = localDates.stream()
-                    .min( Comparator.comparing( LocalDate::toEpochDay ))
-                    .get();
-            ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
-            long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
-            map.put("firstPublication", epoch);
+            map = getUserStatistics(userId);
             responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
+    }
+
+    private LinkedHashMap<String, Object> getUserStatistics(Integer userId) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        int myPostsCount = (int) postRepository.findAll().stream().
+                filter(a -> a.getUserId().equals(userId)).
+                count();
+        map.put("postsCount", myPostsCount);
+        int myPostsLikeCount = (int) postVoteRepository.findAll().stream().
+                filter(p -> p.getUserId().equals(userId) && p.getValue() == 1).
+                count();
+        map.put("likesCount", myPostsLikeCount);
+        int myPostsDislikeCount = (int) postVoteRepository.findAll().stream().
+                filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
+                count();
+        map.put("disLikesCount", myPostsDislikeCount);
+        List<Integer> list = postRepository.findAllById(Collections.singleton(userId)).stream().
+                map(Post::getViewCount).
+                collect(Collectors.toList());
+
+        int viewMyPostsCount = list.stream().
+                reduce(Integer::sum).
+                get();
+        map.put("viewsCount", viewMyPostsCount);
+        List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+                map(Post::getTime).collect(Collectors.toList());
+        LocalDate minLocalDate = localDates.stream()
+                .min( Comparator.comparing( LocalDate::toEpochDay ))
+                .get();
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
+        long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
+        map.put("firstPublication", epoch);
+        return map;
+    }
+
+    public ResponseEntity<?> getAllStatistics () {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("postsCount", getCount());
+        int likeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == 1).count();
+        map.put("likesCount", likeCount);
+        int disLikeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == -1).count();
+        map.put("disLkesCount", disLikeCount);
+        List<Integer> list = postRepository.findAll().stream().
+                map(Post::getViewCount).
+                collect(Collectors.toList());
+        int viewCount = list.stream().reduce(Integer::sum).get();
+        map.put("viewsCount", viewCount);
+        List<LocalDate> localDates =  postRepository.findAll().stream().
+                map(Post::getTime).collect(Collectors.toList());
+        LocalDate minLocalDate = localDates.stream()
+                .min( Comparator.comparing( LocalDate::toEpochDay ))
+                .get();
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
+        long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
+        map.put("firstPublication", epoch);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
