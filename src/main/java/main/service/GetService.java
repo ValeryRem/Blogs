@@ -270,10 +270,10 @@ public class GetService {
         result = u.getIsModerator();
 
         if (result) {
-            var authCheckResponse = new AuthCheckResponse(result, map);
+            var authCheckResponse = new AuthCheckResponse(true, map);
             return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
         } else {
-            return new ResponseEntity<>("result:" + result, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("result:" + false, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -324,7 +324,7 @@ public class GetService {
     public ResponseEntity<?> getMyStatistics (Integer userId) {
         User user = userRepository.getOne(userId);
         result = user.getIsModerator();
-        LinkedHashMap<String, Object> map;// = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> map;
         ResponseEntity<?> responseEntity;
         if (result) {
             map = getUserStatistics(userId);

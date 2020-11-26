@@ -1,6 +1,7 @@
 package main.controllers;
 
 import main.service.GetService;
+import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import java.time.LocalDate;
 public class ApiPostController {
     @Autowired
     private GetService getService;
+
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/post")
     @ResponseBody
@@ -72,5 +76,11 @@ public class ApiPostController {
         return getService.getPostsForModeration(offset, limit, mode);
     }
 
+    @PostMapping("/auth/login")
+    private ResponseEntity<?> checkAuthLogin(@RequestParam(defaultValue="eee@jjj.hj") String userEmail,
+                                             @RequestParam(defaultValue="pw1") String userPassword) {
+        System.out.println("Method checkAuthLogin is activated.");
+        return postService.checkAuthLogin(userEmail, userPassword);
+    }
 }
 
