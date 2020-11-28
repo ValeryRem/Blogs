@@ -384,23 +384,22 @@ public class GetService {
     public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
         List<Integer> years;
         List<LocalDate> dates;
-        LinkedHashMap<LocalDate, Integer> map;
-        List<LinkedHashMap<LocalDate, Integer>> posts = new ArrayList<>();
+        LinkedHashMap<LocalDate, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
         List<Post> postsList = postRepository.findAll();
         postsList.sort(Comparator.comparing(Post::getTime));
+        years = postsList.stream().map(p -> p.getTime().getYear()).
+                distinct().
+                collect(Collectors.toList());
         if (year.isPresent()) {
-            years = postsList.stream().map(p -> p.getTime().getYear()).
-                    distinct().
-                    collect(Collectors.toList());
-            dates = postsList.stream().
+            dates = postRepository.findAll().stream().
+                    filter(p -> p.getTime().getYear() == year.get()).
                     map(Post::getTime).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
-            years = Collections.singletonList(currentYear);
-            dates = postRepository.findAll().stream().
+            dates = postsList.stream().
                     filter(p -> p.getTime().getYear() == currentYear).
                     map(Post::getTime).
                     distinct().
@@ -408,10 +407,8 @@ public class GetService {
         }
             dates.sort(Comparator.comparing(LocalDate::getChronology));
             for (LocalDate d : dates) {
-                map = new LinkedHashMap<>();
                 postCountAtDate = (int) postsList.stream().filter(p -> p.getTime().equals(d)).count();
-                map.put(d, postCountAtDate);
-                posts.add(map);
+                posts.put(d, postCountAtDate);
         }
         CalendarResponse calendarResponse = new CalendarResponse(years, posts);
         return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
