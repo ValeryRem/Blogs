@@ -8,13 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 @Service
 public class GetService {
@@ -58,7 +57,7 @@ public class GetService {
         for (Post post : postListSorted) {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
             var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                    post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
+                    post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
             postAnnounceResponse.setLikeCount(extractLikeCount(post));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
             responseList.add(postAnnounceResponse);
@@ -77,23 +76,13 @@ public class GetService {
                 map(p -> {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(p.getPostId())).count();
             var postAnnounceResponse =  new PostAnnounceResponse(p.getPostId(), p.getTime(),
-                    p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUser(p));
+                    p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUserOfPost(p));
             postAnnounceResponse.setLikeCount(extractLikeCount(p));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(p));
             return postAnnounceResponse;
         }).
                 collect(Collectors.toList());
 
-//        for (Post post : sortedPosts) {
-//            if (post.getText().contains(query)) {
-//                int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
-//                var postAnnounceResponse =  new PostAnnounceResponse(post.getPostId(), post.getTime(),
-//                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
-//                postAnnounceResponse.setLikeCount(extractLikeCount(post));
-//                postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
-//                responseList.add(postAnnounceResponse);
-//            }
-//        }
         var postsListResponse = new PostsListResponse(responseList.size(), responseList);
         System.out.println("postsByQueryCount: " + responseList.size());// Testing printout
         return  getResponseEntity(postsListResponse, offset, limit);
@@ -111,7 +100,7 @@ public class GetService {
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
                 posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
+                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
         }
         if (posts.size() == 0) {
@@ -149,7 +138,7 @@ public class GetService {
                         collect(Collectors.toList());
                 int commentCountByPost = commenstByPost.size();
                 postsList.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post)));
+                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
             responseEntity = getResponseEntity(new PostsListResponse(sortedPosts.size(), postsList), offset, limit);
         } catch (Exception ex) {
@@ -175,7 +164,7 @@ public class GetService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
                 {
                     myPostResponce = new MyPostResponce(post);
-                    myPostResponce.setUser(getUser(post));
+                    myPostResponce.setUser(getUserOfPost(post));
                     myPostResponce.setLikeCount(extractLikeCount(post));
                     myPostResponce.setDislikeCount(extractDislikeCount(post));
                     myPostsList.add(myPostResponce);
@@ -205,7 +194,7 @@ public class GetService {
             var post = postRepository.getOne(postId);
             var postByIdResponce = new PostByIdResponce(post);
             postByIdResponce.setCommentList(getCommentList(postId));
-            postByIdResponce.setUser(getUser(post));
+            postByIdResponce.setUser(getUserOfPost(post));
             postByIdResponce.setLikeCount(extractLikeCount(post));
             postByIdResponce.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
@@ -247,7 +236,7 @@ public class GetService {
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
                 var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUser(post));
+                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
                 postAnnounceResponse.setLikeCount(extractLikeCount(post));
                 postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
                 posts.add(postAnnounceResponse);
@@ -385,11 +374,47 @@ public class GetService {
         LocalDate minLocalDate = localDates.stream()
                 .min( Comparator.comparing( LocalDate::toEpochDay ))
                 .get();
-        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
         long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
         map.put("firstPublication", epoch);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
+        List<Integer> years;
+        List<LocalDate> dates;
+        LinkedHashMap<LocalDate, Integer> map;
+        List<LinkedHashMap<LocalDate, Integer>> posts = new ArrayList<>();
+        int postCountAtDate;
+        List<Post> postsList = postRepository.findAll();
+        postsList.sort(Comparator.comparing(Post::getTime));
+        if (year.isPresent()) {
+            years = postsList.stream().map(p -> p.getTime().getYear()).
+                    distinct().
+                    collect(Collectors.toList());
+            dates = postsList.stream().
+                    map(Post::getTime).
+                    distinct().
+                    collect(Collectors.toList());
+        } else {
+            int currentYear = LocalDate.now().getYear();
+            years = Collections.singletonList(currentYear);
+            dates = postRepository.findAll().stream().
+                    filter(p -> p.getTime().getYear() == currentYear).
+                    map(Post::getTime).
+                    distinct().
+                    collect(Collectors.toList());
+        }
+            dates.sort(Comparator.comparing(LocalDate::getChronology));
+            for (LocalDate d : dates) {
+                map = new LinkedHashMap<>();
+                postCountAtDate = (int) postsList.stream().filter(p -> p.getTime().equals(d)).count();
+                map.put(d, postCountAtDate);
+                posts.add(map);
+        }
+        CalendarResponse calendarResponse = new CalendarResponse(years, posts);
+        return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
@@ -471,7 +496,7 @@ public class GetService {
         }
     }
 
-    private TreeMap<String, Object>  getUser (Post post){
+    private TreeMap<String, Object> getUserOfPost(Post post){
         TreeMap<String, Object> map = new TreeMap<>();
         map.put("id", post.getUserId());
         try{

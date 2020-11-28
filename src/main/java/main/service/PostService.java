@@ -26,12 +26,12 @@ public class PostService {
     public ResponseEntity<?> checkAuthLogin(String userEmail, String userPassword) {
         boolean result;
         ResponseEntity<?> responseEntity;
-        List<User> users = userRepository.findAll();
+        List<User> userList = userRepository.findAll();
         List<Object> resultList = new ArrayList<>();
         LinkedHashMap<String, Object> user = new LinkedHashMap<>();
         int moderationCount;
         try {
-            User us = users.stream().filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).findAny().get();
+            User us = userList.stream().filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).findAny().get();
             result = true;
             resultList.add(result);
             user.put("id", us.getUserId());

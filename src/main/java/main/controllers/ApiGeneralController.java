@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api")
 public class ApiGeneralController {
@@ -49,5 +51,10 @@ public class ApiGeneralController {
     @GetMapping("/statistics/all")
     private ResponseEntity <?> getAllStatistics () {
         return getService.getAllStatistics ();
+    }
+
+    @GetMapping("/calendar/")
+    private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2018")Optional<Integer> year) {
+        return getService.getApiCalendar (year);
     }
 }
