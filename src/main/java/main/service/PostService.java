@@ -1,14 +1,18 @@
 package main.service;
 
 import main.entity.ModerationStatus;
+import main.entity.Session;
 import main.entity.User;
 import main.repository.PostRepository;
+import main.repository.SessionRepository;
 import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,15 +27,19 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
-    public ResponseEntity<?> checkAuthLogin(String userEmail, String userPassword) {
-        boolean result;
+    @Autowired
+    SessionRepository sessionRepository;
+
+    public ResponseEntity<?> checkAuthLogin (String userEmail, String userPassword) {
+        boolean result = false;
         ResponseEntity<?> responseEntity;
         List<User> userList = userRepository.findAll();
         List<Object> resultList = new ArrayList<>();
         LinkedHashMap<String, Object> user = new LinkedHashMap<>();
         int moderationCount;
+        User us;
         try {
-            User us = userList.stream().filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).findAny().get();
+             us = userList.stream().filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).findAny().get();
             result = true;
             resultList.add(result);
             user.put("id", us.getUserId());
@@ -49,10 +57,16 @@ public class PostService {
             user.put("moderationCount", moderationCount);
             user.put("settings", "true");
             resultList.add(user);
+            LocalDate date = LocalDate.now();
+            ZoneId zoneId = ZoneId.systemDefault();
+            long epoch = date.atStartOfDay().atZone(zoneId).toEpochSecond();
+            String sessionTime = epoch + "";
+            Session session = new Session(sessionTime, us.getUserId());
+            sessionRepository.save(session)
             responseEntity = new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
-            responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

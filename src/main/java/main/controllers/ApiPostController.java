@@ -82,5 +82,11 @@ public class ApiPostController {
         System.out.println("Method checkAuthLogin is activated.");
         return postService.checkAuthLogin(userEmail, userPassword);
     }
+
+    @GetMapping("/auth/logout")
+    private ResponseEntity<?> getAuthLogout (@RequestParam(defaultValue="1")Integer userId) {
+        System.out.println("Method getAuthLogout is activated.");
+        return getService.getAuthLogout(userId);
+    }
 }
 

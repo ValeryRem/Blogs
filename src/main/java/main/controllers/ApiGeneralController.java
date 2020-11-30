@@ -54,7 +54,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/calendar/")
-    private ResponseEntity <?> getApiCalendar (/*@RequestParam(defaultValue = "2018")*/Optional<Integer> year) {
+    private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2017") Optional<Integer> year) {
         return getService.getApiCalendar (year);
     }
 }

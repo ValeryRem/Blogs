@@ -37,8 +37,11 @@ public class GetService {
     @Autowired
     PostVoteRepository postVoteRepository;
 
+    @Autowired
+    SessionRepository sessionRepository;
 
-    private boolean result;
+
+    private boolean result = false;
 
     public GetService() {
     }
@@ -349,9 +352,9 @@ public class GetService {
         List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
                 map(Post::getTime).collect(Collectors.toList());
         LocalDate minLocalDate = localDates.stream()
-                .min( Comparator.comparing( LocalDate::toEpochDay ))
+                .min(Comparator.comparing(LocalDate::toEpochDay))
                 .get();
-        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId..systemDefault();
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
         long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
         map.put("firstPublication", epoch);
         return map;
@@ -412,6 +415,15 @@ public class GetService {
         }
         CalendarResponse calendarResponse = new CalendarResponse(years, posts);
         return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAuthLogout (Integer userId) {
+        User user = userRepository.getOne(userId);
+        if (user.getIsModerator() && !sessionRepository.getOne(userId).getSession().isEmpty()) {
+            sessionRepository.getOne(userId).getSession().clear();
+        }
+        result = true;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
