@@ -12,7 +12,7 @@ public class CaptchaCode {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Time of release is mandatory")
-    private LocalDate time;
+    private long time;
     @NotBlank(message = "Capture code is mandatory")
     private String code;
     @NotBlank(message = "Secret code is mandatory")
@@ -30,11 +30,11 @@ public class CaptchaCode {
         this.id = id;
     }
 
-    public LocalDate getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(LocalDate time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

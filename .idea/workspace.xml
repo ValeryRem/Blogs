@@ -19,13 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="AuthController class set up, auth-methods updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getCaptcha set up for GET/api/auth/captcha.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/captcha.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -117,14 +115,10 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/captcha.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,13 +206,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00015" summary="ApiPostController development: getPosts() &amp; getPostBySearch() with @RequestParam.">
-      <created>1602886248209</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1602886248209</updated>
     </task>
     <task id="LOCAL-00016" summary="Method getPostByDate added to ApiPostController, processPosts added to PostService.">
       <created>1602956740547</created>
@@ -556,7 +543,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606825167751</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Method getCaptcha set up for GET/api/auth/captcha.">
+      <created>1606853063212</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1606853063212</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -579,7 +573,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="PostAnnounceResponse refilled by getters." />
     <MESSAGE value="Method getMyPosts is set up." />
     <MESSAGE value="Set up of insertTestComment() in init()." />
     <MESSAGE value="Using extended JpaRepository for UserRepository and PostRepository." />
@@ -604,7 +597,8 @@
     <MESSAGE value="Upd 1 to method of request GET /api/calendar/ ." />
     <MESSAGE value="Method getAuthLogout for GET /api/auth/logout set up." />
     <MESSAGE value="AuthController class set up, auth-methods updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="AuthController class set up, auth-methods updated." />
+    <MESSAGE value="Method getCaptcha set up for GET/api/auth/captcha." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method getCaptcha set up for GET/api/auth/captcha." />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="65" key="#Inspections" timestamp="1605169734926">
@@ -654,26 +648,26 @@
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
     <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1606851197145">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1606855420005">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
-    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1606851197145">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1606855420005" />
+    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1606855420004">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
-    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1606851197145">
+    <state width="1309" height="356" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1606855420004" />
+    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1606855420004">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="356" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
-    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1606851197145">
+    <state width="1309" height="356" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1606855420004" />
+    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1606855420004">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
+    <state width="1309" height="356" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1606855420004" />
     <state width="1309" height="472" key="GridCell.Tab.1.bottom" timestamp="1605942736587">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
@@ -703,11 +697,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606825175632">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606853074160">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606825175632" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606853074160" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

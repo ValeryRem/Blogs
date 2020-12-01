@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -146,6 +148,17 @@ public class AuthSevice {
         map.put("secret", secretCode);
         map.put("image", "data:image/png;base64, " + code);
         captcha.setCode(code);
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        long time = LocalDate.now().atStartOfDay().atZone(zoneId).toEpochSecond();
+        captcha.setTime(time);
+        captchaRepository.save(captcha);
+        List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
+                filter(c -> c.getTime() < (time - 3600)).
+                collect(Collectors.toList());
+        for (CaptchaCode c: captchasOld) {
+            captchaRepository.delete(c);
+        }
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
