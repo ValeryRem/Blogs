@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -31,6 +32,8 @@ public class GetService {
     @Autowired
     private UserRepository userRepository;
 
+    HttpSession session;
+
     @Autowired
     CommentRepository commentRepository;
 
@@ -38,8 +41,7 @@ public class GetService {
     PostVoteRepository postVoteRepository;
 
     @Autowired
-    SessionRepository sessionRepository;
-
+    AuthSevice authSevice;
 
     private boolean result = false;
 
@@ -73,7 +75,7 @@ public class GetService {
         var postList = getPostList();
         var sortedPosts = getSortedPosts(postList, mode);
         var commentList = commentRepository.findAll();
-        List<PostAnnounceResponse> responseList;// = new ArrayList<>();
+        List<PostAnnounceResponse> responseList;
         responseList = sortedPosts.stream().
                 filter(p -> p.getText().contains(query)).
                 map(p -> {
@@ -249,37 +251,7 @@ public class GetService {
         }
     }
 
-    public ResponseEntity<?> getAuthCheck (Integer userId) {
-        User u = userRepository.getOne(userId);
-        TreeMap<String, Object> map = new TreeMap<>();
-        map.put("id", userId);
-        map.put("name", u.getName());
-        map.put("photo", u.getPhoto());
-        map.put("email", u.getEmail());
-        map.put("moderation", u.getIsModerator());
-        map.put("moderationCount", getModerationCount(u));
-        map.put("settings", u.getIsModerator());
-        result = u.getIsModerator();
 
-        if (result) {
-            var authCheckResponse = new AuthCheckResponse(true, map);
-            return new ResponseEntity<>(authCheckResponse, HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity<>("result:" + false, HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    private Integer getModerationCount (User user) {
-        if (user.getIsModerator()) {
-            var list = getPostList().stream().
-                    filter(a -> (a.getModerationStatus().equals(ModerationStatus.NEW))).
-                    collect(Collectors.toList());
-            return list.size();
-        } else {
-            return 0;
-        }
-
-    }
 
     public ResponseEntity<?> getTag (String query) {
         double ratioToCount;
@@ -417,14 +389,6 @@ public class GetService {
         return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAuthLogout (Integer userId) {
-        User user = userRepository.getOne(userId);
-        if (user.getIsModerator() && !sessionRepository.getOne(userId).getSession().isEmpty()) {
-            sessionRepository.getOne(userId).getSession().clear();
-        }
-        result = true;
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     private List<Post> getSortedPosts(List<Post> postList, String mode) {
         if ("popular".equals(mode)) {

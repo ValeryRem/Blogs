@@ -1,21 +1,27 @@
 package main.controllers;
 
+import main.entity.ModerationRequest;
+import main.service.AuthSevice;
 import main.service.GetService;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
-public class ApiPostController {
+public class PostController {
     @Autowired
     private GetService getService;
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private AuthSevice authSevice;
 
     @GetMapping("/post")
     @ResponseBody
@@ -76,17 +82,17 @@ public class ApiPostController {
         return getService.getPostsForModeration(offset, limit, mode);
     }
 
-    @PostMapping("/auth/login")
-    private ResponseEntity<?> checkAuthLogin(@RequestParam(defaultValue="eee@jjj.hj") String userEmail,
-                                             @RequestParam(defaultValue="pw1") String userPassword) {
-        System.out.println("Method checkAuthLogin is activated.");
-        return postService.checkAuthLogin(userEmail, userPassword);
-    }
 
     @GetMapping("/auth/logout")
     private ResponseEntity<?> getAuthLogout (@RequestParam(defaultValue="1")Integer userId) {
         System.out.println("Method getAuthLogout is activated.");
-        return getService.getAuthLogout(userId);
+        return authSevice.getAuthLogout();
+    }
+
+    @PostMapping("/moderation")
+    private ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest request) {
+        System.out.println("Method postApiModeration is activated.");
+        return postService.postApiModeration(postId, request);
     }
 }
 

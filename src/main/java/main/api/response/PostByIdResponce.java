@@ -36,8 +36,6 @@ public class PostByIdResponce {
     @Autowired
     UserRepository userRepository;
 
-
-
     public PostByIdResponce() {
     }
 

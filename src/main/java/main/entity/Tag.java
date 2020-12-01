@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
+//@Component
 @Entity
 @Table(name = "tags")
 public class Tag {

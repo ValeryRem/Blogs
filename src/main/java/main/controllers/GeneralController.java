@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-public class ApiGeneralController {
+public class GeneralController {
 
     private final SettingsService settingsService;
     private final InitResponse initResponse;
@@ -23,7 +23,7 @@ public class ApiGeneralController {
     private GetService getService;
 
 
-    public ApiGeneralController(SettingsService settingsService, InitResponse initResponse) {
+    public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;
     }

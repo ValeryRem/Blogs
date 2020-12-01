@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
+//@Component
 @Entity
 @Table(name = "tag_2_post")
 public class Tag2Post {

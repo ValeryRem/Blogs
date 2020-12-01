@@ -16,8 +16,6 @@ public class PostAnnounceResponse {
         private final Integer commentCount;
         private final Integer viewCount;
 
-//        private CommentRepository commentRepository;
-
     public PostAnnounceResponse(Integer postId, LocalDate timestamp, String title, String announce,
                                 Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
         this.id = postId;
