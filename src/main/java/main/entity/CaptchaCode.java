@@ -11,7 +11,7 @@ public class CaptchaCode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @NotBlank(message = "Time of release is mandatory")
+//    @NotBlank(message = "Time of release is mandatory")
     private long time;
     @NotBlank(message = "Capture code is mandatory")
     private String code;

@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -133,26 +135,23 @@ public class AuthSevice {
         Cage cage = new GCage();
         String secretCode = cage.getTokenGenerator().next();
         System.out.println("secretCode: " + secretCode);
-        String code;
+        String code = cage.getTokenGenerator().next();
         CaptchaCode captcha = new CaptchaCode();
         Map<String, String> map = new LinkedHashMap<>();
         try (OutputStream os = new FileOutputStream("image.png", false)) {
-            cage.draw(cage.getTokenGenerator().next(), os);
+            cage.draw(code, os);
             byte[] fileContent = FileUtils.readFileToByteArray(new File("image.png"));
             code = Base64.getEncoder().encodeToString(fileContent);
-            captcha.setSecretCode(code);
         } catch (IOException e) {
             e.printStackTrace();
-            code = "No captcha.";
         }
-        map.put("secret", secretCode);
-        map.put("image", "data:image/png;base64, " + code);
+        captcha.setSecretCode(secretCode);
         captcha.setCode(code);
-        ZoneId zoneId = ZoneId.systemDefault();
-
-        long time = LocalDate.now().atStartOfDay().atZone(zoneId).toEpochSecond();
+        long time = LocalDate.now().toEpochSecond(LocalTime.now(), ZoneOffset.UTC);
         captcha.setTime(time);
         captchaRepository.save(captcha);
+        map.put("secret", secretCode);
+        map.put("image", "data:image/png;base64, " + code);
         List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
                 filter(c -> c.getTime() < (time - 3600)).
                 collect(Collectors.toList());
