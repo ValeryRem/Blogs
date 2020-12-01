@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,5 +31,16 @@ public class AuthController {
         return authSevice.postAuthLogin(userEmail, userPassword);
     }
 
+    @GetMapping("/logout")
+    private ResponseEntity<?> getAuthLogout (@RequestParam(defaultValue="1")Integer userId) {
+        System.out.println("Method getAuthLogout is activated.");
+        return authSevice.getAuthLogout();
+    }
+
+    @GetMapping("/captcha")
+    private ResponseEntity<?> getCaptcha () throws IOException {
+        System.out.println("Method getCaptcha is activated.");
+        return authSevice.getCaptcha();
+    }
 }
 

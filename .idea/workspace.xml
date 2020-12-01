@@ -19,14 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getAuthLogout for GET /api/auth/logout set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="AuthController class set up, auth-methods updated.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/entity/ModerationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/captcha.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -118,20 +117,14 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostAnnounceResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostByIdResponce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostByIdResponce.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiAuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiGeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Session.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Tag2Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Tag2Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/SessionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiAuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiGeneralController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/ApiPostController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,13 +212,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Developed ApiPostController by testing output of messages.">
-      <created>1602780179573</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1602780179573</updated>
     </task>
     <task id="LOCAL-00015" summary="ApiPostController development: getPosts() &amp; getPostBySearch() with @RequestParam.">
       <created>1602886248209</created>
@@ -563,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606733375032</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="AuthController class set up, auth-methods updated.">
+      <created>1606825167751</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1606825167751</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -586,7 +579,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods getPosts, petPostsBySearch, getPostsByDate, getPostsByTag realized." />
     <MESSAGE value="PostAnnounceResponse refilled by getters." />
     <MESSAGE value="Method getMyPosts is set up." />
     <MESSAGE value="Set up of insertTestComment() in init()." />
@@ -611,7 +603,8 @@
     <MESSAGE value="Method getApiCalendar (Optional&lt;Integer&gt; year) to request GET /api/calendar/ set up." />
     <MESSAGE value="Upd 1 to method of request GET /api/calendar/ ." />
     <MESSAGE value="Method getAuthLogout for GET /api/auth/logout set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method getAuthLogout for GET /api/auth/logout set up." />
+    <MESSAGE value="AuthController class set up, auth-methods updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="AuthController class set up, auth-methods updated." />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="65" key="#Inspections" timestamp="1605169734926">
@@ -661,26 +654,26 @@
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
     <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1606824893507">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom" timestamp="1606851197145">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1606824893507" />
-    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1606824893506">
+    <state width="1309" height="356" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
+    <state width="1309" height="356" key="GridCell.Tab.0.center" timestamp="1606851197145">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1606824893506" />
-    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1606824893506">
+    <state width="1309" height="356" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
+    <state width="1309" height="356" key="GridCell.Tab.0.left" timestamp="1606851197145">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="356" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1606824893506" />
-    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1606824893506">
+    <state width="1309" height="356" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
+    <state width="1309" height="356" key="GridCell.Tab.0.right" timestamp="1606851197145">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="356" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1606824893506" />
+    <state width="1309" height="356" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1606851197145" />
     <state width="1309" height="472" key="GridCell.Tab.1.bottom" timestamp="1605942736587">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
@@ -710,11 +703,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606733388210">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606825175632">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606733388210" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606825175632" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

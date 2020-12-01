@@ -1,15 +1,21 @@
 package main.service;
 
+import com.github.cage.Cage;
+import com.github.cage.GCage;
+import main.entity.CaptchaCode;
 import main.entity.ModerationStatus;
 import main.entity.User;
+import main.repository.CaptchaRepository;
 import main.repository.PostRepository;
 import main.repository.UserRepository;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +30,9 @@ public class AuthSevice {
 
     @Autowired
     HttpSession session;
+
+    @Autowired
+    CaptchaRepository captchaRepository;
     boolean result = false;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
@@ -118,11 +127,25 @@ public class AuthSevice {
         }
     }
 
-    public Map<String, Integer> getSessionMap() {
-        return sessionMap;
-    }
-
-    public void setSessionMap(Map<String, Integer> sessionMap) {
-        this.sessionMap = sessionMap;
+    public ResponseEntity<?> getCaptcha () {
+        Cage cage = new GCage();
+        String secretCode = cage.getTokenGenerator().next();
+        System.out.println("secretCode: " + secretCode);
+        String code;
+        CaptchaCode captcha = new CaptchaCode();
+        Map<String, String> map = new LinkedHashMap<>();
+        try (OutputStream os = new FileOutputStream("image.png", false)) {
+            cage.draw(cage.getTokenGenerator().next(), os);
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("image.png"));
+            code = Base64.getEncoder().encodeToString(fileContent);
+            captcha.setSecretCode(code);
+        } catch (IOException e) {
+            e.printStackTrace();
+            code = "No captcha.";
+        }
+        map.put("secret", secretCode);
+        map.put("image", "data:image/png;base64, " + code);
+        captcha.setCode(code);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

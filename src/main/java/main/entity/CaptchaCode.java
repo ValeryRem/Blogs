@@ -2,6 +2,7 @@ package main.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -11,12 +12,12 @@ public class CaptchaCode {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Time of release is mandatory")
-    private Date time;
+    private LocalDate time;
     @NotBlank(message = "Capture code is mandatory")
-    private Integer code;
+    private String code;
     @NotBlank(message = "Secret code is mandatory")
     @Column(name = "secret_code")
-    private Integer secretCode;
+    private String secretCode;
 
     public CaptchaCode() {
     }
@@ -29,27 +30,27 @@ public class CaptchaCode {
         this.id = id;
     }
 
-    public Date getTime() {
+    public LocalDate getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
-    public Integer getSecretCode() {
+    public String getSecretCode() {
         return secretCode;
     }
 
-    public void setSecretCode(Integer secretCode) {
+    public void setSecretCode(String secretCode) {
         this.secretCode = secretCode;
     }
 }

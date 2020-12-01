@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DefaultController {
-//    private PostRepository postRepository;
     private final InitResponse initResponse;
     public DefaultController(InitResponse initResponse) {
         this.initResponse = initResponse;

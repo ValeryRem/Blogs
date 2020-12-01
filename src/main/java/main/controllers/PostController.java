@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 public class PostController {
     @Autowired
     private GetService getService;
@@ -23,7 +23,7 @@ public class PostController {
     @Autowired
     private AuthSevice authSevice;
 
-    @GetMapping("/post")
+    @GetMapping("")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
                                         @RequestParam(defaultValue="7") Integer limit,
@@ -32,13 +32,13 @@ public class PostController {
         return getService.getPosts (offset, limit, mode);
     }
 
-    @GetMapping("/post/{id:\\d+}")
+    @GetMapping("/{id:\\d+}")
     private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
         System.out.println("Method getPostById activated. ID requested: " + postId);
         return getService.getPostById(postId);
     }
 
-    @GetMapping("/post/search/")
+    @GetMapping("/search/")
     private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue = "new testing") String query,
                                                @RequestParam(defaultValue="0") Integer offset,
                                                @RequestParam(defaultValue="4") Integer limit,
@@ -47,7 +47,7 @@ public class PostController {
         return getService.getPostsBySearch(query, offset, limit, mode);
     }
 
-    @GetMapping("/post/byDate")
+    @GetMapping("/byDate")
     private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue = "2020-11-17")
                                                   @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date,
                                              @RequestParam(defaultValue="0") Integer offset,
@@ -57,7 +57,7 @@ public class PostController {
         return getService.getPostsByDate(date, offset, limit, mode);
     }
 
-    @GetMapping("/post/byTag")
+    @GetMapping("/byTag")
     private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "#Java") String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="1") Integer limit,
@@ -66,7 +66,7 @@ public class PostController {
         return getService.getPostsByTag(tagName, offset, limit, mode);
     }
 
-    @GetMapping("/post/my")
+    @GetMapping("/my")
     private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="1") Integer myUserId, //defaultValue="1" to be deleted later on.
                                           @RequestParam(defaultValue="0") Integer offset,
                                           @RequestParam(defaultValue="5") Integer limit) {
@@ -74,25 +74,5 @@ public class PostController {
         return getService.getMyPosts(myUserId, offset, limit);
     }
 
-    @GetMapping("/post/moderation")
-    private ResponseEntity<?> getPostsForModeration (@RequestParam(defaultValue="0") Integer offset,
-                                                     @RequestParam(defaultValue="3") Integer limit,
-                                                     @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsForModeration is activated.");
-        return getService.getPostsForModeration(offset, limit, mode);
-    }
-
-
-    @GetMapping("/auth/logout")
-    private ResponseEntity<?> getAuthLogout (@RequestParam(defaultValue="1")Integer userId) {
-        System.out.println("Method getAuthLogout is activated.");
-        return authSevice.getAuthLogout();
-    }
-
-    @PostMapping("/moderation")
-    private ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest request) {
-        System.out.println("Method postApiModeration is activated.");
-        return postService.postApiModeration(postId, request);
-    }
 }
 

@@ -2,14 +2,13 @@ package main.controllers;
 
 import main.api.response.InitResponse;
 import main.api.response.SettingsResponse;
+import main.entity.ModerationRequest;
 import main.service.GetService;
+import main.service.PostService;
 import main.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -22,6 +21,8 @@ public class GeneralController {
     @Autowired
     private GetService getService;
 
+    @Autowired
+    private PostService postService;
 
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
@@ -57,4 +58,19 @@ public class GeneralController {
     private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2017") Optional<Integer> year) {
         return getService.getApiCalendar (year);
     }
+
+    @GetMapping("/moderation")
+    private ResponseEntity<?> getPostsForModeration (@RequestParam(defaultValue="0") Integer offset,
+                                                     @RequestParam(defaultValue="3") Integer limit,
+                                                     @RequestParam(defaultValue="recent") String mode) {
+        System.out.println("Method getPostsForModeration is activated.");
+        return getService.getPostsForModeration(offset, limit, mode);
+    }
+
+    @PostMapping("/moderation")
+    private ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest request) {
+        System.out.println("Method postApiModeration is activated.");
+        return postService.postApiModeration(postId, request);
+    }
+
 }
