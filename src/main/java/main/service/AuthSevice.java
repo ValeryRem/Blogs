@@ -171,32 +171,35 @@ public class AuthSevice {
                 filter(c -> c.getSecretCode().equals(secret_captcha)).
                 findAny().
                 get();
+        errors.put("result", "false");
+        result = true;
         if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
-            errors.put("result", "false");
             errors.put("email", "Этот e-mail уже зарегистрирован!");
-        } else if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
-            errors.put("result", "false");
+            result = false;
+        }
+        if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
             errors.put("name", "Данное имя уже зарегистрировано!");
-        } else if (password.length() < 6) {
-            errors.put("result", "false");
+            result = false;
+        }
+        if (password.length() < 6) {
             errors.put("password", "Пароль короче 6 символов!");
-        } else if (!captcha.equals(captchaCode.getCode())) {
-            errors.put("result", "false");
+            result = false;
+        }
+        if (!captcha.equals(captchaCode.getCode())) {
             errors.put("captcha", "Код с картинки введён неверно");
-        } else {
+            result = false;
+        }
+        if(result){
             user.setEmail(e_mail);
             user.setName(nameString);
             user.setPassword(password);
             user.setRegTime(LocalDate.now());
             userRepository.save(user);
-            result = true;
-        }
-        responseList.add(result);
-        if (!result) {
+            responseList.add(result);
+            responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
+        } else {
             responseList.add(errors);
             responseEntity = new ResponseEntity<>(responseList, HttpStatus.NOT_ACCEPTABLE);
-        } else {
-            responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
         }
         return responseEntity;
     }

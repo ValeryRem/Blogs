@@ -44,9 +44,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    private ResponseEntity<?> postAuthRegister(@RequestParam(defaultValue="gala@kkkl.hj") String e_mail,
-                                               @RequestParam(defaultValue="pw56982") String password,
-                                               @RequestParam(defaultValue="Gala") String nameString,
+    private ResponseEntity<?> postAuthRegister(@RequestParam(defaultValue="pony@kkkl.hj") String e_mail,
+                                               @RequestParam(defaultValue="pw77982") String password,
+                                               @RequestParam(defaultValue="Peter") String nameString,
                                                @RequestParam(defaultValue="govutigud") String captcha,
                                                @RequestParam(defaultValue="yapaponep") String secret_captcha) {
         System.out.println("Method postAuthRegister is activated.");
