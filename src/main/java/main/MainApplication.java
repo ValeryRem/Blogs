@@ -1,8 +1,10 @@
 package main;
 
+import main.entity.CaptchaCode;
 import main.entity.ModerationStatus;
 import main.entity.Post;
 import main.entity.User;
+import main.repository.CaptchaRepository;
 import main.repository.CommentRepository;
 import main.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class MainApplication {
@@ -19,6 +25,9 @@ public class MainApplication {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    static CaptchaRepository captchaRepository;
 
     public MainApplication(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;

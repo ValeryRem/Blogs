@@ -42,5 +42,15 @@ public class AuthController {
         System.out.println("Method getCaptcha is activated.");
         return authSevice.getCaptcha();
     }
+
+    @PostMapping("/register")
+    private ResponseEntity<?> postAuthRegister(@RequestParam(defaultValue="gala@kkkl.hj") String e_mail,
+                                               @RequestParam(defaultValue="pw56982") String password,
+                                               @RequestParam(defaultValue="Gala") String nameString,
+                                               @RequestParam(defaultValue="govutigud") String captcha,
+                                               @RequestParam(defaultValue="yapaponep") String secret_captcha) {
+        System.out.println("Method postAuthRegister is activated.");
+        return authSevice.postAuthRegister(e_mail, password, nameString, captcha, secret_captcha);
+    }
 }
 

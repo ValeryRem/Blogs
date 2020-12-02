@@ -40,7 +40,6 @@ public class AuthSevice {
     boolean result = false;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
-        boolean result = false;
         ResponseEntity<?> responseEntity;
         List<User> userList = userRepository.findAll();
         List<Object> resultList = new ArrayList<>();
@@ -81,7 +80,6 @@ public class AuthSevice {
     }
 
     public ResponseEntity<?> getAuthCheck() {
-        boolean result = false;
         Integer userId;
         User u;
         String sessionId = session.getId();
@@ -136,12 +134,13 @@ public class AuthSevice {
         String secretCode = cage.getTokenGenerator().next();
         System.out.println("secretCode: " + secretCode);
         String code = cage.getTokenGenerator().next();
+        String code64 = code;
         CaptchaCode captcha = new CaptchaCode();
         Map<String, String> map = new LinkedHashMap<>();
         try (OutputStream os = new FileOutputStream("image.png", false)) {
             cage.draw(code, os);
             byte[] fileContent = FileUtils.readFileToByteArray(new File("image.png"));
-            code = Base64.getEncoder().encodeToString(fileContent);
+            code64 = Base64.getEncoder().encodeToString(fileContent);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,7 +150,7 @@ public class AuthSevice {
         captcha.setTime(time);
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
-        map.put("image", "data:image/png;base64, " + code);
+        map.put("image", "data:image/png;base64, " + code64);
         List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
                 filter(c -> c.getTime() < (time - 3600)).
                 collect(Collectors.toList());
@@ -159,5 +158,46 @@ public class AuthSevice {
             captchaRepository.delete(c);
         }
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> postAuthRegister(String e_mail, String password, String nameString,
+                                              String captcha, String secret_captcha) {
+        ResponseEntity<?> responseEntity;
+        List<Object> responseList = new ArrayList<>();
+        User user = new User();
+        Map<String, String> errors = new LinkedHashMap<>();
+        List<User> users = userRepository.findAll();
+        CaptchaCode captchaCode = captchaRepository.findAll().stream().
+                filter(c -> c.getSecretCode().equals(secret_captcha)).
+                findAny().
+                get();
+        if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
+            errors.put("result", "false");
+            errors.put("email", "Этот e-mail уже зарегистрирован!");
+        } else if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
+            errors.put("result", "false");
+            errors.put("name", "Данное имя уже зарегистрировано!");
+        } else if (password.length() < 6) {
+            errors.put("result", "false");
+            errors.put("password", "Пароль короче 6 символов!");
+        } else if (!captcha.equals(captchaCode.getCode())) {
+            errors.put("result", "false");
+            errors.put("captcha", "Код с картинки введён неверно");
+        } else {
+            user.setEmail(e_mail);
+            user.setName(nameString);
+            user.setPassword(password);
+            user.setRegTime(LocalDate.now());
+            userRepository.save(user);
+            result = true;
+        }
+        responseList.add(result);
+        if (!result) {
+            responseList.add(errors);
+            responseEntity = new ResponseEntity<>(responseList, HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 }
