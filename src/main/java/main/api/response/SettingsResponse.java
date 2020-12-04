@@ -1,7 +1,9 @@
 package main.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SettingsResponse {
     @JsonProperty("MULTIUSER_MODE")
     private boolean multiuserMode;

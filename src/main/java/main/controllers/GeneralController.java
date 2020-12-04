@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class GeneralController {
 
-    private final SettingsService settingsService;
+//    private final SettingsService settingsService;
     private final InitResponse initResponse;
     @Autowired
     private GetService getService;
@@ -24,9 +24,19 @@ public class GeneralController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private SettingsService settingsService;
+
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;
+    }
+
+    @PutMapping("/settings/")
+    private ResponseEntity<?> putApiSettings(@RequestParam(defaultValue = "false") boolean multiuserMode,
+                                             @RequestParam(defaultValue = "true") boolean postPremoderation,
+                                             @RequestParam(defaultValue = "false") boolean statisticsInPublic) {
+        return settingsService.putApiSettings(multiuserMode, postPremoderation, statisticsInPublic);
     }
 
     @GetMapping("/settings")

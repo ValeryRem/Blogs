@@ -45,6 +45,8 @@ public class GetService {
 
     private boolean result = false;
 
+    ResponseEntity<?> responseEntity;
+
     public GetService() {
     }
 
@@ -98,7 +100,6 @@ public class GetService {
         var sortedPosts = getSortedPosts(postList, mode);
         List<PostAnnounceResponse> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
-        ResponseEntity<?> responseEntity;
         for (Post post : sortedPosts) {
             if (post.getTime().equals(time)) {
                 int commentCountByPost = (int) commentList.stream().
@@ -117,7 +118,6 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
-        ResponseEntity<?> responseEntity;
         try {
             var iterableTags = tagRepository.findAll();
             for (Tag tag : iterableTags) {
@@ -153,9 +153,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-//        getAuthCheck(myUserId);
-        if (result) {
-            ResponseEntity<?> responseEntity;
+        if (authSevice.isUserAuthorized()) {
             var posts = getPostList();
             List<MyPostResponce> myPostsList = new ArrayList<>();
             TreeMap<String, Object> map = new TreeMap<>();
@@ -226,32 +224,33 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String mode) {
-        var postList = postRepository.findAll();
-        var postsFiltered = postList.stream().
-                filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive()).
-                collect(Collectors.toList());
-        if(postsFiltered.size() == 0) {
-            return new ResponseEntity<>("No posts for moderation!", HttpStatus.NOT_FOUND);
-        } else {
-            var postListSorted = getSortedPosts(postsFiltered, mode);
-            List<PostComment> commentList = commentRepository.findAll();
-            List<PostAnnounceResponse> posts = new ArrayList<>();
-            for (Post post : postListSorted) {
-                int commentCountByPost = (int) commentList.stream().
-                        filter(a -> a.getPostId().equals(post.getPostId())).
-                        count();
-                var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
-                        post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
-                postAnnounceResponse.setLikeCount(extractLikeCount(post));
-                postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
-                posts.add(postAnnounceResponse);
+        if(authSevice.isUserAuthorized()) {
+            var postList = postRepository.findAll();
+            var postsFiltered = postList.stream().
+                    filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive()).
+                    collect(Collectors.toList());
+            if (postsFiltered.size() == 0) {
+                return new ResponseEntity<>("No posts for moderation!", HttpStatus.NOT_FOUND);
+            } else {
+                var postListSorted = getSortedPosts(postsFiltered, mode);
+                List<PostComment> commentList = commentRepository.findAll();
+                List<PostAnnounceResponse> posts = new ArrayList<>();
+                for (Post post : postListSorted) {
+                    int commentCountByPost = (int) commentList.stream().
+                            filter(a -> a.getPostId().equals(post.getPostId())).
+                            count();
+                    var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                            post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
+                    postAnnounceResponse.setLikeCount(extractLikeCount(post));
+                    postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
+                    posts.add(postAnnounceResponse);
+                }
+                var postsListResponse = new PostsListResponse(getCount(), posts);
+                return getResponseEntity(postsListResponse, offset, limit);
             }
-            var postsListResponse = new PostsListResponse(getCount(), posts);
-            return getResponseEntity(postsListResponse, offset, limit);
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-
-
 
     public ResponseEntity<?> getTag (String query) {
         double ratioToCount;
@@ -286,15 +285,19 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyStatistics (Integer userId) {
-        User user = userRepository.getOne(userId);
-        result = user.getIsModerator();
-        LinkedHashMap<String, Object> map;
-        ResponseEntity<?> responseEntity;
-        if (result) {
-            map = getUserStatistics(userId);
-            responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+        if(authSevice.isUserAuthorized()) {
+            User user = userRepository.getOne(userId);
+            result = user.getIsModerator();
+            LinkedHashMap<String, Object> map;
+
+            if (result) {
+                map = getUserStatistics(userId);
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
+            }
         } else {
-            responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

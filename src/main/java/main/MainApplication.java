@@ -1,9 +1,7 @@
 package main;
 
-import main.entity.CaptchaCode;
 import main.entity.ModerationStatus;
 import main.entity.Post;
-import main.entity.User;
 import main.repository.CaptchaRepository;
 import main.repository.CommentRepository;
 import main.repository.PostRepository;
@@ -12,11 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class MainApplication {
@@ -25,9 +20,6 @@ public class MainApplication {
 
     @Autowired
     private CommentRepository commentRepository;
-
-    @Autowired
-    static CaptchaRepository captchaRepository;
 
     public MainApplication(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
@@ -61,10 +53,13 @@ public class MainApplication {
         post2.setIsActive(true);
         post2.setModerationStatus(ModerationStatus.DECLINED);
         post2.setText("Another testing text to be processed by the code into announce #Java");
-        post2.setTime(LocalDate.of(2020, 10, 12));
+        int day = LocalDate.now().getDayOfMonth();
+        int month = LocalDate.now().getMonthValue();
+        post2.setTime(LocalDate.of(2018, month, day));
         post2.setUserId(1);
         post2.setModeratorId(1);
         post2.setViewCount(11);
         postRepository.save(post2);
+
     }
 }

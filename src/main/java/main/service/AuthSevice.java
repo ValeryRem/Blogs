@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +29,7 @@ public class AuthSevice {
 
     @Autowired
     PostRepository postRepository;
+
     Map<String, Integer> sessionMap = new TreeMap<>();
 
     @Autowired
@@ -107,12 +107,9 @@ public class AuthSevice {
     }
 
     public ResponseEntity<?> getAuthLogout () {
-        String sessionId = session.getId();
-        Integer userId = sessionMap.get(sessionId);
-        User user = userRepository.getOne(userId);
-        if (user.getIsModerator()) {
-            sessionMap.clear();
-        }
+       if(isUserAuthorized()) {
+           sessionMap.remove(session.getId());
+       }
         result = true;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -203,4 +200,14 @@ public class AuthSevice {
         }
         return responseEntity;
     }
+
+    public boolean isUserAuthorized () {
+        String sessionId = session.getId();
+        return sessionMap.containsKey(sessionId);
+    }
+
+    public Map<String, Integer> getSessionMap() {
+        return sessionMap;
+    }
+
 }

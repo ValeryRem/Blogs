@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthRegister set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthRegister set up, upd 1.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -115,7 +115,16 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/SettingsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/SettingsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthSevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/SettingsResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/SettingsResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,13 +212,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Проблемы с меппингом @OneToOne(targetEntity=Post.class, mappedBy=&quot;id&quot;, fetch=FetchType.EAGER)&#10;                         private List&lt;PostComment&gt; comments = new ArrayList&lt;&gt;();.">
-      <created>1603017960585</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1603017960585</updated>
     </task>
     <task id="LOCAL-00020" summary=" NullPointerException: null&#10; &#9;at main.base.Storage.addPost(Storage.java:22)">
       <created>1603047389616</created>
@@ -547,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606912178978</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Method postAuthRegister set up, upd 1.">
+      <created>1606913121473</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1606913121473</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -570,7 +579,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Post and User connected by @ManyToOne and @OneToMany." />
     <MESSAGE value="PostBiIdResponce &amp; PostService updated." />
     <MESSAGE value="Entity folder has been cleaned: the entities get rid of idle methods." />
     <MESSAGE value="Method  String announce = getText().replaceAll(&quot;[\\p{P}\\p{S}]&quot;, &quot;&quot;); added in Post.class." />
@@ -595,7 +603,8 @@
     <MESSAGE value="Method getCaptcha added by delete of old captchas." />
     <MESSAGE value="Method getCaptcha, upd 2." />
     <MESSAGE value="Method postAuthRegister set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthRegister set up." />
+    <MESSAGE value="Method postAuthRegister set up, upd 1." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthRegister set up, upd 1." />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="65" key="#Inspections" timestamp="1605169734926">
@@ -610,11 +619,11 @@
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="387" y="184" key="#com.intellij.fileTypes.FileTypeChooser/0.40.1366.728@0.40.1366.728" timestamp="1603704457500" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1606823409108">
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser" timestamp="1606941404146">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="440" y="0" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1603294337364" />
-    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1606823409108" />
+    <state x="440" y="40" key="#com.intellij.ide.util.MemberChooser/0.40.1366.728@0.40.1366.728" timestamp="1606941404146" />
     <state x="264" y="270" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1602000993808">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -645,26 +654,26 @@
     </state>
     <state x="409" y="58" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1602097734031" />
     <state x="409" y="98" key="FileChooserDialogImpl/0.40.1366.728@0.40.1366.728" timestamp="1604686335998" />
-    <state width="1309" height="393" key="GridCell.Tab.0.bottom" timestamp="1606912415463">
+    <state width="1309" height="393" key="GridCell.Tab.0.bottom" timestamp="1607115234059">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="393" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1606912415463" />
-    <state width="1309" height="393" key="GridCell.Tab.0.center" timestamp="1606912415462">
+    <state width="1309" height="393" key="GridCell.Tab.0.bottom/0.40.1366.728@0.40.1366.728" timestamp="1607115234059" />
+    <state width="1309" height="393" key="GridCell.Tab.0.center" timestamp="1607115234057">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="393" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1606912415462" />
-    <state width="1309" height="393" key="GridCell.Tab.0.left" timestamp="1606912415462">
+    <state width="1309" height="393" key="GridCell.Tab.0.center/0.40.1366.728@0.40.1366.728" timestamp="1607115234057" />
+    <state width="1309" height="393" key="GridCell.Tab.0.left" timestamp="1607115234056">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603263715401" />
-    <state width="1309" height="393" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1606912415462" />
-    <state width="1309" height="393" key="GridCell.Tab.0.right" timestamp="1606912415463">
+    <state width="1309" height="393" key="GridCell.Tab.0.left/0.40.1366.728@0.40.1366.728" timestamp="1607115234056" />
+    <state width="1309" height="393" key="GridCell.Tab.0.right" timestamp="1607115234058">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state width="1309" height="318" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603263715402" />
-    <state width="1309" height="393" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1606912415463" />
+    <state width="1309" height="393" key="GridCell.Tab.0.right/0.40.1366.728@0.40.1366.728" timestamp="1607115234058" />
     <state width="1309" height="472" key="GridCell.Tab.1.bottom" timestamp="1605942736587">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
@@ -694,11 +703,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="34" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600637003996" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606861967137">
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2" timestamp="1606913132101">
       <screen x="0" y="40" width="1366" height="728" />
     </state>
     <state x="174" y="30" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1603063120404" />
-    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606861967137" />
+    <state x="174" y="70" key="Vcs.Push.Dialog.v2/0.40.1366.728@0.40.1366.728" timestamp="1606913132101" />
     <state x="444" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602020228699">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
