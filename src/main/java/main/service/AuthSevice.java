@@ -30,7 +30,7 @@ public class AuthSevice {
     @Autowired
     PostRepository postRepository;
 
-    Map<String, Integer> sessionMap = new TreeMap<>();
+    Map<String, Integer> sessionMap = new TreeMap<>(); // String sessionId, Integer userId
 
     @Autowired
     HttpSession session;
@@ -210,4 +210,7 @@ public class AuthSevice {
         return sessionMap;
     }
 
+    public HttpSession getSession() {
+        return session;
+    }
 }

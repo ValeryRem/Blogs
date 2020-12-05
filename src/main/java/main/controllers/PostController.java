@@ -1,6 +1,5 @@
 package main.controllers;
 
-import main.entity.ModerationRequest;
 import main.service.AuthSevice;
 import main.service.GetService;
 import main.service.PostService;
@@ -74,5 +73,12 @@ public class PostController {
         return getService.getMyPosts(myUserId, offset, limit);
     }
 
+    @PostMapping("/like")
+    private ResponseEntity<?> postLike (@RequestParam(defaultValue="1") Integer postToLikeId,
+                                        @RequestParam(defaultValue="1") Integer userId) {
+//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+        System.out.println("Method postLike activated");
+        return postService.postLike(postToLikeId, userId);
+    }
 }
 
