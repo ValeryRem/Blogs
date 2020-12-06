@@ -47,7 +47,10 @@ public class AuthSevice {
         int moderationCount;
         User us;
         try {
-            us = userList.stream().filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).findAny().get();
+            us = userList.stream().
+                    filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
+                    findAny().
+                    orElse(new User());
             result = true;
             resultList.add(result);
             user.put("id", us.getUserId());
@@ -107,7 +110,7 @@ public class AuthSevice {
     }
 
     public ResponseEntity<?> getAuthLogout () {
-       if(isUserAuthorized()) {
+       if(isUserAuthorized(session.getId())) {
            sessionMap.remove(session.getId());
        }
         result = true;
@@ -166,8 +169,7 @@ public class AuthSevice {
         List<User> users = userRepository.findAll();
         CaptchaCode captchaCode = captchaRepository.findAll().stream().
                 filter(c -> c.getSecretCode().equals(secret_captcha)).
-                findAny().
-                get();
+                findAny().orElse(new CaptchaCode());
         errors.put("result", "false");
         result = true;
         if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
@@ -201,8 +203,8 @@ public class AuthSevice {
         return responseEntity;
     }
 
-    public boolean isUserAuthorized () {
-        String sessionId = session.getId();
+    public boolean isUserAuthorized (String sessionId) {
+//        String sessionId = session.getId();
         return sessionMap.containsKey(sessionId);
     }
 
@@ -213,4 +215,12 @@ public class AuthSevice {
     public HttpSession getSession() {
         return session;
     }
+/*
+"photo": <binary_file>,
+  "name":"Sendel",
+  "email":"sndl@mail.ru",
+  "password":"123456",
+  "removePhoto":0
+ */
+//    public ResponseEntity<?> postMyProfile ()
 }

@@ -3,6 +3,7 @@ package main.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -14,7 +15,7 @@ public class Post {
     private Integer postId;
 
     @Column(name ="is_active")
-    private boolean isActive;
+    private int isActive;
 
     @Column(name ="moderation_status")
     @Enumerated(EnumType.STRING)
@@ -33,6 +34,8 @@ public class Post {
 
     @Column(name ="view_count")
     private Integer viewCount;
+
+//    private List<String> tags;
 
     public Post() {
     }
@@ -57,11 +60,11 @@ public class Post {
         this.postId = postId;
     }
 
-    public boolean getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(boolean isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -135,11 +138,19 @@ public class Post {
         this.viewCount = viewCount;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean activityMode) {
+    public void setActive(int activityMode) {
         isActive = activityMode;
     }
+
+//    public List<String> getTags() {
+//        return tags;
+//    }
+
+//    public void setTags(List<String> tags) {
+//        this.tags = tags;
+//    }
 }

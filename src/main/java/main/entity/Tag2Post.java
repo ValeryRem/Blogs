@@ -23,6 +23,11 @@ public class Tag2Post {
     public Tag2Post() {
     }
 
+    public Tag2Post(Integer postId, Integer tagId) {
+        this.postId = postId;
+        this.tagId = tagId;
+    }
+
     public Integer getTag2postId() {
         return tag2PostId;
     }

@@ -38,7 +38,7 @@ public class MainApplication {
 
     private void insertTestPost1() {
         Post post1 = new Post("The 5th testing post");
-        post1.setIsActive(true);
+        post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
         post1.setText("This is a new testing text to be processed by the code into announce #Spring");
         post1.setTime(LocalDate.now());
@@ -50,7 +50,7 @@ public class MainApplication {
 
     private void insertTestPost2() {
         Post post2 = new Post("The 6th testing post");
-        post2.setIsActive(true);
+        post2.setIsActive(1);
         post2.setModerationStatus(ModerationStatus.DECLINED);
         post2.setText("Another testing text to be processed by the code into announce #Java");
         int day = LocalDate.now().getDayOfMonth();

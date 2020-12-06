@@ -1,14 +1,19 @@
 package main.controllers;
 
+import main.entity.Post;
+import main.repository.PostRepository;
 import main.service.AuthSevice;
 import main.service.GetService;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/post")
@@ -21,6 +26,12 @@ public class PostController {
 
     @Autowired
     private AuthSevice authSevice;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private HttpSession session;
 
     @GetMapping("")
     @ResponseBody
@@ -89,5 +100,18 @@ public class PostController {
         return postService.postDislike(postToLikeId, userId);
     }
 
+    @PostMapping("")
+    private ResponseEntity<?> postPost (@RequestParam(defaultValue= "1606923000") long timestamp,
+                                        @RequestParam(defaultValue="1") Integer active,
+                                        @RequestParam(defaultValue="Optional.class description.") String title,
+                                        @RequestParam(defaultValue="Java, Python") List<String> tags,
+                                        @RequestParam(defaultValue="Рассмотрим, как можно применить Optional, " +
+                                                "если поведение определяется не булевыми переменными, а" +
+                                                "объектами, допускающими нулевые значения.") String text) {
+
+//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+        System.out.println("Method postPost is activated");
+        return postService.postPost(timestamp, active, title, tags, text);
+    }
 }
 

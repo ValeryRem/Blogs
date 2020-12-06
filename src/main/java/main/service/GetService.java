@@ -32,6 +32,7 @@ public class GetService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     HttpSession session;
 
     @Autowired
@@ -52,7 +53,7 @@ public class GetService {
 
     private List<Post> getPostList() {
         return  postRepository.findAll().stream().
-                filter(a -> (a.isActive() && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
+                filter(a -> (a.isActive() == 1 && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
                 collect(Collectors.toList());
     }
 
@@ -153,7 +154,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-        if (authSevice.isUserAuthorized()) {
+        if (authSevice.isUserAuthorized(session.getId())) {
             var posts = getPostList();
             List<MyPostResponce> myPostsList = new ArrayList<>();
             TreeMap<String, Object> map = new TreeMap<>();
@@ -200,7 +201,7 @@ public class GetService {
             postByIdResponce.setUser(getUserOfPost(post));
             postByIdResponce.setLikeCount(extractLikeCount(post));
             postByIdResponce.setDislikeCount(extractDislikeCount(post));
-            if (post.getIsActive() && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
+            if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTime().compareTo(LocalDate.now()) <= 0) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
@@ -224,10 +225,10 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String mode) {
-        if(authSevice.isUserAuthorized()) {
+        if(authSevice.isUserAuthorized(session.getId())) {
             var postList = postRepository.findAll();
             var postsFiltered = postList.stream().
-                    filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive()).
+                    filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive() == 1).
                     collect(Collectors.toList());
             if (postsFiltered.size() == 0) {
                 return new ResponseEntity<>("No posts for moderation!", HttpStatus.NOT_FOUND);
@@ -269,8 +270,7 @@ public class GetService {
                 ratioToCount = (double) numberOfPostsWithTag / count;
                 partialWeights.add(ratioToCount);
             }
-
-            double maxPartialWeight = partialWeights.stream().max(Comparator.naturalOrder()).get();
+            double maxPartialWeight = partialWeights.stream().max(Comparator.naturalOrder()).orElse(1.0);
             for (int i = 0; i < partialWeights.size(); i++) {
                 TreeMap <String, Object> tagsAndWeights = new TreeMap<>();
                 tagsAndWeights.put("name", tagsSplit[i]);
@@ -285,7 +285,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyStatistics (Integer userId) {
-        if(authSevice.isUserAuthorized()) {
+        if(authSevice.isUserAuthorized(session.getId())) {
             User user = userRepository.getOne(userId);
             result = user.getIsModerator();
             LinkedHashMap<String, Object> map;
@@ -322,13 +322,13 @@ public class GetService {
 
         int viewMyPostsCount = list.stream().
                 reduce(Integer::sum).
-                get();
+                orElse(0);
         map.put("viewsCount", viewMyPostsCount);
         List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
                 map(Post::getTime).collect(Collectors.toList());
         LocalDate minLocalDate = localDates.stream()
                 .min(Comparator.comparing(LocalDate::toEpochDay))
-                .get();
+                .orElse(LocalDate.now());
         ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
         long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
         map.put("firstPublication", epoch);
@@ -345,13 +345,15 @@ public class GetService {
         List<Integer> list = postRepository.findAll().stream().
                 map(Post::getViewCount).
                 collect(Collectors.toList());
-        int viewCount = list.stream().reduce(Integer::sum).get();
+        int viewCount = list.stream().
+                reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
         List<LocalDate> localDates =  postRepository.findAll().stream().
-                map(Post::getTime).collect(Collectors.toList());
+                map(Post::getTime).
+                collect(Collectors.toList());
         LocalDate minLocalDate = localDates.stream()
-                .min( Comparator.comparing( LocalDate::toEpochDay ))
-                .get();
+                .min(Comparator.comparing(LocalDate::toEpochDay ))
+                .orElse(LocalDate.now());
         ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
         long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
         map.put("firstPublication", epoch);
@@ -371,15 +373,15 @@ public class GetService {
                 collect(Collectors.toList());
         if (year.isPresent()) {
             dates = postRepository.findAll().stream().
-                    filter(p -> p.getTime().getYear() == year.get()).
                     map(Post::getTime).
+                    filter(localDate -> localDate.getYear() == year.get()).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
             dates = postsList.stream().
-                    filter(p -> p.getTime().getYear() == currentYear).
                     map(Post::getTime).
+                    filter(localDate -> localDate.getYear() == currentYear).
                     distinct().
                     collect(Collectors.toList());
         }
@@ -458,7 +460,7 @@ public class GetService {
                 treeMap.put("text", a.getText());
                 LinkedHashMap<String, Object> mapUser =  new LinkedHashMap<>();
                 mapUser.put("id", a.getUserId());
-                User user = userRepository.findById(a.getUserId()).get();
+                User user = userRepository.findById(a.getUserId()).orElse(new User());
                 mapUser.put("name", user.getName());
                 mapUser.put("photo", user.getPhoto());
                 treeMap.put("user", mapUser);
@@ -501,7 +503,8 @@ public class GetService {
     private Integer extractDislikeCount(Post post) {
         try {
             var list = postVoteRepository.findAll();
-            var listVotes = list.stream().filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == -1).
+            var listVotes = list.stream().
+                    filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == -1).
                     collect(Collectors.toList());
             return listVotes.size();
         } catch (NullPointerException ex) {
