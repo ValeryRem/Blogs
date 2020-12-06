@@ -74,11 +74,20 @@ public class PostController {
     }
 
     @PostMapping("/like")
-    private ResponseEntity<?> postLike (@RequestParam(defaultValue="1") Integer postToLikeId,
-                                        @RequestParam(defaultValue="1") Integer userId) {
-//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+    private ResponseEntity<?> postLike (@RequestParam(defaultValue="5") Integer postToLikeId,
+                                        @RequestParam(defaultValue="2") Integer userId) {
+        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postLike activated");
         return postService.postLike(postToLikeId, userId);
     }
+
+    @PostMapping("/dislike")
+    private ResponseEntity<?> postDislike (@RequestParam(defaultValue="5") Integer postToLikeId,
+                                           @RequestParam(defaultValue="2") Integer userId) {
+        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+        System.out.println("Method postDislike activated");
+        return postService.postDislike(postToLikeId, userId);
+    }
+
 }
 
