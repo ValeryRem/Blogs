@@ -1,7 +1,9 @@
 package main.controllers;
 
 import main.entity.Post;
+import main.entity.Session;
 import main.repository.PostRepository;
+import main.repository.SessionRepository;
 import main.service.AuthSevice;
 import main.service.GetService;
 import main.service.PostService;
@@ -31,7 +33,10 @@ public class PostController {
     private PostRepository postRepository;
 
     @Autowired
-    private HttpSession session;
+    private SessionRepository sessionRepository;
+
+    @Autowired
+    private HttpSession httpSession;
 
     @GetMapping("")
     @ResponseBody
@@ -87,7 +92,7 @@ public class PostController {
     @PostMapping("/like")
     private ResponseEntity<?> postLike (@RequestParam(defaultValue="5") Integer postToLikeId,
                                         @RequestParam(defaultValue="2") Integer userId) {
-        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postLike activated");
         return postService.postLike(postToLikeId, userId);
     }
@@ -95,23 +100,30 @@ public class PostController {
     @PostMapping("/dislike")
     private ResponseEntity<?> postDislike (@RequestParam(defaultValue="5") Integer postToLikeId,
                                            @RequestParam(defaultValue="2") Integer userId) {
-        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
+//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postDislike activated");
         return postService.postDislike(postToLikeId, userId);
     }
 
     @PostMapping("")
-    private ResponseEntity<?> postPost (@RequestParam(defaultValue= "1606923000") long timestamp,
+    private ResponseEntity<?> postPost (LocalDate time,
                                         @RequestParam(defaultValue="1") Integer active,
                                         @RequestParam(defaultValue="Optional.class description.") String title,
-                                        @RequestParam(defaultValue="Java, Python") List<String> tags,
-                                        @RequestParam(defaultValue="Рассмотрим, как можно применить Optional, " +
-                                                "если поведение определяется не булевыми переменными, а" +
-                                                "объектами, допускающими нулевые значения.") String text) {
+                                        @RequestParam(defaultValue="[Java, Python]") List<String> tags,
+                                        @RequestParam(defaultValue="Try to consider how to implement Optional class " +
+                                                "approach if behaviour of components is nullable.") String text) {
 
-//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postPost is activated");
-        return postService.postPost(timestamp, active, title, tags, text);
+        registerSession();
+
+        return postService.postPost(LocalDate.now(), active, title, tags, text);
+    }
+
+    private void registerSession () {
+        Session session = new Session();
+        session.setSessionName(httpSession.getId());
+        session.setSessionId(5);
+        sessionRepository.save(session);
     }
 }
 

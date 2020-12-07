@@ -4,9 +4,11 @@ import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.entity.CaptchaCode;
 import main.entity.ModerationStatus;
+import main.entity.Session;
 import main.entity.User;
 import main.repository.CaptchaRepository;
 import main.repository.PostRepository;
+import main.repository.SessionRepository;
 import main.repository.UserRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,13 @@ public class AuthSevice {
     Map<String, Integer> sessionMap = new TreeMap<>(); // String sessionId, Integer userId
 
     @Autowired
-    HttpSession session;
+    HttpSession httpSession;
 
     @Autowired
     CaptchaRepository captchaRepository;
+
+    @Autowired
+    SessionRepository sessionRepository;
     boolean result = false;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
@@ -68,7 +73,7 @@ public class AuthSevice {
             user.put("moderationCount", moderationCount);
             user.put("settings", "true");
             resultList.add(user);
-            String sessionId = session.getId();
+            String sessionId = httpSession.getId();
 //            LocalDate date = LocalDate.now();
 //            ZoneId zoneId = ZoneId.systemDefault();
 //            long epochSeconds = date.atStartOfDay().atZone(zoneId).toEpochSecond();
@@ -85,7 +90,7 @@ public class AuthSevice {
     public ResponseEntity<?> getAuthCheck() {
         Integer userId;
         User u;
-        String sessionId = session.getId();
+        String sessionId = httpSession.getId();
         ResponseEntity<?> responseEntity;
         List<Object> objectList = new ArrayList<>();
         if (!sessionMap.isEmpty()) {
@@ -110,8 +115,8 @@ public class AuthSevice {
     }
 
     public ResponseEntity<?> getAuthLogout () {
-       if(isUserAuthorized(session.getId())) {
-           sessionMap.remove(session.getId());
+       if(isUserAuthorized()) {
+           sessionMap.remove(httpSession.getId());
        }
         result = true;
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -203,18 +208,19 @@ public class AuthSevice {
         return responseEntity;
     }
 
-    public boolean isUserAuthorized (String sessionId) {
-//        String sessionId = session.getId();
-        return sessionMap.containsKey(sessionId);
+    public boolean isUserAuthorized () {
+        String sessName = httpSession.getId();
+        List<Session> currentSessions = sessionRepository.findAll();
+        return currentSessions.stream().anyMatch(s -> s.getSessionName().equals(sessName));
     }
 
     public Map<String, Integer> getSessionMap() {
         return sessionMap;
     }
 
-    public HttpSession getSession() {
-        return session;
-    }
+//    public HttpSession getHttpSession() {
+//        return httpSession;
+//    }
 /*
 "photo": <binary_file>,
   "name":"Sendel",

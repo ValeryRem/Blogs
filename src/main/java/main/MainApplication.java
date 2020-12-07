@@ -2,9 +2,10 @@ package main;
 
 import main.entity.ModerationStatus;
 import main.entity.Post;
-import main.repository.CaptchaRepository;
+import main.entity.Session;
 import main.repository.CommentRepository;
 import main.repository.PostRepository;
+import main.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,19 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class MainApplication {
     @Autowired
     private PostRepository postRepository;
-
-    @Autowired
-    private CommentRepository commentRepository;
-
-    public MainApplication(PostRepository postRepository, CommentRepository commentRepository) {
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
@@ -40,7 +34,7 @@ public class MainApplication {
         Post post1 = new Post("The 5th testing post");
         post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
-        post1.setText("This is a new testing text to be processed by the code into announce #Spring");
+        post1.setText("This is a new testing text to be processed by the code under #Spring, #PHP, #Python tags");
         post1.setTime(LocalDate.now());
         post1.setUserId(1);
         post1.setViewCount(15);
@@ -60,6 +54,6 @@ public class MainApplication {
         post2.setModeratorId(1);
         post2.setViewCount(11);
         postRepository.save(post2);
-
     }
+
 }

@@ -44,7 +44,7 @@ public class PostService {
 
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
-        if (authSevice.isUserAuthorized(httpSession.getId())) {
+        if (authSevice.isUserAuthorized()) {
             Post post = postRepository.getOne(postId);
             if (decision.equals(ModerationRequest.ACCEPT)) {
                 post.setModerationStatus(ModerationStatus.ACCEPTED);
@@ -63,7 +63,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> postLike (Integer postToLikeId, Integer userId) {
-        if (authSevice.isUserAuthorized(httpSession.getId())) {
+        if (authSevice.isUserAuthorized()) {
             List<PostVote> postVotes = postVoteRepository.findAll().stream().
                     filter(pv -> pv.getPostId().equals(postToLikeId)).
                     collect(Collectors.toList());
@@ -82,7 +82,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> postDislike (Integer postToLikeId, Integer userId) {
-        if (authSevice.isUserAuthorized(httpSession.getId())) {
+        if (authSevice.isUserAuthorized()) {
             List<PostVote> postVotes = postVoteRepository.findAll().stream().
                     filter(pv -> pv.getPostId().equals(postToLikeId)).
                     collect(Collectors.toList());
@@ -100,13 +100,13 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
-        if(authSevice.isUserAuthorized(httpSession.getId())) {
+    public ResponseEntity<?> postPost (LocalDate time, Integer active, String title, List<String> tags, String text) {
+        if(authSevice.isUserAuthorized()) {
             if (title.length() < 3 || text.length() < 50) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Post post = new Post();
-            post.setTime(LocalDate.ofEpochDay(timestamp));
+            post.setTime(time);
             post.setIsActive(active);
             post.setTitle(title);
             post.setText(text);

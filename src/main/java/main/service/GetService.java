@@ -14,8 +14,6 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.asList;
-
 @Service
 public class GetService {
     private Integer tagId;
@@ -140,9 +138,9 @@ public class GetService {
             var commentList = commentRepository.findAll();
             for (Integer postId : postsId) {
                 Post post = postRepository.getOne(postId);
-                var commenstByPost = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+                var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
                         collect(Collectors.toList());
-                int commentCountByPost = commenstByPost.size();
+                int commentCountByPost = postComments.size();
                 postsList.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
                         post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
@@ -154,11 +152,11 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-        if (authSevice.isUserAuthorized(session.getId())) {
+        if (authSevice.isUserAuthorized()) {
             var posts = getPostList();
-            List<MyPostResponce> myPostsList = new ArrayList<>();
+            List<MyPostResponse> myPostsList = new ArrayList<>();
             TreeMap<String, Object> map = new TreeMap<>();
-            MyPostResponce myPostResponce;
+            MyPostResponse myPostResponce;
             int count = 0;
             for (Post post : posts) {
                 if (post.getUserId().equals(myUserId))
@@ -167,7 +165,7 @@ public class GetService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
                 {
-                    myPostResponce = new MyPostResponce(post);
+                    myPostResponce = new MyPostResponse(post);
                     myPostResponce.setUser(getUserOfPost(post));
                     myPostResponce.setLikeCount(extractLikeCount(post));
                     myPostResponce.setDislikeCount(extractDislikeCount(post));
@@ -196,11 +194,11 @@ public class GetService {
     public ResponseEntity<?> getPostById(Integer postId) {
         try {
             var post = postRepository.getOne(postId);
-            var postByIdResponce = new PostByIdResponce(post);
-            postByIdResponce.setCommentList(getCommentList(postId));
-            postByIdResponce.setUser(getUserOfPost(post));
-            postByIdResponce.setLikeCount(extractLikeCount(post));
-            postByIdResponce.setDislikeCount(extractDislikeCount(post));
+            var postByIdResponse = new PostByIdResponse(post);
+            postByIdResponse.setCommentList(getCommentList(postId));
+            postByIdResponse.setUser(getUserOfPost(post));
+            postByIdResponse.setLikeCount(extractLikeCount(post));
+            postByIdResponse.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTime().compareTo(LocalDate.now()) <= 0) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
@@ -213,11 +211,11 @@ public class GetService {
                 var iterableTags = tagRepository.findAll();
                 for (Tag tag : iterableTags) {
                     if (tagsIdList.contains(tag.getId())) {
-                        postByIdResponce.getTags().add(tag); // добавляем тэги в объект вывода
+                        postByIdResponse.getTags().add(tag); // добавляем тэги в объект вывода
                     }
                 }
             }
-            return new ResponseEntity<>(postByIdResponce, HttpStatus.FOUND);
+            return new ResponseEntity<>(postByIdResponse, HttpStatus.FOUND);
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
@@ -225,7 +223,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String mode) {
-        if(authSevice.isUserAuthorized(session.getId())) {
+        if(authSevice.isUserAuthorized()) {
             var postList = postRepository.findAll();
             var postsFiltered = postList.stream().
                     filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive() == 1).
@@ -285,7 +283,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyStatistics (Integer userId) {
-        if(authSevice.isUserAuthorized(session.getId())) {
+        if(authSevice.isUserAuthorized()) {
             User user = userRepository.getOne(userId);
             result = user.getIsModerator();
             LinkedHashMap<String, Object> map;
@@ -341,7 +339,7 @@ public class GetService {
         int likeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == 1).count();
         map.put("likesCount", likeCount);
         int disLikeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == -1).count();
-        map.put("disLkesCount", disLikeCount);
+        map.put("disLikesCount", disLikeCount);
         List<Integer> list = postRepository.findAll().stream().
                 map(Post::getViewCount).
                 collect(Collectors.toList());

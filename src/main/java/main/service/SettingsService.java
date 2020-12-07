@@ -39,7 +39,7 @@ public class SettingsService {
         String sessionId = httpSession.getId();
         Integer userId = authSevice.getSessionMap().get(sessionId);
 
-        if(authSevice.isUserAuthorized(sessionId) && userRepository.getOne(userId).getIsModerator()) {
+        if(authSevice.isUserAuthorized() && userRepository.getOne(userId).getIsModerator()) {
             settingsResponse.setStatisticsIsPublic(statisticsInPublic);
             settingsResponse.setPostPremoderation(postPremoderation);
             settingsResponse.setMultiuserMode(multiuserMode);

@@ -5,7 +5,7 @@ import main.entity.Post;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
-public class MyPostResponce {
+public class MyPostResponse {
     private final Integer myId;
     private final LocalDate timestamp;
 
@@ -16,8 +16,8 @@ public class MyPostResponce {
     private final Integer viewCount;
     private TreeMap<String, Object> user;
 
-    public MyPostResponce (Post post) {
-        this.myId = post.getUserId();;
+    public MyPostResponse(Post post) {
+        this.myId = post.getUserId();
         this.timestamp = post.getTime();
         this.title = post.getTitle();
         this.announce = post.getAnnounce();

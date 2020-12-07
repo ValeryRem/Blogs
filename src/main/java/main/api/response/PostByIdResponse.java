@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class PostByIdResponce {
+public class PostByIdResponse {
     private Integer id;
     private LocalDate timestamp;
     private boolean active;
@@ -36,10 +36,10 @@ public class PostByIdResponce {
     @Autowired
     UserRepository userRepository;
 
-    public PostByIdResponce() {
+    public PostByIdResponse() {
     }
 
-    public PostByIdResponce(Post post) {
+    public PostByIdResponse(Post post) {
         this.id = post.getPostId();
         this.timestamp = post.getTime();
         this.active = true;
@@ -63,6 +63,7 @@ public class PostByIdResponce {
                 }
             }
         } catch (NullPointerException ex){
+            ex.printStackTrace();
         }
         this.tags = tagList;
     }

@@ -1,10 +1,9 @@
 package main.repository;
 
-import main.entity.Post;
+import main.entity.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
-
+public interface SessionRepository extends JpaRepository <Session, Integer> {
 }
