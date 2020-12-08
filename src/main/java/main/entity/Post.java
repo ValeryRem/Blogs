@@ -3,7 +3,6 @@ package main.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -34,8 +33,6 @@ public class Post {
 
     @Column(name ="view_count")
     private Integer viewCount;
-
-//    private List<String> tags;
 
     public Post() {
     }

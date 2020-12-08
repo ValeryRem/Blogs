@@ -7,23 +7,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-
 @Service
 public class SettingsService {
     private boolean settingsExist;
 
     @Autowired
-    HttpSession httpSession;
-
-    @Autowired
     SettingsResponse settingsResponse;
 
     @Autowired
-    AuthSevice authSevice;
+    AuthService authService;
 
     @Autowired
     UserRepository userRepository;
+
     ResponseEntity<?> responseEntity;
 
     public SettingsResponse getGlobalSettings (){
@@ -36,10 +32,9 @@ public class SettingsService {
     }
 
     public ResponseEntity<?> putApiSettings (boolean multiuserMode, boolean postPremoderation, boolean statisticsInPublic ) {
-        String sessionId = httpSession.getId();
-        Integer userId = authSevice.getSessionMap().get(sessionId);
+        Integer userId = authService.getUserId();
 
-        if(authSevice.isUserAuthorized() && userRepository.getOne(userId).getIsModerator()) {
+        if(authService.isUserAuthorized() && userRepository.getOne(userId).getIsModerator()) {
             settingsResponse.setStatisticsIsPublic(statisticsInPublic);
             settingsResponse.setPostPremoderation(postPremoderation);
             settingsResponse.setMultiuserMode(multiuserMode);

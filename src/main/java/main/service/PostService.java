@@ -23,7 +23,7 @@ public class PostService {
     PostRepository postRepository;
 
     @Autowired
-    AuthSevice authSevice;
+    AuthService authService;
     private boolean result = false;
 
     @Autowired
@@ -44,12 +44,11 @@ public class PostService {
 
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
-        if (authSevice.isUserAuthorized()) {
+        if (authService.isUserAuthorized()) {
             Post post = postRepository.getOne(postId);
             if (decision.equals(ModerationRequest.ACCEPT)) {
                 post.setModerationStatus(ModerationStatus.ACCEPTED);
-                result = true;
-                responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+                responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
             } else if (decision.equals(ModerationRequest.DECLINE)) {
                 post.setModerationStatus(ModerationStatus.DECLINED);
                 responseEntity = new ResponseEntity<>(result, HttpStatus.NOT_MODIFIED);
@@ -63,7 +62,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> postLike (Integer postToLikeId, Integer userId) {
-        if (authSevice.isUserAuthorized()) {
+        if (authService.isUserAuthorized()) {
             List<PostVote> postVotes = postVoteRepository.findAll().stream().
                     filter(pv -> pv.getPostId().equals(postToLikeId)).
                     collect(Collectors.toList());
@@ -82,7 +81,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> postDislike (Integer postToLikeId, Integer userId) {
-        if (authSevice.isUserAuthorized()) {
+        if (authService.isUserAuthorized()) {
             List<PostVote> postVotes = postVoteRepository.findAll().stream().
                     filter(pv -> pv.getPostId().equals(postToLikeId)).
                     collect(Collectors.toList());
@@ -101,7 +100,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> postPost (LocalDate time, Integer active, String title, List<String> tags, String text) {
-        if(authSevice.isUserAuthorized()) {
+        if(authService.isUserAuthorized()) {
             if (title.length() < 3 || text.length() < 50) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -110,7 +109,13 @@ public class PostService {
             post.setIsActive(active);
             post.setTitle(title);
             post.setText(text);
+            post.setModerationStatus(ModerationStatus.NEW);
+            post.setModeratorId(1);
+            post.setTime(LocalDate.now());
+            post.setUserId(authService.getUserId());
+            post.setViewCount(33);
             postRepository.save(post);
+
             Tag2Post tag2Post;
             for (String tag: tags) {
                 if(tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {

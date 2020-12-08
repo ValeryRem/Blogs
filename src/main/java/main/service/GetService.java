@@ -40,7 +40,7 @@ public class GetService {
     PostVoteRepository postVoteRepository;
 
     @Autowired
-    AuthSevice authSevice;
+    AuthService authService;
 
     private boolean result = false;
 
@@ -152,7 +152,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer myUserId, Integer offset, Integer limit) {
-        if (authSevice.isUserAuthorized()) {
+        if (authService.isUserAuthorized()) {
             var posts = getPostList();
             List<MyPostResponse> myPostsList = new ArrayList<>();
             TreeMap<String, Object> map = new TreeMap<>();
@@ -223,7 +223,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String mode) {
-        if(authSevice.isUserAuthorized()) {
+        if(authService.isUserAuthorized()) {
             var postList = postRepository.findAll();
             var postsFiltered = postList.stream().
                     filter(a -> !a.getModerationStatus().equals(ModerationStatus.ACCEPTED) && a.isActive() == 1).
@@ -283,7 +283,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyStatistics (Integer userId) {
-        if(authSevice.isUserAuthorized()) {
+        if(authService.isUserAuthorized()) {
             User user = userRepository.getOne(userId);
             result = user.getIsModerator();
             LinkedHashMap<String, Object> map;

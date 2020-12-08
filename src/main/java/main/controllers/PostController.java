@@ -1,21 +1,23 @@
 package main.controllers;
 
-import main.entity.Post;
 import main.entity.Session;
+import main.entity.User;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
-import main.service.AuthSevice;
+import main.repository.UserRepository;
+import main.service.AuthService;
 import main.service.GetService;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/post")
@@ -27,7 +29,7 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    private AuthSevice authSevice;
+    private AuthService authService;
 
     @Autowired
     private PostRepository postRepository;
@@ -37,6 +39,9 @@ public class PostController {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("")
     @ResponseBody
@@ -92,7 +97,6 @@ public class PostController {
     @PostMapping("/like")
     private ResponseEntity<?> postLike (@RequestParam(defaultValue="5") Integer postToLikeId,
                                         @RequestParam(defaultValue="2") Integer userId) {
-//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postLike activated");
         return postService.postLike(postToLikeId, userId);
     }
@@ -100,30 +104,41 @@ public class PostController {
     @PostMapping("/dislike")
     private ResponseEntity<?> postDislike (@RequestParam(defaultValue="5") Integer postToLikeId,
                                            @RequestParam(defaultValue="2") Integer userId) {
-//        authSevice.getSessionMap().put(authSevice.getSession().getId(), userId); // only for testing !!!
         System.out.println("Method postDislike activated");
         return postService.postDislike(postToLikeId, userId);
     }
 
     @PostMapping("")
-    private ResponseEntity<?> postPost (LocalDate time,
-                                        @RequestParam(defaultValue="1") Integer active,
+    private ResponseEntity<?> postPost (@RequestParam(defaultValue="1") Integer active,
                                         @RequestParam(defaultValue="Optional.class description.") String title,
                                         @RequestParam(defaultValue="[Java, Python]") List<String> tags,
                                         @RequestParam(defaultValue="Try to consider how to implement Optional class " +
                                                 "approach if behaviour of components is nullable.") String text) {
-
+        System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
-        registerSession();
-
         return postService.postPost(LocalDate.now(), active, title, tags, text);
     }
 
-    private void registerSession () {
-        Session session = new Session();
-        session.setSessionName(httpSession.getId());
-        session.setSessionId(5);
-        sessionRepository.save(session);
-    }
+//    private void registerSession () {
+//        Session session = new Session();
+//        session.setSessionName(httpSession.getId());
+//        long epochSeconds = Instant.now().getEpochSecond();
+//        session.setTime(epochSeconds);
+//        sessionRepository.save(session);
+//        List<Session> oldSessions = sessionRepository.findAll().stream().
+//                filter(s -> s.getTime() < epochSeconds - 1800).
+//                collect(Collectors.toList());
+//        for (Session s: oldSessions) {
+//            sessionRepository.delete(s);
+//        }
+//    }
+
+//    private Integer getUserId () {
+//        Integer userId = sessionRepository.findAll().stream().
+//                filter(s -> s.getSessionName().equals(httpSession.getId())).
+//                map(Session::getUserId).
+//                findAny().orElse(0);
+//        return userId;
+//    }
 }
 
