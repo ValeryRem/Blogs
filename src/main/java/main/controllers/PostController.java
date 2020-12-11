@@ -119,6 +119,7 @@ public class PostController {
         return postService.postPost(LocalDate.now(), active, title, tags, text);
     }
 
+
 //    private void registerSession () {
 //        Session session = new Session();
 //        session.setSessionName(httpSession.getId());

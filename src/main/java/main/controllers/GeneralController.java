@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 
 @RestController
@@ -83,4 +85,11 @@ public class GeneralController {
         return postService.postApiModeration(postId, request);
     }
 
+    @PostMapping("/image")
+    private ResponseEntity<?> postImage
+            (@RequestParam(defaultValue="src/main/resources/static/img/default-1.png") String origin,
+             @RequestParam(defaultValue= "upload/") String destination) throws IOException {
+        System.out.println("Method postImage is activated.");
+        return postService.postImage (origin, destination);
+    }
 }

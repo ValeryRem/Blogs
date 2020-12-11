@@ -11,3 +11,5 @@ blog.phone: +7 999 111-22-33
 blog.email: rokotov@tiptop.pl
 blog.copyright: George Rokotoff
 blog.copyrightFrom: 1997
+
+#upload.path:
