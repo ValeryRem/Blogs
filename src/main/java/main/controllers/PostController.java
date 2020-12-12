@@ -9,6 +9,7 @@ import main.service.AuthService;
 import main.service.GetService;
 import main.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.devtools.RemoteSpringApplication;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -116,7 +117,17 @@ public class PostController {
                                                 "approach if behaviour of components is nullable.") String text) {
         System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
-        return postService.postPost(LocalDate.now(), active, title, tags, text);
+        return postService.postPost(active, title, tags, text);
+    }
+
+    @PutMapping("/{id:\\d+}")
+    private ResponseEntity<?> putPost (@PathVariable("id") Integer postId,
+                                       @RequestParam(defaultValue="1") Integer active,
+                                       @RequestParam(defaultValue="Optional description.") String title,
+                                       @RequestParam(defaultValue="#Java, #PHP, #Excel, #Darby") List<String> tags,
+                                       @RequestParam(defaultValue="Try to escape from here, and as soon as possible, my daring!") String text) {
+        System.out.println("Method putPost is activated for postId: " + postId);
+        return postService.putPost(postId, active, title, tags, text);
     }
 
 
