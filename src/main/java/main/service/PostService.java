@@ -206,6 +206,7 @@ public class PostService {
                     post.setText(text);
                     post.setTitle(title);
                     post.setActive(active);
+                    post.setTime(LocalDate.now());
                     postRepository.save(post);
                     List<String> tagNames = tagRepository.findAll().stream().map(Tag::getName).collect(Collectors.toList());
                     List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
