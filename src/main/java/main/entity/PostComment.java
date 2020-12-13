@@ -15,7 +15,7 @@ public class PostComment {
     @Column(name = "parent_id")
     private Integer parentId;
 
-    @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "post_id")
     private Integer postId;
 
     @Column(name = "user_id", nullable = false)

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +52,10 @@ public class PostService {
 
     @Autowired
     Tag2PostRepository tag2PostRepository;
+
+    @Autowired
+    PostCommentRepository postCommentRepository;
+
     ResponseEntity<?> responseEntity;
 
 
@@ -114,10 +119,10 @@ public class PostService {
         result = true;
         if(authService.isUserAuthorized()) {
             Map<String, Object> errors = new LinkedHashMap<>();
-            List<String> list = new ArrayList<>();
-            checkTexts(title, text, errors, list);
+            Map<String, Object> map = new LinkedHashMap<>();
+            checkTexts(title, text, errors, map);
             if (!result) {
-                errors.put("errors", list);
+                errors.put("errors", map);
                 return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
             } else {
                 if (title.length() < 3 || text.length() < 50) {
@@ -194,12 +199,11 @@ public class PostService {
     public ResponseEntity<?> putPost(Integer postId, Integer active, String title, List<String> tags, String text) {
         result = true;
         Map<String, Object> errors = new LinkedHashMap<>();
-        List<String> list = new ArrayList<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
-            checkTexts(title, text, errors, list);
+            checkTexts(title, text, errors, map);
             if (!result) {
-                errors.put("errors", list);
-                return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
             } else {
                 try {
                     Post post = postRepository.getOne(postId);
@@ -240,16 +244,79 @@ public class PostService {
         return responseEntity;
     }
 
-    private void checkTexts (String title, String text, Map<String, Object> errors, List<String> list) {
+    private void checkTexts (String title, String text, Map<String, Object> errors, Map<String, Object> map) {
         if (title.length() < 3) {
-            list.add("Title: Заголовок слишком короткий");
             result = false;
             errors.put("result", false);
+            errors.put("Title", "Заголовок слишком короткий");
+            map.put("errors", errors);
         }
         if (text.length() < 50) {
             result = false;
             errors.put("result", false);
-            list.add("Text: Текст публикации слишком короткий");
+            errors.put("Text", "Текст публикации слишком короткий");
+            map.put("errors", errors);
         }
+    }
+
+    public ResponseEntity<?> postComment(Integer postId, String parentId, String text) {
+        result = true;
+        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> errors = new LinkedHashMap<>();
+        int parentIdInt;
+        if(parentId.length() > 0) {
+            parentIdInt = Integer.parseInt(parentId);
+        } else {
+            parentIdInt = 0;
+        }
+        if (authService.isUserAuthorized()) {
+            Integer userId = authService.getUserId();
+            PostComment postComment = new PostComment();
+            if (postRepository.findAll().stream().
+                    map(Post::getPostId).
+                    collect(Collectors.toList()).
+                    contains(postId)) {
+                postComment.setPostId(postId);
+            } else {
+                result = false;
+                map.put("result", false);
+                errors.put("Post with id ", postId + " does not exist.");
+                map.put("errors", errors);
+            }
+            if (postCommentRepository.findAll().stream().
+                    map(PostComment::getCommentId).
+                    collect(Collectors.toList()).
+                    contains(parentIdInt)) {
+                postComment.setParentId(parentIdInt);
+            } else {
+                if (parentIdInt > 0) {
+                    result = false;
+                    map.put("result", false);
+                    errors.put("ParentId ", parentId + " does not exist.");
+                    map.put("errors", errors);
+                } else {
+                    postComment.setParentId(parentIdInt);
+                }
+            }
+            if (text.length() < 20) {
+                result = false;
+                map.put("result", false);
+                errors.put("Text", "Text too short!");
+                map.put("errors", errors);
+            }
+            if (result) {
+                postComment.setTime(LocalDate.now());
+                postComment.setUserId(userId);
+                postComment.setText(text);
+                postCommentRepository.save(postComment);
+                map.put("id", postComment.getCommentId());
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
+        return responseEntity;
     }
 }

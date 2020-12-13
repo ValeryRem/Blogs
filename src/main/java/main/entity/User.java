@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
     private Integer userId;

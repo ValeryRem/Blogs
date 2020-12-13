@@ -124,7 +124,7 @@ public class PostController {
     private ResponseEntity<?> putPost (@PathVariable("id") Integer postId,
                                        @RequestParam(defaultValue="1") Integer active,
                                        @RequestParam(defaultValue="Optional description.") String title,
-                                       @RequestParam(defaultValue="#Java, #PHP, #Excel, #Darby") List<String> tags,
+                                       @RequestParam(defaultValue="#Java, #PHP, #Excel, #Darby, #Python") List<String> tags,
                                        @RequestParam(defaultValue="Try to escape from here, and as soon as possible, my daring!") String text) {
         System.out.println("Method putPost is activated for postId: " + postId);
         return postService.putPost(postId, active, title, tags, text);

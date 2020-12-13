@@ -8,11 +8,15 @@ import main.service.PostService;
 import main.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
+
+import static ch.qos.logback.core.joran.action.ActionConst.NULL;
 
 @RestController
 @RequestMapping("/api")
@@ -91,5 +95,13 @@ public class GeneralController {
              @RequestParam(defaultValue= "upload/") String destination) throws IOException {
         System.out.println("Method postImage is activated.");
         return postService.postImage (origin, destination);
+    }
+
+    @PostMapping("/comment/")
+    private ResponseEntity<?> postComment (@RequestParam(defaultValue="5") Integer postId,
+                                           @RequestParam(defaultValue="") String parentId,
+                                           @RequestParam(defaultValue="Ugly post.") String text) {
+        System.out.println("Method postComment is activated.");
+        return postService.postComment(4, "", text);
     }
 }

@@ -24,11 +24,11 @@ public class MainApplication {
         SpringApplication.run(MainApplication.class, args);
     }
 
-    @PostConstruct
-    public void init(){
-        insertTestPost1();
-        insertTestPost2();
-    }
+//    @PostConstruct
+//    public void init(){
+//        insertTestPost1();
+//        insertTestPost2();
+//    }
 
     private void insertTestPost1() {
         Post post1 = new Post("The testing post");
