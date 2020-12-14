@@ -3,16 +3,25 @@ package main.service;
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.entity.*;
+import main.entity.Session;
 import main.repository.CaptchaRepository;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.*;
+import javax.mail.internet.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.time.Instant;
@@ -40,7 +49,12 @@ public class AuthService {
 
     @Autowired
     private SessionRepository sessionRepository;
-    boolean result = false;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    private boolean result = false;
+    private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
         ResponseEntity<?> responseEntity;
@@ -247,6 +261,40 @@ public class AuthService {
     }
 
 
+    public ResponseEntity<?> authRestore (String eMail) {
+        if (userRepository.findAll().stream().
+                map(User::getEmail).
+                collect(Collectors.toList()).
+                contains(eMail)) {
+            result = true;
+            String code = Integer.toString(eMail.hashCode());
+            User user = userRepository.findAll().stream().
+                    filter(u -> u.getEmail().equals(eMail)).findAny().orElse(new User());
+            user.setCode(code);
+            userRepository.save(user);
+            try {
+                sendEmail(eMail, "Restore password", code);
+            } catch (MailSendException ex) {
+                ex.printStackTrace();
+                Map<Object, Exception> failedMails = ex.getFailedMessages();
+                System.out.println(failedMails.entrySet());
+                return new ResponseEntity<>(failedMails, HttpStatus.BAD_REQUEST);
+            }
+            responseEntity = new ResponseEntity<>("result: " + result, HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<>("result: " + false, HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
+    }
+
+    private void sendEmail(String eMail, String subject, String text) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(eMail);
+        msg.setSubject(subject);
+        msg.setText(text);
+        javaMailSender.send(msg);
+    }
+
     public Integer getUserId () {
         return
                 sessionRepository.findAll().stream().
@@ -254,13 +302,4 @@ public class AuthService {
                 map(Session::getUserId).
                 findAny().orElse(0);
     }
-
-/*
-"photo": <binary_file>,
-  "name":"Sendel",
-  "email":"sndl@mail.ru",
-  "password":"123456",
-  "removePhoto":0
- */
-//    public ResponseEntity<?> postMyProfile ()
 }

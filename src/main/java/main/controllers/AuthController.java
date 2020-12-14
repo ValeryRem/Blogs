@@ -5,9 +5,7 @@ import main.service.GetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -51,6 +49,12 @@ public class AuthController {
                                                @RequestParam(defaultValue="yapaponep") String secret_captcha) {
         System.out.println("Method postAuthRegister is activated.");
         return authService.postAuthRegister(e_mail, password, nameString, captcha, secret_captcha);
+    }
+
+    @PostMapping("/restore")
+    private ResponseEntity<?> authRestore (@RequestParam(defaultValue="oplo@sazg.ty") String eMail) {
+        System.out.println("Method authRestore is activated.");
+        return authService.authRestore(eMail);
     }
 }
 

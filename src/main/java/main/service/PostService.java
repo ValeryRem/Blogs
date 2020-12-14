@@ -56,8 +56,7 @@ public class PostService {
     @Autowired
     PostCommentRepository postCommentRepository;
 
-    ResponseEntity<?> responseEntity;
-
+    private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
         if (authService.isUserAuthorized()) {
