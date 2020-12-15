@@ -64,5 +64,4 @@ public class MainApplication {
         post2.setViewCount(11);
         postRepository.save(post2);
     }
-
 }

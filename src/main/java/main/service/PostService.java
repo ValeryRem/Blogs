@@ -1,6 +1,7 @@
 package main.service;
 
 import jdk.dynalink.linker.support.CompositeGuardingDynamicLinker;
+import main.api.response.ErrorsResponse;
 import main.api.response.SettingsResponse;
 import main.entity.*;
 import main.repository.*;
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostService {
+
+    @Autowired
+    ErrorsResponse errorsResponse;
 
     @Autowired
     UserRepository userRepository;
@@ -118,15 +122,11 @@ public class PostService {
         result = true;
         if(authService.isUserAuthorized()) {
             Map<String, Object> errors = new LinkedHashMap<>();
-            Map<String, Object> map = new LinkedHashMap<>();
-            checkTexts(title, text, errors, map);
+            checkTexts(title, text, errors);
             if (!result) {
-                errors.put("errors", map);
-                return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+                errorsResponse.getResponseMap().put("errors", errors);
+                return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
             } else {
-                if (title.length() < 3 || text.length() < 50) {
-                    return new ResponseEntity<>("Too short text inputs!", HttpStatus.BAD_REQUEST);
-                }
                 Post post = new Post();
                 post.setIsActive(active);
                 post.setTitle(title);
@@ -198,11 +198,11 @@ public class PostService {
     public ResponseEntity<?> putPost(Integer postId, Integer active, String title, List<String> tags, String text) {
         result = true;
         Map<String, Object> errors = new LinkedHashMap<>();
-        Map<String, Object> map = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
-            checkTexts(title, text, errors, map);
+            checkTexts(title, text, errors);
             if (!result) {
-                return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+                errorsResponse.getResponseMap().put("errors", errors);
+                return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
             } else {
                 try {
                     Post post = postRepository.getOne(postId);
@@ -243,18 +243,14 @@ public class PostService {
         return responseEntity;
     }
 
-    private void checkTexts (String title, String text, Map<String, Object> errors, Map<String, Object> map) {
+    private void checkTexts (String title, String text, Map<String, Object> errors) {
         if (title.length() < 3) {
             result = false;
-            errors.put("result", false);
             errors.put("Title", "Заголовок слишком короткий");
-            map.put("errors", errors);
         }
         if (text.length() < 50) {
             result = false;
-            errors.put("result", false);
             errors.put("Text", "Текст публикации слишком короткий");
-            map.put("errors", errors);
         }
     }
 

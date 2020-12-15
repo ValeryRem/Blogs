@@ -22,11 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore (String eMail) set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore (String eMail)  updated with new method  generateCode(int length).">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ErrorsResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -118,7 +120,9 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,8 +138,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -212,13 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Tag2PostRepository corrected to &lt;Tag2Post, Integer&gt; params. However Field tag2Post in main.service.PostService required a bean of type 'main.entity.Tag2Post' that could not be found.">
-      <created>1603812460178</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1603812460178</updated>
     </task>
     <task id="LOCAL-00032" summary="Добавлена аннотация @Component в классы Tag2Post и Tag.">
       <created>1603876872415</created>
@@ -556,7 +553,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607945600823</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="Method authRestore (String eMail)  updated with new method  generateCode(int length).">
+      <created>1608023613882</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1608023613883</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -579,7 +583,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value=" Method @GetMapping(&quot;/statistics/my&quot;) set up." />
     <MESSAGE value=" Method getMyStatistics (Integer userId) updated." />
     <MESSAGE value=" Method getMyStatistics (Integer userId) tuned to long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond()." />
     <MESSAGE value="Request api/statistics/all realized." />
@@ -604,7 +607,8 @@
     <MESSAGE value="Method putImage set up with updated time." />
     <MESSAGE value="Method postComment set up." />
     <MESSAGE value="Method authRestore (String eMail) set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore (String eMail) set up." />
+    <MESSAGE value="Method authRestore (String eMail)  updated with new method  generateCode(int length)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore (String eMail)  updated with new method  generateCode(int length)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -268,13 +268,14 @@ public class AuthService {
                 collect(Collectors.toList()).
                 contains(eMail)) {
             result = true;
-            String code = "/login/change-password/" + generateCode(16);
+            String code = generateCode(16);
+            String text = "/login/change-password/" + code;
             User user = userRepository.findAll().stream().
                     filter(u -> u.getEmail().equals(eMail)).findAny().orElse(new User());
             user.setCode(code);
             userRepository.save(user);
             try {
-                sendEmail(eMail, "Restore password", code);
+                sendEmail(eMail, "Restore password", text);
             } catch (MailSendException ex) {
                 ex.printStackTrace();
                 Map<Object, Exception> failedMails = ex.getFailedMessages();
