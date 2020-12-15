@@ -24,6 +24,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -267,7 +268,7 @@ public class AuthService {
                 collect(Collectors.toList()).
                 contains(eMail)) {
             result = true;
-            String code = Integer.toString(eMail.hashCode());
+            String code = "/login/change-password/" + generateCode(16);
             User user = userRepository.findAll().stream().
                     filter(u -> u.getEmail().equals(eMail)).findAny().orElse(new User());
             user.setCode(code);
@@ -295,11 +296,21 @@ public class AuthService {
         javaMailSender.send(msg);
     }
 
-    public Integer getUserId () {
+    public Integer getUserId() {
         return
                 sessionRepository.findAll().stream().
-                filter(s -> s.getSessionName().equals(httpSession.getId())).
-                map(Session::getUserId).
-                findAny().orElse(0);
+                        filter(s -> s.getSessionName().equals(httpSession.getId())).
+                        map(Session::getUserId).
+                        findAny().orElse(0);
+    }
+
+    private String generateCode(int length) {
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return stringBuilder.toString();
     }
 }
