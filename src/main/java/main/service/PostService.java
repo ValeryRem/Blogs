@@ -1,27 +1,17 @@
 package main.service;
 
-import jdk.dynalink.linker.support.CompositeGuardingDynamicLinker;
 import main.api.response.ErrorsResponse;
-import main.api.response.SettingsResponse;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,9 +34,6 @@ public class PostService {
 
     @Autowired
     HttpSession httpSession;
-
-    @Autowired
-    SettingsResponse settingsResponse;
 
     @Autowired
     PostVoteRepository postVoteRepository;
@@ -274,9 +261,8 @@ public class PostService {
                 postComment.setPostId(postId);
             } else {
                 result = false;
-                map.put("result", false);
                 errors.put("Post with id ", postId + " does not exist.");
-                map.put("errors", errors);
+                errorsResponse.getResponseMap().put("errors", errors);
             }
             if (postCommentRepository.findAll().stream().
                     map(PostComment::getCommentId).
@@ -286,18 +272,16 @@ public class PostService {
             } else {
                 if (parentIdInt > 0) {
                     result = false;
-                    map.put("result", false);
                     errors.put("ParentId ", parentId + " does not exist.");
-                    map.put("errors", errors);
+                    errorsResponse.getResponseMap().put("errors", errors);
                 } else {
                     postComment.setParentId(parentIdInt);
                 }
             }
             if (text.length() < 20) {
                 result = false;
-                map.put("result", false);
                 errors.put("Text", "Text too short!");
-                map.put("errors", errors);
+                errorsResponse.getResponseMap().put("errors", errors);
             }
             if (result) {
                 postComment.setTime(LocalDate.now());
@@ -307,7 +291,7 @@ public class PostService {
                 map.put("id", postComment.getCommentId());
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+                responseEntity = new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);

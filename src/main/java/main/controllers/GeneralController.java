@@ -1,29 +1,23 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
-import main.api.response.SettingsResponse;
 import main.entity.ModerationRequest;
 import main.service.GetService;
 import main.service.PostService;
 import main.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
-
-import static ch.qos.logback.core.joran.action.ActionConst.NULL;
 
 @RestController
 @RequestMapping("/api")
 public class GeneralController {
 
 //    private final SettingsService settingsService;
-    private final InitResponse initResponse;
+    private InitResponse initResponse;
     @Autowired
     private GetService getService;
 
@@ -33,21 +27,24 @@ public class GeneralController {
     @Autowired
     private SettingsService settingsService;
 
+    public GeneralController() {
+    }
+
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;
     }
 
-    @PutMapping("/settings/")
-    private ResponseEntity<?> putApiSettings(@RequestParam(defaultValue = "false") boolean multiuserMode,
+    @PutMapping("/settings")
+    private ResponseEntity<?> putApiSettings (@RequestParam(defaultValue = "true") boolean multiuserMode,
                                              @RequestParam(defaultValue = "true") boolean postPremoderation,
                                              @RequestParam(defaultValue = "false") boolean statisticsInPublic) {
-        return settingsService.putApiSettings(multiuserMode, postPremoderation, statisticsInPublic);
+        return settingsService.putApiSettings (multiuserMode, postPremoderation, statisticsInPublic);
     }
 
     @GetMapping("/settings")
-    private SettingsResponse settings() {
-        return settingsService.getGlobalSettings();
+    private ResponseEntity<?> getApiSettings () {
+        return settingsService.getApiSettings();
     }
 
     @GetMapping("/init")

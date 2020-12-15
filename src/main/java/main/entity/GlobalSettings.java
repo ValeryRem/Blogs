@@ -1,18 +1,19 @@
 package main.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.*;
 
 @Entity
 public class GlobalSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String code;
-    private String name;
-    private String value;
+    @JsonProperty("MULTIUSER_MODE")
+    private boolean multiuserMode;
+    @JsonProperty("POST_PREMODERATION")
+    private boolean postPremoderation;
+    @JsonProperty("STATISTICS_IS_PUBLIC")
+    private boolean statisticsIsPublic;
 
     public GlobalSettings() {
     }
@@ -25,27 +26,27 @@ public class GlobalSettings {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public boolean isMultiuserMode() {
+        return multiuserMode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setMultiuserMode(boolean multiuserMode) {
+        this.multiuserMode = multiuserMode;
     }
 
-    public String getName() {
-        return name;
+    public boolean isPostPremoderation() {
+        return postPremoderation;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPostPremoderation(boolean postPremoderation) {
+        this.postPremoderation = postPremoderation;
     }
 
-    public String getValue() {
-        return value;
+    public boolean isStatisticsIsPublic() {
+        return statisticsIsPublic;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setStatisticsIsPublic(boolean statisticsIsPublic) {
+        this.statisticsIsPublic = statisticsIsPublic;
     }
 }
