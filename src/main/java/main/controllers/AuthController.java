@@ -52,9 +52,15 @@ public class AuthController {
     }
 
     @PostMapping("/restore")
-    private ResponseEntity<?> authRestore (@RequestParam(defaultValue="oplo@sazg.ty") String eMail) {
+    private ResponseEntity<?> authRestore (@RequestParam(defaultValue="klo@ggg.ty") String eMail) {
         System.out.println("Method authRestore is activated.");
         return authService.authRestore(eMail);
+    }
+
+    @PostMapping("/password")
+    private ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
+        System.out.println("Method authPassword is activated.");
+        return authService.authPassword("w4KXBzMt0VLuGD2C", "pw1212", "yuhelakate", "maheziduro");
     }
 }
 

@@ -47,6 +47,9 @@ public class PostService {
     @Autowired
     PostCommentRepository postCommentRepository;
 
+    @Autowired
+    GlobalSettingsReporitory globalSettingsReporitory;
+
     private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
@@ -104,41 +107,75 @@ public class PostService {
         }
         return responseEntity;
     }
-
+/*
+POST_PREMODERATION - если включен этот режим, то все новые посты пользователей с moderation = false обязательно
+должны попадать на модерацию, у постов при создании должен быть установлен moderation_status = NEW. Eсли значения
+POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
+установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
+*/
     public ResponseEntity<?> postPost (Integer active, String title, List<String> tags, String text) {
         result = true;
-        if(authService.isUserAuthorized()) {
-            Map<String, Object> errors = new LinkedHashMap<>();
-            checkTexts(title, text, errors);
-            if (!result) {
-                errorsResponse.getResponseMap().put("errors", errors);
-                return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
-            } else {
-                Post post = new Post();
-                post.setIsActive(active);
-                post.setTitle(title);
-                post.setText(text);
-                post.setModerationStatus(ModerationStatus.NEW);
-                post.setModeratorId(1);
-                post.setTime(LocalDate.now());
-                post.setUserId(authService.getUserId());
-                post.setViewCount(33);
-                postRepository.save(post);
-                Tag2Post tag2Post;
-                for (String tag : tags) {
-                    if (tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {
-                        Tag tagNew = new Tag(tag);
-                        tagRepository.save(tagNew);
-                        tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
-                        tag2PostRepository.save(tag2Post);
+        User user = userRepository.getOne(authService.getUserId());
+        Map<String, Object> errors = new LinkedHashMap<>();
+        Post post = new Post();
+        post.setIsActive(active);
+        post.setModeratorId(1);
+        post.setTime(LocalDate.now());
+        post.setUserId(authService.getUserId());
+        post.setViewCount(33);
+        checkTexts(title, text, errors);
+        if (!result) {
+            errorsResponse.getResponseMap().put("errors", errors);
+            return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
+        } else {
+            post.setTitle(title);
+            post.setText(text);
+            if (authService.isUserAuthorized()) {
+                if (globalSettingsReporitory.findAll().stream().
+                        findAny().
+                        orElse(new GlobalSettings()).
+                        isPostPremoderation()) { // проверка POST_PREMODERATION = true
+                    if (!user.getIsModerator()) { // if the user is not moderator
+                        post.setModerationStatus(ModerationStatus.NEW);
+                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
+                    } else { // if the user is moderator the posy saved
+                        post.setModerationStatus(ModerationStatus.ACCEPTED);
+                        postRepository.save(post);
+                        Tag2Post tag2Post;
+                        for (String tag : tags) {
+                            if (tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {
+                                Tag tagNew = new Tag(tag);
+                                tagRepository.save(tagNew);
+                                tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
+                                tag2PostRepository.save(tag2Post);
+                            }
+                        }
+                        responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                    }
+                } else { // if POST_PREMODERATION = false
+                    if (active == 1) {
+                        post.setModerationStatus(ModerationStatus.ACCEPTED);
+                        postRepository.save(post);
+                        Tag2Post tag2Post;
+                        for (String tag : tags) {
+                            if (tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {
+                                Tag tagNew = new Tag(tag);
+                                tagRepository.save(tagNew);
+                                tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
+                                tag2PostRepository.save(tag2Post);
+                            }
+                        }
+                        responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                    } else { //  if (active != 1)
+                        post.setModerationStatus(ModerationStatus.NEW);
+                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
-                responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
             }
-        } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            return responseEntity;
         }
-        return responseEntity;
     }
 
     public ResponseEntity<?> postImage (String origin, String destination) throws IOException {

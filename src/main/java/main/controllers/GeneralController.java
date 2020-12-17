@@ -58,8 +58,8 @@ public class GeneralController {
     }
 
     @GetMapping("/statistics/my")
-    private ResponseEntity <?> getMyStatistics (@RequestParam(defaultValue = "1") Integer userId) {
-        return getService.getMyStatistics(userId);
+    private ResponseEntity <?> getMyStatistics () {
+        return getService.getMyStatistics();
     }
 
     @GetMapping("/statistics/all")

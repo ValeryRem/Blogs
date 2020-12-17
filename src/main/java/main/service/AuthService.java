@@ -4,10 +4,7 @@ import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.entity.*;
 import main.entity.Session;
-import main.repository.CaptchaRepository;
-import main.repository.PostRepository;
-import main.repository.SessionRepository;
-import main.repository.UserRepository;
+import main.repository.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,11 +51,13 @@ public class AuthService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private GlobalSettingsReporitory globalSettingsReporitory;
+
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
-        ResponseEntity<?> responseEntity;
         List<User> userList = userRepository.findAll();
         List<Object> resultList = new ArrayList<>();
         LinkedHashMap<String, Object> user = new LinkedHashMap<>();
@@ -83,12 +82,6 @@ public class AuthService {
             user.put("moderationCount", moderationCount);
             user.put("settings", "true");
             resultList.add(user);
-
-//            LocalDate date = LocalDate.now();
-//            ZoneId zoneId = ZoneId.systemDefault();
-//            long epochSeconds = date.atStartOfDay().atZone(zoneId).toEpochSecond();
-//            String sessionTime = epochSeconds + "";
-//            sessionMap.put(sessionName, us.getUserId());
             responseEntity = new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch (NullPointerException ex) {
             responseEntity = new ResponseEntity<>("user UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -136,23 +129,13 @@ public class AuthService {
                    findFirst().
                    orElse(new Session());
            sessionRepository.delete(session);
+           responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+       } else {
+           responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
        }
-        return new ResponseEntity<>("result: true", HttpStatus.OK);
+        return responseEntity;
     }
 
-
-    private int getModerationCount(User user) {
-        int moderCount;
-        if (user.getIsModerator()) {
-            List<Post> posts = postRepository.findAll();
-            moderCount = (int) posts.stream().
-                    filter(p -> p.getUserId().equals(user.getUserId()) && p.getModerationStatus().equals(ModerationStatus.NEW)).
-                    count();
-             return moderCount;
-        } else {
-            return 0;
-        }
-    }
 
     public ResponseEntity<?> getCaptcha () {
         Cage cage = new GCage();
@@ -185,45 +168,56 @@ public class AuthService {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    /*
+    MULTIUSER_MODE — если включен этот режим, в блоге разрешена регистрация новых пользователей. Если режим выключен,
+    регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
+    Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
+     */
     public ResponseEntity<?> postAuthRegister(String e_mail, String password, String nameString,
                                               String captcha, String secret_captcha) {
         ResponseEntity<?> responseEntity;
-        List<Object> responseList = new ArrayList<>();
-        User user = new User();
-        Map<String, String> errors = new LinkedHashMap<>();
-        List<User> users = userRepository.findAll();
-        CaptchaCode captchaCode = captchaRepository.findAll().stream().
-                filter(c -> c.getSecretCode().equals(secret_captcha)).
-                findAny().orElse(new CaptchaCode());
-        errors.put("result", "false");
-        result = true;
-        if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
-            errors.put("email", "Этот e-mail уже зарегистрирован!");
-            result = false;
-        }
-        if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
-            errors.put("name", "Данное имя уже зарегистрировано!");
-            result = false;
-        }
-        if (password.length() < 6) {
-            errors.put("password", "Пароль короче 6 символов!");
-            result = false;
-        }
-        if (!captcha.equals(captchaCode.getCode())) {
-            errors.put("captcha", "Код с картинки введён неверно");
-            result = false;
-        }
-        if(result){
-            user.setEmail(e_mail);
-            user.setName(nameString);
-            user.setPassword(password);
-            user.setRegTime(LocalDate.now());
-            userRepository.save(user);
-            responseList.add(result);
-            responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
-        } else {
-            responseList.add(errors);
-            responseEntity = new ResponseEntity<>(responseList, HttpStatus.NOT_ACCEPTABLE);
+        if (globalSettingsReporitory.findAll().stream().
+                findAny().orElse(new GlobalSettings()).
+                isMultiuserMode()) { // if MULTIUSER_MODE = true
+            List<Object> responseList = new ArrayList<>();
+            User user = new User();
+            Map<String, String> errors = new LinkedHashMap<>();
+            List<User> users = userRepository.findAll();
+            CaptchaCode captchaCode = captchaRepository.findAll().stream().
+                    filter(c -> c.getSecretCode().equals(secret_captcha)).
+                    findAny().orElse(new CaptchaCode());
+            errors.put("result", "false");
+            result = true;
+            if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
+                errors.put("email", "Этот e-mail уже зарегистрирован!");
+                result = false;
+            }
+            if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
+                errors.put("name", "Данное имя уже зарегистрировано!");
+                result = false;
+            }
+            if (password.length() < 6) {
+                errors.put("password", "Пароль короче 6 символов!");
+                result = false;
+            }
+            if (!captcha.equals(captchaCode.getCode())) {
+                errors.put("captcha", "Код с картинки введён неверно");
+                result = false;
+            }
+            if (result) {
+                user.setEmail(e_mail);
+                user.setName(nameString);
+                user.setPassword(password);
+                user.setRegTime(LocalDate.now());
+                userRepository.save(user);
+                responseList.add(result);
+                responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
+            } else {
+                responseList.add(errors);
+                responseEntity = new ResponseEntity<>(responseList, HttpStatus.NOT_ACCEPTABLE);
+            }
+        } else { // if MULTIUSER_MODE = false
+            responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }
@@ -248,19 +242,18 @@ public class AuthService {
 
     }
 
-
-    public boolean isUserAuthorized () {
-        try {
-            String sessName = httpSession.getId();
-            List<Session> currentSessions = sessionRepository.findAll();
-            result = currentSessions.stream().anyMatch(s -> s.getSessionName().equals(sessName));
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-            result = false;
+    public ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
+        User user = userRepository.getOne(getUserId());
+        if(user.getCode().equals(code) && captcha.equals(captchaRepository.findAll().stream().findAny().orElse(new CaptchaCode()).getCode())
+        && captchaSecret.equals(captchaRepository.findAll().stream().findAny().orElse(new CaptchaCode()).getSecretCode())) {
+            user.setPassword(password);
+            userRepository.save(user);
+            responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<>("result: false", HttpStatus.NOT_ACCEPTABLE);
         }
-        return result;
+        return responseEntity;
     }
-
 
     public ResponseEntity<?> authRestore (String eMail) {
         if (userRepository.findAll().stream().
@@ -271,7 +264,10 @@ public class AuthService {
             String code = generateCode(16);
             String text = "/login/change-password/" + code;
             User user = userRepository.findAll().stream().
-                    filter(u -> u.getEmail().equals(eMail)).findAny().orElse(new User());
+                    filter(u -> u.getEmail().
+                            equals(eMail)).
+                    findAny().
+                    orElse(new User());
             user.setCode(code);
             userRepository.save(user);
             try {
@@ -287,6 +283,31 @@ public class AuthService {
             responseEntity = new ResponseEntity<>("result: " + false, HttpStatus.NOT_FOUND);
         }
         return responseEntity;
+    }
+
+    public boolean isUserAuthorized () {
+        try {
+            String sessName = httpSession.getId();
+            List<Session> currentSessions = sessionRepository.findAll();
+            result = currentSessions.stream().anyMatch(s -> s.getSessionName().equals(sessName));
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    private int getModerationCount(User user) {
+        int moderCount;
+        if (user.getIsModerator()) {
+            List<Post> posts = postRepository.findAll();
+            moderCount = (int) posts.stream().
+                    filter(p -> p.getUserId().equals(user.getUserId()) && p.getModerationStatus().equals(ModerationStatus.NEW)).
+                    count();
+            return moderCount;
+        } else {
+            return 0;
+        }
     }
 
     private void sendEmail(String eMail, String subject, String text) {

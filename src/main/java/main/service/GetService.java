@@ -42,6 +42,9 @@ public class GetService {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    GlobalSettingsReporitory globalSettingsReporitory;
+
     private boolean result = false;
 
     ResponseEntity<?> responseEntity;
@@ -282,14 +285,15 @@ public class GetService {
         }
     }
 
-    public ResponseEntity<?> getMyStatistics (Integer userId) {
+    public ResponseEntity<?> getMyStatistics () {
+        Integer myId = authService.getUserId();
         if(authService.isUserAuthorized()) {
-            User user = userRepository.getOne(userId);
+            User user = userRepository.getOne(myId);
             result = user.getIsModerator();
             LinkedHashMap<String, Object> map;
 
             if (result) {
-                map = getUserStatistics(userId);
+                map = getUserStatistics(myId);
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
                 responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
@@ -333,6 +337,11 @@ public class GetService {
         return map;
     }
 
+    /*
+    STATISTICS_IS_PUBLIC - если включен этот режим, статистика блога должна быть доступна по запросу GET /api/statistics/all
+    для всех групп пользователей. Если режим выключен, по запросу GET /api/statistics/all только модераторам отдавать
+    данные статистики. Пользователям и гостям блога необходимо возвращать статус 401.
+     */
     public ResponseEntity<?> getAllStatistics () {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("postsCount", getCount());
@@ -346,17 +355,30 @@ public class GetService {
         int viewCount = list.stream().
                 reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
-        List<LocalDate> localDates =  postRepository.findAll().stream().
+        List<LocalDate> localDates = postRepository.findAll().stream().
                 map(Post::getTime).
                 collect(Collectors.toList());
         LocalDate minLocalDate = localDates.stream()
-                .min(Comparator.comparing(LocalDate::toEpochDay ))
+                .min(Comparator.comparing(LocalDate::toEpochDay))
                 .orElse(LocalDate.now());
         ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
         long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
         map.put("firstPublication", epoch);
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        if(globalSettingsReporitory.findAll().stream().
+                findAny().
+                orElse(new GlobalSettings()).
+                isStatisticsIsPublic()) { // if STATISTICS_IS_PUBLIC = true
+           responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+        } else { // if STATISTICS_IS_PUBLIC = false
+            int userId = authService.getUserId();
+            User user = userRepository.getOne(userId);
+            if (user.getIsModerator()) {
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<>("Access forbidden!", HttpStatus.FORBIDDEN);
+            }
+        }
+        return responseEntity;
     }
 
     public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
