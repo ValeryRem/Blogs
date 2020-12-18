@@ -22,14 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authPassword for POST /api/auth/password is set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods getTag(String query) updated and getTag() established using new TagResponse.class.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/TagResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/6_uploaded.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/92_uploaded.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -121,9 +118,6 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ResultResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ResultResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -218,13 +212,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00035" summary="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)">
-      <created>1604073018463</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1604073018463</updated>
     </task>
     <task id="LOCAL-00036" summary="PostsListResponse class set up.">
       <created>1604779404080</created>
@@ -562,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608218845897</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="Methods getTag(String query) updated and getTag() established using new TagResponse.class.">
+      <created>1608330503761</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1608330503762</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -585,7 +579,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Request post/auth/login processed." />
     <MESSAGE value="Method getApiCalendar (Optional&lt;Integer&gt; year) to request GET /api/calendar/ set up." />
     <MESSAGE value="Upd 1 to method of request GET /api/calendar/ ." />
     <MESSAGE value="Method getAuthLogout for GET /api/auth/logout set up." />
@@ -610,7 +603,8 @@
     <MESSAGE value="For error responses in POST requests a new class ErrorsResponse set up." />
     <MESSAGE value="GlobalSettings updated." />
     <MESSAGE value="Method authPassword for POST /api/auth/password is set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method authPassword for POST /api/auth/password is set up." />
+    <MESSAGE value="Methods getTag(String query) updated and getTag() established using new TagResponse.class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods getTag(String query) updated and getTag() established using new TagResponse.class." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

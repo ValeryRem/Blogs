@@ -255,9 +255,16 @@ public class GetService {
     }
 
     public ResponseEntity<?> getTag(String query) {
-        List<String> tagsList = List.of(query.split(",")); //Разбиваем строку запроса на теги по запятым
-        List<String> tagsCleaned = tagsList.stream().map(String::trim).collect(Collectors.toList());
-        Map<String, List<TagResponse>> tagsResponseMap = getTagResponsesMap (tagsCleaned);
+        Map<String, List<TagResponse>> tagsResponseMap;
+        List<String> tagsList;
+        if(query.contains(",")) {
+            tagsList = List.of(query.split(",")); //Разбиваем строку запроса на теги по запятым
+            List<String> tagsCleaned = tagsList.stream().map(String::trim).collect(Collectors.toList());
+            tagsResponseMap = getTagResponsesMap(tagsCleaned);
+        } else {
+            tagsList = List.of(query);
+            tagsResponseMap = getTagResponsesMap(tagsList);
+        }
         return new ResponseEntity<>(tagsResponseMap, HttpStatus.OK);
     }
 
