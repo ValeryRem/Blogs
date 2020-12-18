@@ -254,35 +254,35 @@ public class GetService {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> getTag (String query) {
-        double ratioToCount;
-        var count = getCount();
-        List<Double> partialWeights = new ArrayList<>();
-        List<TreeMap <String, Object>> resultList = new ArrayList<>();
+    public ResponseEntity<?> getTag(String query) {
+        List<String> tagsList = List.of(query.split(",")); //Разбиваем строку запроса на теги по запятым
+        List<String> tagsCleaned = tagsList.stream().map(String::trim).collect(Collectors.toList());
+        Map<String, List<TagResponse>> tagsResponseMap = getTagResponsesMap (tagsCleaned);
+        return new ResponseEntity<>(tagsResponseMap, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getTag() {
+        List<Tag> tags = tagRepository.findAll();
+        List<String> tagNames = tags.stream().map(Tag::getName).collect(Collectors.toList());
+        Map<String, List<TagResponse>> tagsMap = getTagResponsesMap(tagNames);
+        return new ResponseEntity<>(tagsMap, HttpStatus.OK);
+    }
+
+    private Map<String, List<TagResponse>> getTagResponsesMap (List<String> tagNameList) {
         List<Post> postList = getPostList();
-        try {
-            String[] tagsSplit = query.split("(?=#)"); //Разбиваем строку запроса на теги с сохранением # в начале слов
-            for (String s : tagsSplit) {
-                s = s.trim();
-                String finalS = s;
-                int numberOfPostsWithTag = (int) postList.stream().
-                        filter(p -> p.getText().contains(finalS)).
-                        count();
-                ratioToCount = (double) numberOfPostsWithTag / count;
-                partialWeights.add(ratioToCount);
-            }
-            double maxPartialWeight = partialWeights.stream().max(Comparator.naturalOrder()).orElse(1.0);
-            for (int i = 0; i < partialWeights.size(); i++) {
-                TreeMap <String, Object> tagsAndWeights = new TreeMap<>();
-                tagsAndWeights.put("name", tagsSplit[i]);
-                tagsAndWeights.put("weight", partialWeights.get(i) / maxPartialWeight);
-                resultList.add(tagsAndWeights);
-            }
-            return new ResponseEntity<>(resultList, HttpStatus.FOUND);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ResponseEntity<>(tagRepository.findAll(), HttpStatus.OK);
+        var count = getCount();
+        List<Integer> postsPerTagList = new ArrayList<>();
+        for (String t : tagNameList) {
+            postsPerTagList.add((int) postList.stream().filter(p -> p.getText().contains(t)).count());
         }
+        int maxPostsPerTag = postsPerTagList.stream().max(Comparator.naturalOrder()).orElse(count);
+        List<Double> partialWeights = postsPerTagList.stream().map(t -> (double) t/maxPostsPerTag).collect(Collectors.toList());
+        List<TagResponse> tagResponseList = new ArrayList<>();
+        for (int i = 0; i < partialWeights.size(); i++) {
+            tagResponseList.add(new TagResponse(tagNameList.get(i), partialWeights.get(i)));
+        }
+        return  Map.of("tags", tagResponseList);
+
     }
 
     public ResponseEntity<?> getMyStatistics () {

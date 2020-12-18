@@ -1,5 +1,6 @@
 package main.api.response;
 
+
 public class ResultResponse {
     private final boolean result;
 

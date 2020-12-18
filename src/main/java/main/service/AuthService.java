@@ -2,6 +2,7 @@ package main.service;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
+import main.api.response.ResultResponse;
 import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
@@ -94,31 +95,35 @@ public class AuthService {
         Integer userId;
         User u;
         String sessionId = httpSession.getId();
-        ResponseEntity<?> responseEntity;
-        List<Object> objectList = new ArrayList<>();
-        if (!sessionRepository.findAll().isEmpty()) {
+        boolean isSession = sessionRepository.findAll().stream().
+                noneMatch(s -> s.getSessionName().equals(sessionId));
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("result", result);
+        if (isSession) {
             userId = sessionRepository.findAll().stream().
                     filter(s -> s.getSessionName().equals(sessionId)).
                     map(Session::getUserId).
                     findAny().
                     orElse(0);
-            u = userRepository.getOne(userId);
-            TreeMap<String, Object> user = new TreeMap<>();
-            user.put("id", userId);
-            user.put("name", u.getName());
-            user.put("photo", u.getPhoto());
-            user.put("email", u.getEmail());
-            user.put("moderation", u.getIsModerator());
-            user.put("moderationCount", getModerationCount(u));
-            user.put("settings", u.getIsModerator());
-            result = u.getIsModerator();
-            objectList.add(result);
-            objectList.add(user);
-            responseEntity = new ResponseEntity<>(objectList, HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+            if (userId > 0) {
+                u = userRepository.getOne(userId);
+                TreeMap<String, Object> user = new TreeMap<>();
+                user.put("id", userId);
+                user.put("name", u.getName());
+                user.put("photo", u.getPhoto());
+                user.put("email", u.getEmail());
+                user.put("moderation", u.getIsModerator());
+                user.put("moderationCount", getModerationCount(u));
+                user.put("settings", u.getIsModerator());
+                map.put("result", true);
+                map.put("user", user);
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<>("User is not authorized.", HttpStatus.UNAUTHORIZED);
+            }
         }
-        return responseEntity;
+        return
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getAuthLogout () {

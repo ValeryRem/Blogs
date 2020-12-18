@@ -22,11 +22,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="GlobalSettings updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authPassword for POST /api/auth/password is set up.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/TagResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/6_uploaded.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/92_uploaded.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -118,11 +121,10 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ResultResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ResultResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,9 +139,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -216,13 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Method getPostById(...) in PostService tuned to meet API.md.">
-      <created>1603966450201</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1603966450201</updated>
     </task>
     <task id="LOCAL-00035" summary="Set up in PostService a method getMyPosts (Integer myUserId, Integer offset, Integer limit). Parameter 0 of constructor in main.entity.ReleaseStatus required a bean of type 'java.lang.String' that could not be found.(?)">
       <created>1604073018463</created>
@@ -560,7 +555,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608062121702</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="Method authPassword for POST /api/auth/password is set up.">
+      <created>1608218845880</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1608218845897</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -583,7 +585,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Request api/statistics/all realized." />
     <MESSAGE value="Request post/auth/login processed." />
     <MESSAGE value="Method getApiCalendar (Optional&lt;Integer&gt; year) to request GET /api/calendar/ set up." />
     <MESSAGE value="Upd 1 to method of request GET /api/calendar/ ." />
@@ -608,7 +609,8 @@
     <MESSAGE value="Method authRestore (String eMail)  updated with new method  generateCode(int length)." />
     <MESSAGE value="For error responses in POST requests a new class ErrorsResponse set up." />
     <MESSAGE value="GlobalSettings updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="GlobalSettings updated." />
+    <MESSAGE value="Method authPassword for POST /api/auth/password is set up." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method authPassword for POST /api/auth/password is set up." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

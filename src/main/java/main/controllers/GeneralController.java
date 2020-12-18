@@ -17,7 +17,7 @@ import java.util.Optional;
 public class GeneralController {
 
 //    private final SettingsService settingsService;
-    private InitResponse initResponse;
+    private final InitResponse initResponse;
     @Autowired
     private GetService getService;
 
@@ -25,10 +25,10 @@ public class GeneralController {
     private PostService postService;
 
     @Autowired
-    private SettingsService settingsService;
+    private final SettingsService settingsService;
 
-    public GeneralController() {
-    }
+//    public GeneralController() {
+//    }
 
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
@@ -52,9 +52,14 @@ public class GeneralController {
         return initResponse;
     }
 
-    @GetMapping("/tag")
-    private ResponseEntity<?> getTag (@RequestParam(defaultValue = "#PHP #Spring #Java")  String query) {
+    @GetMapping("/tag/{query}")
+    private ResponseEntity<?> getTag (@PathVariable("query") String query) {
         return getService.getTag(query);
+    }
+
+    @GetMapping("/tag/")
+    private ResponseEntity<?> getTag () {
+        return getService.getTag();
     }
 
     @GetMapping("/statistics/my")
