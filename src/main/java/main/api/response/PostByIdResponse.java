@@ -5,7 +5,9 @@ import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.FutureOrPresent;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class PostByIdResponse {
     private Integer id;
-    private LocalDate timestamp;
+    private Timestamp timestamp;
     private boolean active;
     private TreeMap<String, Object> user;
     private String title;
@@ -72,7 +74,7 @@ public class PostByIdResponse {
         return id;
     }
 
-    public LocalDate getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 

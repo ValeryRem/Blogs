@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +47,7 @@ public class GetService {
 
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
+    private final ZoneId zid1 = ZoneId.of("UTC+3");
 
     private boolean result = false;
 
@@ -97,13 +101,13 @@ public class GetService {
         return  getResponseEntity(postsListResponse, offset, limit);
     }
 
-    public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate(LocalDateTime time, Integer offset, Integer limit, String mode) {
         var postList = getPostList();
         var sortedPosts = getSortedPosts(postList, mode);
         List<PostAnnounceResponse> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : sortedPosts) {
-            if (post.getTime().equals(time)) {
+            if (post.getTime().equals(Timestamp.valueOf(time))) {
                 int commentCountByPost = (int) commentList.stream().
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
@@ -203,7 +207,7 @@ public class GetService {
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-                    post.getTime().compareTo(LocalDate.now()) <= 0) {
+                    post.getTime().getTime() < Timestamp.valueOf(LocalDateTime.now(zid1)).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {
@@ -333,14 +337,12 @@ public class GetService {
                 reduce(Integer::sum).
                 orElse(0);
         map.put("viewsCount", viewMyPostsCount);
-        List<LocalDate> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+        List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
                 map(Post::getTime).collect(Collectors.toList());
-        LocalDate minLocalDate = localDates.stream()
-                .min(Comparator.comparing(LocalDate::toEpochDay))
-                .orElse(LocalDate.now());
-        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
-        long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
-        map.put("firstPublication", epoch);
+        Timestamp minLocalDate = localDates.stream()
+                .min(Comparator.naturalOrder())
+                .orElse(Timestamp.valueOf(LocalDateTime.now()));
+        map.put("firstPublication", minLocalDate);
         return map;
     }
 
@@ -362,15 +364,13 @@ public class GetService {
         int viewCount = list.stream().
                 reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
-        List<LocalDate> localDates = postRepository.findAll().stream().
+        List<Timestamp> localDates = postRepository.findAll().stream().
                 map(Post::getTime).
                 collect(Collectors.toList());
-        LocalDate minLocalDate = localDates.stream()
-                .min(Comparator.comparing(LocalDate::toEpochDay))
-                .orElse(LocalDate.now());
-        ZoneId zoneId = ZoneId.of("Europe/Moscow");//or: ZoneId.systemDefault();
-        long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond();
-        map.put("firstPublication", epoch);
+        Timestamp minLocalDate = localDates.stream()
+                .min(Comparator.naturalOrder())
+                .orElse(Timestamp.valueOf(LocalDateTime.now()));
+        map.put("firstPublication", minLocalDate);
         if(globalSettingsReporitory.findAll().stream().
                 findAny().
                 orElse(new GlobalSettings()).
@@ -390,30 +390,37 @@ public class GetService {
 
     public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
         List<Integer> years;
-        List<LocalDate> dates;
-        LinkedHashMap<LocalDate, Integer> posts = new LinkedHashMap<>();
+        List<Timestamp> dates;
+        LinkedHashMap<Timestamp, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
         List<Post> postsList = postRepository.findAll();
         postsList.sort(Comparator.comparing(Post::getTime));
-        years = postsList.stream().map(p -> p.getTime().getYear()).
+//        Calendar cal = Calendar.getInstance();
+//        int y;
+//        for (Post p: postsList) {
+//          p.getTime().toInstant().atZone(zoneId).toLocalDate() )
+//        }
+//         =
+//       ;
+        years = postsList.stream().map(p -> p.getTime().toLocalDateTime().getYear()).
                 distinct().
                 collect(Collectors.toList());
         if (year.isPresent()) {
             dates = postRepository.findAll().stream().
+                    filter(p -> p.getTime().toLocalDateTime().getYear() == year.get()).
                     map(Post::getTime).
-                    filter(localDate -> localDate.getYear() == year.get()).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
             dates = postsList.stream().
+                    filter(p -> p.getTime().toLocalDateTime().getYear() == currentYear).
                     map(Post::getTime).
-                    filter(localDate -> localDate.getYear() == currentYear).
                     distinct().
                     collect(Collectors.toList());
         }
-            dates.sort(Comparator.comparing(LocalDate::getChronology));
-            for (LocalDate d : dates) {
+            dates.sort(Comparator.naturalOrder());
+            for (Timestamp d : dates) {
                 postCountAtDate = (int) postsList.stream().filter(p -> p.getTime().equals(d)).count();
                 posts.put(d, postCountAtDate);
         }

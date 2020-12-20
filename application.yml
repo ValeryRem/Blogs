@@ -8,7 +8,7 @@ spring.jpa.show-sql: false
 blog.title: Developers Stories
 blog.subtitle: Истории разработчиков
 blog.phone: +7 999 111-22-33
-blog.email: rokotov@tiptop.pl
+blog.email: rokotoff@tiptop.pl
 blog.copyright: George Rokotoff
 blog.copyrightFrom: 1997
 

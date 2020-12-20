@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -66,8 +67,8 @@ public class PostController {
     }
 
     @GetMapping("/byDate")
-    private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue = "2020-11-17")
-                                                  @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date,
+    private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue = "2020-11-17 00:00:00")
+                                                  @DateTimeFormat(pattern="yyyy-MM-dd 'T' HH:mm:ss") LocalDateTime date,
                                              @RequestParam(defaultValue="0") Integer offset,
                                              @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
@@ -121,7 +122,7 @@ public class PostController {
     private ResponseEntity<?> putPost (@PathVariable("id") Integer postId,
                                        @RequestParam(defaultValue="1") Integer active,
                                        @RequestParam(defaultValue="Optional description.") String title,
-                                       @RequestParam(defaultValue="#Java, #PHP, #Excel, #Darby, #Python") List<String> tags,
+                                       @RequestParam(defaultValue="Java, PHP, Excel, Darby, Python") List<String> tags,
                                        @RequestParam(defaultValue="Try to escape from here, and as soon as possible, my daring!") String text) {
         System.out.println("Method putPost is activated for postId: " + postId);
         return postService.putPost(postId, active, title, tags, text);

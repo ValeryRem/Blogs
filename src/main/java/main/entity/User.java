@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -18,8 +19,8 @@ public class User {
     private boolean isModerator;
 
     @Column(name = "reg_time")
-    @DateTimeFormat(pattern = "YYYY-MM-dd")
-    private LocalDate regTime;
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    private LocalDateTime regTime;
 
     @Column(name = "user_name")
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
@@ -60,11 +61,11 @@ public class User {
         this.isModerator = isModerator;
     }
 
-    public LocalDate getRegTime() {
+    public LocalDateTime getRegTime() {
         return regTime;
     }
 
-    public void setRegTime(LocalDate regTime) {
+    public void setRegTime(LocalDateTime regTime) {
         this.regTime = regTime;
     }
 

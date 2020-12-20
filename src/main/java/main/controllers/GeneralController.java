@@ -17,7 +17,9 @@ import java.util.Optional;
 public class GeneralController {
 
 //    private final SettingsService settingsService;
+    @Autowired
     private final InitResponse initResponse;
+
     @Autowired
     private GetService getService;
 
@@ -57,7 +59,7 @@ public class GeneralController {
         return getService.getTag(query);
     }
 
-    @GetMapping("/tag/")
+    @GetMapping("/tag")
     private ResponseEntity<?> getTag () {
         return getService.getTag();
     }

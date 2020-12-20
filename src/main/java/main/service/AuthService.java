@@ -23,10 +23,7 @@ import javax.mail.internet.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.SecureRandom;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +51,7 @@ public class AuthService {
 
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
-
+    private final ZoneId zid1 = ZoneId.of("UTC+3");
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
@@ -159,7 +156,7 @@ public class AuthService {
         }
         captcha.setSecretCode(secretCode);
         captcha.setCode(code);
-        long time = LocalDate.now().toEpochSecond(LocalTime.now(), ZoneOffset.UTC);
+        long time = LocalDateTime.now(zid1).toEpochSecond(ZoneOffset.of("UTC+6"));
         captcha.setTime(time);
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
@@ -213,7 +210,7 @@ public class AuthService {
                 user.setEmail(e_mail);
                 user.setName(nameString);
                 user.setPassword(password);
-                user.setRegTime(LocalDate.now());
+                user.setRegTime(LocalDateTime.now(zid1));
                 userRepository.save(user);
                 responseList.add(result);
                 responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);

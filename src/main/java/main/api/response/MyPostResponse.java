@@ -2,12 +2,14 @@ package main.api.response;
 
 import main.entity.Post;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 public class MyPostResponse {
     private final Integer myId;
-    private final LocalDate timestamp;
+    private final Timestamp timestamp;
 
     private final String title;
     private final String announce;
@@ -28,7 +30,7 @@ public class MyPostResponse {
         return myId;
     }
 
-    public LocalDate getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 

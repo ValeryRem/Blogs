@@ -12,7 +12,11 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,6 +55,8 @@ public class PostService {
     GlobalSettingsReporitory globalSettingsReporitory;
 
     private ResponseEntity<?> responseEntity;
+
+    private final ZoneId zid1 = ZoneId.of("UTC+3");
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
         if (authService.isUserAuthorized()) {
@@ -120,7 +126,8 @@ POST_PREMODERATION = false (режим премодерации выключен
         Post post = new Post();
         post.setIsActive(active);
         post.setModeratorId(1);
-        post.setTime(LocalDate.now());
+
+        post.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
         post.setUserId(authService.getUserId());
         post.setViewCount(33);
         checkTexts(title, text, errors);
@@ -233,7 +240,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                     post.setText(text);
                     post.setTitle(title);
                     post.setActive(active);
-                    post.setTime(LocalDate.now());
+                    post.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
                     postRepository.save(post);
                     List<String> tagNames = tagRepository.findAll().stream().map(Tag::getName).collect(Collectors.toList());
                     List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().

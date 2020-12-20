@@ -1,8 +1,7 @@
 package main.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "posts")
@@ -25,9 +24,7 @@ public class Post {
 
     @Column(name ="user_id")
     private Integer userId;
-
-    @DateTimeFormat(pattern = "YYYY-MM-dd")
-    private LocalDate time;
+    private Timestamp time;
     private String title;
     private String text;
 
@@ -81,11 +78,11 @@ public class Post {
         this.moderatorId = moderatorId;
     }
 
-    public LocalDate  getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(LocalDate time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
@@ -142,12 +139,4 @@ public class Post {
     public void setActive(int activityMode) {
         isActive = activityMode;
     }
-
-//    public List<String> getTags() {
-//        return tags;
-//    }
-
-//    public void setTags(List<String> tags) {
-//        this.tags = tags;
-//    }
 }
