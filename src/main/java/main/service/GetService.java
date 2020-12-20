@@ -47,7 +47,7 @@ public class GetService {
 
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
-    private final ZoneId zid1 = ZoneId.of("UTC+6");
+//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     private boolean result = false;
 
@@ -207,7 +207,7 @@ public class GetService {
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-                    post.getTime().getTime() < Timestamp.valueOf(LocalDateTime.now(zid1)).getTime()) {
+                    post.getTime().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {

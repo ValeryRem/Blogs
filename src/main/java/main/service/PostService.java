@@ -56,7 +56,7 @@ public class PostService {
 
     private ResponseEntity<?> responseEntity;
 
-    private final ZoneId zid1 = ZoneId.of("UTC+6");
+//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
         if (authService.isUserAuthorized()) {
@@ -127,7 +127,7 @@ POST_PREMODERATION = false (режим премодерации выключен
         post.setIsActive(active);
         post.setModeratorId(1);
 
-        post.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
+        post.setTime(Timestamp.valueOf(LocalDateTime.now()));
         post.setUserId(authService.getUserId());
         post.setViewCount(33);
         checkTexts(title, text, errors);
@@ -240,7 +240,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                     post.setText(text);
                     post.setTitle(title);
                     post.setActive(active);
-                    post.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
+                    post.setTime(Timestamp.valueOf(LocalDateTime.now()));
                     postRepository.save(post);
                     List<String> tagNames = tagRepository.findAll().stream().map(Tag::getName).collect(Collectors.toList());
                     List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().

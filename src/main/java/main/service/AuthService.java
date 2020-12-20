@@ -46,7 +46,7 @@ public class AuthService {
 
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
-    private final ZoneId zid1 = ZoneId.of("UTC+3");
+//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
@@ -151,7 +151,7 @@ public class AuthService {
         }
         captcha.setSecretCode(secretCode);
         captcha.setCode(code);
-        Timestamp time = Timestamp.valueOf(LocalDateTime.now(zid1));
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
         captcha.setTime(time);
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
@@ -205,7 +205,7 @@ public class AuthService {
                 user.setEmail(e_mail);
                 user.setName(nameString);
                 user.setPassword(password);
-                user.setRegTime(LocalDateTime.now(zid1));
+                user.setRegTime(LocalDateTime.now());
                 userRepository.save(user);
                 responseList.add(result);
                 responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);

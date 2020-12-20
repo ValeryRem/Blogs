@@ -11,7 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static java.time.ZoneOffset.UTC;
 
@@ -22,7 +25,7 @@ public class MainApplication {
 
     @Autowired
     private UserRepository userRepository;
-    private final ZoneId zid1 = ZoneId.of("UTC");
+//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
@@ -30,6 +33,7 @@ public class MainApplication {
 
     @PostConstruct
     public void init(){
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         insertTestPost1();
 //        insertTestPost2();
     }
@@ -47,7 +51,7 @@ public class MainApplication {
         post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
         post1.setText("This is a new testing text to be processed by the code under #Spring, #PHP, #Python tags");
-        post1.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
+        post1.setTime(Timestamp.valueOf(LocalDateTime.now()));
         post1.setUserId(1);
         post1.setViewCount(15);
         post1.setModeratorId(2);
@@ -60,10 +64,18 @@ public class MainApplication {
         post2.setIsActive(1);
         post2.setModerationStatus(ModerationStatus.NEW);
         post2.setText("Another testing text to be processed by the code into announce #Java");
-        post2.setTime(Timestamp.valueOf(LocalDateTime.now(zid1)));
+        post2.setTime(Timestamp.valueOf(LocalDateTime.now()));
         post2.setUserId(2);
         post2.setModeratorId(1);
         post2.setViewCount(11);
         postRepository.save(post2);
+    }
+
+    private void setTimeZone () {
+//        long ts = System.currentTimeMillis();
+//        Date localTime = new Date(ts);
+        String format = "yyyy.MM.dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat (format);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC+3"));
     }
 }
