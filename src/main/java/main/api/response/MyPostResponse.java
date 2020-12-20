@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class MyPostResponse {
     private final Integer myId;
-    private final Timestamp timestamp;
+    private final long timestamp;
 
     private final String title;
     private final String announce;
@@ -20,7 +20,7 @@ public class MyPostResponse {
 
     public MyPostResponse(Post post) {
         this.myId = post.getUserId();
-        this.timestamp = post.getTime();
+        this.timestamp = post.getTime().getTime()/1000;
         this.title = post.getTitle();
         this.announce = post.getAnnounce();
         this.viewCount = post.getViewCount();
@@ -30,7 +30,7 @@ public class MyPostResponse {
         return myId;
     }
 
-    public Timestamp getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

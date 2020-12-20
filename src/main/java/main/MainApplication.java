@@ -22,7 +22,7 @@ public class MainApplication {
 
     @Autowired
     private UserRepository userRepository;
-    private final ZoneId zid1 = ZoneId.of("UTC+6");
+    private final ZoneId zid1 = ZoneId.of("UTC");
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);

@@ -56,7 +56,7 @@ public class PostService {
 
     private ResponseEntity<?> responseEntity;
 
-    private final ZoneId zid1 = ZoneId.of("UTC+3");
+    private final ZoneId zid1 = ZoneId.of("UTC+6");
 
     public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
         if (authService.isUserAuthorized()) {

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class PostAnnounceResponse {
         private final Integer id;
-        private final Timestamp timestamp;
+        private final long timestamp;
         private final TreeMap<String, Object> user;
         private final String title;
         private final String announce;
@@ -18,7 +18,7 @@ public class PostAnnounceResponse {
         private final Integer commentCount;
         private final Integer viewCount;
 
-    public PostAnnounceResponse(Integer postId, Timestamp timestamp, String title, String announce,
+    public PostAnnounceResponse(Integer postId, long timestamp, String title, String announce,
                                 Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
         this.id = postId;
         this.timestamp = timestamp;
@@ -33,7 +33,7 @@ public class PostAnnounceResponse {
             return id;
         }
 
-        public Timestamp getTimestamp() {
+        public long getTimestamp() {
             return timestamp;
         }
 

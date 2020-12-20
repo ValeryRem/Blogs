@@ -29,9 +29,6 @@ public class GeneralController {
     @Autowired
     private final SettingsService settingsService;
 
-//    public GeneralController() {
-//    }
-
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;

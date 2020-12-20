@@ -3,6 +3,7 @@ package main.service;
 import main.api.response.*;
 import main.entity.*;
 import main.repository.*;
+import org.apache.commons.io.TaggedIOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,7 +47,7 @@ public class GetService {
 
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
-    private final ZoneId zid1 = ZoneId.of("UTC+3");
+    private final ZoneId zid1 = ZoneId.of("UTC+6");
 
     private boolean result = false;
 
@@ -69,7 +69,7 @@ public class GetService {
         List<PostAnnounceResponse> responseList = new ArrayList<>();
         for (Post post : postListSorted) {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
-            var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
+            var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime().getTime()/1000,
                     post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
             postAnnounceResponse.setLikeCount(extractLikeCount(post));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
@@ -88,7 +88,7 @@ public class GetService {
                 filter(p -> p.getText().contains(query)).
                 map(p -> {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(p.getPostId())).count();
-            var postAnnounceResponse =  new PostAnnounceResponse(p.getPostId(), p.getTime(),
+            var postAnnounceResponse =  new PostAnnounceResponse(p.getPostId(), p.getTime().getTime()/1000,
                     p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUserOfPost(p));
             postAnnounceResponse.setLikeCount(extractLikeCount(p));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(p));
@@ -101,22 +101,22 @@ public class GetService {
         return  getResponseEntity(postsListResponse, offset, limit);
     }
 
-    public ResponseEntity<?> getPostsByDate(LocalDateTime time, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate(Timestamp time, Integer offset, Integer limit, String mode) {
         var postList = getPostList();
         var sortedPosts = getSortedPosts(postList, mode);
         List<PostAnnounceResponse> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : sortedPosts) {
-            if (post.getTime().equals(Timestamp.valueOf(time))) {
+            if (post.getTime().equals(time)) {
                 int commentCountByPost = (int) commentList.stream().
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
-                posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                posts.add(new PostAnnounceResponse(post.getPostId(), post.getTime().getTime()/1000,
                         post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
         }
         if (posts.size() == 0) {
-            responseEntity = new ResponseEntity<>("Post with the date " + time + " not found", HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>("Post with the date " + time.toLocalDateTime() + " not found", HttpStatus.NOT_FOUND);
         } else {
             responseEntity = getResponseEntity(new PostsListResponse(posts.size(), posts), offset, limit);
         }
@@ -148,7 +148,7 @@ public class GetService {
                 var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
                         collect(Collectors.toList());
                 int commentCountByPost = postComments.size();
-                postsList.add(new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                postsList.add(new PostAnnounceResponse(post.getPostId(), post.getTime().getTime()/1000,
                         post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
             responseEntity = getResponseEntity(new PostsListResponse(sortedPosts.size(), postsList), offset, limit);
@@ -245,7 +245,7 @@ public class GetService {
                     int commentCountByPost = (int) commentList.stream().
                             filter(a -> a.getPostId().equals(post.getPostId())).
                             count();
-                    var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime(),
+                    var postAnnounceResponse = new PostAnnounceResponse(post.getPostId(), post.getTime().getTime()/1000,
                             post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
                     postAnnounceResponse.setLikeCount(extractLikeCount(post));
                     postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
@@ -337,11 +337,11 @@ public class GetService {
                 reduce(Integer::sum).
                 orElse(0);
         map.put("viewsCount", viewMyPostsCount);
-        List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-                map(Post::getTime).collect(Collectors.toList());
-        Timestamp minLocalDate = localDates.stream()
+        List<Long> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+                map(p -> p.getTime().getTime()).collect(Collectors.toList());
+        long minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder())
-                .orElse(Timestamp.valueOf(LocalDateTime.now()));
+                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
         map.put("firstPublication", minLocalDate);
         return map;
     }
@@ -364,12 +364,11 @@ public class GetService {
         int viewCount = list.stream().
                 reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
-        List<Timestamp> localDates = postRepository.findAll().stream().
-                map(Post::getTime).
-                collect(Collectors.toList());
-        Timestamp minLocalDate = localDates.stream()
+        List<Long> localDates =  postRepository.findAll().stream().
+                map(p -> p.getTime().getTime()).collect(Collectors.toList());
+        long minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder())
-                .orElse(Timestamp.valueOf(LocalDateTime.now()));
+                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
         map.put("firstPublication", minLocalDate);
         if(globalSettingsReporitory.findAll().stream().
                 findAny().
@@ -390,39 +389,32 @@ public class GetService {
 
     public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
         List<Integer> years;
-        List<Timestamp> dates;
-        LinkedHashMap<Timestamp, Integer> posts = new LinkedHashMap<>();
+        List<Timestamp> timestamps;
+        LinkedHashMap<Long, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
         List<Post> postsList = postRepository.findAll();
         postsList.sort(Comparator.comparing(Post::getTime));
-//        Calendar cal = Calendar.getInstance();
-//        int y;
-//        for (Post p: postsList) {
-//          p.getTime().toInstant().atZone(zoneId).toLocalDate() )
-//        }
-//         =
-//       ;
-        years = postsList.stream().map(p -> p.getTime().toLocalDateTime().getYear()).
+        years = postsList.stream().map(p -> convertTimeToYear(p.getTime())).
                 distinct().
                 collect(Collectors.toList());
         if (year.isPresent()) {
-            dates = postRepository.findAll().stream().
-                    filter(p -> p.getTime().toLocalDateTime().getYear() == year.get()).
+            timestamps = postRepository.findAll().stream().
                     map(Post::getTime).
+                    filter(timestamp -> convertTimeToYear(timestamp).equals(year.get())).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
-            dates = postsList.stream().
-                    filter(p -> p.getTime().toLocalDateTime().getYear() == currentYear).
+            timestamps = postsList.stream().
                     map(Post::getTime).
+                    filter(timestamp -> convertTimeToYear(timestamp).equals(currentYear)).
                     distinct().
                     collect(Collectors.toList());
         }
-            dates.sort(Comparator.naturalOrder());
-            for (Timestamp d : dates) {
+        timestamps.sort(Comparator.naturalOrder());
+            for (Timestamp d : timestamps) {
                 postCountAtDate = (int) postsList.stream().filter(p -> p.getTime().equals(d)).count();
-                posts.put(d, postCountAtDate);
+                posts.put(d.getTime()/1000, postCountAtDate);
         }
         CalendarResponse calendarResponse = new CalendarResponse(years, posts);
         return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
@@ -544,5 +536,16 @@ public class GetService {
         } catch (NullPointerException ex) {
             return 0;
         }
+    }
+
+    public Integer convertTimeToYear(Timestamp time) {
+//        int SEC_IN_YEAR = 86400*365;
+//        return  (int) (1 + time/SEC_IN_YEAR);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("UTC+3"));
+        cal.setTimeInMillis(time.getTime());
+        String curTime = String.valueOf(cal.get(Calendar.YEAR));
+        //String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
+        return Integer.parseInt(curTime);
     }
 }

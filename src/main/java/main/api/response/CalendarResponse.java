@@ -8,9 +8,9 @@ import java.util.List;
 
 public class CalendarResponse {
     List<Integer> years;
-    LinkedHashMap<Timestamp, Integer> posts;
+    LinkedHashMap<Long, Integer> posts;
 
-    public CalendarResponse(List<Integer> years, LinkedHashMap<Timestamp, Integer> posts) {
+    public CalendarResponse(List<Integer> years, LinkedHashMap<Long, Integer> posts) {
         this.years = years;
         this.posts = posts;
     }
@@ -23,11 +23,11 @@ public class CalendarResponse {
         this.years = years;
     }
 
-    public LinkedHashMap<Timestamp, Integer> getPosts() {
+    public LinkedHashMap<Long, Integer> getPosts() {
         return posts;
     }
 
-    public void setPosts(LinkedHashMap<Timestamp, Integer> posts) {
+    public void setPosts(LinkedHashMap<Long, Integer> posts) {
         this.posts = posts;
     }
 }

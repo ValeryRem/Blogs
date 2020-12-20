@@ -14,8 +14,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -73,7 +75,7 @@ public class PostController {
                                              @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsByDate activated. Date:" + date );
-        return getService.getPostsByDate(date, offset, limit, mode);
+        return getService.getPostsByDate(Timestamp.valueOf(date), offset, limit, mode);
     }
 
     @GetMapping("/byTag")
@@ -127,8 +129,6 @@ public class PostController {
         System.out.println("Method putPost is activated for postId: " + postId);
         return postService.putPost(postId, active, title, tags, text);
     }
-
-
 //    private void registerSession () {
 //        Session session = new Session();
 //        session.setSessionName(httpSession.getId());

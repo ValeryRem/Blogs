@@ -15,14 +15,11 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-
-import javax.mail.*;
-import javax.mail.internet.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,8 +31,6 @@ public class AuthService {
 
     @Autowired
     PostRepository postRepository;
-
-//    Map<String, Integer> sessionMap = new TreeMap<>(); // String sessionId, Integer userId
 
     @Autowired
     private HttpSession httpSession;
@@ -156,13 +151,13 @@ public class AuthService {
         }
         captcha.setSecretCode(secretCode);
         captcha.setCode(code);
-        long time = LocalDateTime.now(zid1).toEpochSecond(ZoneOffset.of("UTC+6"));
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now(zid1));
         captcha.setTime(time);
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
         map.put("image", "data:image/png;base64, " + code64);
         List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
-                filter(c -> c.getTime() < (time - 3600)).
+                filter(c -> c.getTime().getTime()/1000 < (time.getTime()/1000 - 3600)).
                 collect(Collectors.toList());
         for (CaptchaCode c: captchasOld) {
             captchaRepository.delete(c);
