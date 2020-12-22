@@ -13,10 +13,7 @@ import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.Date;
 import java.util.TimeZone;
-
-import static java.time.ZoneOffset.UTC;
 
 @SpringBootApplication
 public class MainApplication {
@@ -25,7 +22,6 @@ public class MainApplication {
 
     @Autowired
     private UserRepository userRepository;
-//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
@@ -34,29 +30,30 @@ public class MainApplication {
     @PostConstruct
     public void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+//        setTimeZone();
         insertTestPost1();
 //        insertTestPost2();
     }
 
     private void insertTestPost1() {
-        Post post1 = new Post("The testing post");
-//        User user = new User();
-//        user.setName("Tommy");
-//        user.setEmail("klo@ggg.ty");
-//        user.setRegTime(LocalDate.now());
-//        user.setPassword("pw1212");
-//        user.setCode("hththt");
-//        user.setIsModerator(true);
-//        user.setPhoto("address");
+        Post post1 = new Post("The cute testing post");
+        User user = new User();
+        user.setName("Bobby");
+        user.setEmail("lolo@ggg.ty");
+        user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
+        user.setPassword("pw1234");
+        user.setCode("hthpoi");
+        user.setIsModerator(true);
+        user.setPhoto("address7");
         post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
-        post1.setText("This is a new testing text to be processed by the code under #Spring, #PHP, #Python tags");
+        post1.setText("Absolutely new testing text to be processed by the code under #Spring, #PHP, #Python tags");
         post1.setTime(Timestamp.valueOf(LocalDateTime.now()));
         post1.setUserId(1);
         post1.setViewCount(15);
         post1.setModeratorId(2);
         postRepository.save(post1);
-//        userRepository.save(user);
+        userRepository.save(user);
     }
 
     private void insertTestPost2() {
@@ -74,8 +71,9 @@ public class MainApplication {
     private void setTimeZone () {
 //        long ts = System.currentTimeMillis();
 //        Date localTime = new Date(ts);
+        ZoneId zid1 = ZoneId.of("UTC");
         String format = "yyyy.MM.dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat (format);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC+3"));
+        sdf.setTimeZone(TimeZone.getTimeZone(zid1));
     }
 }

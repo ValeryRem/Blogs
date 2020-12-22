@@ -1,6 +1,7 @@
 package main.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class Session {
@@ -8,16 +9,17 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer sessionId;
     String sessionName;
-    long time;
+    Timestamp time;
     Integer userId;
 
     public Session() {
     }
 
-//    public Session(String sessionName, long time) {
-//        this.sessionName = sessionName;
-//        this.time = time;
-//    }
+    public Session(String sessionName, Timestamp time, Integer userId) {
+        this.sessionName = sessionName;
+        this.time = time;
+        this.userId = userId;
+    }
 
     public String getSessionName() {
         return sessionName;
@@ -35,11 +37,11 @@ public class Session {
         this.sessionId = sessionId;
     }
 
-    public long getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

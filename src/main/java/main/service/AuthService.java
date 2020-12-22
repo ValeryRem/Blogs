@@ -2,17 +2,15 @@ package main.service;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
-import main.api.response.ResultResponse;
+import main.api.response.AuthResponse;
 import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,22 +44,30 @@ public class AuthService {
 
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
+
+//    @Autowired
+    private AuthResponse authResponse;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
+        authResponse = new AuthResponse();
         List<User> userList = userRepository.findAll();
-        List<Object> resultList = new ArrayList<>();
-        LinkedHashMap<String, Object> user = new LinkedHashMap<>();
+//        List<Object> resultList = new ArrayList<>();
+
         int moderationCount;
-        try {
+        int userCount = (int) userList.stream().
+                filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
+                count();
+        if(userCount > 0) {
+            LinkedHashMap<String, Object> user = new LinkedHashMap<>();
             User us = userList.stream().
                     filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
                     findAny().
                     orElse(new User());
-            registerSession(us.getUserId());
-            resultList.add("result: true");
+            registerSession (us.getUserId()); // put new session id, delete old sessions id
+//            resultList.add("result: true");
             user.put("id", us.getUserId());
             user.put("name", us.getName());
             user.put("photo", us.getPhoto());
@@ -74,23 +80,47 @@ public class AuthService {
             }
             user.put("moderationCount", moderationCount);
             user.put("settings", "true");
-            resultList.add(user);
-            responseEntity = new ResponseEntity<>(resultList, HttpStatus.OK);
-        } catch (NullPointerException ex) {
+            authResponse.setResult(true);
+            authResponse.setUser(user);
+            responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
+        } else {
             responseEntity = new ResponseEntity<>("user UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-            ex.printStackTrace();
         }
         return responseEntity;
     }
 
+    public void registerSession(Integer userId) {
+//        ZoneId zoneId = ZoneId.systemDefault();//.of("UTC"); //
+        long epochSeconds = Instant.now().getEpochSecond();//LocalDateTime.now().atZone(zoneId).toEpochSecond();//
+        String sessionName = httpSession.getId();
+        Timestamp timestamp = new Timestamp(epochSeconds*1000);
+        System.out.println(timestamp); // for test only!!!
+        Session session = new Session(sessionName, timestamp, userId);
+
+        List<Session> oldSessions = sessionRepository.findAll().stream().
+                filter(s -> (int) s.getTime().getTime() / 1000 < (int) epochSeconds - 1800).
+                collect(Collectors.toList());
+        for (Session s : oldSessions) {
+            sessionRepository.delete(s);
+        }
+
+//        session.setSessionName(httpSession.getId());
+//        session.setTime(new Timestamp(epochSeconds));
+//        session.setUserId(userId);
+        if (!sessionRepository.findAll().stream().
+                map(Session::getSessionName).
+                collect(Collectors.toList()).contains(httpSession.getId())) {
+            sessionRepository.save(session);
+        }
+    }
+
     public ResponseEntity<?> getAuthCheck() {
+        authResponse = new AuthResponse();
         Integer userId;
         User u;
         String sessionId = httpSession.getId();
         boolean isSession = sessionRepository.findAll().stream().
-                noneMatch(s -> s.getSessionName().equals(sessionId));
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("result", result);
+                anyMatch(s -> s.getSessionName().equals(sessionId));
         if (isSession) {
             userId = sessionRepository.findAll().stream().
                     filter(s -> s.getSessionName().equals(sessionId)).
@@ -99,7 +129,7 @@ public class AuthService {
                     orElse(0);
             if (userId > 0) {
                 u = userRepository.getOne(userId);
-                TreeMap<String, Object> user = new TreeMap<>();
+                LinkedHashMap<String, Object> user = new LinkedHashMap<>();
                 user.put("id", userId);
                 user.put("name", u.getName());
                 user.put("photo", u.getPhoto());
@@ -107,15 +137,15 @@ public class AuthService {
                 user.put("moderation", u.getIsModerator());
                 user.put("moderationCount", getModerationCount(u));
                 user.put("settings", u.getIsModerator());
-                map.put("result", true);
-                map.put("user", user);
-                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+                authResponse.setResult(true);
+                authResponse.setUser(user);
+                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
             } else {
                 responseEntity = new ResponseEntity<>("User is not authorized.", HttpStatus.UNAUTHORIZED);
             }
         }
         return
-                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+                responseEntity;
     }
 
     public ResponseEntity<?> getAuthLogout () {
@@ -124,7 +154,7 @@ public class AuthService {
            Session session = sessionRepository.findAll().stream().
                    filter(s -> s.getSessionName().equals(sessionName)).
                    findFirst().
-                   orElse(new Session());
+                   orElse(new Session(sessionName, new Timestamp(Instant.now().getEpochSecond()), getUserId()));
            sessionRepository.delete(session);
            responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
        } else {
@@ -172,13 +202,12 @@ public class AuthService {
      */
     public ResponseEntity<?> postAuthRegister(String e_mail, String password, String nameString,
                                               String captcha, String secret_captcha) {
-        ResponseEntity<?> responseEntity;
+        authResponse = new AuthResponse();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
                 isMultiuserMode()) { // if MULTIUSER_MODE = true
-            List<Object> responseList = new ArrayList<>();
             User user = new User();
-            Map<String, String> errors = new LinkedHashMap<>();
+            LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
             CaptchaCode captchaCode = captchaRepository.findAll().stream().
                     filter(c -> c.getSecretCode().equals(secret_captcha)).
@@ -205,13 +234,14 @@ public class AuthService {
                 user.setEmail(e_mail);
                 user.setName(nameString);
                 user.setPassword(password);
-                user.setRegTime(LocalDateTime.now());
+                user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
                 userRepository.save(user);
-                responseList.add(result);
-                responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
+                authResponse.setResult(true);
+                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
             } else {
-                responseList.add(errors);
-                responseEntity = new ResponseEntity<>(responseList, HttpStatus.NOT_ACCEPTABLE);
+                authResponse.setResult(false);
+                authResponse.setUser(errors);
+                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.NOT_ACCEPTABLE);
             }
         } else { // if MULTIUSER_MODE = false
             responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);
@@ -219,25 +249,6 @@ public class AuthService {
         return responseEntity;
     }
 
-    public void registerSession (Integer userId) {
-        long epochSeconds = Instant.now().getEpochSecond();
-        List<Session> oldSessions = sessionRepository.findAll().stream().
-                filter(s -> s.getTime() < epochSeconds - 1800).
-                collect(Collectors.toList());
-        for (Session s: oldSessions) {
-            sessionRepository.delete(s);
-        }
-        Session session = new Session();
-        session.setSessionName(httpSession.getId());
-        session.setTime(epochSeconds);
-        session.setUserId(userId);
-        if (!sessionRepository.findAll().stream().
-                map(Session::getSessionName).
-                collect(Collectors.toList()).contains(httpSession.getId())) {
-            sessionRepository.save(session);
-        }
-
-    }
 
     public ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
         User user = userRepository.getOne(getUserId());
