@@ -2,6 +2,7 @@ package main.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 @Entity
@@ -20,7 +21,7 @@ public class PostComment {
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
-    private LocalDate time;
+    private LocalDateTime time;
     private String text;
 
     public PostComment() {
@@ -63,11 +64,11 @@ public class PostComment {
         this.postId = postId;
     }
 
-    public LocalDate getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(LocalDate time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

@@ -1,6 +1,7 @@
 package main.service;
 
 import main.api.response.ErrorsResponse;
+import main.api.response.GeneralResponse;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,18 +51,21 @@ public class PostService {
 
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
+    private final Integer PW_MIN_LENGTH = 6;
+    private final Integer PW_MAX_LENGTH = 30;
 
     private ResponseEntity<?> responseEntity;
+    private GeneralResponse generalResponse;
 
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
-    public ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest decision) {
+    public ResponseEntity<?> postApiModeration (Integer postId, String decision) {
         if (authService.isUserAuthorized()) {
             Post post = postRepository.getOne(postId);
-            if (decision.equals(ModerationRequest.ACCEPT)) {
+            if (decision.equals("accept")) {
                 post.setModerationStatus(ModerationStatus.ACCEPTED);
                 responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
-            } else if (decision.equals(ModerationRequest.DECLINE)) {
+            } else if (decision.equals("decline")) {
                 post.setModerationStatus(ModerationStatus.DECLINED);
                 responseEntity = new ResponseEntity<>(result, HttpStatus.NOT_MODIFIED);
             } else {
@@ -132,8 +133,8 @@ POST_PREMODERATION = false (режим премодерации выключен
         post.setViewCount(33);
         checkTexts(title, text, errors);
         if (!result) {
-            errorsResponse.getResponseMap().put("errors", errors);
-            return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
+            errorsResponse.getErrors().put("errors", errors);
+            return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
         } else {
             post.setTitle(title);
             post.setText(text);
@@ -207,7 +208,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 if (!destFolder2.exists()) {
                     destFolder2.mkdir();
                 }
-                String finalDestination = destination + folder1 + File.separator + folder2 + File.separator + folder3 + "/";
+                String finalDestination = destination + folder1 + "/" + folder2 + "/" + folder3 + "/";
                 File destFolder3 = new File (finalDestination);
                 if (!destFolder3.exists()) {
                     destFolder3.mkdir();
@@ -232,8 +233,8 @@ POST_PREMODERATION = false (режим премодерации выключен
         if (authService.isUserAuthorized()) {
             checkTexts(title, text, errors);
             if (!result) {
-                errorsResponse.getResponseMap().put("errors", errors);
-                return new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
+                errorsResponse.getErrors().put("errors", errors);
+                return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
             } else {
                 try {
                     Post post = postRepository.getOne(postId);
@@ -306,7 +307,7 @@ POST_PREMODERATION = false (режим премодерации выключен
             } else {
                 result = false;
                 errors.put("Post with id ", postId + " does not exist.");
-                errorsResponse.getResponseMap().put("errors", errors);
+                errorsResponse.getErrors().put("errors", errors);
             }
             if (postCommentRepository.findAll().stream().
                     map(PostComment::getCommentId).
@@ -317,7 +318,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 if (parentIdInt > 0) {
                     result = false;
                     errors.put("ParentId ", parentId + " does not exist.");
-                    errorsResponse.getResponseMap().put("errors", errors);
+                    errorsResponse.getErrors().put("errors", errors);
                 } else {
                     postComment.setParentId(parentIdInt);
                 }
@@ -325,21 +326,66 @@ POST_PREMODERATION = false (режим премодерации выключен
             if (text.length() < 20) {
                 result = false;
                 errors.put("Text", "Text too short!");
-                errorsResponse.getResponseMap().put("errors", errors);
+                errorsResponse.getErrors().put("errors", errors);
             }
             if (result) {
-                postComment.setTime(LocalDate.now());
+                postComment.setTime(LocalDateTime.now());
                 postComment.setUserId(userId);
                 postComment.setText(text);
                 postCommentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>(errorsResponse.getResponseMap(), HttpStatus.BAD_REQUEST);
+                responseEntity = new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
+    }
+
+    public ResponseEntity<?> getPostProfileMy (Optional<String> photo, String name, String email,
+                                               Optional<String> password, Optional<Integer> removePhoto) {
+        if(authService.isUserAuthorized()) {
+            result = true;
+            User user = userRepository.getOne(authService.getUserId());
+            Map<String, Object> errors = new LinkedHashMap<>();
+            if(password.isPresent() && password.get().length() >= PW_MIN_LENGTH && password.get().length() <= PW_MAX_LENGTH) {
+                user.setPassword(password.get());
+            } else {
+                result = false;
+                errors.put("password",  "Длина пароля с ошибкой");
+            }
+            if(removePhoto.isPresent() && photo.isPresent() && photo.get().getBytes().length < 5_000_000) {
+                if (removePhoto.get() == 0 ) {
+                    photo.ifPresent(user::setPhoto);
+                }
+                if(removePhoto.get() == 1) {
+                    user.setPhoto("");
+                }
+            } else {
+                result = false;
+                errors.put("photo", "Фото слишком большое, нужно не более 5 Мб");
+            }
+            if(user.getEmail().equals(email)) {
+                result = false;
+                errors.put("e-mail", "Этот e-mail уже зарегистрирован");
+            }
+            if(!name.matches("[a-zA-Z]*") || name.length() > 100) {
+                result = false;
+                errors.put("name", "Имя указано неверно.");
+            }
+            if (!result) {
+                errorsResponse = new ErrorsResponse(false, errors);
+                return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
+            } else {
+                user.setName(name);
+                user.setEmail(email);
+                userRepository.save(user);
+                return new ResponseEntity<>("result: true", HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
     }
 }

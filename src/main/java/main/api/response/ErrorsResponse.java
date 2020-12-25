@@ -7,21 +7,30 @@ import java.util.Map;
 
 @Component
 public class ErrorsResponse {
-    Map<String, Object> responseMap = new LinkedHashMap<>();
+    boolean result;
+    Map<String, Object> errors = new LinkedHashMap<>();
 
     public ErrorsResponse() {
-        responseMap.put("result", false);
-    }
-    public ErrorsResponse(Map<String, Object> map) {
-        responseMap.put("result", false);
-        responseMap.put("errors", map);
     }
 
-    public Map<String, Object> getResponseMap() {
-        return responseMap;
+    public ErrorsResponse(boolean result, Map<String, Object> errors) {
+        this.result = result;
+        this.errors = errors;
     }
 
-    public void setResponseMap(Map<String, Object> responseMap) {
-        this.responseMap = responseMap;
+    public boolean isResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public Map<String, Object> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, Object> errors) {
+        this.errors = errors;
     }
 }

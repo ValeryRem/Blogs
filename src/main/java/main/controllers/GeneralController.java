@@ -2,6 +2,7 @@ package main.controllers;
 
 import main.api.response.InitResponse;
 import main.entity.ModerationRequest;
+import main.entity.User;
 import main.service.GetService;
 import main.service.PostService;
 import main.service.SettingsService;
@@ -72,7 +73,7 @@ public class GeneralController {
     }
 
     @GetMapping("/calendar/")
-    private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2017") Optional<Integer> year) {
+    private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2020") Optional<Integer> year) {
         return getService.getApiCalendar (year);
     }
 
@@ -85,7 +86,8 @@ public class GeneralController {
     }
 
     @PostMapping("/moderation")
-    private ResponseEntity<?> postApiModeration (Integer postId, ModerationRequest request) {
+    private ResponseEntity<?> postApiModeration (@RequestParam(defaultValue="10")Integer postId,
+                                                 @RequestParam(defaultValue="accept") String request) {
         System.out.println("Method postApiModeration is activated.");
         return postService.postApiModeration(postId, request);
     }
@@ -101,8 +103,26 @@ public class GeneralController {
     @PostMapping("/comment/")
     private ResponseEntity<?> postComment (@RequestParam(defaultValue="5") Integer postId,
                                            @RequestParam(defaultValue="") String parentId,
-                                           @RequestParam(defaultValue="Ugly post.") String text) {
+                                           @RequestParam(defaultValue="Ugly rude post. Method postComment is activated.") String text) {
         System.out.println("Method postComment is activated.");
         return postService.postComment(4, "", text);
+    }
+/*
+{
+  "photo": <binary_file>,
+  "name":"Sendel",
+  "email":"sndl@mail.ru",
+  "password":"123456",
+  "removePhoto":0
+ */
+    @PostMapping("/profile/my")
+    private ResponseEntity<?> getPostProfileMy (
+            @RequestParam(defaultValue="src/main/resources/static/img/default-1.png") Optional<String> photo,
+            @RequestParam(defaultValue="Timur") String name,
+            @RequestParam(defaultValue="kuka@ggg.ty") String email,
+            @RequestParam(defaultValue="pw1212pop") Optional<String> password,
+            @RequestParam(defaultValue="0") Optional<Integer> removePhoto) {
+        System.out.println("Method getPostProfileMy is activated.");
+        return postService.getPostProfileMy(photo, name, email, password, Optional.of(1));
     }
 }

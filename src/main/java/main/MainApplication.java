@@ -31,29 +31,29 @@ public class MainApplication {
     public void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 //        setTimeZone();
-        insertTestPost1();
+//        insertTestPost1();
 //        insertTestPost2();
     }
 
     private void insertTestPost1() {
         Post post1 = new Post("The cute testing post");
         User user = new User();
-        user.setName("Bobby");
-        user.setEmail("lolo@ggg.ty");
-        user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
-        user.setPassword("pw1234");
-        user.setCode("hthpoi");
-        user.setIsModerator(true);
-        user.setPhoto("address7");
+//        user.setName("Bobby");
+//        user.setEmail("lolo@ggg.ty");
+//        user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
+//        user.setPassword("pw1234");
+//        user.setCode("hthpoi");
+//        user.setIsModerator(true);
+//        user.setPhoto("address7");
         post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
         post1.setText("Absolutely new testing text to be processed by the code under #Spring, #PHP, #Python tags");
         post1.setTime(Timestamp.valueOf(LocalDateTime.now()));
-        post1.setUserId(1);
+//        post1.setUserId(1);
         post1.setViewCount(15);
         post1.setModeratorId(2);
         postRepository.save(post1);
-        userRepository.save(user);
+//        userRepository.save(user);
     }
 
     private void insertTestPost2() {

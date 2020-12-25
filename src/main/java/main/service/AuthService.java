@@ -54,9 +54,7 @@ public class AuthService {
     public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
         authResponse = new AuthResponse();
         List<User> userList = userRepository.findAll();
-//        List<Object> resultList = new ArrayList<>();
-
-        int moderationCount;
+        int moderationCount = 0;
         int userCount = (int) userList.stream().
                 filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
                 count();
@@ -67,7 +65,6 @@ public class AuthService {
                     findAny().
                     orElse(new User());
             registerSession (us.getUserId()); // put new session id, delete old sessions id
-//            resultList.add("result: true");
             user.put("id", us.getUserId());
             user.put("name", us.getName());
             user.put("photo", us.getPhoto());
@@ -75,8 +72,6 @@ public class AuthService {
             user.put("moderation", "true");
             if (us.getIsModerator()) {
                 moderationCount = getModerationCount(us);
-            } else {
-                moderationCount = 0;
             }
             user.put("moderationCount", moderationCount);
             user.put("settings", "true");
@@ -96,17 +91,12 @@ public class AuthService {
         Timestamp timestamp = new Timestamp(epochSeconds*1000);
         System.out.println(timestamp); // for test only!!!
         Session session = new Session(sessionName, timestamp, userId);
-
         List<Session> oldSessions = sessionRepository.findAll().stream().
                 filter(s -> (int) s.getTime().getTime() / 1000 < (int) epochSeconds - 1800).
                 collect(Collectors.toList());
         for (Session s : oldSessions) {
             sessionRepository.delete(s);
         }
-
-//        session.setSessionName(httpSession.getId());
-//        session.setTime(new Timestamp(epochSeconds));
-//        session.setUserId(userId);
         if (!sessionRepository.findAll().stream().
                 map(Session::getSessionName).
                 collect(Collectors.toList()).contains(httpSession.getId())) {
@@ -306,16 +296,17 @@ public class AuthService {
     }
 
     private int getModerationCount(User user) {
-        int moderCount;
-        if (user.getIsModerator()) {
-            List<Post> posts = postRepository.findAll();
+        int moderCount = 0;
+        List<Post> posts = postRepository.findAll();
+        if (user.getIsModerator() && posts.stream().map(Post::getModerationStatus)
+                .collect(Collectors.toList())
+                .contains(ModerationStatus.NEW)) {
             moderCount = (int) posts.stream().
-                    filter(p -> p.getUserId().equals(user.getUserId()) && p.getModerationStatus().equals(ModerationStatus.NEW)).
+                    filter(p -> p.getUserId().equals(user.getUserId()) && p.getModerationStatus().
+                            equals(ModerationStatus.NEW)).
                     count();
-            return moderCount;
-        } else {
-            return 0;
         }
+        return moderCount;
     }
 
     private void sendEmail(String eMail, String subject, String text) {

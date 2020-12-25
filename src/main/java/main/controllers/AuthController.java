@@ -23,8 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(@RequestParam(defaultValue="klo@ggg.ty") String userEmail,
-                                               @RequestParam(defaultValue="pw1212") String userPassword) {
+    private ResponseEntity<?> postAuthLogin(@RequestParam(defaultValue="reka@ggg.ty") String userEmail,
+                                               @RequestParam(defaultValue="pw1212pop") String userPassword) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(userEmail, userPassword);
     }
@@ -60,7 +60,7 @@ public class AuthController {
     @PostMapping("/password")
     private ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
         System.out.println("Method authPassword is activated.");
-        return authService.authPassword("w4KXBzMt0VLuGD2C", "pw1212", "yuhelakate", "maheziduro");
+        return authService.authPassword("Nk0uuWP8H3PAEPg1", "pw1212", "zohicimova", "laceqacig");
     }
 }
 

@@ -69,17 +69,17 @@ public class PostController {
     }
 
     @GetMapping("/byDate")
-    private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue = "2020-11-17 00:00:00")
-                                                  @DateTimeFormat(pattern="yyyy-MM-dd 'T' HH:mm:ss") LocalDateTime date,
+    private ResponseEntity<?> getPostsByDate (
+            @RequestParam(defaultValue = "2020-12-23")    @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date,
                                              @RequestParam(defaultValue="0") Integer offset,
                                              @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsByDate activated. Date:" + date );
-        return getService.getPostsByDate(Timestamp.valueOf(date), offset, limit, mode);
+        return getService.getPostsByDate(date, offset, limit, mode);
     }
 
     @GetMapping("/byTag")
-    private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "#Java") String tagName,
+    private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "PHP") String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="1") Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
@@ -87,12 +87,20 @@ public class PostController {
         return getService.getPostsByTag(tagName, offset, limit, mode);
     }
 
+    @GetMapping("/moderation")
+    private ResponseEntity<?> getPostsForModeration(@RequestParam(defaultValue="0") Integer offset,
+                                                    @RequestParam(defaultValue="3") Integer limit,
+                                                    @RequestParam(defaultValue="new") String status) {
+        System.out.println("Method getPostsForModeration activated.");
+        return getService.getPostsForModeration(offset, limit, status);
+    }
+
     @GetMapping("/my")
-    private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="1") Integer myUserId, //defaultValue="1" to be deleted later on.
+    private ResponseEntity<?> getMyPosts (
                                           @RequestParam(defaultValue="0") Integer offset,
                                           @RequestParam(defaultValue="5") Integer limit) {
-        System.out.println("Method getMyPosts uses myUserId:" + myUserId);
-        return getService.getMyPosts(myUserId, offset, limit);
+        System.out.println("Method getMyPosts activated.");
+        return getService.getMyPosts(offset, limit);
     }
 
     @PostMapping("/like")

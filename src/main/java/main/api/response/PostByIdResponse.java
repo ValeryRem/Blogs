@@ -3,6 +3,7 @@ package main.api.response;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.FutureOrPresent;
 import java.sql.Timestamp;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+//@Service
 public class PostByIdResponse {
     private Integer id;
     private Timestamp timestamp;

@@ -1,13 +1,7 @@
 package main.api.response;
-
-import main.repository.CommentRepository;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.TreeMap;
 
-public class PostAnnounceResponse {
+public class PostResponse {
         private final Integer id;
         private final long timestamp;
         private final TreeMap<String, Object> user;
@@ -18,8 +12,8 @@ public class PostAnnounceResponse {
         private final Integer commentCount;
         private final Integer viewCount;
 
-    public PostAnnounceResponse(Integer postId, long timestamp, String title, String announce,
-                                Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
+    public PostResponse(Integer postId, long timestamp, String title, String announce,
+                        Integer commentCount, Integer viewCount, TreeMap<String, Object> user) {
         this.id = postId;
         this.timestamp = timestamp;
         this.title = title;

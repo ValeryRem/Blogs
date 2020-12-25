@@ -4,12 +4,12 @@ import java.util.List;
 
 public class PostsListResponse {
     int count;
-    List<PostAnnounceResponse> posts;
+    List<PostResponse> posts;
 
     public PostsListResponse() {
     }
 
-    public PostsListResponse(int count, List<PostAnnounceResponse> posts) {
+    public PostsListResponse(int count, List<PostResponse> posts) {
         this.count = count;
         this.posts = posts;
     }
@@ -22,7 +22,7 @@ public class PostsListResponse {
         this.count = count;
     }
 
-    public List<PostAnnounceResponse> getPosts() {
+    public List<PostResponse> getPosts() {
         return posts;
     }
 }
