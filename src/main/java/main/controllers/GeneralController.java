@@ -6,9 +6,11 @@ import main.entity.User;
 import main.service.GetService;
 import main.service.PostService;
 import main.service.SettingsService;
+import main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -29,6 +31,9 @@ public class GeneralController {
 
     @Autowired
     private final SettingsService settingsService;
+
+    @Autowired
+    UserService userService;
 
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
@@ -92,12 +97,18 @@ public class GeneralController {
         return postService.postApiModeration(postId, request);
     }
 
-    @PostMapping("/image")
-    private ResponseEntity<?> postImage
-            (@RequestParam(defaultValue="src/main/resources/static/img/default-1.png") String origin,
-             @RequestParam(defaultValue= "upload/") String destination) throws IOException {
-        System.out.println("Method postImage is activated.");
-        return postService.postImage (origin, destination);
+//    @PostMapping("/image")
+//    private ResponseEntity<?> postImage
+//            (@RequestParam(defaultValue="src/main/resources/static/img/default-1.png") String origin,
+//             @RequestParam(defaultValue= "upload/") String destination) throws IOException {
+//        System.out.println("Method postImage is activated.");
+//        return postService.postImage (origin, destination);
+//    }
+
+    @PostMapping(value = "/image", consumes = {"multipart/form-data"})
+    public @ResponseBody
+    ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
+        return userService.postApiImage(image);
     }
 
     @PostMapping("/comment/")
