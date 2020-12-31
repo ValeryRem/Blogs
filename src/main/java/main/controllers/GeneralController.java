@@ -107,7 +107,8 @@ public class GeneralController {
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})
     public @ResponseBody
-    ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
+    ResponseEntity<?> postApiImage(@RequestPart("image") //@RequestParam(defaultValue="C:/Users/valery/Desktop/java_basics/170920.jpg")
+                                           MultipartFile image) throws IOException {
         return userService.postApiImage(image);
     }
 

@@ -22,12 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getPostProfileMy for POST /api/profile/my request is set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -120,6 +119,7 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,13 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Using extended JpaRepository for UserRepository and PostRepository.">
-      <created>1605190864319</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1605190864319</updated>
     </task>
     <task id="LOCAL-00043" summary="Post and User connected by @ManyToOne and @OneToMany.">
       <created>1605217439237</created>
@@ -563,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608926045429</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up.">
+      <created>1609318382233</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1609318382234</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -586,7 +586,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method getCaptcha, upd 2." />
     <MESSAGE value="Method postAuthRegister set up." />
     <MESSAGE value="Method postAuthRegister set up, upd 1." />
     <MESSAGE value="Method putApiSettings set up." />
@@ -611,7 +610,8 @@
     <MESSAGE value="TimeZone.setDefault(TimeZone.getTimeZone(&quot;UTC&quot;));" />
     <MESSAGE value="Updated registerSession(Integer userId) in the class AuthService." />
     <MESSAGE value="Method getPostProfileMy for POST /api/profile/my request is set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method getPostProfileMy for POST /api/profile/my request is set up." />
+    <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
