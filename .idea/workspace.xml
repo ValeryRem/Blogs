@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image)).">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -219,13 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00043" summary="Post and User connected by @ManyToOne and @OneToMany.">
-      <created>1605217439237</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1605217439237</updated>
     </task>
     <task id="LOCAL-00044" summary="PostBiIdResponce &amp; PostService updated.">
       <created>1605219575067</created>
@@ -563,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609318382234</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image)).">
+      <created>1609437031989</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1609437031989</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -586,7 +586,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method postAuthRegister set up." />
     <MESSAGE value="Method postAuthRegister set up, upd 1." />
     <MESSAGE value="Method putApiSettings set up." />
     <MESSAGE value="Method postLike set up." />
@@ -611,7 +610,8 @@
     <MESSAGE value="Updated registerSession(Integer userId) in the class AuthService." />
     <MESSAGE value="Method getPostProfileMy for POST /api/profile/my request is set up." />
     <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
+    <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image))." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image))." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

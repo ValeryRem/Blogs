@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -105,9 +106,10 @@ public class GeneralController {
 //        return postService.postImage (origin, destination);
 //    }
 
-    @PostMapping(value = "/image", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/image", consumes= {"multipart/form-data", "image/jpeg"})         //consumes = {"image/jpeg"})
     public @ResponseBody
-    ResponseEntity<?> postApiImage(@RequestPart("image") //@RequestParam(defaultValue="C:/Users/valery/Desktop/java_basics/170920.jpg")
+    ResponseEntity<?> postApiImage(@RequestPart("image")
+                                           //@RequestParam(defaultValue="C:/Users/valery/Desktop/java_basics/170920.jpg")//)
                                            MultipartFile image) throws IOException {
         return userService.postApiImage(image);
     }
@@ -127,14 +129,27 @@ public class GeneralController {
   "password":"123456",
   "removePhoto":0
  */
-    @PostMapping("/profile/my")
-    private ResponseEntity<?> getPostProfileMy (
-            @RequestParam(defaultValue="src/main/resources/static/img/default-1.png") Optional<String> photo,
-            @RequestParam(defaultValue="Timur") String name,
-            @RequestParam(defaultValue="kuka@ggg.ty") String email,
-            @RequestParam(defaultValue="pw1212pop") Optional<String> password,
-            @RequestParam(defaultValue="0") Optional<Integer> removePhoto) {
-        System.out.println("Method getPostProfileMy is activated.");
-        return postService.getPostProfileMy(photo, name, email, password, Optional.of(1));
+//    @PostMapping("/profile/my")
+//    private ResponseEntity<?> getPostProfileMy (
+//            @RequestParam(defaultValue="src/main/resources/static/img/default-1.png") Optional<String> photo,
+//            @RequestParam(defaultValue="Timur") String name,
+//            @RequestParam(defaultValue="kuka@ggg.ty") String email,
+//            @RequestParam(defaultValue="pw1212pop") Optional<String> password,
+//            @RequestParam(defaultValue="0") Optional<Integer> removePhoto) {
+//        System.out.println("Method getPostProfileMy is activated.");
+//        return postService.getPostProfileMy(photo, name, email, password, Optional.of(1));
+//    }
+
+// этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
+    @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
+    public ResponseEntity<?> postApiProfileMy(
+            @RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
+            @RequestPart(value = "photo", required = false) MultipartFile avatar, // вот тут может быть картинка
+            @RequestParam(value = "email", required = false) String emailMP,
+            @RequestParam(value = "name", required = false) String nameMP,
+            @RequestParam(value = "password", required = false) String passwordMP,
+            @RequestParam(value = "removePhoto", required = false) String removePhotoMP) throws IOException {
+        return userService
+                .postApiProfileMy(requestBody, avatar, emailMP, nameMP, passwordMP, removePhotoMP);
     }
 }

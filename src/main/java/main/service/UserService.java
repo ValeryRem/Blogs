@@ -1,5 +1,8 @@
 package main.service;
 
+import main.api.response.ErrorsResponse;
+import main.entity.User;
+import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,25 +12,85 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    ErrorsResponse errorsResponse;
+
+    @Autowired
+    UserRepository userRepository;
+
     private ResponseEntity<?> responseEntity;
+    private boolean result;
+    private final Integer PW_MIN_LENGTH = 6;
+    private final Integer PW_MAX_LENGTH = 30;
+
 
     public ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
         if (authService.isUserAuthorized()) {
-            image.transferTo(getOutputFile(image));
-            responseEntity = new ResponseEntity<>(getOutputFile(image).getAbsolutePath(), HttpStatus.OK);
+//            FileInputStream input = new FileInputStream(image);
+//            MultipartFile multipartFile = new MockMultipartFile("image",
+//                    image.getName(), "image/jpeg", IOUtils.toByteArray(input));
+            image.transferTo(getOutputFile());
+            responseEntity = new ResponseEntity<>(getOutputFile().getAbsolutePath(), HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }
 
-    private File getOutputFile (MultipartFile image) {
-        String targetFolder = "C:\\Users\\valery\\Desktop\\java_basics\\16_Blogs\\upload";
+    public ResponseEntity<?> postApiProfileMy(String requestBody, MultipartFile avatar, String emailMP, String nameMP,
+                                              String passwordMP, String removePhotoMP) throws IOException {
+
+        if(authService.isUserAuthorized()) {
+            result = true;
+            User user = userRepository.getOne(authService.getUserId());
+            Map<String, Object> errors = new LinkedHashMap<>();
+            if(passwordMP.length() >= PW_MIN_LENGTH && passwordMP.length() <= PW_MAX_LENGTH) {
+                user.setPassword(passwordMP);
+            } else {
+                result = false;
+                errors.put("password",  "Длина пароля с ошибкой.");
+            }
+            if(avatar.getBytes().length < 5_000_000) {
+                if(Integer.parseInt(removePhotoMP) == 1) {
+                    user.setPhoto("");
+                }
+            } else {
+                result = false;
+                errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
+            }
+            if(user.getEmail().equals(emailMP)) {
+                result = false;
+                errors.put("e-mail", "Этот e-mail уже зарегистрирован.");
+            }
+            if(!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100) {
+                result = false;
+                errors.put("name", "Имя указано неверно.");
+            }
+            if (!result) {
+                errorsResponse = new ErrorsResponse(false, errors);
+                return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
+            } else {
+                user.setName(nameMP);
+                user.setEmail(emailMP);
+                userRepository.save(user);
+                return new ResponseEntity<>("result: true", HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    private File getOutputFile () {
+        String targetFolder = "/upload";
         String destination = StringUtils.cleanPath(targetFolder);
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
