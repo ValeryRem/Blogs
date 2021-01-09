@@ -8,6 +8,7 @@ import main.service.PostService;
 import main.service.SettingsService;
 import main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,10 +107,10 @@ public class GeneralController {
 //        return postService.postImage (origin, destination);
 //    }
 
-    @PostMapping(value = "/image", consumes= {"multipart/form-data", "image/jpeg"})         //consumes = {"image/jpeg"})
+    @PostMapping(value = "/image", consumes = {"multipart/form-data"})// MediaType.MULTIPART_FORM_DATA_VALUE)
     public @ResponseBody
-    ResponseEntity<?> postApiImage(@RequestPart("image")
-                                           //@RequestParam(defaultValue="C:/Users/valery/Desktop/java_basics/170920.jpg")//)
+    ResponseEntity<?> postApiImage(@RequestParam("image")
+                                           //@RequestParam(defaultValue="C:/Users/valery/Desktop/1.png")//)
                                            MultipartFile image) throws IOException {
         return userService.postApiImage(image);
     }
@@ -143,13 +144,13 @@ public class GeneralController {
 // этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
     @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
     public ResponseEntity<?> postApiProfileMy(
-            @RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
+            //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
             @RequestPart(value = "photo", required = false) MultipartFile avatar, // вот тут может быть картинка
             @RequestParam(value = "email", required = false) String emailMP,
             @RequestParam(value = "name", required = false) String nameMP,
             @RequestParam(value = "password", required = false) String passwordMP,
-            @RequestParam(value = "removePhoto", required = false) String removePhotoMP) throws IOException {
+            @RequestParam(value = "removePhoto", required = false) Integer removePhotoMP) throws IOException {
         return userService
-                .postApiProfileMy(requestBody, avatar, emailMP, nameMP, passwordMP, removePhotoMP);
+                .postApiProfileMy(avatar, emailMP, nameMP, passwordMP, removePhotoMP);
     }
 }

@@ -3,15 +3,28 @@ package main.service;
 import main.api.response.ErrorsResponse;
 import main.entity.User;
 import main.repository.UserRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -35,10 +48,18 @@ public class UserService {
 
     public ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
         if (authService.isUserAuthorized()) {
-//            FileInputStream input = new FileInputStream(image);
-//            MultipartFile multipartFile = new MockMultipartFile("image",
-//                    image.getName(), "image/jpeg", IOUtils.toByteArray(input));
-            image.transferTo(getOutputFile());
+
+//            FileInputStream input = new FileInputStream(file);
+//            MultipartFile multipartFile = new MockMultipartFile("image", imageUri, "image/jpeg",
+//                    IOUtils.toByteArray(input));
+//            image.transferTo(getOutputFile());
+            File convertFile = getOutputFile();
+            convertFile.createNewFile();
+            try(FileOutputStream fout = new FileOutputStream(convertFile)) {
+                fout.write(image.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             responseEntity = new ResponseEntity<>(getOutputFile().getAbsolutePath(), HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -46,8 +67,8 @@ public class UserService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postApiProfileMy(String requestBody, MultipartFile avatar, String emailMP, String nameMP,
-                                              String passwordMP, String removePhotoMP) throws IOException {
+    public ResponseEntity<?> postApiProfileMy(MultipartFile avatar, String emailMP, String nameMP,
+                                              String passwordMP, Integer removePhotoMP) throws IOException {
 
         if(authService.isUserAuthorized()) {
             result = true;
@@ -60,7 +81,7 @@ public class UserService {
                 errors.put("password",  "Длина пароля с ошибкой.");
             }
             if(avatar.getBytes().length < 5_000_000) {
-                if(Integer.parseInt(removePhotoMP) == 1) {
+                if(removePhotoMP == 1) {
                     user.setPhoto("");
                 }
             } else {
@@ -90,7 +111,7 @@ public class UserService {
     }
 
     private File getOutputFile () {
-        String targetFolder = "/upload";
+        String targetFolder = "C:\\Users\\valery\\Desktop\\java_basics\\16_Blogs\\upload";
         String destination = StringUtils.cleanPath(targetFolder);
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
