@@ -23,8 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(@RequestParam(defaultValue="reka1@ggg.ty") String userEmail,
-                                               @RequestParam(defaultValue="ttt778") String userPassword) {
+    private ResponseEntity<?> postAuthLogin(@RequestParam(defaultValue="horn@rr.tt") String userEmail,
+                                            @RequestParam(defaultValue="pw8888") String userPassword) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(userEmail, userPassword);
     }

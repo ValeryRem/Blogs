@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.io.File;
@@ -23,10 +26,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,11 +53,6 @@ public class UserService {
 
     public ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
         if (authService.isUserAuthorized()) {
-
-//            FileInputStream input = new FileInputStream(file);
-//            MultipartFile multipartFile = new MockMultipartFile("image", imageUri, "image/jpeg",
-//                    IOUtils.toByteArray(input));
-//            image.transferTo(getOutputFile());
             File convertFile = getOutputFile();
             convertFile.createNewFile();
             try(FileOutputStream fout = new FileOutputStream(convertFile)) {
@@ -68,21 +68,34 @@ public class UserService {
     }
 
     public ResponseEntity<?> postApiProfileMy(MultipartFile avatar, String emailMP, String nameMP,
-                                              String passwordMP, Integer removePhotoMP) throws IOException {
-
+                                              String passwordMP, String removePhotoMP) throws IOException {
         if(authService.isUserAuthorized()) {
             result = true;
             User user = userRepository.getOne(authService.getUserId());
             Map<String, Object> errors = new LinkedHashMap<>();
+            int width;
+            int height;
             if(passwordMP.length() >= PW_MIN_LENGTH && passwordMP.length() <= PW_MAX_LENGTH) {
                 user.setPassword(passwordMP);
             } else {
                 result = false;
                 errors.put("password",  "Длина пароля с ошибкой.");
             }
-            if(avatar.getBytes().length < 5_000_000) {
-                if(removePhotoMP == 1) {
+            if(avatar.getBytes().length <= 5_000_000) {
+                if(removePhotoMP.equals("1")) {
                     user.setPhoto("");
+                } else {
+                    Image image = ImageIO.read(avatar.getInputStream());
+                    width = image.getWidth(null);
+                    height = image.getHeight(null);
+                    if (width > 30 || height > 30) {
+                        File newFilePng = new File("src/main/resources/static/img/" + avatar.getOriginalFilename() + ".png");
+                        BufferedImage tempPNG = resizeImage(image, 30, 30);
+                        ImageIO.write(tempPNG, "png", newFilePng);
+                        user.setPhoto(newFilePng.getName());//((ImageOutputStream) image).readLine());
+                    } else {
+                        user.setPhoto(avatar.getOriginalFilename());
+                    }
                 }
             } else {
                 result = false;
@@ -137,5 +150,18 @@ public class UserService {
         }
         String fileName = suffix + "_uploaded.jpg";
         return new File(destFolder3, fileName);
+    }
+
+    public static BufferedImage resizeImage(final Image image, int width, int height) {
+        final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        final Graphics2D graphics2D = bufferedImage.createGraphics();
+        graphics2D.setComposite(AlphaComposite.Src);
+        //below three lines are for RenderingHints for better image quality at cost of higher processing time
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.drawImage(image, 0, 0, width, height, null);
+        graphics2D.dispose();
+        return bufferedImage;
     }
 }

@@ -146,10 +146,10 @@ public class GeneralController {
     public ResponseEntity<?> postApiProfileMy(
             //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
             @RequestPart(value = "photo", required = false) MultipartFile avatar, // вот тут может быть картинка
-            @RequestParam(value = "email", required = false) String emailMP,
-            @RequestParam(value = "name", required = false) String nameMP,
-            @RequestParam(value = "password", required = false) String passwordMP,
-            @RequestParam(value = "removePhoto", required = false) Integer removePhotoMP) throws IOException {
+            @RequestPart(value = "email", required = false) String emailMP,
+            @RequestPart(value = "name", required = false) String nameMP,
+            @RequestPart(value = "password", required = false) String passwordMP,
+            @RequestPart(value = "removePhoto", required = false) String removePhotoMP) throws IOException {
         return userService
                 .postApiProfileMy(avatar, emailMP, nameMP, passwordMP, removePhotoMP);
     }
