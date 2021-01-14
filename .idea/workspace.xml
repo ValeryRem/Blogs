@@ -22,11 +22,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postApiImage set up in MultiPartForm mode.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postApiProfileMy set up in MultiPartForm mode.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/Goat.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/Hand.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/650/56/93/19_uploaded.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/650/56/93/95_How was day.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/650/56/93/95_uploaded.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -118,9 +123,16 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/Композитор.jpg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/226/43/78/33_uploaded.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/226/43/78/45_uploaded.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/226/43/78/52_uploaded.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/226/43/78/6_uploaded.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/226/43/78/92_uploaded.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload934/83/92/16_uploaded.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,13 +232,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00046" summary="Method  String announce = getText().replaceAll(&quot;[\\p{P}\\p{S}]&quot;, &quot;&quot;); added in Post.class.">
-      <created>1605258646917</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1605258646917</updated>
     </task>
     <task id="LOCAL-00047" summary="PostService added by response setting up methods.">
       <created>1605477777649</created>
@@ -564,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610229302436</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="Method postApiProfileMy set up in MultiPartForm mode.">
+      <created>1610297400820</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1610297400822</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -587,7 +599,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method postLike set up." />
     <MESSAGE value="Method postDislike set up." />
     <MESSAGE value="Method for POST/api/post set up." />
     <MESSAGE value="SessionRepository set up for authoriztion of users." />
@@ -612,7 +623,8 @@
     <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image))." />
     <MESSAGE value="Method postApiProfileMy set up, but String requestBody unused..." />
     <MESSAGE value="Method postApiImage set up in MultiPartForm mode." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postApiImage set up in MultiPartForm mode." />
+    <MESSAGE value="Method postApiProfileMy set up in MultiPartForm mode." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postApiProfileMy set up in MultiPartForm mode." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

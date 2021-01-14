@@ -5,7 +5,6 @@ import main.service.GetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,20 +16,22 @@ public class AuthController {
     private AuthService authService;
 
     @GetMapping("/check")
-    private ResponseEntity<?> getAuthCheck (HttpSession session) {
-        System.out.println(session.getId());
+    private ResponseEntity<?> getAuthCheck () {
+        System.out.println("Method getAuthCheck is activated.");
         return authService.getAuthCheck();
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(@RequestParam(defaultValue="horn@rr.tt") String userEmail,
-                                            @RequestParam(defaultValue="pw8888") String userPassword) {
+    private ResponseEntity<?> postAuthLogin(@RequestParam (value = "email")//, defaultValue="horn8@rr.tt")
+                                                        String userEmail,
+                                            @RequestParam (value = "password")//, defaultValue="pw8888")
+                                                    String userPassword) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(userEmail, userPassword);
     }
 
     @GetMapping("/logout")
-    private ResponseEntity<?> getAuthLogout (@RequestParam(defaultValue="1")Integer userId) {
+    private ResponseEntity<?> getAuthLogout () {
         System.out.println("Method getAuthLogout is activated.");
         return authService.getAuthLogout();
     }
@@ -60,7 +61,7 @@ public class AuthController {
     @PostMapping("/password")
     private ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
         System.out.println("Method authPassword is activated.");
-        return authService.authPassword("Nk0uuWP8H3PAEPg1", "pw1212", "zohicimova", "laceqacig");
+        return authService.authPassword(code, password, captcha, captchaSecret);
     }
 }
 

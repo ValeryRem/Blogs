@@ -53,14 +53,14 @@ public class UserService {
 
     public ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
         if (authService.isUserAuthorized()) {
-            File convertFile = getOutputFile();
+            File convertFile = getOutputFile(image);
             convertFile.createNewFile();
             try(FileOutputStream fout = new FileOutputStream(convertFile)) {
                 fout.write(image.getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            responseEntity = new ResponseEntity<>(getOutputFile().getAbsolutePath(), HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(getOutputFile(image).getAbsolutePath(), HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
@@ -89,7 +89,7 @@ public class UserService {
                     width = image.getWidth(null);
                     height = image.getHeight(null);
                     if (width > 30 || height > 30) {
-                        File newFilePng = new File("src/main/resources/static/img/" + avatar.getOriginalFilename() + ".png");
+                        File newFilePng = new File("src/main/resources/static/img/" + avatar.getOriginalFilename().split("/.")[0]);
                         BufferedImage tempPNG = resizeImage(image, 30, 30);
                         ImageIO.write(tempPNG, "png", newFilePng);
                         user.setPhoto(newFilePng.getName());//((ImageOutputStream) image).readLine());
@@ -123,8 +123,8 @@ public class UserService {
         }
     }
 
-    private File getOutputFile () {
-        String targetFolder = "C:\\Users\\valery\\Desktop\\java_basics\\16_Blogs\\upload";
+    private File getOutputFile (MultipartFile image) {
+        String targetFolder = "C:/Users/valery/Desktop/java_basics/16_Blogs/upload/";
         String destination = StringUtils.cleanPath(targetFolder);
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
@@ -148,7 +148,7 @@ public class UserService {
         if (!destFolder3.exists()) {
             destFolder3.mkdir();
         }
-        String fileName = suffix + "_uploaded.jpg";
+        String fileName = suffix + "_"+  image.getOriginalFilename();
         return new File(destFolder3, fileName);
     }
 
