@@ -23,11 +23,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(@RequestParam (value = "e_mail")//, defaultValue="horn8@rr.tt")
-                                                @JsonProperty ("e_mail")
-                                                        String eMail,
-                                            @RequestParam (value = "password")//, defaultValue="pw8888")
-                                                    String userPassword) {
+    private ResponseEntity<?> postAuthLogin(//@RequestParam (name = "e_mail")
+                                            @JsonProperty ("e_mail") String eMail,
+                                            @JsonProperty ("password") String userPassword) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(eMail, userPassword);
     }
@@ -45,13 +43,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    private ResponseEntity<?> postAuthRegister(@RequestParam(defaultValue="pony@kkkl.hj") String e_mail,
-                                               @RequestParam(defaultValue="pw77982") String password,
-                                               @RequestParam(defaultValue="Peter") String nameString,
-                                               @RequestParam(defaultValue="govutigud") String captcha,
-                                               @RequestParam(defaultValue="yapaponep") String secret_captcha) {
+    private ResponseEntity<?> postAuthRegister(@JsonProperty("e_mail") String eMail,
+                                               @JsonProperty("password") String password,
+                                               @JsonProperty("name") String nameString,
+                                               @JsonProperty("captcha") String captcha,
+                                               @JsonProperty("captcha_secret") String secretCaptcha) {
         System.out.println("Method postAuthRegister is activated.");
-        return authService.postAuthRegister(e_mail, password, nameString, captcha, secret_captcha);
+        return authService.postAuthRegister(eMail, password, nameString, captcha, secretCaptcha);
     }
 
     @PostMapping("/restore")

@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthLogin without default parameters.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -146,6 +146,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.2.9.RELEASE/spring-context-5.2.9.RELEASE.jar!/org/springframework/ui/Model.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
     <option name="proportion" value="0.35981664" />
@@ -219,13 +220,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00048" summary="Methods getPostsForModeration and getAuthCheck set up.">
-      <created>1605632070992</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1605632070992</updated>
     </task>
     <task id="LOCAL-00049" summary="Method get/api/tag/ set up.">
       <created>1605682716422</created>
@@ -563,7 +557,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610653380263</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error.">
+      <created>1610714652438</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1610714652439</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -586,7 +587,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method for POST/api/post set up." />
     <MESSAGE value="SessionRepository set up for authoriztion of users." />
     <MESSAGE value="Methods registerSession &amp; isUserAuthorized in AuthService are updated." />
     <MESSAGE value="Method postImage set up." />
@@ -611,7 +611,8 @@
     <MESSAGE value="Method postApiImage set up in MultiPartForm mode." />
     <MESSAGE value="Method postApiProfileMy set up in MultiPartForm mode." />
     <MESSAGE value="Method postAuthLogin without default parameters." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthLogin without default parameters." />
+    <MESSAGE value="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

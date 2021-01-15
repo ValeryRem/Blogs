@@ -26,13 +26,15 @@ public class User {
 //    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Timestamp regTime;
 
-    @Column(name = "user_name")
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
     private String name;
+
     @Email
     @JsonProperty("e_mail")
     @Column(name = "e_mail")
     private String eMail;
+
+    @JsonProperty("password")
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
     private String code;
