@@ -1,5 +1,6 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -29,7 +30,9 @@ public class User {
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
     private String name;
     @Email
-    private String email;
+    @JsonProperty("e_mail")
+    @Column(name = "e_mail")
+    private String eMail;
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
     private String code;
@@ -75,11 +78,11 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return eMail;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.eMail = email;
     }
 
     public String getPassword() {

@@ -1,5 +1,6 @@
 package main.controllers;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.service.AuthService;
 import main.service.GetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(@RequestParam (value = "email")//, defaultValue="horn8@rr.tt")
-                                                        String userEmail,
+    private ResponseEntity<?> postAuthLogin(@RequestParam (value = "e_mail")//, defaultValue="horn8@rr.tt")
+                                                @JsonProperty ("e_mail")
+                                                        String eMail,
                                             @RequestParam (value = "password")//, defaultValue="pw8888")
                                                     String userPassword) {
         System.out.println("Method postAuthLogin is activated.");
-        return authService.postAuthLogin(userEmail, userPassword);
+        return authService.postAuthLogin(eMail, userPassword);
     }
 
     @GetMapping("/logout")
