@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postAuthLogin with @JsonProperty annotated parameters.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -220,13 +220,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00049" summary="Method get/api/tag/ set up.">
-      <created>1605682716422</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1605682716422</updated>
     </task>
     <task id="LOCAL-00050" summary="Method getTag (String query) supplemented by weights.">
       <created>1605912547361</created>
@@ -564,7 +557,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610714652439</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="Method postAuthLogin with @JsonProperty annotated parameters.">
+      <created>1610748026605</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1610748026605</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -587,7 +587,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="SessionRepository set up for authoriztion of users." />
     <MESSAGE value="Methods registerSession &amp; isUserAuthorized in AuthService are updated." />
     <MESSAGE value="Method postImage set up." />
     <MESSAGE value="Method putImage set up." />
@@ -612,7 +611,8 @@
     <MESSAGE value="Method postApiProfileMy set up in MultiPartForm mode." />
     <MESSAGE value="Method postAuthLogin without default parameters." />
     <MESSAGE value="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error." />
+    <MESSAGE value="Method postAuthLogin with @JsonProperty annotated parameters." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method postAuthLogin with @JsonProperty annotated parameters." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
