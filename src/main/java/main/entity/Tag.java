@@ -1,7 +1,5 @@
 package main.entity;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,13 +8,15 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+
+    @Column(name = "tag_name")
+    private String tagName;
 
     public Tag() {
     }
 
-    public Tag(String name) {
-        this.name = name;
+    public Tag(String tagName) {
+        this.tagName = tagName;
     }
 
     public Tag(Integer id) {
@@ -31,15 +31,15 @@ public class Tag {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setName(String name) {
-        if(name.matches("#\\S+")) {
-            this.name = name;
+    public void setTagName(String tagName) {
+        if(tagName.matches("#\\S+")) {
+            this.tagName = tagName;
         } else {
-            this.name = "";
+            this.tagName = "";
         }
     }
 }

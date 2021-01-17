@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -55,12 +56,16 @@ public class UserService {
         if (authService.isUserAuthorized()) {
             File convertFile = getOutputFile(image);
             convertFile.createNewFile();
+            User user = userRepository.getOne(authService.getUserId());
             try(FileOutputStream fout = new FileOutputStream(convertFile)) {
                 fout.write(image.getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            responseEntity = new ResponseEntity<>(getOutputFile(image).getAbsolutePath(), HttpStatus.OK);
+            String imageAddress = convertFile.getAbsolutePath();
+            user.setPhoto(imageAddress);
+            userRepository.save(user);
+            responseEntity = new ResponseEntity<>(imageAddress, HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
@@ -89,7 +94,11 @@ public class UserService {
                     width = image.getWidth(null);
                     height = image.getHeight(null);
                     if (width > 30 || height > 30) {
-                        File newFilePng = new File("src/main/resources/static/img/" + avatar.getOriginalFilename().split("/.")[0]);
+                        String avatarSrc = avatar.getOriginalFilename();
+                        File newFilePng = null;
+                        if (avatarSrc != null) {
+                            newFilePng = new File(avatarSrc);
+                        }
                         BufferedImage tempPNG = resizeImage(image, 30, 30);
                         ImageIO.write(tempPNG, "png", newFilePng);
                         user.setPhoto(newFilePng.getName());//((ImageOutputStream) image).readLine());
@@ -103,7 +112,7 @@ public class UserService {
             }
             if(user.getEmail().equals(emailMP)) {
                 result = false;
-                errors.put("e-mail", "Этот e-mail уже зарегистрирован.");
+                errors.put("e_mail", "Этот e_mail уже зарегистрирован.");
             }
             if(!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100) {
                 result = false;
@@ -124,7 +133,7 @@ public class UserService {
     }
 
     private File getOutputFile (MultipartFile image) {
-        String targetFolder = "C:/Users/valery/Desktop/java_basics/16_Blogs/upload/";
+        String targetFolder = "upload/";
         String destination = StringUtils.cleanPath(targetFolder);
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
@@ -164,4 +173,5 @@ public class UserService {
         graphics2D.dispose();
         return bufferedImage;
     }
+
 }

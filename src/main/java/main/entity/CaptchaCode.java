@@ -15,9 +15,10 @@ public class CaptchaCode {
 //    @NotBlank(message = "Time of release is mandatory")
     private Timestamp time;
     @NotBlank(message = "Capture code is mandatory")
+    @Column(name = "captcha")
     private String code;
     @NotBlank(message = "Secret code is mandatory")
-    @Column(name = "secret_code")
+    @Column(name = "captcha_secret")
     private String secretCode;
 
     public CaptchaCode() {

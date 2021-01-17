@@ -3,6 +3,7 @@ package main.controllers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import main.service.AuthService;
 import main.service.GetService;
+import main.service.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +24,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> postAuthLogin(//@RequestParam (name = "e_mail")
-                                            @JsonProperty ("e_mail") String eMail,
-                                            @JsonProperty ("password") String userPassword) {
+    private ResponseEntity<?> postAuthLogin(@RequestBody LoginRequest loginRequest) {
         System.out.println("Method postAuthLogin is activated.");
-        return authService.postAuthLogin(eMail, userPassword);
+        return authService.postAuthLogin(loginRequest.getEmail(), loginRequest.getPassword());
+//    private ResponseEntity<?> postAuthLogin( @JsonProperty ("e_mail")
+//                                              @RequestParam  (name = "e_mail")
+//                                                        String eMail,
+//                                            @JsonProperty ("password")
+//                                            @RequestParam (name = "password")
+//                                                    String userPassword) {
+//        System.out.println("Method postAuthLogin is activated.");
+//        return authService.postAuthLogin(eMail, userPassword);
     }
 
     @GetMapping("/logout")
@@ -43,13 +50,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    private ResponseEntity<?> postAuthRegister(@JsonProperty("e_mail") String eMail,
-                                               @JsonProperty("password") String password,
-                                               @JsonProperty("name") String nameString,
-                                               @JsonProperty("captcha") String captcha,
-                                               @JsonProperty("captcha_secret") String secretCaptcha) {
+    private ResponseEntity<?> postAuthRegister(@RequestBody LoginRequest loginRequest){
         System.out.println("Method postAuthRegister is activated.");
-        return authService.postAuthRegister(eMail, password, nameString, captcha, secretCaptcha);
+        return authService.postAuthRegister(loginRequest.getEmail(), loginRequest.getPassword(),
+                loginRequest.getNameString(), loginRequest.getCaptcha());
     }
 
     @PostMapping("/restore")

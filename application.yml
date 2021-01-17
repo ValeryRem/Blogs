@@ -25,5 +25,5 @@ spring.mail.properties.mail.smtp.writetimeout: 5000
 
   # TLS , port 587
 spring.mail.properties.mail.smtp.starttls.enable: true
-
+#style: transform:scale(0.5);transform-origin:0 0
 #upload.path: /upload

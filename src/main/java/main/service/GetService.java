@@ -146,8 +146,8 @@ public class GetService {
         List<Object> postsResponseList = new ArrayList<>();
         List<Tag2Post> tag2PostList = tag2PostRepository.findAll();
         if(tagList.size() > 0 && tag2PostList.size() > 0) {
-            if (tagList.stream().map(Tag::getName).collect(Collectors.toList()).contains(tagName.trim())) {
-                tagId = tagList.stream().filter(t -> t.getName().equals(tagName)).findFirst().orElse(new Tag()).getId();
+            if (tagList.stream().map(Tag::getTagName).collect(Collectors.toList()).contains(tagName.trim())) {
+                tagId = tagList.stream().filter(t -> t.getTagName().equals(tagName)).findFirst().orElse(new Tag()).getId();
                 for (Tag2Post tag2Post : tag2PostList) {
                     if (tag2Post.getTagId().equals(tagId)) {
                         postsIdList.add(tag2Post.getPostId());
@@ -306,7 +306,7 @@ public class GetService {
 
     public ResponseEntity<?> getTag() {
         List<Tag> tags = tagRepository.findAll();
-        List<String> tagNames = tags.stream().map(Tag::getName).collect(Collectors.toList());
+        List<String> tagNames = tags.stream().map(Tag::getTagName).collect(Collectors.toList());
         Map<String, List<TagResponse>> tagsMap = getTagResponsesMap(tagNames);
         return new ResponseEntity<>(tagsMap, HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package main.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.api.response.AuthResponse;
@@ -15,11 +16,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,30 +49,29 @@ public class AuthService {
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
 
-//    @Autowired
     private AuthResponse authResponse;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
-    public ResponseEntity<?> postAuthLogin(String userEmail, String userPassword) {
+    public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
         authResponse = new AuthResponse();
         List<User> userList = userRepository.findAll();
         int moderationCount = 0;
         int userCount = (int) userList.stream().
-                filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
+                filter(u -> u.getEmail().equals(eMail) && u.getPassword().equals(userPassword)).
                 count();
         if(userCount > 0) {
             LinkedHashMap<String, Object> user = new LinkedHashMap<>();
             User us = userList.stream().
-                    filter(u -> u.getEmail().equals(userEmail) && u.getPassword().equals(userPassword)).
+                    filter(u -> u.getEmail().equals(eMail) && u.getPassword().equals(userPassword)).
                     findAny().
                     orElse(new User());
             registerSession (us.getUserId()); // put new session id, delete old sessions id
             user.put("id", us.getUserId());
             user.put("name", us.getName());
             user.put("photo", us.getPhoto());
-            user.put("email", us.getEmail());
+            user.put("e_mail", us.getEmail());
             user.put("moderation", "true");
             if (us.getIsModerator()) {
                 moderationCount = getModerationCount(us);
@@ -123,7 +126,7 @@ public class AuthService {
                 user.put("id", userId);
                 user.put("name", u.getName());
                 user.put("photo", u.getPhoto());
-                user.put("email", u.getEmail());
+                user.put("e_mail", u.getEmail());
                 user.put("moderation", u.getIsModerator());
                 user.put("moderationCount", getModerationCount(u));
                 user.put("settings", u.getIsModerator());
@@ -153,17 +156,21 @@ public class AuthService {
         return responseEntity;
     }
 
-
     public ResponseEntity<?> getCaptcha () {
         Cage cage = new GCage();
         String secretCode = cage.getTokenGenerator().next();
         System.out.println("secretCode: " + secretCode);
         String code = cage.getTokenGenerator().next();
-        String code64 = code;
+        String code64 = "";
         CaptchaCode captcha = new CaptchaCode();
         Map<String, String> map = new LinkedHashMap<>();
         try (OutputStream os = new FileOutputStream("image.png", false)) {
             cage.draw(code, os);
+            //resize image
+//            BufferedImage bi = cage.drawImage("image.png");
+//            resizeImageWithHint(bi, 100, 35, BufferedImage.TYPE_INT_RGB);
+//            cage.draw("image.png", new FileOutputStream(String.valueOf(bi)));
+            /////
             byte[] fileContent = FileUtils.readFileToByteArray(new File("image.png"));
             code64 = Base64.getEncoder().encodeToString(fileContent);
         } catch (IOException e) {
@@ -190,25 +197,22 @@ public class AuthService {
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String e_mail, String password, String nameString,
-                                              String captcha, String secret_captcha) {
-        authResponse = new AuthResponse();
+    public ResponseEntity<?> postAuthRegister(String eMail, String password, String nameString,
+                                              String captcha) {
+        Map<String, Object>  output = new LinkedHashMap<>();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
                 isMultiuserMode()) { // if MULTIUSER_MODE = true
             User user = new User();
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
-            CaptchaCode captchaCode = captchaRepository.findAll().stream().
-                    filter(c -> c.getSecretCode().equals(secret_captcha)).
-                    findAny().orElse(new CaptchaCode());
-            errors.put("result", "false");
+
             result = true;
-            if (users.stream().map(User::getEmail).anyMatch(n -> n.equals(e_mail))) {
+            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(eMail)) {
                 errors.put("email", "Этот e-mail уже зарегистрирован!");
                 result = false;
             }
-            if (users.stream().map(User::getName).anyMatch(n -> n.equals(nameString))) {
+            if (users.stream().map(User::getName).collect(Collectors.toList()).contains(nameString)) {
                 errors.put("name", "Данное имя уже зарегистрировано!");
                 result = false;
             }
@@ -216,22 +220,23 @@ public class AuthService {
                 errors.put("password", "Пароль короче 6 символов!");
                 result = false;
             }
-            if (!captcha.equals(captchaCode.getCode())) {
+            if (!captchaRepository.findAll().stream().map(CaptchaCode::getCode).collect(Collectors.toList()).contains(captcha)) {
                 errors.put("captcha", "Код с картинки введён неверно");
                 result = false;
             }
             if (result) {
-                user.setEmail(e_mail);
+                user.setEmail(eMail);
                 user.setName(nameString);
                 user.setPassword(password);
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
+                user.setCode(captcha);
                 userRepository.save(user);
-                authResponse.setResult(true);
-                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
+                output.put("result", true);
+                responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
             } else {
-                authResponse.setResult(false);
-                authResponse.setUser(errors);
-                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.NOT_ACCEPTABLE);
+                output.put("result", false);
+                output.put("errors", errors);
+                responseEntity = new ResponseEntity<>(output, HttpStatus.NOT_ACCEPTABLE);
             }
         } else { // if MULTIUSER_MODE = false
             responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);
@@ -333,5 +338,24 @@ public class AuthService {
             stringBuilder.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return stringBuilder.toString();
+    }
+
+    private static BufferedImage resizeImageWithHint(BufferedImage originalImage,
+                                                     int IMG__WIDTH, int IMG__HEIGHT, int type){
+
+        BufferedImage resizedImage = new BufferedImage(IMG__WIDTH, IMG__HEIGHT, type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, IMG__WIDTH, IMG__HEIGHT, null);
+        g.dispose();
+        g.setComposite(AlphaComposite.Src);
+
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        return resizedImage;
     }
 }

@@ -23,7 +23,7 @@ public class User {
     private boolean isModerator;
 
     @Column(name = "reg_time")
-//    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Timestamp regTime;
 
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
@@ -37,7 +37,11 @@ public class User {
     @JsonProperty("password")
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
+
+    @JsonProperty
     private String code;
+
+    @JsonProperty
     private String photo;
 
     public User() {
@@ -75,7 +79,9 @@ public class User {
         return regTime;
     }
 
-    public void setRegTime(Timestamp regTime) {
+
+    public void setRegTime( @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+                                    Timestamp regTime) {
         this.regTime = regTime;
     }
 

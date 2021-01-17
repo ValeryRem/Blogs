@@ -151,7 +151,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                         postRepository.save(post);
                         Tag2Post tag2Post;
                         for (String tag : tags) {
-                            if (tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {
+                            if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
                                 Tag tagNew = new Tag(tag);
                                 tagRepository.save(tagNew);
                                 tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
@@ -166,7 +166,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                         postRepository.save(post);
                         Tag2Post tag2Post;
                         for (String tag : tags) {
-                            if (tagRepository.findAll().stream().map(t -> t.getName().equals(tag)).findAny().isEmpty()) {
+                            if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
                                 Tag tagNew = new Tag(tag);
                                 tagRepository.save(tagNew);
                                 tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
@@ -243,7 +243,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                     post.setActive(active);
                     post.setTime(Timestamp.valueOf(LocalDateTime.now()));
                     postRepository.save(post);
-                    List<String> tagNames = tagRepository.findAll().stream().map(Tag::getName).collect(Collectors.toList());
+                    List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
                     List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
                             filter(t -> t.getPostId().equals(postId)).
                             collect(Collectors.toList());
