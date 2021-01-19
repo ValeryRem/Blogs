@@ -72,22 +72,18 @@ public class UserService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postApiProfileMy(MultipartFile avatar, String emailMP, String nameMP,
+    public ResponseEntity<?> getPostProfileMy(MultipartFile avatar, String emailMP, String nameMP,
                                               String passwordMP, String removePhotoMP) throws IOException {
-        if(authService.isUserAuthorized()) {
-            result = true;
-            User user = userRepository.getOne(authService.getUserId());
-            Map<String, Object> errors = new LinkedHashMap<>();
-            int width;
-            int height;
-            if(passwordMP.length() >= PW_MIN_LENGTH && passwordMP.length() <= PW_MAX_LENGTH) {
-                user.setPassword(passwordMP);
-            } else {
-                result = false;
-                errors.put("password",  "Длина пароля с ошибкой.");
-            }
-            if(avatar.getBytes().length <= 5_000_000) {
-                if(removePhotoMP.equals("1")) {
+        if (!authService.isUserAuthorized()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        result = true;
+        User user = userRepository.getOne(authService.getUserId());
+        Map<String, Object> errors = new LinkedHashMap<>();
+        int width, height;
+        if(avatar != null) {
+            if (avatar.getBytes().length <= 5_000_000) {
+                if (removePhotoMP.equals("1")) {
                     user.setPhoto("");
                 } else {
                     Image image = ImageIO.read(avatar.getInputStream());
@@ -110,30 +106,95 @@ public class UserService {
                 result = false;
                 errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
             }
-            if(user.getEmail().equals(emailMP)) {
+        }
+        if (passwordMP != null) {
+            if (passwordMP.length() < PW_MIN_LENGTH && passwordMP.length() > PW_MAX_LENGTH) {
                 result = false;
-                errors.put("e_mail", "Этот e_mail уже зарегистрирован.");
+                errors.put("password", "Длина пароля с ошибкой");
             }
-            if(!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100) {
-                result = false;
-                errors.put("name", "Имя указано неверно.");
-            }
-            if (!result) {
-                errorsResponse = new ErrorsResponse(false, errors);
-                return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
-            } else {
-                user.setName(nameMP);
-                user.setEmail(emailMP);
-                userRepository.save(user);
-                return new ResponseEntity<>("result: true", HttpStatus.OK);
-            }
+        }
+        if (user.getEmail().equals(emailMP)) {
+            result = false;
+            errors.put("e-mail", "Этот e-mail уже зарегистрирован");
+        }
+        if (!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100 || nameMP.length() < 2) {
+            result = false;
+            errors.put("name", "Имя указано неверно.");
+        }
+        if (!result) {
+            errorsResponse = new ErrorsResponse(false, errors);
+            return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            user.setName(nameMP);
+            user.setEmail(emailMP);
+            user.setPassword(passwordMP);
+            userRepository.save(user);
+            return new ResponseEntity<>("result: true", HttpStatus.OK);
         }
     }
 
+//    public ResponseEntity<?> postApiProfileMy(MultipartFile avatar, String emailMP, String nameMP,
+//                                              String passwordMP, String removePhotoMP) throws IOException {
+//        if(authService.isUserAuthorized()) {
+//            result = true;
+//            User user = userRepository.getOne(authService.getUserId());
+//            Map<String, Object> errors = new LinkedHashMap<>();
+//            int width;
+//            int height;
+//            if(passwordMP.length() >= PW_MIN_LENGTH && passwordMP.length() <= PW_MAX_LENGTH) {
+//                user.setPassword(passwordMP);
+//            } else {
+//                result = false;
+//                errors.put("password",  "Длина пароля с ошибкой.");
+//            }
+//            if(avatar.getBytes().length <= 5_000_000) {
+//                if(removePhotoMP.equals("1")) {
+//                    user.setPhoto("");
+//                } else {
+//                    Image image = ImageIO.read(avatar.getInputStream());
+//                    width = image.getWidth(null);
+//                    height = image.getHeight(null);
+//                    if (width > 30 || height > 30) {
+//                        String avatarSrc = avatar.getOriginalFilename();
+//                        File newFilePng = null;
+//                        if (avatarSrc != null) {
+//                            newFilePng = new File(avatarSrc);
+//                        }
+//                        BufferedImage tempPNG = resizeImage(image, 30, 30);
+//                        ImageIO.write(tempPNG, "png", newFilePng);
+//                        user.setPhoto(newFilePng.getName());//((ImageOutputStream) image).readLine());
+//                    } else {
+//                        user.setPhoto(avatar.getOriginalFilename());
+//                    }
+//                }
+//            } else {
+//                result = false;
+//                errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
+//            }
+//            if(user.getEmail().equals(emailMP)) {
+//                result = false;
+//                errors.put("e_mail", "Этот e_mail уже зарегистрирован.");
+//            }
+//            if(!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100 || nameMP.length() < 2) {
+//                result = false;
+//                errors.put("name", "Имя указано неверно.");
+//            }
+//            if (!result) {
+//                errorsResponse = new ErrorsResponse(false, errors);
+//                return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
+//            } else {
+//                user.setName(nameMP);
+//                user.setEmail(emailMP);
+//                userRepository.save(user);
+//                return new ResponseEntity<>("result: true", HttpStatus.OK);
+//            }
+//        } else {
+//            return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+
     private File getOutputFile (MultipartFile image) {
-        String targetFolder = "upload/";
+        String targetFolder = "/upload/";
         String destination = StringUtils.cleanPath(targetFolder);
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);

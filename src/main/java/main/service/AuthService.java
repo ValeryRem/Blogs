@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.api.response.AuthResponse;
+import main.api.response.ErrorsResponse;
 import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
@@ -49,42 +50,38 @@ public class AuthService {
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
 
-    private AuthResponse authResponse;
+//    private AuthResponse authResponse;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
-        authResponse = new AuthResponse();
-        List<User> userList = userRepository.findAll();
-        int moderationCount = 0;
-        int userCount = (int) userList.stream().
-                filter(u -> u.getEmail().equals(eMail) && u.getPassword().equals(userPassword)).
-                count();
-        if(userCount > 0) {
-            LinkedHashMap<String, Object> user = new LinkedHashMap<>();
-            User us = userList.stream().
-                    filter(u -> u.getEmail().equals(eMail) && u.getPassword().equals(userPassword)).
-                    findAny().
-                    orElse(new User());
-            registerSession (us.getUserId()); // put new session id, delete old sessions id
-            user.put("id", us.getUserId());
-            user.put("name", us.getName());
-            user.put("photo", us.getPhoto());
-            user.put("e_mail", us.getEmail());
-            user.put("moderation", "true");
-            if (us.getIsModerator()) {
-                moderationCount = getModerationCount(us);
-            }
-            user.put("moderationCount", moderationCount);
-            user.put("settings", "true");
-            authResponse.setResult(true);
-            authResponse.setUser(user);
-            responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>("user UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        AuthResponse authResponse = new AuthResponse();
+        Optional<User> user = userRepository.findByEmail(eMail);
+        if (user.isEmpty()) {
+            return ResponseEntity.ok(new ErrorsResponse());
         }
-        return responseEntity;
+        User currentUser = user.get();
+        if (!currentUser.getPassword().equals(userPassword)) {
+            return ResponseEntity.ok(new ErrorsResponse());
+        }
+        registerSession(currentUser.getUserId()); // put new session id, delete old sessions id
+        authResponse.setResult(true);
+        LinkedHashMap<String, Object> userResponseMap = getUserResponseMap(currentUser);
+        authResponse.setUser(userResponseMap);
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+    }
+
+    private LinkedHashMap<String, Object> getUserResponseMap(User currentUser) {
+        LinkedHashMap<String, Object> userResponseMap = new LinkedHashMap<>();
+        userResponseMap.put("id", currentUser.getUserId());
+        userResponseMap.put("name", currentUser.getName());
+        userResponseMap.put("photo", currentUser.getPhoto());
+        userResponseMap.put("e_mail", currentUser.getEmail());
+        userResponseMap.put("moderation", "true");
+        userResponseMap.put("moderationCount", getModerationCount(currentUser));
+        userResponseMap.put("settings", "true");
+        return userResponseMap;
     }
 
     public void registerSession(Integer userId) {
@@ -108,7 +105,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> getAuthCheck() {
-        authResponse = new AuthResponse();
+        AuthResponse authResponse = new AuthResponse();
         Integer userId;
         User u;
         String sessionId = httpSession.getId();
@@ -197,8 +194,7 @@ public class AuthService {
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String eMail, String password, String nameString,
-                                              String captcha) {
+    public ResponseEntity<?> postAuthRegister(String eMail, String password, String nameString, String captcha) {
         Map<String, Object>  output = new LinkedHashMap<>();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
@@ -243,7 +239,6 @@ public class AuthService {
         }
         return responseEntity;
     }
-
 
     public ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
         User user = userRepository.getOne(getUserId());

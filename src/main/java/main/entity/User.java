@@ -2,6 +2,7 @@ package main.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -32,7 +33,7 @@ public class User {
     @Email
     @JsonProperty("e_mail")
     @Column(name = "e_mail")
-    private String eMail;
+    private String email;
 
     @JsonProperty("password")
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
@@ -42,6 +43,7 @@ public class User {
     private String code;
 
     @JsonProperty
+    @Nullable
     private String photo;
 
     public User() {
@@ -86,11 +88,11 @@ public class User {
     }
 
     public String getEmail() {
-        return eMail;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.eMail = email;
+        this.email = email;
     }
 
     public String getPassword() {

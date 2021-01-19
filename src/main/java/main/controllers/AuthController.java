@@ -23,7 +23,7 @@ public class AuthController {
         return authService.getAuthCheck();
     }
 
-    @PostMapping("/login")
+    @PostMapping (value = "/login")//, consumes = {"application/x-www-form-urlencoded;charset=UTF-8"})
     private ResponseEntity<?> postAuthLogin(@RequestBody LoginRequest loginRequest) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(loginRequest.getEmail(), loginRequest.getPassword());

@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -186,46 +189,47 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
     }
 
-    public ResponseEntity<?> postImage (String origin, String destination) throws IOException {
-        String hashCode = String.valueOf(Math.abs(destination.hashCode()));
-        String folder1 = hashCode.substring(0, hashCode.length()/3);
-        String folder2 = hashCode.substring(1 + hashCode.length()/3, 2*hashCode.length()/3);
-        String folder3 = hashCode.substring(1 + 2*hashCode.length()/3);
-        if (authService.isUserAuthorized()) {
-            try {
-                File originalFile = new File(origin);
-                BufferedImage image = ImageIO.read(originalFile);
-                int suffix = (int) (Math.random() * 100);
-                File destFolder = new File(destination);
-                if (!destFolder.exists()) {
-                    destFolder.mkdir();
-                }
-                File destFolder1 = new File(destination + folder1);
-                if (!destFolder1.exists()) {
-                    destFolder1.mkdir();
-                }
-                File destFolder2 = new File (destination + folder1 + File.separator + folder2);
-                if (!destFolder2.exists()) {
-                    destFolder2.mkdir();
-                }
-                String finalDestination = destination + folder1 + "/" + folder2 + "/" + folder3 + "/";
-                File destFolder3 = new File (finalDestination);
-                if (!destFolder3.exists()) {
-                    destFolder3.mkdir();
-                }
-                String fileName =  suffix + "_uploaded.jpg";
-                    File output = new File(destFolder3, fileName);
-                    ImageIO.write(image, "jpg", output);
-                    responseEntity = new ResponseEntity<>(finalDestination + fileName, HttpStatus.OK);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                responseEntity = new ResponseEntity<>("No image loaded!", HttpStatus.NOT_FOUND);
-            }
-        } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-        }
-        return responseEntity;
-    }
+//    public ResponseEntity<?> postImage (String origin) throws IOException {
+//        String destination = "/avatars/";
+//        String hashCode = String.valueOf(Math.abs(destination.hashCode()));
+//        String folder1 = hashCode.substring(0, hashCode.length()/3);
+//        String folder2 = hashCode.substring(1 + hashCode.length()/3, 2*hashCode.length()/3);
+//        String folder3 = hashCode.substring(1 + 2*hashCode.length()/3);
+//        if (authService.isUserAuthorized()) {
+//            try {
+//                File originalFile = new File(origin);
+//                BufferedImage image = ImageIO.read(originalFile);
+//                int suffix = (int) (Math.random() * 100);
+//                File destFolder = new File(destination);
+//                if (!destFolder.exists()) {
+//                    destFolder.mkdir();
+//                }
+//                File destFolder1 = new File(destination + folder1);
+//                if (!destFolder1.exists()) {
+//                    destFolder1.mkdir();
+//                }
+//                File destFolder2 = new File (destination + folder1 + File.separator + folder2);
+//                if (!destFolder2.exists()) {
+//                    destFolder2.mkdir();
+//                }
+//                String finalDestination = destination + folder1 + "/" + folder2 + "/" + folder3 + "/";
+//                File destFolder3 = new File (finalDestination);
+//                if (!destFolder3.exists()) {
+//                    destFolder3.mkdir();
+//                }
+//                String fileName =  suffix + "_uploaded.jpg";
+//                    File output = new File(destFolder3, fileName);
+//                    ImageIO.write(image, "jpg", output);
+//                    responseEntity = new ResponseEntity<>(finalDestination + fileName, HttpStatus.OK);
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//                responseEntity = new ResponseEntity<>("No image loaded!", HttpStatus.NOT_FOUND);
+//            }
+//        } else {
+//            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+//        }
+//        return responseEntity;
+//    }
 
     public ResponseEntity<?> putPost(Integer postId, Integer active, String title, List<String> tags, String text) {
         result = true;
@@ -344,48 +348,4 @@ POST_PREMODERATION = false (режим премодерации выключен
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostProfileMy (Optional<String> photo, String name, String email,
-                                               Optional<String> password, Optional<Integer> removePhoto) {
-        if(authService.isUserAuthorized()) {
-            result = true;
-            User user = userRepository.getOne(authService.getUserId());
-            Map<String, Object> errors = new LinkedHashMap<>();
-            if(password.isPresent() && password.get().length() >= PW_MIN_LENGTH && password.get().length() <= PW_MAX_LENGTH) {
-                user.setPassword(password.get());
-            } else {
-                result = false;
-                errors.put("password",  "Длина пароля с ошибкой");
-            }
-            if(removePhoto.isPresent() && photo.isPresent() && photo.get().getBytes().length < 5_000_000) {
-                if (removePhoto.get() == 0 ) {
-                    photo.ifPresent(user::setPhoto);
-                }
-                if(removePhoto.get() == 1) {
-                    user.setPhoto("");
-                }
-            } else {
-                result = false;
-                errors.put("photo", "Фото слишком большое, нужно не более 5 Мб");
-            }
-            if(user.getEmail().equals(email)) {
-                result = false;
-                errors.put("e-mail", "Этот e-mail уже зарегистрирован");
-            }
-            if(!name.matches("[a-zA-Z]*") || name.length() > 100) {
-                result = false;
-                errors.put("name", "Имя указано неверно.");
-            }
-            if (!result) {
-                errorsResponse = new ErrorsResponse(false, errors);
-                return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
-            } else {
-                user.setName(name);
-                user.setEmail(email);
-                userRepository.save(user);
-                return new ResponseEntity<>("result: true", HttpStatus.OK);
-            }
-        } else {
-            return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-        }
-    }
 }

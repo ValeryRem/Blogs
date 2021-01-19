@@ -1,19 +1,21 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
-import main.service.GetService;
-import main.service.PostService;
-import main.service.SettingsService;
-import main.service.UserService;
+import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.Multipart;
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GeneralController {
 
     @Autowired
@@ -29,7 +31,9 @@ public class GeneralController {
     private final SettingsService settingsService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+//    private File file = new File("src/main/resources/static/img/default-1.png");
 
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
@@ -102,9 +106,8 @@ public class GeneralController {
 //    }
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})// MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody
-    ResponseEntity<?> postApiImage(@RequestParam("image")
-                                           MultipartFile image) throws IOException {
+    public //@ResponseBody
+    ResponseEntity<?> postApiImage(@RequestParam("image") MultipartFile image) throws IOException {
         return userService.postApiImage(image);
     }
 
@@ -118,14 +121,19 @@ public class GeneralController {
 
 // этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
     @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
-    public ResponseEntity<?> postApiProfileMy(
+           // "application/x-www-form-urlencoded;charset=UTF-8"})
+    public ResponseEntity<?> postApiProfileMy (@ModelAttribute LoginRequest loginRequest) throws IOException {
             //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
-            @RequestPart(value = "photo", required = false) MultipartFile avatar, // вот тут может быть картинка
-            @RequestPart(value = "e_mail", required = false) String emailMP,
-            @RequestPart(value = "name", required = false) String nameMP,
-            @RequestPart(value = "password", required = false) String passwordMP,
-            @RequestPart(value = "remove_photo", required = false) String removePhotoMP) throws IOException {
-        return userService
-                .postApiProfileMy(avatar, emailMP, nameMP, passwordMP, removePhotoMP);
+//            @RequestPart(value = "photo")
+//            @DefaultValue("src/main/resources/static/img/default-1.png")
+//             MultipartFile avatar, // вот тут может быть картинка
+//            @RequestPart(name = "e_mail", required = false) String emailMP,
+//            @RequestPart(name = "name", required = false) String nameMP,
+//            @RequestPart(name = "password", required = false) String passwordMP,
+//            @RequestPart(name = "remove_photo", required = false)
+//            @DefaultValue("0")
+//                    String removePhotoMP) throws IOException {
+        return userService.getPostProfileMy(loginRequest.getAvatar(), loginRequest.getEmail(), loginRequest.getNameString(),
+                loginRequest.getPassword(), loginRequest.getRemovePhoto());
     }
 }

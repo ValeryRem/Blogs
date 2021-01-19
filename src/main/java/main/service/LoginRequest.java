@@ -1,8 +1,12 @@
 package main.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.web.multipart.MultipartFile;
 
-public class LoginRequest {
+import java.io.Serializable;
+
+public class LoginRequest implements Serializable {
     @JsonProperty("e_mail")
     private String email;
 
@@ -14,6 +18,11 @@ public class LoginRequest {
 
     @JsonProperty
     private String captcha;
+
+    @JsonProperty ("remove_photo")
+    private  String removePhoto;
+
+    private MultipartFile avatar;
 
     public String getEmail() {
         return email;
@@ -45,5 +54,21 @@ public class LoginRequest {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getRemovePhoto() {
+        return removePhoto;
+    }
+
+    public void setRemovePhoto(String removePhoto) {
+        this.removePhoto = removePhoto;
+    }
+
+    public MultipartFile getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(MultipartFile avatar) {
+        this.avatar = avatar;
     }
 }
