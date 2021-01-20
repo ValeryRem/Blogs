@@ -1,16 +1,14 @@
 package main.controllers;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.api.response.InitResponse;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Multipart;
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -106,8 +104,8 @@ public class GeneralController {
 //    }
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})// MediaType.MULTIPART_FORM_DATA_VALUE)
-    public //@ResponseBody
-    ResponseEntity<?> postApiImage(@RequestParam("image") MultipartFile image) throws IOException {
+    public @ResponseBody
+    ResponseEntity<?> postApiImage(@RequestBody MultipartFile image) throws IOException {
         return userService.postApiImage(image);
     }
 
@@ -122,7 +120,7 @@ public class GeneralController {
 // этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
     @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
            // "application/x-www-form-urlencoded;charset=UTF-8"})
-    public ResponseEntity<?> postApiProfileMy (@ModelAttribute LoginRequest loginRequest) throws IOException {
+    public ResponseEntity<?> postApiProfileMy (@ModelAttribute("profileRequest") ProfileRequest profileRequest) throws IOException {
             //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
 //            @RequestPart(value = "photo")
 //            @DefaultValue("src/main/resources/static/img/default-1.png")
@@ -133,7 +131,7 @@ public class GeneralController {
 //            @RequestPart(name = "remove_photo", required = false)
 //            @DefaultValue("0")
 //                    String removePhotoMP) throws IOException {
-        return userService.getPostProfileMy(loginRequest.getAvatar(), loginRequest.getEmail(), loginRequest.getNameString(),
-                loginRequest.getPassword(), loginRequest.getRemovePhoto());
+        return userService.getPostProfileMy(profileRequest.getPhoto(), profileRequest.getEmail(), profileRequest.getName(),
+                profileRequest.getPassword(), profileRequest.getRemovePhoto());
     }
 }

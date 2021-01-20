@@ -1,9 +1,9 @@
 package main.controllers;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import main.service.AuthService;
 import main.service.GetService;
 import main.service.LoginRequest;
+import main.service.ProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class AuthController {
         return authService.getAuthCheck();
     }
 
-    @PostMapping (value = "/login")//, consumes = {"application/x-www-form-urlencoded;charset=UTF-8"})
+    @PostMapping (value = "/login")//, consumes = {"application/json", "application/x-www-form-urlencoded;charset=UTF-8"})
     private ResponseEntity<?> postAuthLogin(@RequestBody LoginRequest loginRequest) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(loginRequest.getEmail(), loginRequest.getPassword());
@@ -53,7 +53,7 @@ public class AuthController {
     private ResponseEntity<?> postAuthRegister(@RequestBody LoginRequest loginRequest){
         System.out.println("Method postAuthRegister is activated.");
         return authService.postAuthRegister(loginRequest.getEmail(), loginRequest.getPassword(),
-                loginRequest.getNameString(), loginRequest.getCaptcha());
+                loginRequest.getName(), loginRequest.getCaptcha());
     }
 
     @PostMapping("/restore")

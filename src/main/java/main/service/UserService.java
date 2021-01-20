@@ -52,7 +52,7 @@ public class UserService {
     private final Integer PW_MAX_LENGTH = 30;
 
 
-    public ResponseEntity<?> postApiImage(@RequestPart("image") MultipartFile image) throws IOException {
+    public ResponseEntity<?> postApiImage(@RequestPart MultipartFile image) throws IOException {
         if (authService.isUserAuthorized()) {
             File convertFile = getOutputFile(image);
             convertFile.createNewFile();
@@ -72,8 +72,8 @@ public class UserService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostProfileMy(MultipartFile avatar, String emailMP, String nameMP,
-                                              String passwordMP, String removePhotoMP) throws IOException {
+    public ResponseEntity<?> getPostProfileMy(MultipartFile avatar, String email, String name,
+                                              String password, String removePhoto) throws IOException {
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -83,18 +83,15 @@ public class UserService {
         int width, height;
         if(avatar != null) {
             if (avatar.getBytes().length <= 5_000_000) {
-                if (removePhotoMP.equals("1")) {
+                if (removePhoto.equals("1")) {
                     user.setPhoto("");
                 } else {
                     Image image = ImageIO.read(avatar.getInputStream());
                     width = image.getWidth(null);
                     height = image.getHeight(null);
                     if (width > 30 || height > 30) {
-                        String avatarSrc = avatar.getOriginalFilename();
-                        File newFilePng = null;
-                        if (avatarSrc != null) {
-                            newFilePng = new File(avatarSrc);
-                        }
+                        String avatarSrc = avatar.getName();//.getOriginalFilename();
+                        File newFilePng = new File(avatarSrc);
                         BufferedImage tempPNG = resizeImage(image, 30, 30);
                         ImageIO.write(tempPNG, "png", newFilePng);
                         user.setPhoto(newFilePng.getName());//((ImageOutputStream) image).readLine());
@@ -107,17 +104,17 @@ public class UserService {
                 errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
             }
         }
-        if (passwordMP != null) {
-            if (passwordMP.length() < PW_MIN_LENGTH && passwordMP.length() > PW_MAX_LENGTH) {
+        if (password != null) {
+            if (password.length() < PW_MIN_LENGTH && password.length() > PW_MAX_LENGTH) {
                 result = false;
                 errors.put("password", "Длина пароля с ошибкой");
             }
         }
-        if (user.getEmail().equals(emailMP)) {
+        if (user.getEmail().equals(email)) {
             result = false;
-            errors.put("e-mail", "Этот e-mail уже зарегистрирован");
+            errors.put("e_mail", "Этот email уже зарегистрирован");
         }
-        if (!nameMP.matches("[a-zA-Z]*") || nameMP.length() > 100 || nameMP.length() < 2) {
+        if (!name.matches("[a-zA-Z]*") || name.length() > 100 || name.length() < 2) {
             result = false;
             errors.put("name", "Имя указано неверно.");
         }
@@ -125,9 +122,9 @@ public class UserService {
             errorsResponse = new ErrorsResponse(false, errors);
             return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
         } else {
-            user.setName(nameMP);
-            user.setEmail(emailMP);
-            user.setPassword(passwordMP);
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
             userRepository.save(user);
             return new ResponseEntity<>("result: true", HttpStatus.OK);
         }

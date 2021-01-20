@@ -22,11 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postAuthLogin &amp; postAuthRegister improved via LoginRequest entity.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/photo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/service/ProfileRequest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -119,14 +121,10 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/LoginRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -228,13 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00052" summary="Method api/auth/check removed to ApiAuthController.class.">
-      <created>1606140504893</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1606140504893</updated>
     </task>
     <task id="LOCAL-00053" summary="Method  @GetMapping(&quot;check&quot;)&#10;           private ResponseEntity&lt;?&gt; getAuthCheck () {&#10;               return ResponseEntity.ok(new ResultResponse(false));&#10;           } set up.">
       <created>1606166898537</created>
@@ -572,7 +563,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610911556974</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity.">
+      <created>1611042800387</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1611042800388</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -595,7 +593,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method putImage set up." />
     <MESSAGE value="Method putImage set up with updated time." />
     <MESSAGE value="Method postComment set up." />
     <MESSAGE value="Method authRestore (String eMail) set up." />
@@ -620,7 +617,8 @@
     <MESSAGE value="Method postAuthLogin with @JsonProperty annotated parameters." />
     <MESSAGE value="Method postAuthLogin with @JsonProperty parameters." />
     <MESSAGE value="Methods postAuthLogin &amp; postAuthRegister improved via LoginRequest entity." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods postAuthLogin &amp; postAuthRegister improved via LoginRequest entity." />
+    <MESSAGE value="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
