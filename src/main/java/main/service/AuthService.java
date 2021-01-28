@@ -148,7 +148,7 @@ public class AuthService {
            sessionRepository.delete(session);
            responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
        } else {
-           responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+           responseEntity = new ResponseEntity<>(true, HttpStatus.UNAUTHORIZED);
        }
         return responseEntity;
     }

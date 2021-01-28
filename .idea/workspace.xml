@@ -22,16 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postApiProfileMy developed, image resized to 30x30 pxl.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/Darwin.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/Dulya.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/650/56/93/60_Cat.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/650/56/93/72_Disappear.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/650/56/93/83_Wolf.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/18_Cat.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -123,15 +120,11 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/upload/650/56/93/19_uploaded.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/upload/650/56/93/95_How was day.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/upload/650/56/93/95_uploaded.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/img/Santa_Vegetablius .jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/650/56/93/60_Cat.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/650/56/93/72_Disappear.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/650/56/93/83_Wolf.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,13 +227,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00054" summary="Method  TreeMap&lt;String, Object&gt;  getUser (Post post) updated.">
-      <created>1606208282234</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1606208282234</updated>
     </task>
     <task id="LOCAL-00055" summary=" Method @GetMapping(&quot;/statistics/my&quot;) set up.">
       <created>1606248939320</created>
@@ -578,7 +564,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611155657625</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="Methods postApiProfileMy developed, image resized to 30x30 pxl.">
+      <created>1611306169782</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1611306169782</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -601,7 +594,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method postComment set up." />
     <MESSAGE value="Method authRestore (String eMail) set up." />
     <MESSAGE value="Method authRestore (String eMail)  updated with new method  generateCode(int length)." />
     <MESSAGE value="For error responses in POST requests a new class ErrorsResponse set up." />
@@ -626,7 +618,8 @@
     <MESSAGE value="Methods postAuthLogin &amp; postAuthRegister improved via LoginRequest entity." />
     <MESSAGE value="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity." />
     <MESSAGE value="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly." />
+    <MESSAGE value="Methods postApiProfileMy developed, image resized to 30x30 pxl." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postApiProfileMy developed, image resized to 30x30 pxl." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

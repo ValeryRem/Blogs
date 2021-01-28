@@ -24,10 +24,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.Raster;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
@@ -43,42 +40,37 @@ public class UserService {
     private AuthService authService;
 
     @Autowired
-    ErrorsResponse errorsResponse;
+    private ErrorsResponse errorsResponse;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    private ResponseEntity<?> responseEntity;
     private boolean result;
-    private final Integer PW_MIN_LENGTH = 6;
-    private final Integer PW_MAX_LENGTH = 30;
 
+    private final int PW_MIN_LENGTH = 6;
+    private final int PW_MAX_LENGTH = 30;
+    private final int MAX_IMAGE_SIZE = 5_000_000;
+    private final int HEIGHT_MAX = 30;
+    private final int WIDTH_MAX = 30;
 
     public ResponseEntity<?> postApiImage(MultipartFile image) throws IOException {
         User user = userRepository.getOne(authService.getUserId());
         if (authService.isUserAuthorized()) {
-            String imageAddress = getImageAddress(image);
+            String imageAddress = getOutputFile(image).getPath();
             System.out.println(imageAddress); // test
             user.setPhoto(imageAddress);
             userRepository.save(user);
-            responseEntity = new ResponseEntity<>(imageAddress, HttpStatus.OK);
+            return new ResponseEntity<>(imageAddress, HttpStatus.OK);
         } else {
-            responseEntity = ResponseEntity.ok(new ErrorsResponse());//("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.ok(new ErrorsResponse());//("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
-        return responseEntity;
     }
 
-    @NotNull
-    private String getImageAddress(MultipartFile image) {
-        File convertFile = getOutputFile(image);
-//            convertFile.createNewFile();
-        try(FileOutputStream fout = new FileOutputStream(convertFile)) {
-            fout.write(image.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return convertFile.getAbsolutePath();
-    }
+//    @NotNull
+//    private String getImageAddress(MultipartFile image) throws IOException {
+//        File convertFile = getOutputFile(image);
+//        return convertFile.getAbsolutePath();
+//    }
 
     public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
                                               String password, String removePhoto) throws IOException {
@@ -88,28 +80,15 @@ public class UserService {
         result = true;
         User currentUser = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
-        int width, height;
         if(photo != null) {
-            if (photo.getBytes().length <= 5_000_000) {
+            if (photo.getBytes().length <= MAX_IMAGE_SIZE) {
                 if (removePhoto.equals("1")) {
                     currentUser.setPhoto("");
                 } else {
-                    String photoDestination = getImageAddress(photo);
-                    Image image = ImageIO.read(photo.getInputStream());
-                    width = image.getWidth(null);
-                    height = image.getHeight(null);
-                    if (width > 30 || height > 30) {
-//                        String avatarSrc = photo.getOriginalFilename();
-                        File newFilePng = new File(photoDestination);
-                        BufferedImage tempPNG = resizeImage(image, 30, 30);
-                        ImageIO.write(tempPNG, "png", newFilePng);
-                        String photoUrl = newFilePng.getAbsolutePath();
-//                        photoUrl.replace("\\", "/");
-                        currentUser.setPhoto(photoUrl);
-                        System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
-                    } else {
-                        currentUser.setPhoto(photoDestination);
-                    }
+                    File convertFile = getOutputFile(photo);
+                    String photoDestination = convertFile.getPath();//getImageAddress(photo);
+                    currentUser.setPhoto(photoDestination);
+                    System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
             } else {
                 result = false;
@@ -142,36 +121,53 @@ public class UserService {
         }
     }
 
-    private File getOutputFile (MultipartFile image) {
-        String targetFolder = "C:/Users/valery/Desktop/java_basics/16_Blogs/upload/";
-        String destination = StringUtils.cleanPath(targetFolder);
+    private File getOutputFile (MultipartFile photo) throws IOException {
+//        String photoOrigin = convertFile.getPath().replaceAll("\\\\", "/");
+//        File newFilePng = new File(photoDestination);
+        String targetFolder = "upload/";
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
         String folder2 = hashCode.substring(1 + hashCode.length() / 3, 2 * hashCode.length() / 3);
         String folder3 = hashCode.substring(1 + 2 * hashCode.length() / 3);
-        int suffix = (int) (Math.random() * 100);
-        File destFolder = new File(destination);
+        File destFolder = new File(targetFolder);
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }
-        File destFolder1 = new File(destination + folder1);
+        File destFolder1 = new File(targetFolder + folder1);
         if (!destFolder1.exists()) {
             destFolder1.mkdir();
         }
-        File destFolder2 = new File(destination + folder1 + "/" + folder2);
+        File destFolder2 = new File(destFolder1.getPath() + "/" + folder2);
         if (!destFolder2.exists()) {
             destFolder2.mkdir();
         }
-        String finalDestination = destination + folder1 + "/" + folder2 + "/" + folder3 + "/";
-        File destFile = new File(finalDestination);
-        if (!destFile.exists()) {
-            destFile.mkdir();
+        File destFolder3 = new File(destFolder2.getPath() + "/" + folder3 + "/");
+        if (!destFolder3.exists()) {
+            destFolder3.mkdir();
         }
-        String fileName = suffix + "_"+  image.getOriginalFilename();//.getName();
-        return new File(destFile, fileName);
+        int suffix = (int) (Math.random() * 100);
+        String fileName = suffix + "_" + photo.getOriginalFilename();
+        String finalDestination = destFolder3.getPath() + "/" + fileName;
+        File destFile = new File(StringUtils.cleanPath(finalDestination));// Windows separators ("\") are replaced by simple slashes.
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+        System.out.println(StringUtils.cleanPath(destFile.getAbsolutePath())); // for test
+        photo.transferTo(destFile);
+
+        // resizing to 30x30 if need
+        Image image = ImageIO.read(photo.getInputStream());
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        if (width > WIDTH_MAX || height > HEIGHT_MAX) {
+            BufferedImage tempPNG = resizeImage(image, 30, 30);
+            ImageIO.write(tempPNG, "png", destFile);
+        }
+
+        return destFile;
     }
 
-    public static BufferedImage resizeImage(final Image image, int width, int height) {
+    private BufferedImage resizeImage(Image image, int width, int height) {
         final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         final Graphics2D graphics2D = bufferedImage.createGraphics();
         graphics2D.setComposite(AlphaComposite.Src);
