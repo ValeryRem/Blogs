@@ -123,7 +123,7 @@ public class AuthService {
                 user.put("id", userId);
                 user.put("name", u.getName());
                 user.put("photo", u.getPhoto());
-                user.put("e_mail", u.getEmail());
+                user.put("email", u.getEmail());
                 user.put("moderation", u.getIsModerator());
                 user.put("moderationCount", getModerationCount(u));
                 user.put("settings", u.getIsModerator());

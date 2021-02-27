@@ -120,22 +120,23 @@ public class GeneralController {
     }
 
 // этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
-    @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
-           // "application/x-www-form-urlencoded;charset=UTF-8"})
-    public ResponseEntity<?> postApiProfileMy (@org.jetbrains.annotations.NotNull @ModelAttribute("profileRequest") ProfileRequest profileRequest)
-            throws IOException {
-            //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
-//            @RequestPart(value = "photo")
-//            @DefaultValue("src/main/resources/static/img/default-1.png")
-//             MultipartFile avatar, // вот тут может быть картинка
-//            @RequestPart(name = "e_mail", required = false) String emailMP,
-//            @RequestPart(name = "name", required = false) String nameMP,
-//            @RequestPart(name = "password", required = false) String passwordMP,
-//            @RequestPart(name = "remove_photo", required = false)
-//            @DefaultValue("0")
-//                    String removePhotoMP) throws IOException {
-        System.out.println("Method postApiProfileMy is activated.");
-        return userService.getPostProfileMy(profileRequest.getPhoto(), profileRequest.getEmail(), profileRequest.getName(),
-                profileRequest.getPassword(), profileRequest.getRemovePhoto());
-    }
+//    @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
+//           // "application/x-www-form-urlencoded;charset=UTF-8"})
+//    public ResponseEntity<?> postApiProfileMy (@org.jetbrains.annotations.NotNull @JsonProperty
+//                                                   @ModelAttribute("profileRequest") ProfileRequest profileRequest)
+//            throws IOException {
+//            //@RequestBody(required = false) String requestBody, // тут можеть быть форма в json без картинки
+////            @RequestPart(value = "photo")
+////            @DefaultValue("src/main/resources/static/img/default-1.png")
+////             MultipartFile avatar, // вот тут может быть картинка
+////            @RequestPart(name = "email", required = false) String emailMP,
+////            @RequestPart(name = "name", required = false) String nameMP,
+////            @RequestPart(name = "password", required = false) String passwordMP,
+////            @RequestPart(name = "remove_photo", required = false)
+////            @DefaultValue("0")
+////                    String removePhotoMP) throws IOException {
+//        System.out.println("Method postApiProfileMy is activated.");
+//        return userService.getPostProfileMy(profileRequest.getPhoto(), profileRequest.getEmail(), profileRequest.getName(),
+//                profileRequest.getPassword(), profileRequest.getRemovePhoto());
+//    }
 }

@@ -56,7 +56,7 @@ public class UserService {
     public ResponseEntity<?> postApiImage(MultipartFile image) throws IOException {
         User user = userRepository.getOne(authService.getUserId());
         if (authService.isUserAuthorized()) {
-            String imageAddress = getOutputFile(image).getPath();
+            String imageAddress = StringUtils.cleanPath(getOutputFile(image).getAbsolutePath());//.getPath();
             System.out.println(imageAddress); // test
             user.setPhoto(imageAddress);
             userRepository.save(user);
@@ -122,8 +122,6 @@ public class UserService {
     }
 
     private File getOutputFile (MultipartFile photo) throws IOException {
-//        String photoOrigin = convertFile.getPath().replaceAll("\\\\", "/");
-//        File newFilePng = new File(photoDestination);
         String targetFolder = "upload/";
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
@@ -137,22 +135,25 @@ public class UserService {
         if (!destFolder1.exists()) {
             destFolder1.mkdir();
         }
-        File destFolder2 = new File(destFolder1.getPath() + "/" + folder2);
+        File destFolder2 = new File(targetFolder + folder1 + "/" + folder2);
         if (!destFolder2.exists()) {
             destFolder2.mkdir();
         }
-        File destFolder3 = new File(destFolder2.getPath() + "/" + folder3 + "/");
+        File destFolder3 = new File(targetFolder + folder1 + "/" + folder2 + "/" + folder3);
         if (!destFolder3.exists()) {
             destFolder3.mkdir();
         }
         int suffix = (int) (Math.random() * 100);
         String fileName = suffix + "_" + photo.getOriginalFilename();
-        String finalDestination = destFolder3.getPath() + "/" + fileName;
-        File destFile = new File(StringUtils.cleanPath(finalDestination));// Windows separators ("\") are replaced by simple slashes.
+        String finalDestination = targetFolder + folder1 + "/" + folder2 + "/" + folder3 + "/" + fileName;
+        File destFile = new File(finalDestination);// Windows separators ("\") are replaced by simple slashes.
         if (!destFile.exists()) {
             destFile.createNewFile();
         }
-        System.out.println(StringUtils.cleanPath(destFile.getAbsolutePath())); // for test
+        System.out.println("finalDestination: " + finalDestination); // for test
+//        System.out.println("getName: " + destFile.getName());
+//        System.out.println("getAbsolutePath: " + destFile.getAbsolutePath());
+//        System.out.println("getCanonicalPath: " + destFile.getCanonicalPath());
         photo.transferTo(destFile);
 
         // resizing to 30x30 if need
