@@ -22,12 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postApiProfileMy developed, but works wrong with image.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="ProfileController set up.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/78_Fox.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -119,11 +119,8 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/ProfileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/ProfileRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/upload/226/43/78/18_Cat.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,13 +223,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00056" summary=" Method getMyStatistics (Integer userId) updated.">
-      <created>1606249994151</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1606249994152</updated>
     </task>
     <task id="LOCAL-00057" summary=" Method getMyStatistics (Integer userId) tuned to long epoch = minLocalDate.atStartOfDay().atZone(zoneId).toEpochSecond().">
       <created>1606292461869</created>
@@ -570,7 +560,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611841399909</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="ProfileController set up.">
+      <created>1614409285779</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1614409285780</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -593,7 +590,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method authRestore (String eMail)  updated with new method  generateCode(int length)." />
     <MESSAGE value="For error responses in POST requests a new class ErrorsResponse set up." />
     <MESSAGE value="GlobalSettings updated." />
     <MESSAGE value="Method authPassword for POST /api/auth/password is set up." />
@@ -618,7 +614,8 @@
     <MESSAGE value="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly." />
     <MESSAGE value="Methods postApiProfileMy developed, image resized to 30x30 pxl." />
     <MESSAGE value="Methods postApiProfileMy developed, but works wrong with image." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods postApiProfileMy developed, but works wrong with image." />
+    <MESSAGE value="ProfileController set up." />
+    <option name="LAST_COMMIT_MESSAGE" value="ProfileController set up." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

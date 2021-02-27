@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class ProfileRequest implements Serializable {
 //    @JsonProperty
-//    private MultipartFile photo;
+    private MultipartFile photo;
 
     @JsonProperty
     private String name;
@@ -15,19 +15,19 @@ public class ProfileRequest implements Serializable {
     @JsonProperty
     private String email;
 
-    @JsonProperty
+    @JsonProperty("e_mail")
     private String password;
 
     @JsonProperty ("remove_photo")
     private String removePhoto;
 
-//    public MultipartFile getPhoto() {
-//        return photo;
-//    }
-//
-//    public void setPhoto(MultipartFile photo) {
-//        this.photo = photo;
-//    }
+    public MultipartFile getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MultipartFile photo) {
+        this.photo = photo;
+    }
 
     public String getName() {
         return name;
