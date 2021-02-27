@@ -85,8 +85,8 @@ public class UserService {
                 if (removePhoto.equals("1")) {
                     currentUser.setPhoto("");
                 } else {
-                    File convertFile = getOutputFile(photo);
-                    String photoDestination = convertFile.getPath();//getImageAddress(photo);
+//                    File convertFile = getOutputFile(photo);
+                    String photoDestination = StringUtils.cleanPath(getOutputFile(photo).getAbsolutePath());//convertFile.getPath();//getImageAddress(photo);//
                     currentUser.setPhoto(photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
@@ -146,16 +146,12 @@ public class UserService {
         int suffix = (int) (Math.random() * 100);
         String fileName = suffix + "_" + photo.getOriginalFilename();
         String finalDestination = targetFolder + folder1 + "/" + folder2 + "/" + folder3 + "/" + fileName;
+        photo.transferTo(Path.of(finalDestination));
         File destFile = new File(finalDestination);// Windows separators ("\") are replaced by simple slashes.
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
+//        if (!destFile.exists()) {
+//            destFile.createNewFile();
+//        }
         System.out.println("finalDestination: " + finalDestination); // for test
-//        System.out.println("getName: " + destFile.getName());
-//        System.out.println("getAbsolutePath: " + destFile.getAbsolutePath());
-//        System.out.println("getCanonicalPath: " + destFile.getCanonicalPath());
-        photo.transferTo(destFile);
-
         // resizing to 30x30 if need
         Image image = ImageIO.read(photo.getInputStream());
         int width = image.getWidth(null);
@@ -164,7 +160,6 @@ public class UserService {
             BufferedImage tempPNG = resizeImage(image, 30, 30);
             ImageIO.write(tempPNG, "png", destFile);
         }
-
         return destFile;
     }
 
