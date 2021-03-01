@@ -2,6 +2,7 @@ package main.service;
 
 import main.api.response.AuthResponse;
 import main.api.response.ErrorsResponse;
+import main.api.response.ResultResponse;
 import main.entity.User;
 import main.repository.UserRepository;
 import org.apache.commons.io.IOUtils;
@@ -39,8 +40,8 @@ public class UserService {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private ErrorsResponse errorsResponse;
+//    @Autowired
+//    private ErrorsResponse errorsResponse;
 
     @Autowired
     private UserRepository userRepository;
@@ -74,6 +75,7 @@ public class UserService {
 
     public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
                                               String password, String removePhoto) throws IOException {
+        ErrorsResponse errorsResponse;
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -86,7 +88,7 @@ public class UserService {
                     currentUser.setPhoto("");
                 } else {
 //                    File convertFile = getOutputFile(photo);
-                    String photoDestination = StringUtils.cleanPath(getOutputFile(photo).getAbsolutePath());//convertFile.getPath();//getImageAddress(photo);//
+                    String photoDestination = StringUtils.cleanPath(getOutputFile(photo).getPath());//convertFile.getPath();//getImageAddress(photo);//
                     currentUser.setPhoto(photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
@@ -117,12 +119,12 @@ public class UserService {
                 currentUser.setPassword(password);
             }
             userRepository.save(currentUser);
-            return new ResponseEntity<>("result: true", HttpStatus.OK);
+            return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         }
     }
 
     private File getOutputFile (MultipartFile photo) throws IOException {
-        String targetFolder = "upload/";
+        String targetFolder = "/upload/";
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
         String folder2 = hashCode.substring(1 + hashCode.length() / 3, 2 * hashCode.length() / 3);
