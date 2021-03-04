@@ -1,6 +1,7 @@
 package main.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 
@@ -32,7 +33,7 @@ public class User {
 
     @Email
     @JsonProperty("e_mail")
-    @Column(name = "e_mail")
+    @Column(name = "e_mail", unique = true)
     private String email;
 
     @JsonProperty("password")
@@ -91,6 +92,7 @@ public class User {
         return email;
     }
 
+//    @UniqueElements
     public void setEmail(String email) {
         this.email = email;
     }

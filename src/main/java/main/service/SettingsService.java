@@ -1,5 +1,6 @@
 package main.service;
 
+import main.api.response.ResultResponse;
 import main.entity.GlobalSettings;
 import main.repository.GlobalSettingsReporitory;
 import main.repository.UserRepository;
@@ -43,7 +44,7 @@ public class SettingsService {
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             }
         } else {
-            responseEntity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

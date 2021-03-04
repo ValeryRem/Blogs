@@ -5,6 +5,7 @@ import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.api.response.AuthResponse;
 import main.api.response.ErrorsResponse;
+import main.api.response.ResultResponse;
 import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
@@ -146,7 +147,7 @@ public class AuthService {
                    findFirst().
                    orElse(new Session(sessionName, new Timestamp(Instant.now().getEpochSecond()), getUserId()));
            sessionRepository.delete(session);
-           responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+           responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
        } else {
            responseEntity = new ResponseEntity<>(true, HttpStatus.UNAUTHORIZED);
        }
@@ -194,7 +195,7 @@ public class AuthService {
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String eMail, String password, String nameString, String captcha) {
+    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha) {
         Map<String, Object>  output = new LinkedHashMap<>();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
@@ -204,7 +205,7 @@ public class AuthService {
             List<User> users = userRepository.findAll();
 
             result = true;
-            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(eMail)) {
+            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
                 errors.put("email", "Этот e-mail уже зарегистрирован!");
                 result = false;
             }
@@ -221,7 +222,7 @@ public class AuthService {
                 result = false;
             }
             if (result) {
-                user.setEmail(eMail);
+                user.setEmail(email);
                 user.setName(nameString);
                 user.setPassword(password);
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
@@ -246,9 +247,9 @@ public class AuthService {
         && captchaSecret.equals(captchaRepository.findAll().stream().findAny().orElse(new CaptchaCode()).getSecretCode())) {
             user.setPassword(password);
             userRepository.save(user);
-            responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<>("result: false", HttpStatus.NOT_ACCEPTABLE);
+            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_ACCEPTABLE);
         }
         return responseEntity;
     }
@@ -276,9 +277,9 @@ public class AuthService {
                 System.out.println(failedMails.entrySet());
                 return new ResponseEntity<>(failedMails, HttpStatus.BAD_REQUEST);
             }
-            responseEntity = new ResponseEntity<>("result: " + result, HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<>("result: " + false, HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }

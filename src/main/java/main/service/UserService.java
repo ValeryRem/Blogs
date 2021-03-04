@@ -28,6 +28,7 @@ import java.awt.image.Raster;
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -87,8 +88,9 @@ public class UserService {
                 if (removePhoto.equals("1")) {
                     currentUser.setPhoto("");
                 } else {
-//                    File convertFile = getOutputFile(photo);
-                    String photoDestination = StringUtils.cleanPath(getOutputFile(photo).getPath());//convertFile.getPath();//getImageAddress(photo);//
+                    File convertFile = getOutputFile(photo); //аватара форматируется и записывается в папку upload
+                    String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
+//                    Files.write(Paths.get(photoDestination), photo.getBytes());
                     currentUser.setPhoto(photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
@@ -112,7 +114,7 @@ public class UserService {
             return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
         } else {
             currentUser.setName(name);
-            if(email != null) {
+            if(email != null && !currentUser.getEmail().equals(email)) {
                 currentUser.setEmail(email);
             }
             if(password != null) {
@@ -124,7 +126,7 @@ public class UserService {
     }
 
     private File getOutputFile (MultipartFile photo) throws IOException {
-        String targetFolder = "/upload/";
+        String targetFolder = "upload/";
         String hashCode = String.valueOf(Math.abs(targetFolder.hashCode()));
         String folder1 = hashCode.substring(0, hashCode.length() / 3);
         String folder2 = hashCode.substring(1 + hashCode.length() / 3, 2 * hashCode.length() / 3);
@@ -150,18 +152,16 @@ public class UserService {
         String finalDestination = targetFolder + folder1 + "/" + folder2 + "/" + folder3 + "/" + fileName;
         photo.transferTo(Path.of(finalDestination));
         File destFile = new File(finalDestination);// Windows separators ("\") are replaced by simple slashes.
-//        if (!destFile.exists()) {
-//            destFile.createNewFile();
-//        }
-        System.out.println("finalDestination: " + finalDestination); // for test
-        // resizing to 30x30 if need
-        Image image = ImageIO.read(photo.getInputStream());
-        int width = image.getWidth(null);
-        int height = image.getHeight(null);
-        if (width > WIDTH_MAX || height > HEIGHT_MAX) {
-            BufferedImage tempPNG = resizeImage(image, 30, 30);
-            ImageIO.write(tempPNG, "png", destFile);
+        if (!destFile.exists()) {
+            destFile.createNewFile();
         }
+        Image image = ImageIO.read(photo.getInputStream());
+//        int width = image.getWidth(null);
+//        int height = image.getHeight(null);
+//        if (width > WIDTH_MAX || height > HEIGHT_MAX) {
+        BufferedImage tempPNG = resizeImage(image, WIDTH_MAX, HEIGHT_MAX);
+        ImageIO.write(tempPNG, "png", destFile);
+//        }
         return destFile;
     }
 

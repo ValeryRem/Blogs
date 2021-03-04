@@ -2,6 +2,7 @@ package main.service;
 
 import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
+import main.api.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,9 +109,9 @@ public class PostService {
             if(postVote.getValue() == 1) {
                 postVote.setValue(0);
                 postVoteRepository.save(postVote);
-                responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>("result: false", HttpStatus.ALREADY_REPORTED);
+                responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.ALREADY_REPORTED);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -161,7 +162,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 tag2PostRepository.save(tag2Post);
                             }
                         }
-                        responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
                     }
                 } else { // if POST_PREMODERATION = false
                     if (active == 1) {
@@ -176,7 +177,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 tag2PostRepository.save(tag2Post);
                             }
                         }
-                        responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
                     } else { //  if (active != 1)
                         post.setModerationStatus(ModerationStatus.NEW);
                         responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
@@ -267,7 +268,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                             tag2PostRepository.delete(t2p);
                         }
                     }
-                    responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
+                    responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
                 } catch (NullPointerException ex) {
                     ex.printStackTrace();
                     responseEntity = new ResponseEntity<>("PostId " + postId + " is absent.", HttpStatus.NOT_FOUND);
