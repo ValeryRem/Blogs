@@ -192,7 +192,7 @@ public class AuthService {
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha, String captchaSecret) {
+    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha) {
         Map<String, Object>  output = new LinkedHashMap<>();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
@@ -201,7 +201,7 @@ public class AuthService {
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
             Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
-                    .filter(c -> c.getSecretCode().equals(captchaSecret) && c.getCode().equals(captcha))
+                    .filter(c -> c.getCode().equals(captcha))
                     .findAny();
             result = true;
             if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
@@ -228,12 +228,11 @@ public class AuthService {
                 user.setCode(captcha);
                 userRepository.save(user);
                 output.put("result", true);
-                responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
             } else {
                 output.put("result", false);
                 output.put("errors", errors);
-                responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
             }
+            responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
         } else { // if MULTIUSER_MODE = false
             responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);
         }

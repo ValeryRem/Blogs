@@ -36,11 +36,6 @@ public class ProfileController {
             @RequestParam(name = "password", required = false) String password
     ) throws IOException {
         System.out.println("updateProfile with Photo is active " + photo.getOriginalFilename());
-        // для теста только возвращаем ответы и пишем в консоль
-//        return ResponseEntity.ok("updateProfile with Photo is active " + photo.getOriginalFilename());
                 return userService.getPostProfileMy(photo, email, name, password, removePhoto);
-//                        profileRequest.getPhoto(), profileRequest.getEmail(), profileRequest.getName(),
-//                profileRequest.getPassword(), profileRequest.getRemovePhoto());
-
     }
 }

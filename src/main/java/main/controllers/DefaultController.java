@@ -18,4 +18,9 @@ public class DefaultController {
         System.out.println(initResponse.getTitle());
         return "index";
     }
+
+    @GetMapping(value = "/**/{path:[^\\\\.]*}")
+    public String redirectToIndex() {
+        return "forward:/"; //делаем перенаправление
+    }
 }

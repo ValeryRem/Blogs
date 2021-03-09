@@ -336,7 +336,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 map.put("id", postComment.getCommentId());
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
+                responseEntity = new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.OK);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);

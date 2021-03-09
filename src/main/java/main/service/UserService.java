@@ -62,7 +62,7 @@ public class UserService {
                 } else {
                     File convertFile = getOutputFile(photo); //аватара форматируется и записывается в папку upload
                     String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
-                    currentUser.setPhoto(photoDestination);
+                    currentUser.setPhoto("/" + photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
             } else {
