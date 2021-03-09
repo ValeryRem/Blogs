@@ -9,15 +9,15 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer sessionId;
     String sessionName;
-    Timestamp time;
+    Timestamp timestamp;
     Integer userId;
 
     public Session() {
     }
 
-    public Session(String sessionName, Timestamp time, Integer userId) {
+    public Session(String sessionName, Timestamp timestamp, Integer userId) {
         this.sessionName = sessionName;
-        this.time = time;
+        this.timestamp = timestamp;
         this.userId = userId;
     }
 
@@ -37,12 +37,12 @@ public class Session {
         this.sessionId = sessionId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Integer getUserId() {

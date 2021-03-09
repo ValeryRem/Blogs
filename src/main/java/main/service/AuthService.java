@@ -51,7 +51,7 @@ public class AuthService {
 //    private AuthResponse authResponse;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
-    private ResponseEntity<?> responseEntity;
+//    private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
         AuthResponse authResponse = new AuthResponse();
@@ -90,35 +90,34 @@ public class AuthService {
         System.out.println(timestamp); // for test only!!!
         Session session = new Session(sessionName, timestamp, userId);
         List<Session> oldSessions = sessionRepository.findAll().stream().
-                filter(s -> (int) s.getTime().getTime() / 1000 < (int) epochSeconds - 1800).
+                filter(s -> (int) s.getTimestamp().getTime() / 1000 < (int) epochSeconds - 1800).
                 collect(Collectors.toList());
         for (Session s : oldSessions) {
             sessionRepository.delete(s);
         }
         if (!sessionRepository.findAll().stream().
                 map(Session::getSessionName).
-                collect(Collectors.toList()).contains(httpSession.getId())) {
+                collect(Collectors.toList()).contains(sessionName)) {
             sessionRepository.save(session);
         }
     }
 
     public ResponseEntity<?> getAuthCheck() {
         AuthResponse authResponse = new AuthResponse();
-        Integer userId;
+        Optional<Integer> userIdOptional;
         User u;
-        String sessionId = httpSession.getId();
+        String sessionName = httpSession.getId();
         boolean isSession = sessionRepository.findAll().stream().
-                anyMatch(s -> s.getSessionName().equals(sessionId));
+                anyMatch(s -> s.getSessionName().equals(sessionName));
         if (isSession) {
-            userId = sessionRepository.findAll().stream().
-                    filter(s -> s.getSessionName().equals(sessionId)).
+            userIdOptional = sessionRepository.findAll().stream().
+                    filter(s -> s.getSessionName().equals(sessionName)).
                     map(Session::getUserId).
-                    findAny().
-                    orElse(0);
-            if (userId > 0) {
-                u = userRepository.getOne(userId);
+                    findAny();
+            if (userIdOptional.isPresent()) {
+                u = userRepository.getOne(userIdOptional.get());
                 LinkedHashMap<String, Object> user = new LinkedHashMap<>();
-                user.put("id", userId);
+                user.put("id", userIdOptional.get());
                 user.put("name", u.getName());
                 user.put("photo", u.getPhoto());
                 user.put("email", u.getEmail());
@@ -127,16 +126,17 @@ public class AuthService {
                 user.put("settings", u.getIsModerator());
                 authResponse.setResult(true);
                 authResponse.setUser(user);
-                responseEntity = new ResponseEntity<>(authResponse, HttpStatus.OK);
+                return    new ResponseEntity<>(authResponse, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>("User is not authorized.", HttpStatus.UNAUTHORIZED);
+                return  new ResponseEntity<>("User is not authorized.", HttpStatus.UNAUTHORIZED);
             }
+        } else {
+            return  new ResponseEntity<>("Session is not open.", HttpStatus.OK);
         }
-        return
-                responseEntity;
     }
 
     public ResponseEntity<?> getAuthLogout () {
+        ResponseEntity<?> responseEntity;
        if(isUserAuthorized()) {
            String sessionName = httpSession.getId();
            Session session = sessionRepository.findAll().stream().
@@ -194,6 +194,7 @@ public class AuthService {
      */
     public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha) {
         Map<String, Object>  output = new LinkedHashMap<>();
+        ResponseEntity<?> responseEntity;
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
                 isMultiuserMode()) { // if MULTIUSER_MODE = true
@@ -241,6 +242,7 @@ public class AuthService {
 
     public ResponseEntity<?> authPassword (String code, String password, String captcha, String captchaSecret) {
         User user = userRepository.getOne(getUserId());
+        ResponseEntity<?> responseEntity;
         if(user.getCode().equals(code) && captcha.equals(captchaRepository.findAll().stream().findAny().orElse(new CaptchaCode()).getCode())
         && captchaSecret.equals(captchaRepository.findAll().stream().findAny().orElse(new CaptchaCode()).getSecretCode())) {
             user.setPassword(password);
@@ -253,6 +255,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> authRestore (String eMail) {
+        ResponseEntity<?> responseEntity;
         if (userRepository.findAll().stream().
                 map(User::getEmail).
                 collect(Collectors.toList()).

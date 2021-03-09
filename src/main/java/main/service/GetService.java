@@ -332,15 +332,14 @@ public class GetService {
             User user = userRepository.getOne(myId);
             result = user.getIsModerator();
             LinkedHashMap<String, Object> map;
-
             if (result) {
                 map = getUserStatistics(myId);
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
+                responseEntity = new ResponseEntity<>("The user is not moderator!", HttpStatus.OK);
             }
         } else {
-            responseEntity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }
@@ -367,12 +366,13 @@ public class GetService {
                 reduce(Integer::sum).
                 orElse(0);
         map.put("viewsCount", viewMyPostsCount);
-        List<Long> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
-        long minLocalDate = localDates.stream()
-                .min(Comparator.naturalOrder())
-                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
-        map.put("firstPublication", minLocalDate);
+        List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+//                map(p -> p.getTimestamp().getTime()/1000).collect(Collectors.toList());
+        map(p -> p.getTimestamp()).collect(Collectors.toList());
+        Timestamp minLocalDate = localDates.stream()
+                .min(Comparator.naturalOrder()).get();
+//                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
+        map.put("firstPublication", minLocalDate.getTime()/1000);
         return map;
     }
 
@@ -394,12 +394,14 @@ public class GetService {
         int viewCount = list.stream().
                 reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
-        List<Long> localDates =  postRepository.findAll().stream().
-                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
-        long minLocalDate = localDates.stream()
-                .min(Comparator.naturalOrder())
-                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
-        map.put("firstPublication", minLocalDate);
+        List<Timestamp> localDates =  postRepository.findAll().stream().
+                map(Post::getTimestamp).collect(Collectors.toList());
+//        List<Long> localDates =  postRepository.findAll().stream().
+//                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
+        Timestamp minLocalDate = localDates.stream()
+                .min(Comparator.naturalOrder()).get();
+//                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
+        map.put("firstPublication", minLocalDate.getTime()/1000);
         if(globalSettingsReporitory.findAll().stream().
                 findAny().
                 orElse(new GlobalSettings()).
@@ -417,8 +419,9 @@ public class GetService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> getApiCalendar (Optional<Integer> year) {
+    public ResponseEntity<?> getApiCalendar (Integer year) {
         List<Integer> years;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         List<Timestamp> timestamps;
         LinkedHashMap<LocalDate, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
@@ -427,17 +430,17 @@ public class GetService {
         years = postsList.stream().map(p -> convertTimeToYear(p.getTimestamp())).
                 distinct().
                 collect(Collectors.toList());
-        if (year.isPresent()) {
+        if (year > 1970 && year <= convertTimeToYear(timestamp)) {
             timestamps = postRepository.findAll().stream().
                     map(Post::getTimestamp).
-                    filter(timestamp -> convertTimeToYear(timestamp).equals(year.get())).
+                    filter(t_stamp -> convertTimeToYear(t_stamp).equals(year)).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
             timestamps = postsList.stream().
                     map(Post::getTimestamp).
-                    filter(timestamp -> convertTimeToYear(timestamp).equals(currentYear)).
+                    filter(t_stamp -> convertTimeToYear(t_stamp).equals(currentYear)).
                     distinct().
                     collect(Collectors.toList());
         }
