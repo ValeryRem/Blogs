@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.api.response.AuthResponse;
@@ -18,8 +17,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -174,15 +171,15 @@ public class AuthService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        captcha.setSecretCode(secretCode);
         captcha.setCode(code);
-        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
-        captcha.setTime(time);
+        captcha.setSecretCode(secretCode);
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        captcha.setTimestamp(timestamp);
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
         map.put("image", "data:image/png;base64, " + code64);
         List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
-                filter(c -> c.getTime().getTime()/1000 < (time.getTime()/1000 - 3600)).
+                filter(c -> c.getTimestamp().getTime()/1000 < (timestamp.getTime()/1000 - 3600)).
                 collect(Collectors.toList());
         for (CaptchaCode c: captchasOld) {
             captchaRepository.delete(c);
@@ -195,7 +192,7 @@ public class AuthService {
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha) {
+    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha, String captchaSecret) {
         Map<String, Object>  output = new LinkedHashMap<>();
         if (globalSettingsReporitory.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
@@ -203,7 +200,9 @@ public class AuthService {
             User user = new User();
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
-
+            Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
+                    .filter(c -> c.getSecretCode().equals(captchaSecret) && c.getCode().equals(captcha))
+                    .findAny();
             result = true;
             if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
                 errors.put("email", "Этот e-mail уже зарегистрирован!");
@@ -217,7 +216,7 @@ public class AuthService {
                 errors.put("password", "Пароль короче 6 символов!");
                 result = false;
             }
-            if (!captchaRepository.findAll().stream().map(CaptchaCode::getCode).collect(Collectors.toList()).contains(captcha)) {
+            if (captchaCodeOptional.isEmpty()) {
                 errors.put("captcha", "Код с картинки введён неверно");
                 result = false;
             }
@@ -233,7 +232,7 @@ public class AuthService {
             } else {
                 output.put("result", false);
                 output.put("errors", errors);
-                responseEntity = new ResponseEntity<>(output, HttpStatus.NOT_ACCEPTABLE);
+                responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
             }
         } else { // if MULTIUSER_MODE = false
             responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);

@@ -3,16 +3,11 @@ package main.api.response;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.FutureOrPresent;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 //@Service
 public class PostByIdResponse {
@@ -26,7 +21,6 @@ public class PostByIdResponse {
     private Integer dislikeCount;
     private Integer viewCount;
     private List<TreeMap<String, Object>> comments;
-    private List<Tag> tags;
 
     @Autowired
     PostRepository postRepository;
@@ -45,7 +39,7 @@ public class PostByIdResponse {
 
     public PostByIdResponse(Post post) {
         this.id = post.getPostId();
-        this.timestamp = post.getTime();
+        this.timestamp = post.getTimestamp();
         this.active = true;
         this.title = post.getTitle();
         this.text = post.getText();
@@ -69,7 +63,6 @@ public class PostByIdResponse {
         } catch (NullPointerException ex){
             ex.printStackTrace();
         }
-        this.tags = tagList;
     }
 
     public Integer getId() {

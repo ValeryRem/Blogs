@@ -2,6 +2,10 @@ package main.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
+
+import static java.time.LocalDateTime.now;
 
 @Entity
 @Table(name = "posts")
@@ -24,7 +28,7 @@ public class Post {
 
     @Column(name ="user_id")
     private Integer userId;
-    private Timestamp time;
+    private Timestamp timestamp;
     private String title;
     private String text;
 
@@ -32,6 +36,7 @@ public class Post {
     private Integer viewCount;
 
     public Post() {
+        timestamp = Timestamp.valueOf(now());
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -78,12 +83,12 @@ public class Post {
         this.moderatorId = moderatorId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Integer getUserId() {

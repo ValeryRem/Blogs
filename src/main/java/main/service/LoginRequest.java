@@ -16,6 +16,9 @@ public class LoginRequest implements Serializable {
 
     @JsonProperty
     private String captcha;
+
+    @JsonProperty
+    private String captchaSecret;
     public String getEmail() {
         return email;
     }
@@ -46,5 +49,13 @@ public class LoginRequest implements Serializable {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getCaptchaSecret() {
+        return captchaSecret;
+    }
+
+    public void setCaptchaSecret(String captchaSecret) {
+        this.captchaSecret = captchaSecret;
     }
 }

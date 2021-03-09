@@ -55,8 +55,6 @@ public class GetService {
 
     private ResponseEntity<?> responseEntity;
     private GeneralResponse generalResponse;
-    private MyPostResponse myPostResponce;
-    private PostModerationResponse postModerationResponse;
 
     public GetService() {
     }
@@ -78,11 +76,11 @@ public class GetService {
         List<Object> responseList = new ArrayList<>();
         for (Post post : postListSorted) {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
-            var postAnnounceResponse = new PostResponse(post.getPostId(), post.getTime().getTime()/1000,
+            var postResponse = new PostResponse(post.getPostId(), post.getTimestamp().getTime()/1000,
                     post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post));
-            postAnnounceResponse.setLikeCount(extractLikeCount(post));
-            postAnnounceResponse.setDislikeCount(extractDislikeCount(post));
-            responseList.add(postAnnounceResponse);
+            postResponse.setLikeCount(extractLikeCount(post));
+            postResponse.setDislikeCount(extractDislikeCount(post));
+            responseList.add(postResponse);
         }
         generalResponse.setCount(responseList.size());
         generalResponse.setPosts(getOffsetLimitOutput(responseList, offset, limit));
@@ -102,7 +100,7 @@ public class GetService {
                 filter(p -> p.getText().contains(query)).
                 map(p -> {
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(p.getPostId())).count();
-            var postAnnounceResponse =  new PostResponse(p.getPostId(), p.getTime().getTime()/1000,
+            var postAnnounceResponse =  new PostResponse(p.getPostId(), p.getTimestamp().getTime()/1000,
                     p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUserOfPost(p));
             postAnnounceResponse.setLikeCount(extractLikeCount(p));
             postAnnounceResponse.setDislikeCount(extractDislikeCount(p));
@@ -121,13 +119,13 @@ public class GetService {
         List<Object> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : sortedPosts) {
-            if (post.getTime().toInstant()
+            if (post.getTimestamp().toInstant()
                     .atZone(ZoneId.of("UTC"))
                     .toLocalDate().equals(time)) {
                 int commentCountByPost = (int) commentList.stream().
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
-                posts.add(new PostResponse(post.getPostId(), post.getTime().getTime()/1000,
+                posts.add(new PostResponse(post.getPostId(), post.getTimestamp().getTime()/1000,
                         post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
             }
         }
@@ -160,7 +158,7 @@ public class GetService {
                     var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
                             collect(Collectors.toList());
                     int commentCountByPost = postComments.size();
-                    postsResponseList.add(new PostResponse(post.getPostId(), post.getTime().getTime() / 1000,
+                    postsResponseList.add(new PostResponse(post.getPostId(), post.getTimestamp().getTime() / 1000,
                             post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
                 }
                 generalResponse = new GeneralResponse();
@@ -191,7 +189,7 @@ public class GetService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
                 {
-                    myPostResponce = new MyPostResponse(post);
+                    MyPostResponse myPostResponce = new MyPostResponse(post);
                     myPostResponce.setUser(getUserOfPost(post));
                     myPostResponce.setLikeCount(extractLikeCount(post));
                     myPostResponce.setDislikeCount(extractDislikeCount(post));
@@ -221,7 +219,7 @@ public class GetService {
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-                    post.getTime().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
+                    post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {
@@ -263,7 +261,7 @@ public class GetService {
                         count();
                 user.put("id", us.getUserId());
                 user.put("name", us.getName());
-                postModerationResponse = new PostModerationResponse(post.getTime().getTime() / 1000,
+                PostModerationResponse postModerationResponse = new PostModerationResponse(post.getTimestamp().getTime() / 1000,
                         post.getTitle(), post.getAnnounce(), extractLikeCount(post), extractDislikeCount(post),
                         commentCountByPost, post.getViewCount(), user);
                 list.add(postModerationResponse);
@@ -370,7 +368,7 @@ public class GetService {
                 orElse(0);
         map.put("viewsCount", viewMyPostsCount);
         List<Long> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-                map(p -> p.getTime().getTime()).collect(Collectors.toList());
+                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
         long minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder())
                 .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
@@ -397,7 +395,7 @@ public class GetService {
                 reduce(Integer::sum).orElse(0);
         map.put("viewsCount", viewCount);
         List<Long> localDates =  postRepository.findAll().stream().
-                map(p -> p.getTime().getTime()).collect(Collectors.toList());
+                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
         long minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder())
                 .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
@@ -425,27 +423,27 @@ public class GetService {
         LinkedHashMap<LocalDate, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
         List<Post> postsList = postRepository.findAll();
-        postsList.sort(Comparator.comparing(Post::getTime));
-        years = postsList.stream().map(p -> convertTimeToYear(p.getTime())).
+        postsList.sort(Comparator.comparing(Post::getTimestamp));
+        years = postsList.stream().map(p -> convertTimeToYear(p.getTimestamp())).
                 distinct().
                 collect(Collectors.toList());
         if (year.isPresent()) {
             timestamps = postRepository.findAll().stream().
-                    map(Post::getTime).
+                    map(Post::getTimestamp).
                     filter(timestamp -> convertTimeToYear(timestamp).equals(year.get())).
                     distinct().
                     collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
             timestamps = postsList.stream().
-                    map(Post::getTime).
+                    map(Post::getTimestamp).
                     filter(timestamp -> convertTimeToYear(timestamp).equals(currentYear)).
                     distinct().
                     collect(Collectors.toList());
         }
         timestamps.sort(Comparator.naturalOrder());
             for (Timestamp d : timestamps) {
-                postCountAtDate = (int) postsList.stream().filter(p -> p.getTime().equals(d)).count();
+                postCountAtDate = (int) postsList.stream().filter(p -> p.getTimestamp().equals(d)).count();
                 posts.put(d.toInstant()
                         .atZone(ZoneId.of("UTC"))
                         .toLocalDate(), postCountAtDate);
@@ -465,31 +463,31 @@ public class GetService {
                 else return -1;
             });
         } else if ("early".equals(mode)) {
-            postList.sort(Comparator.comparing(Post::getTime));
+            postList.sort(Comparator.comparing(Post::getTimestamp));
         } else {
-            postList.sort(Comparator.comparing(Post::getTime).reversed());
+            postList.sort(Comparator.comparing(Post::getTimestamp).reversed());
         }
         return postList;
     }
 
-    private List<Post> getPostsFilteredByStatus(List<Post> postList, String status) {
-        if(status.equals("new")) {
-           postList = postList.stream()
-                   .filter(p -> p.getModerationStatus().equals(ModerationStatus.NEW))
-                   .collect(Collectors.toList());
-        }
-        if (status.equals("accepted")) {
-            postList = postList.stream()
-                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.ACCEPTED))
-                    .collect(Collectors.toList());
-        }
-        if (status.equals("declined")) {
-            postList = postList.stream()
-                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.DECLINED))
-                    .collect(Collectors.toList());
-        }
-        return postList;
-    }
+//    private List<Post> getPostsFilteredByStatus(List<Post> postList, String status) {
+//        if(status.equals("new")) {
+//           postList = postList.stream()
+//                   .filter(p -> p.getModerationStatus().equals(ModerationStatus.NEW))
+//                   .collect(Collectors.toList());
+//        }
+//        if (status.equals("accepted")) {
+//            postList = postList.stream()
+//                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.ACCEPTED))
+//                    .collect(Collectors.toList());
+//        }
+//        if (status.equals("declined")) {
+//            postList = postList.stream()
+//                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.DECLINED))
+//                    .collect(Collectors.toList());
+//        }
+//        return postList;
+//    }
 
 //    private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
 //        try {

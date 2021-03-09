@@ -3,8 +3,6 @@ package main.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "captcha_codes")
@@ -12,14 +10,15 @@ public class CaptchaCode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-//    @NotBlank(message = "Time of release is mandatory")
-    private Timestamp time;
+
     @NotBlank(message = "Capture code is mandatory")
-    @Column(name = "captcha")
     private String code;
+
     @NotBlank(message = "Secret code is mandatory")
     @Column(name = "captcha_secret")
     private String secretCode;
+
+    private Timestamp timestamp;
 
     public CaptchaCode() {
     }
@@ -32,12 +31,12 @@ public class CaptchaCode {
         this.id = id;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getCode() {

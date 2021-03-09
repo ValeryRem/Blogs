@@ -2,13 +2,10 @@ package main.api.response;
 
 import main.entity.Post;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 public class MyPostResponse {
-    private final Integer myId;
+    private final Integer id;
     private final long timestamp;
 
     private final String title;
@@ -19,15 +16,15 @@ public class MyPostResponse {
     private TreeMap<String, Object> user;
 
     public MyPostResponse(Post post) {
-        this.myId = post.getUserId();
-        this.timestamp = post.getTime().getTime()/1000;
+        this.id = post.getUserId();
+        this.timestamp = post.getTimestamp().getTime()/1000;
         this.title = post.getTitle();
         this.announce = post.getAnnounce();
         this.viewCount = post.getViewCount();
     }
 
-    public Integer getMyId() {
-        return myId;
+    public Integer getId() {
+        return id;
     }
 
     public long getTimestamp() {

@@ -118,7 +118,8 @@ public class PostController {
     }
 
     @PostMapping("")
-    private ResponseEntity<?> postPost (@RequestParam(defaultValue="1") Integer active,
+    private ResponseEntity<?> postPost (@RequestParam Timestamp timestamp,
+                                        @RequestParam(defaultValue="1") Integer active,
                                         @RequestParam(defaultValue="Optional.class description.") String title,
                                         @RequestParam(defaultValue="[Java, Python]") List<String> tags,
                                         @RequestParam(defaultValue="Try to consider how to implement Optional class " +

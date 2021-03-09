@@ -9,18 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class PostService {
@@ -131,10 +127,9 @@ POST_PREMODERATION = false (режим премодерации выключен
         Post post = new Post();
         post.setIsActive(active);
         post.setModeratorId(1);
-
-        post.setTime(Timestamp.valueOf(LocalDateTime.now()));
+//        post.setTimestamp(timestamp);
         post.setUserId(authService.getUserId());
-        post.setViewCount(33);
+        post.setViewCount(0);
         checkTexts(title, text, errors);
         if (!result) {
             errorsResponse.getErrors().put("errors", errors);
@@ -246,7 +241,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                     post.setText(text);
                     post.setTitle(title);
                     post.setActive(active);
-                    post.setTime(Timestamp.valueOf(LocalDateTime.now()));
+                    post.setTimestamp(Timestamp.valueOf(now()));
                     postRepository.save(post);
                     List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
                     List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
@@ -334,7 +329,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 errorsResponse.getErrors().put("errors", errors);
             }
             if (result) {
-                postComment.setTime(LocalDateTime.now());
+                postComment.setTime(now());
                 postComment.setUserId(userId);
                 postComment.setText(text);
                 postCommentRepository.save(postComment);

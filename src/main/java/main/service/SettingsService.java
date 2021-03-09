@@ -28,7 +28,7 @@ public class SettingsService {
 
     ResponseEntity<?> responseEntity;
 
-    public ResponseEntity<?> putApiSettings (boolean multiuserMode, boolean postPremoderation, boolean statisticsIsPublic ) {
+    public ResponseEntity<?> putApiSettings (boolean multiuserMode, boolean postPremoderation, boolean statisticsIsPublic) {
         Integer userId = authService.getUserId();
 
         globalSettings = new GlobalSettings();

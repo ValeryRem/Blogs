@@ -1,48 +1,26 @@
 package main.service;
 
-import main.api.response.AuthResponse;
 import main.api.response.ErrorsResponse;
 import main.api.response.ResultResponse;
 import main.entity.User;
 import main.repository.UserRepository;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.awt.image.Raster;
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private AuthService authService;
-
-//    @Autowired
-//    private ErrorsResponse errorsResponse;
 
     @Autowired
     private UserRepository userRepository;
@@ -52,8 +30,8 @@ public class UserService {
     private final int PW_MIN_LENGTH = 6;
     private final int PW_MAX_LENGTH = 30;
     private final int MAX_IMAGE_SIZE = 5_000_000;
-    private final int HEIGHT_MAX = 30;
-    private final int WIDTH_MAX = 30;
+    private final int HEIGHT_MAX = 100;
+    private final int WIDTH_MAX = 100;
 
     public ResponseEntity<?> postApiImage(MultipartFile image) throws IOException {
         User user = userRepository.getOne(authService.getUserId());
@@ -67,12 +45,6 @@ public class UserService {
             return ResponseEntity.ok(new ErrorsResponse());//("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
     }
-
-//    @NotNull
-//    private String getImageAddress(MultipartFile image) throws IOException {
-//        File convertFile = getOutputFile(image);
-//        return convertFile.getAbsolutePath();
-//    }
 
     public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
                                               String password, String removePhoto) throws IOException {
@@ -90,7 +62,6 @@ public class UserService {
                 } else {
                     File convertFile = getOutputFile(photo); //аватара форматируется и записывается в папку upload
                     String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
-//                    Files.write(Paths.get(photoDestination), photo.getBytes());
                     currentUser.setPhoto(photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
                 }
@@ -152,16 +123,12 @@ public class UserService {
         String finalDestination = targetFolder + folder1 + "/" + folder2 + "/" + folder3 + "/" + fileName;
         photo.transferTo(Path.of(finalDestination));
         File destFile = new File(finalDestination);// Windows separators ("\") are replaced by simple slashes.
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
+//        if (!destFile.exists()) {
+//            destFile.createNewFile();
+//        }
         Image image = ImageIO.read(photo.getInputStream());
-//        int width = image.getWidth(null);
-//        int height = image.getHeight(null);
-//        if (width > WIDTH_MAX || height > HEIGHT_MAX) {
         BufferedImage tempPNG = resizeImage(image, WIDTH_MAX, HEIGHT_MAX);
         ImageIO.write(tempPNG, "png", destFile);
-//        }
         return destFile;
     }
 

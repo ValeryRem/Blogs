@@ -48,7 +48,7 @@ public class MainApplication {
         post1.setIsActive(1);
         post1.setModerationStatus(ModerationStatus.ACCEPTED);
         post1.setText("Absolutely new testing text to be processed by the code under #Spring, #PHP, #Python tags");
-        post1.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        post1.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
 //        post1.setUserId(1);
         post1.setViewCount(15);
         post1.setModeratorId(2);
@@ -61,7 +61,7 @@ public class MainApplication {
         post2.setIsActive(1);
         post2.setModerationStatus(ModerationStatus.NEW);
         post2.setText("Another testing text to be processed by the code into announce #Java");
-        post2.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        post2.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
         post2.setUserId(2);
         post2.setModeratorId(1);
         post2.setViewCount(11);
