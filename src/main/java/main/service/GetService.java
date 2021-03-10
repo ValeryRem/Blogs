@@ -368,10 +368,9 @@ public class GetService {
         map.put("viewsCount", viewMyPostsCount);
         List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
 //                map(p -> p.getTimestamp().getTime()/1000).collect(Collectors.toList());
-        map(p -> p.getTimestamp()).collect(Collectors.toList());
+        map(Post::getTimestamp).collect(Collectors.toList());
         Timestamp minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder()).get();
-//                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
         map.put("firstPublication", minLocalDate.getTime()/1000);
         return map;
     }

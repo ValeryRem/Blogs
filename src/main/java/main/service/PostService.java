@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,14 +123,19 @@ POST_PREMODERATION - если включен этот режим, то все н
 POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
-    public ResponseEntity<?> postPost (Integer active, String title, List<String> tags, String text) {
+    public ResponseEntity<?> postPost (Timestamp timestamp, Integer active, String title, List<String> tags, String text) {
         result = true;
         User user = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
         post.setIsActive(active);
         post.setModeratorId(1);
-//        post.setTimestamp(timestamp);
+        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
+        if(timestamp.getTime() <= currentTimestamp.getTime()) {
+            post.setTimestamp(currentTimestamp);
+        } else {
+            post.setTimestamp(timestamp);
+        }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
         checkTexts(title, text, errors);

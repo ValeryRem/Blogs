@@ -126,7 +126,7 @@ public class PostController {
                                                 "approach if behaviour of components is nullable.") String text) {
         System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
-        return postService.postPost(active, title, tags, text);
+        return postService.postPost(timestamp, active, title, tags, text);
     }
 
     @PutMapping("/{id:\\d+}")

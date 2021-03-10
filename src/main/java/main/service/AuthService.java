@@ -86,7 +86,7 @@ public class AuthService {
 //        ZoneId zoneId = ZoneId.systemDefault();//.of("UTC"); //
         long epochSeconds = Instant.now().getEpochSecond();//LocalDateTime.now().atZone(zoneId).toEpochSecond();//
         String sessionName = httpSession.getId();
-        Timestamp timestamp = new Timestamp(epochSeconds*1000);
+        Timestamp timestamp = new Timestamp(epochSeconds);
         System.out.println(timestamp); // for test only!!!
         Session session = new Session(sessionName, timestamp, userId);
         List<Session> oldSessions = sessionRepository.findAll().stream().
