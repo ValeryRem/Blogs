@@ -22,12 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods getAllStatistics &amp; getMyStatistics updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postPost updated by  timestamp parameter added.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/18_Intelligence.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -119,10 +118,7 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -226,13 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00064" summary="Method getCaptcha set up for GET/api/auth/captcha.">
-      <created>1606853063212</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1606853063212</updated>
     </task>
     <task id="LOCAL-00065" summary="Method getCaptcha added by delete of old captchas.">
       <created>1606856967913</created>
@@ -570,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615294092029</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="Methods postPost updated by  timestamp parameter added.">
+      <created>1615379588517</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1615379588517</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -593,7 +589,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="TimeZone.setDefault(TimeZone.getTimeZone(&quot;UTC&quot;));" />
     <MESSAGE value="Updated registerSession(Integer userId) in the class AuthService." />
     <MESSAGE value="Method getPostProfileMy for POST /api/profile/my request is set up." />
     <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
@@ -618,7 +613,8 @@
     <MESSAGE value="Problems in postAuthRegister: not readable captcha image." />
     <MESSAGE value="Updates in postAuthRegister." />
     <MESSAGE value="Methods getAllStatistics &amp; getMyStatistics updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods getAllStatistics &amp; getMyStatistics updated." />
+    <MESSAGE value="Methods postPost updated by  timestamp parameter added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postPost updated by  timestamp parameter added." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

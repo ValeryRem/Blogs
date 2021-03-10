@@ -123,18 +123,18 @@ POST_PREMODERATION - если включен этот режим, то все н
 POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
-    public ResponseEntity<?> postPost (Timestamp timestamp, Integer active, String title, List<String> tags, String text) {
+    public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
         result = true;
         User user = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
         post.setIsActive(active);
         post.setModeratorId(1);
-        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
-        if(timestamp.getTime() <= currentTimestamp.getTime()) {
-            post.setTimestamp(currentTimestamp);
+        long currentTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime()/1000;
+        if(timestamp <= currentTimestamp) {
+            post.setTimestamp(new Timestamp(currentTimestamp));
         } else {
-            post.setTimestamp(timestamp);
+            post.setTimestamp(new Timestamp(timestamp));
         }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
