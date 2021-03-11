@@ -118,7 +118,7 @@ public class PostController {
     }
 
     @PostMapping("")
-    private ResponseEntity<?> postPost (@RequestParam (defaultValue="1592338706") long timestamp,
+    private ResponseEntity<?> postPost (@RequestParam long timestamp,
                                         @RequestParam(defaultValue="1") Integer active,
                                         @RequestParam(defaultValue="Optional.class description.") String title,
                                         @RequestParam(defaultValue="[Java, Python]") List<String> tags,

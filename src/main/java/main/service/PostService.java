@@ -124,17 +124,18 @@ POST_PREMODERATION = false (режим премодерации выключен
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
     public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
+        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
         result = true;
         User user = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
         post.setIsActive(active);
         post.setModeratorId(1);
-        long currentTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime()/1000;
-        if(timestamp <= currentTimestamp) {
-            post.setTimestamp(new Timestamp(currentTimestamp));
+
+        if(timestamp <= currentTimestamp.getTime()/1000) {
+            post.setTimestamp(currentTimestamp);
         } else {
-            post.setTimestamp(new Timestamp(timestamp));
+            post.setTimestamp(new Timestamp(timestamp*1000));
         }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
@@ -152,10 +153,10 @@ POST_PREMODERATION = false (режим премодерации выключен
                         isPostPremoderation()) { // проверка POST_PREMODERATION = true
                     if (!user.getIsModerator()) { // if the user is not moderator
                         post.setModerationStatus(ModerationStatus.NEW);
-                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
+                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.OK);
                     } else { // if the user is moderator the posy saved
                         post.setModerationStatus(ModerationStatus.ACCEPTED);
-                        postRepository.save(post);
+//                        postRepository.save(post);
                         Tag2Post tag2Post;
                         for (String tag : tags) {
                             if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
@@ -170,7 +171,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 } else { // if POST_PREMODERATION = false
                     if (active == 1) {
                         post.setModerationStatus(ModerationStatus.ACCEPTED);
-                        postRepository.save(post);
+
                         Tag2Post tag2Post;
                         for (String tag : tags) {
                             if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
@@ -186,6 +187,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                         responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
+                postRepository.save(post);
             } else {
                 responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
             }

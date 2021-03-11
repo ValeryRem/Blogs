@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postPost updated by  timestamp parameter added.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postPost updated.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
@@ -222,13 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00065" summary="Method getCaptcha added by delete of old captchas.">
-      <created>1606856967913</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1606856967913</updated>
     </task>
     <task id="LOCAL-00066" summary="Method getCaptcha, upd 2.">
       <created>1606861947293</created>
@@ -566,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615379588517</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="Methods postPost updated.">
+      <created>1615380683227</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1615380683227</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -589,7 +589,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Updated registerSession(Integer userId) in the class AuthService." />
     <MESSAGE value="Method getPostProfileMy for POST /api/profile/my request is set up." />
     <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) is set up." />
     <MESSAGE value="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image))." />
@@ -614,7 +613,8 @@
     <MESSAGE value="Updates in postAuthRegister." />
     <MESSAGE value="Methods getAllStatistics &amp; getMyStatistics updated." />
     <MESSAGE value="Methods postPost updated by  timestamp parameter added." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods postPost updated by  timestamp parameter added." />
+    <MESSAGE value="Methods postPost updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postPost updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
