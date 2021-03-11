@@ -5,9 +5,7 @@ import main.entity.User;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
-import main.service.AuthService;
-import main.service.GetService;
-import main.service.PostService;
+import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.devtools.RemoteSpringApplication;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -118,15 +116,17 @@ public class PostController {
     }
 
     @PostMapping("")
-    private ResponseEntity<?> postPost (@RequestParam long timestamp,
-                                        @RequestParam(defaultValue="1") Integer active,
-                                        @RequestParam(defaultValue="Optional.class description.") String title,
-                                        @RequestParam(defaultValue="[Java, Python]") List<String> tags,
-                                        @RequestParam(defaultValue="Try to consider how to implement Optional class " +
-                                                "approach if behaviour of components is nullable.") String text) {
+    private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
+//            @RequestParam long timestamp,
+//                                        @RequestParam(defaultValue="1") Integer active,
+//                                        @RequestParam(defaultValue="Optional.class description.") String title,
+//                                        @RequestParam(defaultValue="[Java, Python]") List<String> tags,
+//                                        @RequestParam(defaultValue="Try to consider how to implement Optional class " +
+//                                                "approach if behaviour of components is nullable.") String text)
         System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
-        return postService.postPost(timestamp, active, title, tags, text);
+        return postService.postPost(postRequest.getTimestamp(), postRequest.getActive(), postRequest.getTitle(),
+                postRequest.getTags(), postRequest.getText());
     }
 
     @PutMapping("/{id:\\d+}")

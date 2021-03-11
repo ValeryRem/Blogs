@@ -171,7 +171,6 @@ POST_PREMODERATION = false (режим премодерации выключен
                 } else { // if POST_PREMODERATION = false
                     if (active == 1) {
                         post.setModerationStatus(ModerationStatus.ACCEPTED);
-
                         Tag2Post tag2Post;
                         for (String tag : tags) {
                             if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
@@ -289,10 +288,18 @@ POST_PREMODERATION = false (режим премодерации выключен
         if (title.length() < 3) {
             result = false;
             errors.put("Title", "Заголовок слишком короткий");
+        } else
+            if (title.length()  > 100) {
+            result = false;
+            errors.put("Title", "Заголовок слишком длинный!");
         }
         if (text.length() < 50) {
             result = false;
             errors.put("Text", "Текст публикации слишком короткий");
+        } else
+            if(text.length() > 1000) {
+            result = false;
+            errors.put("Text", "Текст публикации слишком длинный!");
         }
     }
 

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AuthService {
+public class AuthService{
     @Autowired
     UserRepository userRepository;
 
@@ -178,12 +178,7 @@ public class AuthService {
         captchaRepository.save(captcha);
         map.put("secret", secretCode);
         map.put("image", "data:image/png;base64, " + code64);
-        List<CaptchaCode> captchasOld =  captchaRepository.findAll().stream().
-                filter(c -> c.getTimestamp().getTime()/1000 < (timestamp.getTime()/1000 - 3600)).
-                collect(Collectors.toList());
-        for (CaptchaCode c: captchasOld) {
-            captchaRepository.delete(c);
-        }
+        clearOldCaptchas();
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
@@ -202,7 +197,8 @@ public class AuthService {
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
             Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
-                    .filter(c -> c.getCode().equals(captcha))
+                    .filter(c -> c.getCode().equals(captcha)
+                            && !c.getSecretCode().isEmpty()) // not needed line!
                     .findAny();
             result = true;
             if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
@@ -335,6 +331,14 @@ public class AuthService {
             stringBuilder.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return stringBuilder.toString();
+    }
+
+
+    public void clearOldCaptchas() {
+                List<CaptchaCode> oldCaptchas = captchaRepository.findAll().stream()
+                        .filter(c -> c.getTimestamp().getTime() < (Timestamp.valueOf(LocalDateTime.now()).getTime() - 3_600_000))
+                        .collect(Collectors.toList());
+                captchaRepository.deleteInBatch(oldCaptchas);
     }
 
 //    private static BufferedImage resizeImageWithHint(BufferedImage originalImage,

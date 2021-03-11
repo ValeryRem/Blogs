@@ -36,7 +36,7 @@ public class Post {
     private Integer viewCount;
 
     public Post() {
-        timestamp = Timestamp.valueOf(now());
+//        timestamp = Timestamp.valueOf(now());
     }
 
     public Post(ModerationStatus moderationStatus) {
