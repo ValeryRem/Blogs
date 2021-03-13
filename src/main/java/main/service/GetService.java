@@ -243,27 +243,26 @@ public class GetService {
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String status) {
         User us = userRepository.getOne(authService.getUserId());
         generalResponse = new GeneralResponse();
-        if (authService.isUserAuthorized()) {
+        if (authService.isUserAuthorized() && us.getIsModerator()) {
             var postList = postRepository.findAll();
-            var postsFiltered = postList.stream().
-                    filter(p -> p.isActive() == 1 && (p.getModerationStatus().equals(ModerationStatus.NEW) ||
-                            (p.getModeratorId().equals(us.getUserId()) &&
-                                    !status.equals("new")))).
-                    collect(Collectors.toList());
+            var postsFiltered = postList.stream()
+                    .filter(p -> p.isActive() == 1 && (p.getModerationStatus().equals(ModerationStatus.NEW) &&
+                            p.getModeratorId().equals(us.getUserId()) && status.equals("new")))
+                    .collect(Collectors.toList());
             List<PostComment> commentList = commentRepository.findAll();
             List<Object> list = new ArrayList<>();
             int count = postsFiltered.size();
             generalResponse.setCount(count);
-            TreeMap<String, Object> user = new TreeMap<>();
+            TreeMap<String, Object> userMap = new TreeMap<>();
             for (Post post : postsFiltered) {
                 int commentCountByPost = (int) commentList.stream().
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
-                user.put("id", us.getUserId());
-                user.put("name", us.getName());
+                userMap.put("id", us.getUserId());
+                userMap.put("name", us.getName());
                 PostModerationResponse postModerationResponse = new PostModerationResponse(post.getTimestamp().getTime() / 1000,
                         post.getTitle(), post.getAnnounce(), extractLikeCount(post), extractDislikeCount(post),
-                        commentCountByPost, post.getViewCount(), user);
+                        commentCountByPost, post.getViewCount(), userMap);
                 list.add(postModerationResponse);
             }
             generalResponse.setCount(postsFiltered.size());

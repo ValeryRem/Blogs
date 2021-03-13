@@ -53,7 +53,7 @@ public class AuthController {
     private ResponseEntity<?> postAuthRegister(@RequestBody LoginRequest loginRequest){
         System.out.println("Method postAuthRegister is activated.");
         return authService.postAuthRegister(loginRequest.getEmail(), loginRequest.getPassword(),
-                loginRequest.getName(), loginRequest.getCaptcha());
+                loginRequest.getName(), loginRequest.getCaptcha(), loginRequest.getCaptchaSecret());
     }
 
     @PostMapping("/restore")

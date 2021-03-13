@@ -86,7 +86,7 @@ public class AuthService{
 //        ZoneId zoneId = ZoneId.systemDefault();//.of("UTC"); //
         long epochSeconds = Instant.now().getEpochSecond();//LocalDateTime.now().atZone(zoneId).toEpochSecond();//
         String sessionName = httpSession.getId();
-        Timestamp timestamp = new Timestamp(epochSeconds);
+        Timestamp timestamp = new Timestamp(epochSeconds*1000);
         System.out.println(timestamp); // for test only!!!
         Session session = new Session(sessionName, timestamp, userId);
         List<Session> oldSessions = sessionRepository.findAll().stream().
@@ -187,7 +187,7 @@ public class AuthService{
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha) {
+    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha, String captchaSecret) {
         Map<String, Object>  output = new LinkedHashMap<>();
         ResponseEntity<?> responseEntity;
         if (globalSettingsReporitory.findAll().stream().
@@ -197,8 +197,7 @@ public class AuthService{
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
             Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
-                    .filter(c -> c.getCode().equals(captcha)
-                            && !c.getSecretCode().isEmpty()) // not needed line!
+                    .filter(c -> c.getSecretCode().equals(captchaSecret))
                     .findAny();
             result = true;
             if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
@@ -213,9 +212,11 @@ public class AuthService{
                 errors.put("password", "Пароль короче 6 символов!");
                 result = false;
             }
-            if (captchaCodeOptional.isEmpty()) {
-                errors.put("captcha", "Код с картинки введён неверно");
-                result = false;
+            if (captchaCodeOptional.isPresent()) {
+                if(!captchaCodeOptional.get().getCode().equals(captcha)) {
+                    errors.put("captcha", "Код с картинки введён неверно");
+                    result = false;
+                }
             }
             if (result) {
                 user.setEmail(email);
@@ -223,6 +224,7 @@ public class AuthService{
                 user.setPassword(password);
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
                 user.setCode(captcha);
+                user.setIsModerator(false);
                 userRepository.save(user);
                 output.put("result", true);
             } else {

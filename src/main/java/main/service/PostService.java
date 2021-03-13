@@ -130,7 +130,7 @@ POST_PREMODERATION = false (режим премодерации выключен
         Map<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
         post.setIsActive(active);
-        post.setModeratorId(1);
+        post.setModeratorId(1); // to be in the input parameters
 
         if(timestamp <= currentTimestamp.getTime()/1000) {
             post.setTimestamp(currentTimestamp);
