@@ -1,35 +1,24 @@
 package main.requests;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.Serializable;
 
 public class PostModerationRequest implements Serializable {
-    Integer offset;
-    Integer limit;
-    String mode;
+    Integer post_id;
+    String decision;
 
-    public Integer getOffset() {
-        return offset;
+    public Integer getPost_id() {
+        return post_id;
     }
 
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
-    public Integer getLimit() {
-        return limit;
+    public String getDecision() {
+        return decision;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
+    public void setDecision(String decision) {
+        this.decision = decision;
     }
 }

@@ -1,6 +1,7 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
+import main.requests.GetModerationRequest;
 import main.requests.PostModerationRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,20 +81,22 @@ public class GeneralController {
     }
 
     @GetMapping("/moderation")
-    private ResponseEntity<?> getPostsForModeration (@RequestBody PostModerationRequest postModerationRequest)
+    private ResponseEntity<?> getPostsForModeration (@RequestBody GetModerationRequest getModerationRequest)
 //            @RequestParam(defaultValue="0") Integer offset,
 //                                                     @RequestParam(defaultValue="3") Integer limit,
 //                                                     @RequestParam(defaultValue="recent") String mode)
                                                      {
-        return getService.getPostsForModeration(postModerationRequest.getOffset(), postModerationRequest.getLimit(),
-                postModerationRequest.getMode());
+        return getService.getPostsForModeration(getModerationRequest.getOffset(), getModerationRequest.getLimit(),
+                getModerationRequest.getMode());
     }
 
     @PostMapping("/moderation")
-    private ResponseEntity<?> postApiModeration (@RequestParam(defaultValue="1")Integer post_id,
-                                                 @RequestParam(defaultValue="accept") String decision) {
+    private ResponseEntity<?> postApiModeration (@RequestBody PostModerationRequest postModerationRequest)
+//            @RequestParam(defaultValue="1")Integer post_id,
+//                                                 @RequestParam(defaultValue="accept") String decision)
+    {
         System.out.println("Method postApiModeration is activated.");
-        return postService.postApiModeration(post_id, decision);
+        return postService.postApiModeration(postModerationRequest.getPost_id(), postModerationRequest.getDecision());
     }
 
 //    @PostMapping("/image")

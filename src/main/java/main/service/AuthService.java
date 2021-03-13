@@ -302,7 +302,7 @@ public class AuthService{
                 .collect(Collectors.toList())
                 .contains(ModerationStatus.NEW)) {
             moderCount = (int) posts.stream().
-                    filter(p -> p.getUserId().equals(user.getUserId()) && p.getModerationStatus().
+                    filter(p -> p.getModeratorId().equals(user.getUserId()) && p.getModerationStatus().
                             equals(ModerationStatus.NEW)).
                     count();
         }
