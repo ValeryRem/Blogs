@@ -1,6 +1,6 @@
 package main.controllers;
 
-import main.service.ProfileRequest;
+import main.requests.ProfileRequest;
 import main.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

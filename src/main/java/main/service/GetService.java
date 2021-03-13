@@ -59,7 +59,7 @@ public class GetService {
     public GetService() {
     }
 
-    private List<Post> getPostList() {
+    private List<Post> getActivePosts() {
         return  postRepository.findAll().stream().
                 filter(a -> (a.isActive() == 1 && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
                 collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class GetService {
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
-        var postList = getPostList();
+        var postList = getActivePosts();
         var postListSorted = getPostsFilteredByMode(postList, mode);
         var commentList = commentRepository.findAll();
         List<Object> responseList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class GetService {
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
-        var postList = getPostList();
+        var postList = getActivePosts();
         var sortedPosts = getPostsFilteredByMode(postList, mode);
         var commentList = commentRepository.findAll();
         List<Object> responseList;
@@ -114,7 +114,7 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
-        var postList = getPostList();
+        var postList = getActivePosts();
         var sortedPosts = getPostsFilteredByMode(postList, mode);
         List<Object> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
@@ -243,11 +243,10 @@ public class GetService {
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String status) {
         User us = userRepository.getOne(authService.getUserId());
         generalResponse = new GeneralResponse();
-        if (authService.isUserAuthorized() && us.getIsModerator()) {
+        if (authService.isUserAuthorized()) {
             var postList = postRepository.findAll();
             var postsFiltered = postList.stream()
-                    .filter(p -> p.isActive() == 1 && (p.getModerationStatus().equals(ModerationStatus.NEW) &&
-                            p.getModeratorId().equals(us.getUserId()) && status.equals("new")))
+                    .filter(p -> p.isActive() == 1 && p.getModerationStatus().equals(ModerationStatus.NEW) && status.equals("new"))
                     .collect(Collectors.toList());
             List<PostComment> commentList = commentRepository.findAll();
             List<Object> list = new ArrayList<>();
@@ -265,7 +264,7 @@ public class GetService {
                         commentCountByPost, post.getViewCount(), userMap);
                 list.add(postModerationResponse);
             }
-            generalResponse.setCount(postsFiltered.size());
+//            generalResponse.setCount(count);
             generalResponse.setPosts(getOffsetLimitOutput(list, offset, limit));
             responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
         } else {
@@ -309,7 +308,7 @@ public class GetService {
     }
 
     private Map<String, List<TagResponse>> getTagResponsesMap (List<String> tagNameList) {
-        List<Post> postList = getPostList();
+        List<Post> postList = getActivePosts();
         var count = getCount();
         List<Integer> postsPerTagList = new ArrayList<>();
         for (String t : tagNameList) {
@@ -517,7 +516,7 @@ public class GetService {
     public Integer getCount() {
         int count;
         try {
-            List<Post> postList = getPostList();
+            List<Post> postList = getActivePosts();
             count = postList.size();
         } catch (NullPointerException ex) {
             count = 0;

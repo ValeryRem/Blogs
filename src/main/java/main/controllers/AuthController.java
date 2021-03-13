@@ -2,8 +2,7 @@ package main.controllers;
 
 import main.service.AuthService;
 import main.service.GetService;
-import main.service.LoginRequest;
-import main.service.ProfileRequest;
+import main.requests.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

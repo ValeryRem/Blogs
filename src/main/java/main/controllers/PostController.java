@@ -1,21 +1,16 @@
 package main.controllers;
 
-import main.entity.Session;
-import main.entity.User;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
+import main.requests.PostRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.devtools.RemoteSpringApplication;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController

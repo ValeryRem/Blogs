@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -35,7 +33,7 @@ public class PostService {
 
     @Autowired
     AuthService authService;
-    private boolean result = false;
+//    private boolean result = false;
 
     @Autowired
     HttpSession httpSession;
@@ -62,18 +60,21 @@ public class PostService {
 
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
-    public ResponseEntity<?> postApiModeration (Integer postId, String decision) {
+    public ResponseEntity<?> postApiModeration (Integer post_id, String decision) {
+        boolean result = false;
         if (authService.isUserAuthorized()) {
-            Post post = postRepository.getOne(postId);
+            Post post = postRepository.getOne(post_id);
             if (decision.equals("accept")) {
                 post.setModerationStatus(ModerationStatus.ACCEPTED);
                 responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
             } else if (decision.equals("decline")) {
                 post.setModerationStatus(ModerationStatus.DECLINED);
                 responseEntity = new ResponseEntity<>(result, HttpStatus.NOT_MODIFIED);
-            } else {
-                responseEntity = new ResponseEntity<>("Wrong request!", HttpStatus.NOT_ACCEPTABLE);
             }
+//            else {
+//                responseEntity = new ResponseEntity<>("Wrong request!", HttpStatus.NOT_ACCEPTABLE);
+//            }
+            postRepository.save(post);
         } else {
             responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         }
@@ -118,14 +119,14 @@ public class PostService {
         return responseEntity;
     }
 /*
-POST_PREMODERATION - если включен этот режим, то все новые посты пользователей с moderation = false обязательно
+POST_PREMODERATION - если включен этот режим, то все новые посты пользователей с moderation = true обязательно
 должны попадать на модерацию, у постов при создании должен быть установлен moderation_status = NEW. Eсли значения
 POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
     public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
         Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
-        result = true;
+        boolean result = true;
         User user = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
@@ -139,7 +140,7 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
-        checkTexts(title, text, errors);
+        checkTexts(title, text, errors, result);
         if (!result) {
             errorsResponse.getErrors().put("errors", errors);
             return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
@@ -183,7 +184,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                         responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
                     } else { //  if (active != 1)
                         post.setModerationStatus(ModerationStatus.NEW);
-                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.NOT_ACCEPTABLE);
+                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.OK);
                     }
                 }
                 postRepository.save(post);
@@ -237,10 +238,10 @@ POST_PREMODERATION = false (режим премодерации выключен
 //    }
 
     public ResponseEntity<?> putPost(Integer postId, Integer active, String title, List<String> tags, String text) {
-        result = true;
+        boolean result = true;
         Map<String, Object> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
-            checkTexts(title, text, errors);
+            checkTexts(title, text, errors, result);
             if (!result) {
                 errorsResponse.getErrors().put("errors", errors);
                 return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
@@ -284,27 +285,27 @@ POST_PREMODERATION = false (режим премодерации выключен
         return responseEntity;
     }
 
-    private void checkTexts (String title, String text, Map<String, Object> errors) {
+    private void checkTexts (String title, String text, Map<String, Object> errors, boolean result) {
         if (title.length() < 3) {
-            result = false;
             errors.put("Title", "Заголовок слишком короткий");
+            result = false;
         } else
             if (title.length()  > 100) {
-            result = false;
             errors.put("Title", "Заголовок слишком длинный!");
+                result = false;
         }
         if (text.length() < 50) {
-            result = false;
             errors.put("Text", "Текст публикации слишком короткий");
+            result = false;
         } else
             if(text.length() > 1000) {
-            result = false;
             errors.put("Text", "Текст публикации слишком длинный!");
+            result = false;
         }
     }
 
     public ResponseEntity<?> postComment(Integer postId, String parentId, String text) {
-        result = true;
+        boolean result = true;
         Map<String, Object> map = new LinkedHashMap<>();
         Map<String, Object> errors = new LinkedHashMap<>();
         int parentIdInt;

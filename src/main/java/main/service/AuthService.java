@@ -223,7 +223,7 @@ public class AuthService{
                 user.setName(nameString);
                 user.setPassword(password);
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
-                user.setCode(captcha);
+                user.setCode(null);
                 user.setIsModerator(false);
                 userRepository.save(user);
                 output.put("result", true);

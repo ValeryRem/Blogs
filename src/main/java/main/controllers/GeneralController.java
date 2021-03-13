@@ -1,7 +1,7 @@
 package main.controllers;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import main.api.response.InitResponse;
+import main.requests.PostModerationRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,18 +80,20 @@ public class GeneralController {
     }
 
     @GetMapping("/moderation")
-    private ResponseEntity<?> getPostsForModeration (@RequestParam(defaultValue="0") Integer offset,
-                                                     @RequestParam(defaultValue="3") Integer limit,
-                                                     @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsForModeration is activated.");
-        return getService.getPostsForModeration(offset, limit, mode);
+    private ResponseEntity<?> getPostsForModeration (@RequestBody PostModerationRequest postModerationRequest)
+//            @RequestParam(defaultValue="0") Integer offset,
+//                                                     @RequestParam(defaultValue="3") Integer limit,
+//                                                     @RequestParam(defaultValue="recent") String mode)
+                                                     {
+        return getService.getPostsForModeration(postModerationRequest.getOffset(), postModerationRequest.getLimit(),
+                postModerationRequest.getMode());
     }
 
     @PostMapping("/moderation")
-    private ResponseEntity<?> postApiModeration (@RequestParam(defaultValue="10")Integer postId,
-                                                 @RequestParam(defaultValue="accept") String request) {
+    private ResponseEntity<?> postApiModeration (@RequestParam(defaultValue="1")Integer post_id,
+                                                 @RequestParam(defaultValue="accept") String decision) {
         System.out.println("Method postApiModeration is activated.");
-        return postService.postApiModeration(postId, request);
+        return postService.postApiModeration(post_id, decision);
     }
 
 //    @PostMapping("/image")
