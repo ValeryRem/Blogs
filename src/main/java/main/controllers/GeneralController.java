@@ -1,7 +1,6 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
-import main.requests.GetModerationRequest;
 import main.requests.PostModerationRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,11 +91,11 @@ public class GeneralController {
 
     @PostMapping("/moderation")
     private ResponseEntity<?> postApiModeration (@RequestBody PostModerationRequest postModerationRequest)
-            //@RequestParam(defaultValue="1") Integer postId, @RequestParam(defaultValue="accept") String decision)
+//            @RequestParam(defaultValue="1") Integer postId, @RequestParam(defaultValue="accept") String decision)
     {
         System.out.println("Method postApiModeration is activated.");
-        //return postService.postApiModeration(postId, decision);
-        return postService.postApiModeration(postModerationRequest.getPostId(), postModerationRequest.getDecision());
+//        return postService.postApiModeration(postId, decision);
+        return postService.postApiModeration(postModerationRequest.getPost_id(), postModerationRequest.getDecision());
     }
 
 //    @PostMapping("/image")

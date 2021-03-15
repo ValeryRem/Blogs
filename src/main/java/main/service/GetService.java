@@ -259,10 +259,10 @@ public class GetService {
                         count();
                 userMap.put("id", us.getUserId());
                 userMap.put("name", us.getName());
-                PostModerationResponse postModerationResponse = new PostModerationResponse(post.getTimestamp().getTime() / 1000,
+                PostsForModerationResponse postsForModerationResponse = new PostsForModerationResponse(post.getPostId(), post.getTimestamp().getTime() / 1000,
                         post.getTitle(), post.getAnnounce(), extractLikeCount(post), extractDislikeCount(post),
                         commentCountByPost, post.getViewCount(), userMap);
-                list.add(postModerationResponse);
+                list.add(postsForModerationResponse);
             }
 //            generalResponse.setCount(count);
             generalResponse.setPosts(getOffsetLimitOutput(list, offset, limit));

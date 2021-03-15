@@ -2,6 +2,7 @@ package main.service;
 
 import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
+import main.api.response.ModerationResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
@@ -61,30 +62,25 @@ public class PostService {
 
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
-    public ResponseEntity<?> postApiModeration (Integer postId, String decision) {
+    public ResponseEntity<?> postApiModeration (Integer post_id, String decision) {
+        ResultResponse resultResponse = new ResultResponse(false);
         if (authService.isUserAuthorized()) {
-            Optional<Post> optionalPost = postRepository.findById(postId);
-            PostModerationRequest postModerationRequest = new PostModerationRequest();
+            Optional<Post> optionalPost = postRepository.findById(post_id);
             if(optionalPost.isPresent()) {
                 if (decision.equals("accept")) {
                     optionalPost.get().setModerationStatus(ModerationStatus.ACCEPTED);
-                    postModerationRequest.setPostId(postId);
-                    postModerationRequest.setDecision(decision);
-                    responseEntity = new ResponseEntity<>(postModerationRequest, HttpStatus.OK);
+                    resultResponse = new ResultResponse(true);
+                    responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.OK);
                 } else if (decision.equals("decline")) {
                     optionalPost.get().setModerationStatus(ModerationStatus.DECLINED);
-                    responseEntity = new ResponseEntity<>(false, HttpStatus.NOT_MODIFIED);
+                    responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_MODIFIED);
                 }
                 postRepository.save(optionalPost.get());
             } else {
-                responseEntity = new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_FOUND);
             }
-//            else {
-//                responseEntity = new ResponseEntity<>("Wrong request!", HttpStatus.NOT_ACCEPTABLE);
-//            }
-
         } else {
-            responseEntity = new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

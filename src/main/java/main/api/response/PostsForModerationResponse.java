@@ -2,7 +2,8 @@ package main.api.response;
 
 import java.util.TreeMap;
 
-public class PostModerationResponse {
+public class PostsForModerationResponse {
+    private Integer post_id;
     private  long timestamp;
     private  String title;
     private  String announce;
@@ -12,9 +13,10 @@ public class PostModerationResponse {
     private  Integer viewCount;
     private  TreeMap<String, Object> user;
 
-    public PostModerationResponse(long timestamp, String title,
-                                  String announce, Integer likeCount, Integer dislikeCount, Integer commentCount,
-                                  Integer viewCount, TreeMap<String, Object> user) {
+    public PostsForModerationResponse(Integer post_id, long timestamp, String title,
+                                      String announce, Integer likeCount, Integer dislikeCount, Integer commentCount,
+                                      Integer viewCount, TreeMap<String, Object> user) {
+        this.post_id = post_id;
         this.timestamp = timestamp;
         this.title = title;
         this.announce = announce;
@@ -24,6 +26,15 @@ public class PostModerationResponse {
         this.viewCount = viewCount;
         this.user = user;
 
+    }
+
+
+    public Integer getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
     public long getTimestamp() {
