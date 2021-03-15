@@ -62,10 +62,10 @@ public class PostService {
 
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
-    public ResponseEntity<?> postApiModeration (Integer post_id, String decision) {
+    public ResponseEntity<?> postApiModeration (Integer id, String decision) {
         ResultResponse resultResponse = new ResultResponse(false);
         if (authService.isUserAuthorized()) {
-            Optional<Post> optionalPost = postRepository.findById(post_id);
+            Optional<Post> optionalPost = postRepository.findById(id);
             if(optionalPost.isPresent()) {
                 if (decision.equals("accept")) {
                     optionalPost.get().setModerationStatus(ModerationStatus.ACCEPTED);

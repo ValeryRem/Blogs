@@ -22,12 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postApiModeration (@RequestBody PostModerationRequest postModerationRequest) updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postApiModeration for request POST /api/moderation updated.">
       <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ModerationResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
@@ -119,10 +118,9 @@
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostModerationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsForModerationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ModerationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ModerationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsForModerationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostsForModerationResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PostModerationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PostModerationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -226,13 +224,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00072" summary="Method for POST/api/post set up.">
-      <created>1607292870658</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1607292870658</updated>
     </task>
     <task id="LOCAL-00073" summary="SessionRepository set up for authoriztion of users.">
       <created>1607358510455</created>
@@ -570,7 +561,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615802088390</updated>
     </task>
-    <option name="localTasksCounter" value="121" />
+    <task id="LOCAL-00121" summary="Methods postApiModeration for request POST /api/moderation updated.">
+      <created>1615809861377</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1615809861377</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -593,7 +591,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method postAuthLogin without default parameters." />
     <MESSAGE value="Method postAuthLogin produces &quot;Required String parameter 'e_mail' is not present&quot; error." />
     <MESSAGE value="Method postAuthLogin with @JsonProperty annotated parameters." />
     <MESSAGE value="Method postAuthLogin with @JsonProperty parameters." />
@@ -618,7 +615,8 @@
     <MESSAGE value="Methods postApiModeration updated." />
     <MESSAGE value="Methods getModerationCount &amp; getAuthCheck updated." />
     <MESSAGE value="Methods postApiModeration (@RequestBody PostModerationRequest postModerationRequest) updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods postApiModeration (@RequestBody PostModerationRequest postModerationRequest) updated." />
+    <MESSAGE value="Methods postApiModeration for request POST /api/moderation updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postApiModeration for request POST /api/moderation updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

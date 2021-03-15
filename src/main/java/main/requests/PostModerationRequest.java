@@ -6,17 +6,17 @@ import java.io.Serializable;
 
 public class PostModerationRequest implements Serializable {
     @JsonProperty//("post_id")
-    Integer post_id;
+    Integer id;
 
     @JsonProperty
     String decision;
 
     public Integer getPost_id() {
-        return post_id;
+        return id;
     }
 
     public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+        this.id = post_id;
     }
 
     public String getDecision() {

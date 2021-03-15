@@ -1,24 +1,24 @@
 package main.api.response;
 
 public class ModerationResponse {
-    private Integer post_id;
+    private Integer id;
     private  String decision;
 
 
     public ModerationResponse() {
     }
 
-    public ModerationResponse(Integer post_id, String decision) {
-        this.post_id = post_id;
+    public ModerationResponse(Integer id, String decision) {
+        this.id = id;
         this.decision = decision;
     }
 
-    public Integer getPost_id() {
-        return post_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDecision() {
