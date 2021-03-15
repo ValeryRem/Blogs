@@ -1,12 +1,18 @@
 package main.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 
 public class GetModerationRequest implements Serializable {
+    @JsonProperty
     Integer offset;
+
+    @JsonProperty
     Integer limit;
+
+    @JsonProperty
     String mode;
 
     public Integer getOffset() {

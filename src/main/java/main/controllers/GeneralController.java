@@ -80,23 +80,23 @@ public class GeneralController {
         return getService.getApiCalendar (year);
     }
 
-    @GetMapping("/moderation")
-    private ResponseEntity<?> getPostsForModeration (@RequestBody GetModerationRequest getModerationRequest)
-//            @RequestParam(defaultValue="0") Integer offset,
-//                                                     @RequestParam(defaultValue="3") Integer limit,
-//                                                     @RequestParam(defaultValue="recent") String mode)
-                                                     {
-        return getService.getPostsForModeration(getModerationRequest.getOffset(), getModerationRequest.getLimit(),
-                getModerationRequest.getMode());
-    }
+//    @GetMapping("/post/moderation")
+//    private ResponseEntity<?> getPostsForModeration (@RequestBody GetModerationRequest getModerationRequest)
+////            @RequestParam(defaultValue="0") Integer offset,
+////                                                     @RequestParam(defaultValue="3") Integer limit,
+////                                                     @RequestParam(defaultValue="recent") String mode)
+//                                                     {
+//        return getService.getPostsForModeration(getModerationRequest.getOffset(), getModerationRequest.getLimit(),
+//                getModerationRequest.getMode());
+//    }
 
     @PostMapping("/moderation")
     private ResponseEntity<?> postApiModeration (@RequestBody PostModerationRequest postModerationRequest)
-//            @RequestParam(defaultValue="1")Integer post_id,
-//                                                 @RequestParam(defaultValue="accept") String decision)
+            //@RequestParam(defaultValue="1") Integer postId, @RequestParam(defaultValue="accept") String decision)
     {
         System.out.println("Method postApiModeration is activated.");
-        return postService.postApiModeration(postModerationRequest.getPost_id(), postModerationRequest.getDecision());
+        //return postService.postApiModeration(postId, decision);
+        return postService.postApiModeration(postModerationRequest.getPostId(), postModerationRequest.getDecision());
     }
 
 //    @PostMapping("/image")

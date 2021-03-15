@@ -5,6 +5,7 @@ import main.api.response.GeneralResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
+import main.requests.PostModerationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,23 +61,30 @@ public class PostService {
 
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
-    public ResponseEntity<?> postApiModeration (Integer post_id, String decision) {
-        boolean result = false;
+    public ResponseEntity<?> postApiModeration (Integer postId, String decision) {
         if (authService.isUserAuthorized()) {
-            Post post = postRepository.getOne(post_id);
-            if (decision.equals("accept")) {
-                post.setModerationStatus(ModerationStatus.ACCEPTED);
-                responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
-            } else if (decision.equals("decline")) {
-                post.setModerationStatus(ModerationStatus.DECLINED);
-                responseEntity = new ResponseEntity<>(result, HttpStatus.NOT_MODIFIED);
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            PostModerationRequest postModerationRequest = new PostModerationRequest();
+            if(optionalPost.isPresent()) {
+                if (decision.equals("accept")) {
+                    optionalPost.get().setModerationStatus(ModerationStatus.ACCEPTED);
+                    postModerationRequest.setPostId(postId);
+                    postModerationRequest.setDecision(decision);
+                    responseEntity = new ResponseEntity<>(postModerationRequest, HttpStatus.OK);
+                } else if (decision.equals("decline")) {
+                    optionalPost.get().setModerationStatus(ModerationStatus.DECLINED);
+                    responseEntity = new ResponseEntity<>(false, HttpStatus.NOT_MODIFIED);
+                }
+                postRepository.save(optionalPost.get());
+            } else {
+                responseEntity = new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
             }
 //            else {
 //                responseEntity = new ResponseEntity<>("Wrong request!", HttpStatus.NOT_ACCEPTABLE);
 //            }
-            postRepository.save(post);
+
         } else {
-            responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

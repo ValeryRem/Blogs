@@ -1,17 +1,22 @@
 package main.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class PostModerationRequest implements Serializable {
-    Integer post_id;
+    @JsonProperty("post_id")
+    Integer postId;
+
+    @JsonProperty
     String decision;
 
-    public Integer getPost_id() {
-        return post_id;
+    public Integer getPostId() {
+        return postId;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setPostId(Integer postId) {
+        this.postId = postId;
     }
 
     public String getDecision() {
