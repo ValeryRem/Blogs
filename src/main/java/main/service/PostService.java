@@ -1,12 +1,9 @@
 package main.service;
 
-import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
-import main.api.response.ModerationResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
-import main.requests.PostModerationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +21,9 @@ import static java.time.LocalDateTime.now;
 @Service
 public class PostService {
 
-    @Autowired
-    ErrorsResponse errorsResponse;
+//    @Autowired
+    ResultResponse resultResponse = new ResultResponse(false);
+//    ErrorsResponse errorsResponse;
 
     @Autowired
     UserRepository userRepository;
@@ -63,7 +61,7 @@ public class PostService {
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     public ResponseEntity<?> postApiModeration (Integer id, String decision) {
-        ResultResponse resultResponse = new ResultResponse(false);
+//        ResultResponse resultResponse = new ResultResponse(false);
         if (authService.isUserAuthorized()) {
             Optional<Post> optionalPost = postRepository.findById(id);
             if(optionalPost.isPresent()) {
@@ -146,8 +144,10 @@ POST_PREMODERATION = false (режим премодерации выключен
         post.setViewCount(0);
         checkTexts(title, text, errors, result);
         if (!result) {
-            errorsResponse.getErrors().put("errors", errors);
-            return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
+            resultResponse = new ResultResponse(false);
+//            errorsResponse.getErrors().put("errors", errors);
+            return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
         } else {
             post.setTitle(title);
             post.setText(text);
@@ -247,8 +247,9 @@ POST_PREMODERATION = false (режим премодерации выключен
         if (authService.isUserAuthorized()) {
             checkTexts(title, text, errors, result);
             if (!result) {
-                errorsResponse.getErrors().put("errors", errors);
-                return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
+                resultResponse = new ResultResponse(false);
+//                errorsResponse.getErrors().put("errors", errors);
+                return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
             } else {
                 try {
                     Post post = postRepository.getOne(postId);
@@ -329,7 +330,8 @@ POST_PREMODERATION = false (режим премодерации выключен
             } else {
                 result = false;
                 errors.put("Post with id ", postId + " does not exist.");
-                errorsResponse.getErrors().put("errors", errors);
+                resultResponse = new ResultResponse(false);
+//                errorsResponse.getErrors().put("errors", errors);
             }
             if (postCommentRepository.findAll().stream().
                     map(PostComment::getCommentId).
@@ -340,7 +342,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 if (parentIdInt > 0) {
                     result = false;
                     errors.put("ParentId ", parentId + " does not exist.");
-                    errorsResponse.getErrors().put("errors", errors);
+//                    errorsResponse.getErrors().put("errors", errors);
                 } else {
                     postComment.setParentId(parentIdInt);
                 }
@@ -348,7 +350,7 @@ POST_PREMODERATION = false (режим премодерации выключен
             if (text.length() < 20) {
                 result = false;
                 errors.put("Text", "Text too short!");
-                errorsResponse.getErrors().put("errors", errors);
+//                errorsResponse.getErrors().put("errors", errors);
             }
             if (result) {
                 postComment.setTime(now());
@@ -358,7 +360,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 map.put("id", postComment.getCommentId());
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.OK);
+                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.OK);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);

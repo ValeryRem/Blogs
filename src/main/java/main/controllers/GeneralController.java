@@ -30,8 +30,6 @@ public class GeneralController {
     @Autowired
     private UserService userService;
 
-//    private File file = new File("src/main/resources/static/img/default-1.png");
-
     public GeneralController(SettingsService settingsService, InitResponse initResponse) {
         this.settingsService = settingsService;
         this.initResponse = initResponse;
@@ -79,32 +77,12 @@ public class GeneralController {
         return getService.getApiCalendar (year);
     }
 
-//    @GetMapping("/post/moderation")
-//    private ResponseEntity<?> getPostsForModeration (@RequestBody GetModerationRequest getModerationRequest)
-////            @RequestParam(defaultValue="0") Integer offset,
-////                                                     @RequestParam(defaultValue="3") Integer limit,
-////                                                     @RequestParam(defaultValue="recent") String mode)
-//                                                     {
-//        return getService.getPostsForModeration(getModerationRequest.getOffset(), getModerationRequest.getLimit(),
-//                getModerationRequest.getMode());
-//    }
-
     @PostMapping("/moderation")
     private ResponseEntity<?> postApiModeration (@RequestBody PostModerationRequest postModerationRequest)
-//            @RequestParam(defaultValue="1") Integer postId, @RequestParam(defaultValue="accept") String decision)
     {
         System.out.println("Method postApiModeration is activated.");
-//        return postService.postApiModeration(postId, decision);
         return postService.postApiModeration(postModerationRequest.getPost_id(), postModerationRequest.getDecision());
     }
-
-//    @PostMapping("/image")
-//    private ResponseEntity<?> postImage
-//            (@RequestParam(defaultValue="src/main/resources/static/img/default-1.png") String origin,
-//             @RequestParam(defaultValue= "upload/") String destination) throws IOException {
-//        System.out.println("Method postImage is activated.");
-//        return postService.postImage (origin, destination);
-//    }
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})// MediaType.MULTIPART_FORM_DATA_VALUE)
     public @ResponseBody

@@ -1,6 +1,5 @@
 package main.service;
 
-import main.api.response.ErrorsResponse;
 import main.api.response.ResultResponse;
 import main.entity.User;
 import main.repository.UserRepository;
@@ -25,6 +24,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private ResultResponse resultResponse = new ResultResponse(false);
+
     private boolean result;
 
     private final int PW_MIN_LENGTH = 6;
@@ -42,13 +43,13 @@ public class UserService {
             userRepository.save(user);
             return new ResponseEntity<>(imageAddress, HttpStatus.OK);
         } else {
-            return ResponseEntity.ok(new ErrorsResponse());//("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.ok(new ResultResponse(false));//("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
     }
 
     public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
                                               String password, String removePhoto) throws IOException {
-        ErrorsResponse errorsResponse;
+//        ErrorsResponse errorsResponse;
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -81,8 +82,9 @@ public class UserService {
             errors.put("name", "Имя указано неверно.");
         }
         if (!result) {
-            errorsResponse = new ErrorsResponse(false, errors);
-            return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+//            errorsResponse = new ErrorsResponse(false, errors);
+//            return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
         } else {
             currentUser.setName(name);
             if(email != null && !currentUser.getEmail().equals(email)) {

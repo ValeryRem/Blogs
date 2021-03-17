@@ -3,7 +3,6 @@ package main.service;
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.api.response.AuthResponse;
-import main.api.response.ErrorsResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
 import main.entity.Session;
@@ -48,6 +47,8 @@ public class AuthService{
     @Autowired
     private GlobalSettingsReporitory globalSettingsReporitory;
 
+
+
 //    private AuthResponse authResponse;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
@@ -57,11 +58,11 @@ public class AuthService{
         AuthResponse authResponse = new AuthResponse();
         Optional<User> user = userRepository.findByEmail(eMail);
         if (user.isEmpty()) {
-            return ResponseEntity.ok(new ErrorsResponse());
+            return ResponseEntity.ok(new ResultResponse(false));
         }
         User currentUser = user.get();
         if (!currentUser.getPassword().equals(userPassword)) {
-            return ResponseEntity.ok(new ErrorsResponse());
+            return ResponseEntity.ok(new ResultResponse(false));
         }
         registerSession(currentUser.getUserId()); // put new session id, delete old sessions id
         authResponse.setResult(true);
@@ -252,35 +253,26 @@ public class AuthService{
         return responseEntity;
     }
 
-    public ResponseEntity<?> authRestore (String eMail) {
-        ResponseEntity<?> responseEntity;
-        if (userRepository.findAll().stream().
-                map(User::getEmail).
-                collect(Collectors.toList()).
-                contains(eMail)) {
-            result = true;
+    public ResponseEntity<?> authRestore(String email) {
+        Optional<User> optionalUser = userRepository.findAll().stream().
+                filter(u -> u.getEmail().equals(email)).
+                findFirst();
+        if (optionalUser.isPresent()) {
             String code = generateCode(16);
             String text = "/login/change-password/" + code;
-            User user = userRepository.findAll().stream().
-                    filter(u -> u.getEmail().
-                            equals(eMail)).
-                    findAny().
-                    orElse(new User());
-            user.setCode(code);
-            userRepository.save(user);
+            System.out.println("code: " + code);
+            optionalUser.get().setCode(code);
+            userRepository.save(optionalUser.get());
             try {
-                sendEmail(eMail, "Restore password", text);
+                sendEmail(email, "Restore password", text);
             } catch (MailSendException ex) {
                 ex.printStackTrace();
-                Map<Object, Exception> failedMails = ex.getFailedMessages();
-                System.out.println(failedMails.entrySet());
-                return new ResponseEntity<>(failedMails, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ResultResponse(false), HttpStatus.BAD_REQUEST);
             }
-            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         }
-        return responseEntity;
+        System.out.println("HttpStatus.NOT_FOUND");
+        return new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
     }
 
     public boolean isUserAuthorized () {
@@ -309,9 +301,9 @@ public class AuthService{
         return moderCount;
     }
 
-    private void sendEmail(String eMail, String subject, String text) {
+    private void sendEmail(String email, String subject, String text) {
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(eMail);
+        msg.setTo(email);
         msg.setSubject(subject);
         msg.setText(text);
         javaMailSender.send(msg);

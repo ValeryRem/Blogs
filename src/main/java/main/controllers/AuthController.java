@@ -56,9 +56,9 @@ public class AuthController {
     }
 
     @PostMapping("/restore")
-    private ResponseEntity<?> authRestore (@RequestParam(defaultValue="klo@ggg.ty") String eMail) {
+    private ResponseEntity<?> authRestore (@RequestBody String email) {
         System.out.println("Method authRestore is activated.");
-        return authService.authRestore(eMail);
+        return authService.authRestore(email);
     }
 
     @PostMapping("/password")
