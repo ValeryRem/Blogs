@@ -254,15 +254,14 @@ public class AuthService{
     }
 
     public ResponseEntity<?> authRestore(String email) {
-        Optional<User> optionalUser = userRepository.findAll().stream().
-                filter(u -> u.getEmail().equals(email)).
-                findFirst();
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             String code = generateCode(16);
             String text = "/login/change-password/" + code;
             System.out.println("code: " + code);
-            optionalUser.get().setCode(code);
-            userRepository.save(optionalUser.get());
+            User user = optionalUser.get();
+            user.setCode(code);
+            userRepository.save(user);
             try {
                 sendEmail(email, "Restore password", text);
             } catch (MailSendException ex) {
@@ -271,7 +270,7 @@ public class AuthService{
             }
             return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         }
-        System.out.println("HttpStatus.NOT_FOUND");
+        System.out.println("USER NOT_FOUND");
         return new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
     }
 
@@ -315,6 +314,11 @@ public class AuthService{
                         filter(s -> s.getSessionName().equals(httpSession.getId())).
                         map(Session::getUserId).
                         findAny().orElse(0);
+    }
+
+    public User getCurrentUser() {
+        return
+                userRepository.getOne(getUserId());
     }
 
     private String generateCode(int length) {

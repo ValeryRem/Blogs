@@ -113,15 +113,15 @@ public class GetService {
         return  new ResponseEntity<>(generalResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPostsByDate(LocalDate time, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByDate(long time, Integer offset, Integer limit, String mode) {
         var postList = getActivePosts();
         var sortedPosts = getPostsFilteredByMode(postList, mode);
         List<Object> posts = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : sortedPosts) {
-            if (post.getTimestamp().toInstant()
-                    .atZone(ZoneId.of("UTC"))
-                    .toLocalDate().equals(time)) {
+            if ((post.getTimestamp().getTime()/1000) == time)
+//                    .toInstant().atZone(ZoneId.of("UTC")).toLocalDate().equals(time))
+            {
                 int commentCountByPost = (int) commentList.stream().
                         filter(a -> a.getPostId().equals(post.getPostId())).
                         count();
@@ -210,33 +210,40 @@ public class GetService {
         }
     }
 
-    public ResponseEntity<?> getPostById(Integer postId) {
-        if(postRepository.findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(postId)) {
-            var post = postRepository.getOne(postId);
-            var postByIdResponse = new PostByIdResponse(post);
-            postByIdResponse.setCommentList(getCommentList(postId));
+    public ResponseEntity<?> getPostById(Integer id) {
+        if(postRepository.findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(id)) {
+            var post = postRepository.getOne(id);
+            var postByIdResponse = new PostByIdResponse();
+            postByIdResponse.setId(id);
+            postByIdResponse.setTimestamp(post.getTimestamp().getTime()/1000);
+            postByIdResponse.setActive(post.isActive() == 1);
             postByIdResponse.setUser(getUserOfPost(post));
+            postByIdResponse.setTitle(post.getTitle());
+            postByIdResponse.setText(post.getText());
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
+                ArrayList<String> tags = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {
-                    if (tag2Post.getPostId().equals(postId)) {
+                    if (tag2Post.getPostId().equals(id)) {
                         tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
                     }
                 }
+//                ArrayList<String> tags = tagsIdList.stream().map((s -> tagRepository.getOne(s).getTagName()).Collect;
                 var iterableTags = tagRepository.findAll();
                 for (Tag tag : iterableTags) {
                     if (tagsIdList.contains(tag.getId())) {
-                        postByIdResponse.getTags().add(tag); // добавляем тэги в объект вывода
+                       tags.add(tag.getTagName()); // добавляем тэги в объект вывода
                     }
                 }
+                postByIdResponse.setTags(tags);
             }
             return new ResponseEntity<>(postByIdResponse, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Post with ID = " + id + " not found.", HttpStatus.NOT_FOUND);
         }
     }
 

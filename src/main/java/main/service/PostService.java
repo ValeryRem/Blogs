@@ -1,5 +1,6 @@
 package main.service;
 
+import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -83,21 +85,25 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLike (Integer postToLikeId, Integer userId) {
+    public ResponseEntity<?> postLike (Integer id) {
         if (authService.isUserAuthorized()) {
-            List<PostVote> postVotes = postVoteRepository.findAll().stream().
-                    filter(pv -> pv.getPostId().equals(postToLikeId)).
-                    collect(Collectors.toList());
-            PostVote postVote = postVotes.stream().filter(pv -> pv.getUserId().equals(userId)).findAny().orElse(new PostVote());
-            if(postVote.getValue() != 1) {
-                postVote.setValue(1);
-                postVoteRepository.save(postVote);
-                responseEntity = new ResponseEntity<>("result: true", HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<>("result: false", HttpStatus.ALREADY_REPORTED);
-            }
-        } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+//            List<PostVote> postVotes = postVoteRepository.findAll().stream().
+//                    filter(pv -> pv.getPostId().equals(id)).
+//                    collect(Collectors.toList());
+            PostVote postVote = new PostVote();
+//            PostVote postVote = postVotes.stream().filter(pv -> pv.getUserId().equals(userId)).findAny().orElse(new PostVote());
+//            if(postVote.getValue() != 1) {
+            postVote.setPostId(id);
+            postVote.setTime(Timestamp.valueOf(now()));
+            postVote.setUserId(authService.getUserId());
+            postVote.setValue(1);
+            postVoteRepository.save(postVote);
+            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+//            } else {
+//                responseEntity = new ResponseEntity<>("result: false", HttpStatus.ALREADY_REPORTED);
+//            }
+//        } else {
+//            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }
@@ -309,58 +315,52 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
     }
 
-    public ResponseEntity<?> postComment(Integer postId, String parentId, String text) {
+    public ResponseEntity<?> postComment(Integer parent_id, Integer id, String text) {
+
+        ErrorsResponse errorsResponse = new ErrorsResponse();
         boolean result = true;
-        Map<String, Object> map = new LinkedHashMap<>();
-        Map<String, Object> errors = new LinkedHashMap<>();
-        int parentIdInt;
-        if(parentId.length() > 0) {
-            parentIdInt = Integer.parseInt(parentId);
-        } else {
-            parentIdInt = 0;
-        }
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             Integer userId = authService.getUserId();
             PostComment postComment = new PostComment();
-            if (postRepository.findAll().stream().
-                    map(Post::getPostId).
-                    collect(Collectors.toList()).
-                    contains(postId)) {
-                postComment.setPostId(postId);
+            if (postRepository.findById(id).isPresent()) {
+                postComment.setPostId(id);
+//                postComment.setParentId(parent_id);
+
             } else {
-                result = false;
-                errors.put("Post with id ", postId + " does not exist.");
-                resultResponse = new ResultResponse(false);
-//                errorsResponse.getErrors().put("errors", errors);
+                errors.put("post", id + " does not exist.");
+                errorsResponse.setErrors(errors);
+                return responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
             }
-            if (postCommentRepository.findAll().stream().
-                    map(PostComment::getCommentId).
-                    collect(Collectors.toList()).
-                    contains(parentIdInt)) {
-                postComment.setParentId(parentIdInt);
-            } else {
-                if (parentIdInt > 0) {
-                    result = false;
-                    errors.put("ParentId ", parentId + " does not exist.");
-//                    errorsResponse.getErrors().put("errors", errors);
-                } else {
-                    postComment.setParentId(parentIdInt);
-                }
-            }
-            if (text.length() < 20) {
+
+//            else {
+//                if (parentIdInt > 0) {
+//                    result = false;
+//                    errors.put("ParentId ", parent_id + " does not exist.");
+////                    errorsResponse.getErrors().put("errors", errors);
+//                } else {
+//                    postComment.setParentId(parentIdInt);
+//                }
+//            }
+            if (text.length() < 10 || text.length() > 300 ) {
                 result = false;
-                errors.put("Text", "Text too short!");
-//                errorsResponse.getErrors().put("errors", errors);
+                errors.put("text", "Text's length is out of limit!");
             }
             if (result) {
-                postComment.setTime(now());
+                postComment.setTime(Timestamp.valueOf(now()));
                 postComment.setUserId(userId);
                 postComment.setText(text);
+                if (parent_id != null) {
+                    postComment.setParentId(parent_id);
+                }
                 postCommentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
-                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
+                responseEntity = new ResponseEntity<>("id: " + id, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.OK);
+                map.put("result", resultResponse);
+                map.put("errors", errors);
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);

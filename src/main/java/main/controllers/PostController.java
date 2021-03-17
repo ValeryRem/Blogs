@@ -3,18 +3,17 @@ package main.controllers;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
+import main.requests.CommentRequest;
 import main.requests.PostRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api")
 public class PostController {
     @Autowired
     private GetService getService;
@@ -37,7 +36,7 @@ public class PostController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("")
+    @GetMapping("/post")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
                                         @RequestParam(defaultValue="7") Integer limit,
@@ -46,13 +45,13 @@ public class PostController {
         return getService.getPosts (offset, limit, mode);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/post/{id:\\d+}")
     private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
         System.out.println("Method getPostById activated. ID requested: " + postId);
         return getService.getPostById(postId);
     }
 
-    @GetMapping("/search/")
+    @GetMapping("/post/search/")
     private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue = "new testing") String query,
                                                @RequestParam(defaultValue="0") Integer offset,
                                                @RequestParam(defaultValue="4") Integer limit,
@@ -61,17 +60,15 @@ public class PostController {
         return getService.getPostsBySearch(query, offset, limit, mode);
     }
 
-    @GetMapping("/byDate")
+    @GetMapping("/post/byDate")
     private ResponseEntity<?> getPostsByDate (
-            @RequestParam(defaultValue = "2020-12-23")    @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date,
-                                             @RequestParam(defaultValue="0") Integer offset,
-                                             @RequestParam(defaultValue="5") Integer limit,
+            @RequestParam long date, @RequestParam(defaultValue="0") Integer offset, @RequestParam(defaultValue="5") Integer limit,
                                              @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsByDate activated. Date:" + date );
         return getService.getPostsByDate(date, offset, limit, mode);
     }
 
-    @GetMapping("/byTag")
+    @GetMapping("/post/byTag")
     private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "PHP") String tagName,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="1") Integer limit,
@@ -80,7 +77,7 @@ public class PostController {
         return getService.getPostsByTag(tagName, offset, limit, mode);
     }
 
-    @GetMapping("/moderation")
+    @GetMapping("/post/moderation")
     private ResponseEntity<?> getPostsForModeration(@RequestParam(defaultValue="0") Integer offset,
                                                     @RequestParam(defaultValue="3") Integer limit,
                                                     @RequestParam(defaultValue="new") String status) {
@@ -96,21 +93,22 @@ public class PostController {
         return getService.getMyPosts(offset, limit);
     }
 
-    @PostMapping("/like")
-    private ResponseEntity<?> postLike (@RequestParam(defaultValue="5") Integer postToLikeId,
-                                        @RequestParam(defaultValue="2") Integer userId) {
+    @PostMapping("/post/like")
+    private ResponseEntity<?> postLike (@RequestBody Integer id)
+//                                        @RequestParam(defaultValue="2") Integer userId)
+                                        {
         System.out.println("Method postLike activated");
-        return postService.postLike(postToLikeId, userId);
+        return postService.postLike(id);
     }
 
-    @PostMapping("/dislike")
+    @PostMapping("/post/dislike")
     private ResponseEntity<?> postDislike (@RequestParam(defaultValue="5") Integer postToLikeId,
                                            @RequestParam(defaultValue="2") Integer userId) {
         System.out.println("Method postDislike activated");
         return postService.postDislike(postToLikeId, userId);
     }
 
-    @PostMapping("")
+    @PostMapping("/post")
     private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
 //            @RequestParam long timestamp,
 //                                        @RequestParam(defaultValue="1") Integer active,
@@ -124,7 +122,7 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/{id:\\d+}")
+    @PutMapping("/post/{id:\\d+}")
     private ResponseEntity<?> putPost (@PathVariable("id") Integer postId,
                                        @RequestParam(defaultValue="1") Integer active,
                                        @RequestParam(defaultValue="Optional description.") String title,
@@ -133,6 +131,13 @@ public class PostController {
         System.out.println("Method putPost is activated for postId: " + postId);
         return postService.putPost(postId, active, title, tags, text);
     }
+
+    @PostMapping("/comment")
+    private ResponseEntity<?> postComment (CommentRequest commentRequest){
+        System.out.println("Method postComment is activated.");
+        return postService.postComment(commentRequest.getParent_id(), commentRequest.getPostId(), commentRequest.getText());
+    }
+
 //    private void registerSession () {
 //        Session session = new Session();
 //        session.setSessionName(httpSession.getId());

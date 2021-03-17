@@ -91,13 +91,6 @@ public class GeneralController {
         return userService.postApiImage(image);
     }
 
-    @PostMapping("/comment/")
-    private ResponseEntity<?> postComment (@RequestParam(defaultValue="5") Integer postId,
-                                           @RequestParam(defaultValue="") String parentId,
-                                           @RequestParam(defaultValue="Ugly rude post. Method postComment is activated.") String text) {
-        System.out.println("Method postComment is activated.");
-        return postService.postComment(4, "", text);
-    }
 
 // этот вариант нам подходит, если мы отправляем или форму или форму и картинку вместе
 //    @PostMapping(value = "/profile/my", consumes = {"multipart/form-data", "application/json"})
