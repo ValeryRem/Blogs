@@ -315,7 +315,7 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
     }
 
-    public ResponseEntity<?> postComment(Integer parent_id, Integer id, String text) {
+    public ResponseEntity<?> postComment(Integer parent_id, Integer id , String text) {
 
         ErrorsResponse errorsResponse = new ErrorsResponse();
         boolean result = true;
@@ -356,7 +356,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                 }
                 postCommentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
-                responseEntity = new ResponseEntity<>("id: " + id, HttpStatus.OK);
+                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
                 map.put("result", resultResponse);
                 map.put("errors", errors);

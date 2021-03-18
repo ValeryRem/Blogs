@@ -253,8 +253,8 @@ public class AuthService{
         return responseEntity;
     }
 
-    public ResponseEntity<?> authRestore(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+    public ResponseEntity<?> authRestore(String e_mail) {
+        Optional<User> optionalUser = userRepository.findByEmail(e_mail);
         if (optionalUser.isPresent()) {
             String code = generateCode(16);
             String text = "/login/change-password/" + code;
@@ -263,7 +263,7 @@ public class AuthService{
             user.setCode(code);
             userRepository.save(user);
             try {
-                sendEmail(email, "Restore password", text);
+                sendEmail(e_mail, "Restore password", text);
             } catch (MailSendException ex) {
                 ex.printStackTrace();
                 return new ResponseEntity<>(new ResultResponse(false), HttpStatus.BAD_REQUEST);
