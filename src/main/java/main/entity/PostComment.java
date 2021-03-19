@@ -1,5 +1,7 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -17,16 +19,19 @@ public class PostComment {
     @Column(name = "parent_id")
     private Integer parentId;
 
-    @Column(name = "post_id")
+    @Column(name = "post_id", nullable = false)
+    @JsonProperty("PostId")
     private Integer postId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Integer userId;
     private Timestamp time;
     private String text;
 
+
+
     public PostComment() {
-        userId = new Post(postId).getUserId();
+//        userId = new Post(postId).getUserId();
     }
 
     @Override

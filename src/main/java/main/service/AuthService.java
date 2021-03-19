@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
 public class AuthService{
     @Autowired
@@ -56,7 +58,7 @@ public class AuthService{
 
     public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
         AuthResponse authResponse = new AuthResponse();
-        Optional<User> user = userRepository.findByEmail(eMail);
+        Optional<User> user = userRepository.findOneByEmail(eMail);
         if (user.isEmpty()) {
             return ResponseEntity.ok(new ResultResponse(false));
         }
@@ -220,11 +222,12 @@ public class AuthService{
                 }
             }
             if (result) {
+                String code = generateCode(16);
                 user.setEmail(email);
                 user.setName(nameString);
                 user.setPassword(password);
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
-                user.setCode(null);
+                user.setCode(code);
                 user.setIsModerator(false);
                 userRepository.save(user);
                 output.put("result", true);
@@ -253,9 +256,11 @@ public class AuthService{
         return responseEntity;
     }
 
-    public ResponseEntity<?> authRestore(String e_mail) {
-        Optional<User> optionalUser = userRepository.findByEmail(e_mail);
-        if (optionalUser.isPresent()) {
+    public ResponseEntity<?> authRestore(String email) {
+//        Optional<User> optionalUser = userRepository.findAll().stream().filter(u -> u.getEmail().equals(email)).findAny();
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if (optionalUser.isPresent())
+        {
             String code = generateCode(16);
             String text = "/login/change-password/" + code;
             System.out.println("code: " + code);
@@ -263,7 +268,7 @@ public class AuthService{
             user.setCode(code);
             userRepository.save(user);
             try {
-                sendEmail(e_mail, "Restore password", text);
+                sendEmail(email, "Restore password", text);
             } catch (MailSendException ex) {
                 ex.printStackTrace();
                 return new ResponseEntity<>(new ResultResponse(false), HttpStatus.BAD_REQUEST);
@@ -333,12 +338,11 @@ public class AuthService{
 
 
     public void clearOldCaptchas() {
-                List<CaptchaCode> oldCaptchas = captchaRepository.findAll().stream()
-                        .filter(c -> c.getTimestamp().getTime() < (Timestamp.valueOf(LocalDateTime.now()).getTime() - 3_600_000))
-                        .collect(Collectors.toList());
-                captchaRepository.deleteInBatch(oldCaptchas);
+        List<CaptchaCode> oldCaptchas = captchaRepository.findAll().stream()
+                .filter(c -> c.getTimestamp().getTime() < (Timestamp.valueOf(LocalDateTime.now()).getTime() - 3_600_000))
+                .collect(Collectors.toList());
+        captchaRepository.deleteInBatch(oldCaptchas);
     }
-
 //    private static BufferedImage resizeImageWithHint(BufferedImage originalImage,
 //                                                     int IMG__WIDTH, int IMG__HEIGHT, int type){
 //

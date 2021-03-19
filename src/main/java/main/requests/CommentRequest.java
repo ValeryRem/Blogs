@@ -1,20 +1,18 @@
 package main.requests;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.Serializable;
 
 public class CommentRequest implements Serializable {
-    Integer id;
+    Integer post_id;
     Integer parent_id;
     String text;
 
     public Integer getPostId() {
-        return id;
+        return post_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
     public Integer getParent_id() {

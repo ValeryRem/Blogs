@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,24 +20,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
+    @JsonProperty
     private Integer userId;
 
     @Column(name = "is_moderator")
+    @JsonProperty
     private boolean isModerator;
 
     @Column(name = "reg_time")
     @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @JsonProperty
     private Timestamp regTime;
 
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
+    @JsonProperty
     private String name;
 
     @Email
-    @JsonProperty("e_mail")
+    @JsonProperty
     @Column(name = "e_mail", unique = true)
     private String email;
 
-    @JsonProperty("password")
+    @JsonProperty
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
 
@@ -83,8 +88,7 @@ public class User {
     }
 
 
-    public void setRegTime( @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
-                                    Timestamp regTime) {
+    public void setRegTime( @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss") Timestamp regTime) {
         this.regTime = regTime;
     }
 

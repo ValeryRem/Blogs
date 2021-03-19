@@ -1,9 +1,11 @@
 package main.controllers;
 
+import main.requests.RestoreRequest;
 import main.service.AuthService;
 import main.service.GetService;
 import main.requests.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,9 +58,9 @@ public class AuthController {
     }
 
     @PostMapping("/restore")
-    private ResponseEntity<?> authRestore (@RequestParam ("email") String email) {
+    private ResponseEntity<?> authRestore (@RequestBody RestoreRequest restoreRequest) {
         System.out.println("Method authRestore is activated.");
-        return authService.authRestore(email);
+        return authService.authRestore(restoreRequest.getEmail());
     }
 
     @PostMapping("/password")

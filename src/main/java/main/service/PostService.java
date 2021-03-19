@@ -315,24 +315,25 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
     }
 
-    public ResponseEntity<?> postComment(Integer parent_id, Integer id , String text) {
+    public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {
 
-        ErrorsResponse errorsResponse = new ErrorsResponse();
+//        ErrorsResponse errorsResponse = new ErrorsResponse();
         boolean result = true;
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             Integer userId = authService.getUserId();
             PostComment postComment = new PostComment();
-            if (postRepository.findById(id).isPresent()) {
-                postComment.setPostId(id);
-//                postComment.setParentId(parent_id);
-
-            } else {
-                errors.put("post", id + " does not exist.");
-                errorsResponse.setErrors(errors);
-                return responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
-            }
+//            if (postRepository.findById(id).isPresent())
+//            {
+//                postComment.setPostId(id);
+////                postComment.setParentId(parent_id);
+//
+//            } else {
+//                errors.put("post", id + " does not exist.");
+//                errorsResponse.setErrors(errors);
+//                return responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
+//            }
 
 //            else {
 //                if (parentIdInt > 0) {
@@ -348,22 +349,24 @@ POST_PREMODERATION = false (режим премодерации выключен
                 errors.put("text", "Text's length is out of limit!");
             }
             if (result) {
-                postComment.setTime(Timestamp.valueOf(now()));
-                postComment.setUserId(userId);
-                postComment.setText(text);
                 if (parent_id != null) {
                     postComment.setParentId(parent_id);
                 }
+                postComment.setPostId(post_id);
+                postComment.setText(text);
+                postComment.setTime(Timestamp.valueOf(now()));
+                postComment.setUserId(userId);
                 postCommentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
-                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             } else {
                 map.put("result", resultResponse);
                 map.put("errors", errors);
-                responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
             }
+            responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            map.put("result", new ResultResponse(false));
+            map.put("errors", errors);
+            responseEntity = new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

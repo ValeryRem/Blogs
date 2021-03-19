@@ -85,7 +85,7 @@ public class PostController {
         return getService.getPostsForModeration(offset, limit, status);
     }
 
-    @GetMapping("/my")
+    @GetMapping("/post/my")
     private ResponseEntity<?> getMyPosts (
                                           @RequestParam(defaultValue="0") Integer offset,
                                           @RequestParam(defaultValue="5") Integer limit) {
@@ -137,7 +137,6 @@ public class PostController {
         System.out.println("Method postComment is activated.");
         return postService.postComment(commentRequest.getParent_id(), commentRequest.getPostId(), commentRequest.getText());
     }
-
 //    private void registerSession () {
 //        Session session = new Session();
 //        session.setSessionName(httpSession.getId());

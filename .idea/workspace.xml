@@ -22,104 +22,20 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method postComment updated.">
-      <change afterPath="$PROJECT_DIR$/../071120.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/controllers/IndexController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/bookLibrary.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../13_NoSQL/3.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/Computer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/MainPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/Music.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/MusicPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/config/SpringConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/ClassicalMusic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/JazzMusic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/org/example/genres/RockMusic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/java/text" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/resourses/musicPlayer.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/src/main/webapp/index.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/musicPlayer.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/Computer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/MainPlayer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/Music.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/MusicPlayer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/config/SpringConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/ClassicalMusic.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/JazzMusic.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringMusicPlayer/target/classes/org/example/genres/RockMusic.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpringRestValidation/spring-rest-validation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../hs_err_pid8832.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__com_fasterxml_jackson_dataformat_jackson_dataformat_yaml_2_9_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__de_ruedigermoeller_fst_2_57.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_buffer_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_codec_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_codec_dns_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_common_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_handler_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_resolver_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_resolver_dns_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_netty_netty_transport_4_1_41_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_projectreactor_reactor_core_3_2_6_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__io_reactivex_rxjava2_rxjava_2_2_7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__javax_cache_cache_api_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_9_16.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_javassist_javassist_3_21_0_GA.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_jodd_jodd_bean_5_0_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_jodd_jodd_core_5_0_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_objenesis_objenesis_2_5_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_reactivestreams_reactive_streams_1_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_redisson_redisson_3_11_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/libraries/Maven__org_yaml_snakeyaml_1_23.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/skill-redis-java.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../skill-redis-java/skill-redis-java-47b5fbe375b22062eb6e84a1260e831109aae328/redis-demo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/IndexController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/TouristController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/controllers/TouristController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/java/main/model/TouristRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/src/main/resources/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/main/Storage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../12.14_Tourists/target/classes/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/12.4_ToDoList.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpringMusicPlayer/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/IndexController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/Storage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/TouristController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/Tourist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/java/main/model/TouristRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/css/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/static/js/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/resources/templates/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12.4_ToDoList/src/main/text" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/BookController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/Storage.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12_SpringBootWebDevelopment/BookLibrary/target/classes/main/model/Book.class" beforeDir="false" />
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email).">
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/requests/RestoreRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/97_House.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
@@ -224,13 +140,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00076" summary="Method putImage set up.">
-      <created>1607804816878</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1607804816878</updated>
     </task>
     <task id="LOCAL-00077" summary="Method putImage set up with updated time.">
       <created>1607805065161</created>
@@ -568,7 +477,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615998276717</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email).">
+      <created>1616073128863</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1616073128864</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -591,7 +507,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postAuthLogin &amp; postAuthRegister improved via LoginRequest entity." />
     <MESSAGE value="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity." />
     <MESSAGE value="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly." />
     <MESSAGE value="Methods postApiProfileMy developed, image resized to 30x30 pxl." />
@@ -616,7 +531,8 @@
     <MESSAGE value="Methods of post moderation updated with post_id converted to id." />
     <MESSAGE value="Methods authRestore updated." />
     <MESSAGE value="Method postComment updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method postComment updated." />
+    <MESSAGE value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,11 +1,9 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
-
-import static java.time.LocalDateTime.now;
 
 @Entity
 @Table(name = "posts")
@@ -14,9 +12,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     @JoinTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
+    @JsonProperty
     private Integer postId;
 
     @Column(name ="is_active")
+    @JsonProperty
     private int isActive;
 
     @Column(name ="moderation_status")
@@ -27,9 +27,16 @@ public class Post {
     private Integer moderatorId;
 
     @Column(name ="user_id")
+    @JsonProperty
     private Integer userId;
+
+    @JsonProperty
     private Timestamp timestamp;
+
+    @JsonProperty
     private String title;
+
+    @JsonProperty
     private String text;
 
     @Column(name ="view_count")
