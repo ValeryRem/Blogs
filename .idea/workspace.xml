@@ -22,20 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email).">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/requests/RestoreRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/97_House.jpg" afterDir="false" />
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
@@ -140,13 +132,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00077" summary="Method putImage set up with updated time.">
-      <created>1607805065161</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1607805065164</updated>
     </task>
     <task id="LOCAL-00078" summary="Method postComment set up.">
       <created>1607893014271</created>
@@ -484,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616073128864</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <task id="LOCAL-00126" summary="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated.">
+      <created>1616191087819</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1616191087820</updated>
+    </task>
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -507,7 +499,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity." />
     <MESSAGE value="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly." />
     <MESSAGE value="Methods postApiProfileMy developed, image resized to 30x30 pxl." />
     <MESSAGE value="Methods postApiProfileMy developed, but works wrong with image." />
@@ -532,7 +523,8 @@
     <MESSAGE value="Methods authRestore updated." />
     <MESSAGE value="Method postComment updated." />
     <MESSAGE value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
+    <MESSAGE value="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

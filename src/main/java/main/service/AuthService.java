@@ -15,6 +15,8 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import javax.mail.Transport;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.SecureRandom;

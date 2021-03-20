@@ -4,6 +4,8 @@ import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
 import main.requests.CommentRequest;
+import main.requests.DislikeRequest;
+import main.requests.LikeRequest;
 import main.requests.PostRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,18 +96,17 @@ public class PostController {
     }
 
     @PostMapping("/post/like")
-    private ResponseEntity<?> postLike (@RequestBody Integer id)
-//                                        @RequestParam(defaultValue="2") Integer userId)
+    private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest)
                                         {
         System.out.println("Method postLike activated");
-        return postService.postLike(id);
+        return postService.postLike(likeRequest.getPost_id());
     }
 
     @PostMapping("/post/dislike")
-    private ResponseEntity<?> postDislike (@RequestParam(defaultValue="5") Integer postToLikeId,
-                                           @RequestParam(defaultValue="2") Integer userId) {
+    private ResponseEntity<?> postDislike (@RequestBody DislikeRequest dislikeRequest)
+    {
         System.out.println("Method postDislike activated");
-        return postService.postDislike(postToLikeId, userId);
+        return postService.postDislike(dislikeRequest.getPost_id());
     }
 
     @PostMapping("/post")

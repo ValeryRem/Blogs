@@ -85,15 +85,10 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLike (Integer id) {
+    public ResponseEntity<?> postLike (Integer post_id) {
         if (authService.isUserAuthorized()) {
-//            List<PostVote> postVotes = postVoteRepository.findAll().stream().
-//                    filter(pv -> pv.getPostId().equals(id)).
-//                    collect(Collectors.toList());
             PostVote postVote = new PostVote();
-//            PostVote postVote = postVotes.stream().filter(pv -> pv.getUserId().equals(userId)).findAny().orElse(new PostVote());
-//            if(postVote.getValue() != 1) {
-            postVote.setPostId(id);
+            postVote.setPostId(post_id);
             postVote.setTime(Timestamp.valueOf(now()));
             postVote.setUserId(authService.getUserId());
             postVote.setValue(1);
@@ -104,25 +99,23 @@ public class PostService {
 //            }
 //        } else {
 //            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        } else {
+            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }
 
-    public ResponseEntity<?> postDislike (Integer postToLikeId, Integer userId) {
+    public ResponseEntity<?> postDislike (Integer post_id) {
         if (authService.isUserAuthorized()) {
-            List<PostVote> postVotes = postVoteRepository.findAll().stream().
-                    filter(pv -> pv.getPostId().equals(postToLikeId)).
-                    collect(Collectors.toList());
-            PostVote postVote = postVotes.stream().filter(pv -> pv.getUserId().equals(userId)).findAny().orElse(new PostVote());
-            if(postVote.getValue() == 1) {
-                postVote.setValue(0);
-                postVoteRepository.save(postVote);
-                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.ALREADY_REPORTED);
-            }
+            PostVote postVote = new PostVote();
+            postVote.setPostId(post_id);
+            postVote.setTime(Timestamp.valueOf(now()));
+            postVote.setUserId(authService.getUserId());
+            postVote.setValue(-1);
+            postVoteRepository.save(postVote);
+            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
     }

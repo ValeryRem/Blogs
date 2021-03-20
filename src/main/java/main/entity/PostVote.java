@@ -1,5 +1,7 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -12,15 +14,14 @@ public class PostVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull(message = "Id of the vote sender is mandatory")
+
     @Column(name = "user_id")
     private Integer userId;
-    @NotNull(message = "Post_id is mandatory")
+
     @Column(name = "post_id")
+    @JsonProperty("post_id")
     private Integer postId;
-    @NotNull(message = "Time of the vote is mandatory")
     private Timestamp time;
-    @NotNull(message = "Value of the vote is mandatory")
     private Integer value;
 
     public PostVote() {
@@ -50,9 +51,7 @@ public class PostVote {
         this.postId = postId;
     }
 
-    public Timestamp getTime() {
-        return time;
-    }
+    public Timestamp getTime() {return time;}
 
     public void setTime(Timestamp time) {
         this.time = time;
