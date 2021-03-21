@@ -3,10 +3,7 @@ package main.controllers;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
-import main.requests.CommentRequest;
-import main.requests.DislikeRequest;
-import main.requests.LikeRequest;
-import main.requests.PostRequest;
+import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -123,14 +120,16 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/post/{id:\\d+}")
-    private ResponseEntity<?> putPost (@PathVariable("id") Integer postId,
-                                       @RequestParam(defaultValue="1") Integer active,
-                                       @RequestParam(defaultValue="Optional description.") String title,
-                                       @RequestParam(defaultValue="Java, PHP, Excel, Darby, Python") List<String> tags,
-                                       @RequestParam(defaultValue="Try to escape from here, and as soon as possible, my daring!") String text) {
-        System.out.println("Method putPost is activated for postId: " + postId);
-        return postService.putPost(postId, active, title, tags, text);
+    @PutMapping("/post/{postId:\\d+}")
+    private ResponseEntity<?> putPost (@PathVariable("postId") Integer postId, PutPostRequest putPostRequest)
+//            @PathVariable("id") Integer postId,
+//            @RequestParam long timestamp, @RequestParam Integer active,
+//            @RequestParam String title, @RequestParam List<String> tags, @RequestParam String text)
+    {
+        System.out.println("Method putPost is activated");
+//        return postService.putPost(timestamp, active, title, tags, text);
+        return postService.putPost(postId, putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
+                putPostRequest.getTags(), putPostRequest.getText());
     }
 
     @PostMapping("/comment")

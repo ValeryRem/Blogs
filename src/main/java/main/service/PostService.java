@@ -1,6 +1,5 @@
 package main.service;
 
-import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -127,12 +125,11 @@ POST_PREMODERATION = false (режим премодерации выключен
 */
     public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
         Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
-        boolean result = true;
         User user = userRepository.getOne(authService.getUserId());
-        Map<String, Object> errors = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
         Post post = new Post();
         post.setIsActive(active);
-        post.setModeratorId(1); // to be in the input parameters
+//        post.setModeratorId(1); // to be in the input parameters
 
         if(timestamp <= currentTimestamp.getTime()/1000) {
             post.setTimestamp(currentTimestamp);
@@ -141,12 +138,11 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
-        checkTexts(title, text, errors, result);
-        if (!result) {
+        checkTexts(title, text, errors);
+        if (!errors.isEmpty())
+        {
             resultResponse = new ResultResponse(false);
-//            errorsResponse.getErrors().put("errors", errors);
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
-//            return new ResponseEntity<>(errorsResponse.getErrors(), HttpStatus.BAD_REQUEST);
         } else {
             post.setTitle(title);
             post.setText(text);
@@ -160,7 +156,6 @@ POST_PREMODERATION = false (режим премодерации выключен
                         responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.OK);
                     } else { // if the user is moderator the posy saved
                         post.setModerationStatus(ModerationStatus.ACCEPTED);
-//                        postRepository.save(post);
                         Tag2Post tag2Post;
                         for (String tag : tags) {
                             if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
@@ -240,48 +235,52 @@ POST_PREMODERATION = false (режим премодерации выключен
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(Integer postId, Integer active, String title, List<String> tags, String text) {
-        boolean result = true;
-        Map<String, Object> errors = new LinkedHashMap<>();
+    public ResponseEntity<?> putPost(Integer postId, long timestamp, Integer isActive, String title, List<String> tags, String text) {
+        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
+        Map<String, Object> responseMap = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
-            checkTexts(title, text, errors, result);
-            if (!result) {
+            checkTexts(title, text, errors);
+            Post post = postRepository.getOne(postId);
+//                Optional<Post> optionalPost = postRepository.findAll().stream()
+//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
+//                    if(optionalPost.isPresent()) {
+//                        Post post = optionalPost.get();
+//                        int postId = post.getPostId();
+                        post.setText(text);
+                        post.setTitle(title);
+                        post.setActive(isActive);
+                        post.setTimestamp(new Timestamp(timestamp * 1000));
+                        postRepository.save(post);
+                        List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
+                        List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
+                                filter(t -> t.getPostId().equals(postId)).
+                                collect(Collectors.toList());
+                        List<Tag2Post> newItems = new ArrayList<>();
+                        for (String tagName : tags) {
+                            if (!tagNames.contains(tagName)) {
+                                Tag tag = new Tag(tagName);
+                                tagRepository.save(tag);
+                                Integer tagId = tag.getId();
+                                Tag2Post tag2Post = new Tag2Post(postId, tagId);
+                                tag2PostRepository.save(tag2Post);
+                                newItems.add(new Tag2Post(postId, tagId));
+                            }
+                        }
+                        for (Tag2Post t2p : oldItems) {
+                            if (!newItems.contains(t2p)) {
+                                tag2PostRepository.delete(t2p);
+                            }
+                        }
+//                    } else {
+//                       errors.put("post", "Not found!");
+//                    }
+            if (!errors.isEmpty()) {
                 resultResponse = new ResultResponse(false);
-//                errorsResponse.getErrors().put("errors", errors);
-                return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+                responseMap.put("result", resultResponse);
+                responseMap.put("errors", errors);
+                return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
             } else {
-                try {
-                    Post post = postRepository.getOne(postId);
-                    post.setText(text);
-                    post.setTitle(title);
-                    post.setActive(active);
-                    post.setTimestamp(Timestamp.valueOf(now()));
-                    postRepository.save(post);
-                    List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
-                    List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
-                            filter(t -> t.getPostId().equals(postId)).
-                            collect(Collectors.toList());
-                    List<Tag2Post> newItems = new ArrayList<>();
-                    for (String tagName : tags) {
-                        if (!tagNames.contains(tagName)) {
-                            Tag tag = new Tag(tagName);
-                            tagRepository.save(tag);
-                            Integer tagId = tag.getId();
-                            Tag2Post tag2Post = new Tag2Post(postId, tagId);
-                            tag2PostRepository.save(tag2Post);
-                            newItems.add(new Tag2Post(postId, tagId));
-                        }
-                    }
-                    for (Tag2Post t2p : oldItems) {
-                        if (!newItems.contains(t2p)) {
-                            tag2PostRepository.delete(t2p);
-                        }
-                    }
                     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-                } catch (NullPointerException ex) {
-                    ex.printStackTrace();
-                    responseEntity = new ResponseEntity<>("PostId " + postId + " is absent.", HttpStatus.NOT_FOUND);
-                }
             }
         } else {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -289,54 +288,28 @@ POST_PREMODERATION = false (режим премодерации выключен
         return responseEntity;
     }
 
-    private void checkTexts (String title, String text, Map<String, Object> errors, boolean result) {
+    private void checkTexts (String title, String text, LinkedHashMap<String, Object> errors) {
         if (title.length() < 3) {
             errors.put("Title", "Заголовок слишком короткий");
-            result = false;
         } else
             if (title.length()  > 100) {
             errors.put("Title", "Заголовок слишком длинный!");
-                result = false;
         }
         if (text.length() < 50) {
             errors.put("Text", "Текст публикации слишком короткий");
-            result = false;
         } else
             if(text.length() > 1000) {
             errors.put("Text", "Текст публикации слишком длинный!");
-            result = false;
         }
     }
 
     public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {
-
-//        ErrorsResponse errorsResponse = new ErrorsResponse();
         boolean result = true;
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             Integer userId = authService.getUserId();
             PostComment postComment = new PostComment();
-//            if (postRepository.findById(id).isPresent())
-//            {
-//                postComment.setPostId(id);
-////                postComment.setParentId(parent_id);
-//
-//            } else {
-//                errors.put("post", id + " does not exist.");
-//                errorsResponse.setErrors(errors);
-//                return responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
-//            }
-
-//            else {
-//                if (parentIdInt > 0) {
-//                    result = false;
-//                    errors.put("ParentId ", parent_id + " does not exist.");
-////                    errorsResponse.getErrors().put("errors", errors);
-//                } else {
-//                    postComment.setParentId(parentIdInt);
-//                }
-//            }
             if (text.length() < 10 || text.length() > 300 ) {
                 result = false;
                 errors.put("text", "Text's length is out of limit!");
