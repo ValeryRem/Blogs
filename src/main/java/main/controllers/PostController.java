@@ -120,15 +120,17 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/post/{postId:\\d+}")
-    private ResponseEntity<?> putPost (@PathVariable("postId") Integer postId, PutPostRequest putPostRequest)
+    @PutMapping("/post/{ID:\\d+}")
+    private ResponseEntity<?> putPost (
+//            @PathVariable("ID") Integer ID,
+            PutPostRequest putPostRequest)
 //            @PathVariable("id") Integer postId,
 //            @RequestParam long timestamp, @RequestParam Integer active,
 //            @RequestParam String title, @RequestParam List<String> tags, @RequestParam String text)
     {
         System.out.println("Method putPost is activated");
 //        return postService.putPost(timestamp, active, title, tags, text);
-        return postService.putPost(postId, putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
+        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
     }
 
