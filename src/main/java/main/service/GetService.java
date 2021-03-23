@@ -222,6 +222,7 @@ public class GetService {
             postByIdResponse.setText(post.getText());
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
+            postByIdResponse.setViewCount(post.getViewCount());
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();

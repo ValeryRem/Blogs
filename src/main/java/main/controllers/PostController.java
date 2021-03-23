@@ -124,7 +124,7 @@ public class PostController {
 
     @PutMapping("/post/{ID:\\d+}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
-    private ResponseEntity<?> putPost (@Valid @RequestBody PutPostRequest putPostRequest, @PathVariable("ID") Integer ID)
+    private ResponseEntity<?> putPost (@Valid @RequestBody PutPostRequest putPostRequest)
 //            @PathVariable("ID") Integer ID,
 //             Long timestamp,  Integer active, String title, List<String> tags, String text)
     {
@@ -132,7 +132,7 @@ public class PostController {
         System.out.println("controller: " + putPostRequest.getTitle()); // test
 //        return postService.putPost(timestamp, active, title, tags, text);
         return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
-                putPostRequest.getTags(), putPostRequest.getText(), ID);
+                putPostRequest.getTags(), putPostRequest.getText());
     }
 
     @PostMapping("/comment")

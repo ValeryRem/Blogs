@@ -22,10 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods putPost updated bu ID of post.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -129,13 +130,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00081" summary="For error responses in POST requests a new class ErrorsResponse set up.">
-      <created>1608036108759</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1608036108759</updated>
     </task>
     <task id="LOCAL-00082" summary="GlobalSettings updated.">
       <created>1608062121701</created>
@@ -473,7 +467,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616396836984</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}.">
+      <created>1616480394886</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1616480394887</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -496,7 +497,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="ProfileController set up." />
     <MESSAGE value="ProfileController set up but (Системе не удается найти указанный путь)." />
     <MESSAGE value="Method getOutputFile (MultipartFile photo) developed." />
     <MESSAGE value="The bugs fixed in the method getPostProfileMy." />
@@ -521,7 +521,8 @@
     <MESSAGE value="Methods postLike &amp; postDislike updated." />
     <MESSAGE value="Methods putPost updated." />
     <MESSAGE value="Methods putPost updated bu ID of post." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods putPost updated bu ID of post." />
+    <MESSAGE value="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}." />
+    <option name="LAST_COMMIT_MESSAGE" value="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

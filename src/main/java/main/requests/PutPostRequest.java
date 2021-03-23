@@ -7,19 +7,19 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PutPostRequest implements Serializable {
-    @NotNull
+    @JsonProperty
     private Long timestamp;
 
-    @NotNull
+    @JsonProperty
     private Integer isActive;
 
-    @NotNull
+    @JsonProperty
     private String title;
 
-    @NotNull
+    @JsonProperty
     private List<String> tags;
 
-    @NotNull
+    @JsonProperty
     private String text;
 
     public Long getTimestamp() {
