@@ -6,9 +6,11 @@ import main.repository.UserRepository;
 import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -121,17 +123,16 @@ public class PostController {
     }
 
     @PutMapping("/post/{ID:\\d+}")
-    private ResponseEntity<?> putPost (
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private ResponseEntity<?> putPost (@Valid @RequestBody PutPostRequest putPostRequest, @PathVariable("ID") Integer ID)
 //            @PathVariable("ID") Integer ID,
-            PutPostRequest putPostRequest)
-//            @PathVariable("id") Integer postId,
-//            @RequestParam long timestamp, @RequestParam Integer active,
-//            @RequestParam String title, @RequestParam List<String> tags, @RequestParam String text)
+//             Long timestamp,  Integer active, String title, List<String> tags, String text)
     {
         System.out.println("Method putPost is activated");
+        System.out.println("controller: " + putPostRequest.getTitle()); // test
 //        return postService.putPost(timestamp, active, title, tags, text);
         return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
-                putPostRequest.getTags(), putPostRequest.getText());
+                putPostRequest.getTags(), putPostRequest.getText(), ID);
     }
 
     @PostMapping("/comment")

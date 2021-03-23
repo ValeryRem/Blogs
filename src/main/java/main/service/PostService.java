@@ -126,7 +126,7 @@ POST_PREMODERATION = false (режим премодерации выключен
     public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
         Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
         User user = userRepository.getOne(authService.getUserId());
-        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> errors = checkTexts(title, text);
         Post post = new Post();
         post.setIsActive(active);
 //        post.setModeratorId(1); // to be in the input parameters
@@ -138,11 +138,11 @@ POST_PREMODERATION = false (режим премодерации выключен
         }
         post.setUserId(authService.getUserId());
         post.setViewCount(0);
-        checkTexts(title, text, errors);
+
         if (!errors.isEmpty())
         {
             resultResponse = new ResultResponse(false);
-            return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(resultResponse, HttpStatus.OK);
         } else {
             post.setTitle(title);
             post.setText(text);
@@ -235,17 +235,17 @@ POST_PREMODERATION = false (режим премодерации выключен
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(long timestamp, Integer isActive, String title, List<String> tags, String text) {
-        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
+    public ResponseEntity<?> putPost(Long timestamp, Integer isActive, String title, List<String> tags, String text, Integer ID) {
+        LinkedHashMap<String, Object> errors = checkTexts(title, text);
         Map<String, Object> responseMap = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
-            checkTexts(title, text, errors);
-//            Post post = postRepository.getOne(postId);
-                Optional<Post> optionalPost = postRepository.findAll().stream()
-                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
-                    if(optionalPost.isPresent()) {
-                        Post post = optionalPost.get();
-                        int postId = post.getPostId();
+            System.out.println("putService: " + title); // test
+            Post post = postRepository.getOne(ID);
+//                Optional<Post> optionalPost = postRepository.findAll().stream()
+//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
+//                    if(optionalPost.isPresent()) {
+//                        Post post = optionalPost.get();
+//                        int postId = post.getPostId();
                         post.setText(text);
                         post.setTitle(title);
                         post.setActive(isActive);
@@ -253,7 +253,7 @@ POST_PREMODERATION = false (режим премодерации выключен
                         postRepository.save(post);
                         List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
                         List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
-                                filter(t -> t.getPostId().equals(postId)).
+                                filter(t -> t.getPostId().equals(ID)).
                                 collect(Collectors.toList());
                         List<Tag2Post> newItems = new ArrayList<>();
                         for (String tagName : tags) {
@@ -261,9 +261,9 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 Tag tag = new Tag(tagName);
                                 tagRepository.save(tag);
                                 Integer tagId = tag.getId();
-                                Tag2Post tag2Post = new Tag2Post(postId, tagId);
+                                Tag2Post tag2Post = new Tag2Post(ID, tagId);
                                 tag2PostRepository.save(tag2Post);
-                                newItems.add(new Tag2Post(postId, tagId));
+                                newItems.add(new Tag2Post(ID, tagId));
                             }
                         }
                         for (Tag2Post t2p : oldItems) {
@@ -271,14 +271,14 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 tag2PostRepository.delete(t2p);
                             }
                         }
-                    } else {
-                       errors.put("post", "Not found!");
-                    }
+//                    } else {
+//                       errors.put("post", "Not found!");
+//                    }
             if (!errors.isEmpty()) {
                 resultResponse = new ResultResponse(false);
                 responseMap.put("result", resultResponse);
                 responseMap.put("errors", errors);
-                return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else {
                     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
             }
@@ -288,7 +288,8 @@ POST_PREMODERATION = false (режим премодерации выключен
         return responseEntity;
     }
 
-    private void checkTexts (String title, String text, LinkedHashMap<String, Object> errors) {
+    private LinkedHashMap<String, Object> checkTexts (String title, String text) {
+        LinkedHashMap<String, Object> errors = new LinkedHashMap<> ();
         if (title.length() < 3) {
             errors.put("Title", "Заголовок слишком короткий");
         } else
@@ -301,6 +302,7 @@ POST_PREMODERATION = false (режим премодерации выключен
             if(text.length() > 1000) {
             errors.put("Text", "Текст публикации слишком длинный!");
         }
+            return errors;
     }
 
     public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {

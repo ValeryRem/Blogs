@@ -22,9 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods putPost updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods putPost updated bu ID of post.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +56,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="proportion" value="0.3277311" />
+    <option name="proportion" value="0.35217723" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
@@ -128,13 +129,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00080" summary="Method authRestore (String eMail)  updated with new method  generateCode(int length).">
-      <created>1608023613882</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1608023613883</updated>
     </task>
     <task id="LOCAL-00081" summary="For error responses in POST requests a new class ErrorsResponse set up.">
       <created>1608036108759</created>
@@ -472,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616328543509</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="Methods putPost updated bu ID of post.">
+      <created>1616396836984</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1616396836984</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -495,7 +496,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postApiProfileMy developed, but works wrong with image." />
     <MESSAGE value="ProfileController set up." />
     <MESSAGE value="ProfileController set up but (Системе не удается найти указанный путь)." />
     <MESSAGE value="Method getOutputFile (MultipartFile photo) developed." />
@@ -520,7 +520,8 @@
     <MESSAGE value="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated." />
     <MESSAGE value="Methods postLike &amp; postDislike updated." />
     <MESSAGE value="Methods putPost updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods putPost updated." />
+    <MESSAGE value="Methods putPost updated bu ID of post." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods putPost updated bu ID of post." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,20 +1,32 @@
 package main.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
 public class PutPostRequest implements Serializable {
-    private long timestamp;
+    @NotNull
+    private Long timestamp;
+
+    @NotNull
     private Integer isActive;
+
+    @NotNull
     private String title;
+
+    @NotNull
     private List<String> tags;
+
+    @NotNull
     private String text;
 
-    public long getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
