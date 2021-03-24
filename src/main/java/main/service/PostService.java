@@ -237,17 +237,17 @@ POST_PREMODERATION = false (режим премодерации выключен
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost( Long timestamp, Integer isActive, String title, List<String> tags, String text) {
+    public ResponseEntity<?> putPost(Integer ID,  Long timestamp, Integer isActive, String title, List<String> tags, String text) {
         LinkedHashMap<String, Object> errors = checkTexts(title, text);
         Map<String, Object> responseMap = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             System.out.println("putService: " + title); // test
-//            Post post = postRepository.getOne(Integer.getInteger(ID));
-                Optional<Post> optionalPost = postRepository.findAll().stream()
-                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
-                    if(optionalPost.isPresent()) {
-                        Post post = optionalPost.get();
-                        int ID = post.getPostId();
+            Post post = postRepository.getOne(ID);
+//                Optional<Post> optionalPost = postRepository.findAll().stream()
+//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
+//                    if(optionalPost.isPresent()) {
+//                        Post post = optionalPost.get();
+//                        int ID = post.getPostId();
                         post.setText(text);
                         post.setTitle(title);
                         post.setActive(isActive);
@@ -273,9 +273,9 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 tag2PostRepository.delete(t2p);
                             }
                         }
-                    } else {
-                       errors.put("post", "Not found!");
-                    }
+//                    } else {
+//                       errors.put("post", "Not found!");
+//                    }
             if (!errors.isEmpty()) {
                 resultResponse = new ResultResponse(false);
                 responseMap.put("result", resultResponse);

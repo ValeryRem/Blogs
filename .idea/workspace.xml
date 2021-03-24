@@ -22,14 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Parameter viewCount enabled.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="The bug found out and avoided in postPost method (nullable moderatorId changed to NN).">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -133,13 +129,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00083" summary="Method authPassword for POST /api/auth/password is set up.">
-      <created>1608218845880</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1608218845897</updated>
     </task>
     <task id="LOCAL-00084" summary="Methods getTag(String query) updated and getTag() established using new TagResponse.class.">
       <created>1608330503761</created>
@@ -477,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616482425186</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="The bug found out and avoided in postPost method (nullable moderatorId changed to NN).">
+      <created>1616586819484</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1616586819485</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -500,7 +496,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method getOutputFile (MultipartFile photo) developed." />
     <MESSAGE value="The bugs fixed in the method getPostProfileMy." />
     <MESSAGE value="AvatarController set up." />
     <MESSAGE value="Problems in postAuthRegister: not readable captcha image." />
@@ -525,7 +520,8 @@
     <MESSAGE value="Methods putPost updated bu ID of post." />
     <MESSAGE value="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}." />
     <MESSAGE value="Parameter viewCount enabled." />
-    <option name="LAST_COMMIT_MESSAGE" value="Parameter viewCount enabled." />
+    <MESSAGE value="The bug found out and avoided in postPost method (nullable moderatorId changed to NN)." />
+    <option name="LAST_COMMIT_MESSAGE" value="The bug found out and avoided in postPost method (nullable moderatorId changed to NN)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

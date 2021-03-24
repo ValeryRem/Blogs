@@ -47,7 +47,8 @@ public class PostController {
     }
 
     @GetMapping("/post/{id:\\d+}")
-    private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
+//@RequestMapping(value = "/post/{id: \\d+}", produces = "application/json", method = RequestMethod.GET)
+private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
         System.out.println("Method getPostById activated. ID requested: " + postId);
         return getService.getPostById(postId);
     }
@@ -124,15 +125,16 @@ public class PostController {
 
     @PutMapping("/post/{ID: \\d+}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @RequestMapping(value = "/post/{ID: \\d+}", produces = "application/json", method = RequestMethod.PUT)
     private ResponseEntity<?> putPost (
 //            @Valid @RequestBody PutPostRequest putPostRequest)
-//            @PathVariable("ID") String ID,
+            @PathVariable("ID") Integer ID,
             @RequestParam Long timestamp, @RequestParam Integer active, @RequestParam String title,
             @RequestParam List<String> tags, @RequestParam String text)
     {
         System.out.println("Method putPost is activated");
         System.out.println("controller: " + title); // test
-        return postService.putPost(timestamp, active, title, tags, text);
+        return postService.putPost(ID, timestamp, active, title, tags, text);
 //        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
 //                putPostRequest.getTags(), putPostRequest.getText());
     }

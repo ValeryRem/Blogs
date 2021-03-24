@@ -25,7 +25,6 @@ public class Post {
     private ModerationStatus moderationStatus;
 
     @Column(name ="moderator_id")
-    @Nullable
     private Integer moderatorId;
 
     @Column(name ="user_id")
