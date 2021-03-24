@@ -122,17 +122,19 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/post/{ID:\\d+}")
+    @PutMapping("/post/{ID: \\d+}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
-    private ResponseEntity<?> putPost (@Valid @RequestBody PutPostRequest putPostRequest)
-//            @PathVariable("ID") Integer ID,
-//             Long timestamp,  Integer active, String title, List<String> tags, String text)
+    private ResponseEntity<?> putPost (
+//            @Valid @RequestBody PutPostRequest putPostRequest)
+//            @PathVariable("ID") String ID,
+            @RequestParam Long timestamp, @RequestParam Integer active, @RequestParam String title,
+            @RequestParam List<String> tags, @RequestParam String text)
     {
         System.out.println("Method putPost is activated");
-        System.out.println("controller: " + putPostRequest.getTitle()); // test
-//        return postService.putPost(timestamp, active, title, tags, text);
-        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
-                putPostRequest.getTags(), putPostRequest.getText());
+        System.out.println("controller: " + title); // test
+        return postService.putPost(timestamp, active, title, tags, text);
+//        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
+//                putPostRequest.getTags(), putPostRequest.getText());
     }
 
     @PostMapping("/comment")

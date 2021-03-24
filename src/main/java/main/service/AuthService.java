@@ -16,7 +16,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import javax.mail.Transport;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.SecureRandom;
@@ -82,7 +81,7 @@ public class AuthService{
         userResponseMap.put("photo", currentUser.getPhoto());
         userResponseMap.put("e_mail", currentUser.getEmail());
         userResponseMap.put("moderation", "true");
-        userResponseMap.put("moderationCount", getModerationCount(currentUser));
+        userResponseMap.put("moderationCount", getModerationCount(currentUser.getUserId()));
         userResponseMap.put("settings", "true");
         return userResponseMap;
     }
@@ -120,14 +119,15 @@ public class AuthService{
                     map(Session::getUserId).
                     findAny();
             if (userIdOptional.isPresent()) {
-                u = userRepository.getOne(userIdOptional.get());
+                int userId = userIdOptional.get();
+                u = userRepository.getOne(userId);
                 LinkedHashMap<String, Object> user = new LinkedHashMap<>();
                 user.put("id", userIdOptional.get());
                 user.put("name", u.getName());
                 user.put("photo", u.getPhoto());
                 user.put("email", u.getEmail());
                 user.put("moderation", u.getIsModerator());
-                user.put("moderationCount", getModerationCount(u));
+                user.put("moderationCount", getModerationCount(userId));
                 user.put("settings", u.getIsModerator());
                 authResponse.setResult(true);
                 authResponse.setUser(user);
@@ -293,16 +293,20 @@ public class AuthService{
         return result;
     }
 
-    private int getModerationCount(User user) {
+    private int getModerationCount(Integer userId) {
         int moderCount = 0;
         List<Post> posts = postRepository.findAll();
-        if (user.getIsModerator() && posts.stream().map(Post::getModerationStatus)
-                .collect(Collectors.toList())
-                .contains(ModerationStatus.NEW)) {
-            moderCount = (int) posts.stream().
-                    filter(p -> p.getModeratorId().equals(user.getUserId()) && p.getModerationStatus().
-                            equals(ModerationStatus.NEW)).
-                    count();
+//        User user = userRepository.getOne(userId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getIsModerator() && posts.stream()
+                    .anyMatch(p -> p.getModerationStatus().equals(ModerationStatus.NEW))) {
+                moderCount = (int) posts.stream().
+                        filter(p -> p.getModeratorId().equals(userId) && p.getModerationStatus().
+                                equals(ModerationStatus.NEW)).
+                        count();
+            }
         }
         return moderCount;
     }

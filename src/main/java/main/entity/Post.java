@@ -1,6 +1,7 @@
 package main.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,6 +25,7 @@ public class Post {
     private ModerationStatus moderationStatus;
 
     @Column(name ="moderator_id")
+    @Nullable
     private Integer moderatorId;
 
     @Column(name ="user_id")

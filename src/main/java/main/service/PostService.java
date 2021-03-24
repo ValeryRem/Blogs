@@ -129,8 +129,10 @@ POST_PREMODERATION = false (режим премодерации выключен
         LinkedHashMap<String, Object> errors = checkTexts(title, text);
         Post post = new Post();
         post.setIsActive(active);
-//        post.setModeratorId(1); // to be in the input parameters
-
+        // назначаем id любого из модераторов при создании нового поста
+        Optional<User> optModerator = userRepository.findAll().stream().filter(User::getIsModerator).findAny();
+        optModerator.ifPresent(value -> post.setModeratorId(value.getUserId()));
+        ////
         if(timestamp <= currentTimestamp.getTime()/1000) {
             post.setTimestamp(currentTimestamp);
         } else {
@@ -235,12 +237,12 @@ POST_PREMODERATION = false (режим премодерации выключен
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(Long timestamp, Integer isActive, String title, List<String> tags, String text) {
+    public ResponseEntity<?> putPost( Long timestamp, Integer isActive, String title, List<String> tags, String text) {
         LinkedHashMap<String, Object> errors = checkTexts(title, text);
         Map<String, Object> responseMap = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             System.out.println("putService: " + title); // test
-//            Post post = postRepository.getOne(ID);
+//            Post post = postRepository.getOne(Integer.getInteger(ID));
                 Optional<Post> optionalPost = postRepository.findAll().stream()
                         .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
                     if(optionalPost.isPresent()) {
@@ -307,12 +309,14 @@ POST_PREMODERATION = false (режим премодерации выключен
 
     public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {
         boolean result = true;
+//        Post post = postRepository.getOne(post_id);
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             Integer userId = authService.getUserId();
             PostComment postComment = new PostComment();
-            if (text.length() < 10 || text.length() > 300 ) {
+            if (text.length() < 10 || text.length() > 300 )
+            {
                 result = false;
                 errors.put("text", "Text's length is out of limit!");
             }

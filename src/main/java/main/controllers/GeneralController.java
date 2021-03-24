@@ -72,8 +72,8 @@ public class GeneralController {
         return getService.getAllStatistics ();
     }
 
-    @GetMapping("/calendar/")
-    private ResponseEntity <?> getApiCalendar (@RequestParam(defaultValue = "2020") Integer year) {
+    @GetMapping("/calendar/{year:\\d{4}}")
+    private ResponseEntity <?> getApiCalendar (@PathVariable Integer year) {
         return getService.getApiCalendar (year);
     }
 

@@ -20,15 +20,13 @@ public class PostComment {
     private Integer parentId;
 
     @Column(name = "post_id", nullable = false)
-    @JsonProperty("PostId")
+    @JsonProperty
     private Integer postId;
 
     @Column(name = "user_id")
     private Integer userId;
     private Timestamp time;
     private String text;
-
-
 
     public PostComment() {
 //        userId = new Post(postId).getUserId();

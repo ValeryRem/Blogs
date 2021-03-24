@@ -210,11 +210,11 @@ public class GetService {
         }
     }
 
-    public ResponseEntity<?> getPostById(Integer id) {
-        if(postRepository.findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(id)) {
-            var post = postRepository.getOne(id);
+    public ResponseEntity<?> getPostById(Integer postId) {
+        if(postRepository.findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(postId)) {
+            var post = postRepository.getOne(postId);
             var postByIdResponse = new PostByIdResponse();
-            postByIdResponse.setId(id);
+            postByIdResponse.setId(postId);
             postByIdResponse.setTimestamp(post.getTimestamp().getTime()/1000);
             postByIdResponse.setActive(post.isActive() == 1);
             postByIdResponse.setUser(getUserOfPost(post));
@@ -222,14 +222,16 @@ public class GetService {
             postByIdResponse.setText(post.getText());
             postByIdResponse.setLikeCount(extractLikeCount(post));
             postByIdResponse.setDislikeCount(extractDislikeCount(post));
-            postByIdResponse.setViewCount(post.getViewCount());
+            postByIdResponse.setViewCount(post.getViewCount() + 1);
+            post.setViewCount(post.getViewCount() + 1);
+            postRepository.save(post);
             if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                     post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
                 Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
                 var tagsIdList = new ArrayList<>();
                 ArrayList<String> tags = new ArrayList<>();
                 for (Tag2Post tag2Post : tag2PostIterable) {
-                    if (tag2Post.getPostId().equals(id)) {
+                    if (tag2Post.getPostId().equals(postId)) {
                         tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
                     }
                 }
@@ -241,10 +243,12 @@ public class GetService {
                     }
                 }
                 postByIdResponse.setTags(tags);
+                List<TreeMap<String, Object>> comments = getCommentList(postId);
+                postByIdResponse.setComments(comments);
             }
             return new ResponseEntity<>(postByIdResponse, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Post with ID = " + id + " not found.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -598,8 +602,6 @@ public class GetService {
     }
 
     public Integer convertTimeToYear(Timestamp time) {
-//        int SEC_IN_YEAR = 86400*365;
-//        return  (int) (1 + time/SEC_IN_YEAR);
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("UTC+3"));
         cal.setTimeInMillis(time.getTime());
