@@ -1,5 +1,6 @@
 package main.api.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.entity.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,30 +10,51 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-//@Service
 public class PostByIdResponse {
+    @JsonProperty
     private Integer id;
+
+    @JsonProperty
     private long timestamp;
+
+    @JsonProperty
     private boolean active;
-    private TreeMap<String, Object> user;
+
+    @JsonProperty
+    private UserResponse userResponse;
+//    private TreeMap<String, Object> user;
+
+    @JsonProperty
     private String title;
+
+    @JsonProperty
     private String text;
+
+    @JsonProperty
     private Integer likeCount;
+
+    @JsonProperty
     private Integer dislikeCount;
+
+    @JsonProperty
     private Integer viewCount;
-    private List<TreeMap<String, Object>> comments;
+
+    @JsonProperty
+    private List<CommentsResponse> comments;
+
+    @JsonProperty
     private List<String> tags;
 
     public PostByIdResponse() {
     }
 
-    public PostByIdResponse(Integer id, long timestamp, boolean active, TreeMap<String, Object> user, String title, String text,
-                            Integer likeCount, Integer dislikeCount, Integer viewCount, List<TreeMap<String, Object>> comments,
+    public PostByIdResponse(Integer id, long timestamp, boolean active, UserResponse userResponse, String title, String text,
+                            Integer likeCount, Integer dislikeCount, Integer viewCount, List<CommentsResponse> comments,
                             List<String> tags) {
         this.id = id;
         this.timestamp = timestamp;
         this.active = active;
-        this.user = user;
+        this.userResponse = userResponse;
         this.title = title;
         this.text = text;
         this.likeCount = likeCount;
@@ -66,13 +88,13 @@ public class PostByIdResponse {
         this.active = active;
     }
 
-    public TreeMap<String, Object> getUser() {
-        return user;
-    }
-
-    public void setUser(TreeMap<String, Object> user) {
-        this.user = user;
-    }
+//    public TreeMap<String, Object> getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(TreeMap<String, Object> user) {
+//        this.user = user;
+//    }
 
     public String getTitle() {
         return title;
@@ -114,11 +136,11 @@ public class PostByIdResponse {
         this.viewCount = viewCount;
     }
 
-    public List<TreeMap<String, Object>> getComments() {
+    public List<CommentsResponse> getComments() {
         return comments;
     }
 
-    public void setComments(List<TreeMap<String, Object>> comments) {
+    public void setComments(List<CommentsResponse> comments) {
         this.comments = comments;
     }
 
@@ -128,6 +150,14 @@ public class PostByIdResponse {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public UserResponse getUserResponse() {
+        return userResponse;
+    }
+
+    public void setUserResponse(UserResponse userResponse) {
+        this.userResponse = userResponse;
     }
 
     //    public void setCommentList(List<TreeMap<String, Object>> commentList) {

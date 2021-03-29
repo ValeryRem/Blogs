@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -47,36 +49,39 @@ public class PostController {
     }
 
     @GetMapping("/post/{id:\\d+}")
-//@RequestMapping(value = "/post/{id: \\d+}", produces = "application/json", method = RequestMethod.GET)
-private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
+    //@RequestMapping(value = "/post/{id: \\d+}", produces = "application/json", method = RequestMethod.GET)
+    private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
         System.out.println("Method getPostById activated. ID requested: " + postId);
         return getService.getPostById(postId);
     }
 
-    @GetMapping("/post/search/")
-    private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue = "new testing") String query,
-                                               @RequestParam(defaultValue="0") Integer offset,
-                                               @RequestParam(defaultValue="4") Integer limit,
-                                               @RequestParam(defaultValue="recent") String mode) {
+    @GetMapping("/post/search/{query:\\s+}")
+    private ResponseEntity<?> getPostsBySearch (
+            @PathVariable("query") String query,
+            @RequestParam(defaultValue="0") Integer offset,
+            @RequestParam(defaultValue="4") Integer limit,
+            @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
         return getService.getPostsBySearch(query, offset, limit, mode);
     }
 
-    @GetMapping("/post/byDate")
+    @GetMapping("/post/byDate/{date}")
     private ResponseEntity<?> getPostsByDate (
-            @RequestParam long date, @RequestParam(defaultValue="0") Integer offset, @RequestParam(defaultValue="5") Integer limit,
-                                             @RequestParam(defaultValue="recent") String mode) {
+            @PathVariable("date") LocalDateTime date,
+            @RequestParam(defaultValue="0") Integer offset,
+            @RequestParam(defaultValue="5") Integer limit,
+            @RequestParam(defaultValue="recent") String mode) {
         System.out.println("Method getPostsByDate activated. Date:" + date );
         return getService.getPostsByDate(date, offset, limit, mode);
     }
 
-    @GetMapping("/post/byTag")
-    private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue = "PHP") String tagName,
+    @GetMapping("/post/byTag/{tag}")
+    private ResponseEntity<?> getPostsByTag(@PathVariable("tag") String tag,
                                             @RequestParam(defaultValue="0") Integer offset,
                                             @RequestParam(defaultValue="1") Integer limit,
                                             @RequestParam(defaultValue="recent") String mode) {
-        System.out.println("Method getPostsByTag uses tag name:" + tagName);
-        return getService.getPostsByTag(tagName, offset, limit, mode);
+        System.out.println("Method getPostsByTag uses tag name:" + tag);
+        return getService.getPostsByTag(tag, offset, limit, mode);
     }
 
     @GetMapping("/post/moderation")
@@ -111,12 +116,6 @@ private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
 
     @PostMapping("/post")
     private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
-//            @RequestParam long timestamp,
-//                                        @RequestParam(defaultValue="1") Integer active,
-//                                        @RequestParam(defaultValue="Optional.class description.") String title,
-//                                        @RequestParam(defaultValue="[Java, Python]") List<String> tags,
-//                                        @RequestParam(defaultValue="Try to consider how to implement Optional class " +
-//                                                "approach if behaviour of components is nullable.") String text)
         System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
         return postService.postPost(postRequest.getTimestamp(), postRequest.getActive(), postRequest.getTitle(),
@@ -124,19 +123,17 @@ private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
     }
 
     @PutMapping("/post/{ID: \\d+}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @RequestMapping(value = "/post/{ID: \\d+}", produces = "application/json", method = RequestMethod.PUT)
-    private ResponseEntity<?> putPost (
-//            @Valid @RequestBody PutPostRequest putPostRequest)
-            @PathVariable("ID") Integer ID,
-            @RequestParam Long timestamp, @RequestParam Integer active, @RequestParam String title,
-            @RequestParam List<String> tags, @RequestParam String text)
+    private ResponseEntity<?> putPost (@RequestBody PutPostRequest putPostRequest
+//            @PathVariable("ID") Integer ID,
+//            @RequestParam Long timestamp, @RequestParam Integer active, @RequestParam String title,
+//            @RequestParam List<String> tags, @RequestParam String text
+    )
     {
         System.out.println("Method putPost is activated");
-        System.out.println("controller: " + title); // test
-        return postService.putPost(ID, timestamp, active, title, tags, text);
-//        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
-//                putPostRequest.getTags(), putPostRequest.getText());
+        System.out.println("controller: " + putPostRequest.getTitle()); // test
+//        return postService.putPost(ID, timestamp, active, title, tags, text);
+        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
+                putPostRequest.getTags(), putPostRequest.getText());
     }
 
     @PostMapping("/comment")

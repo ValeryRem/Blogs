@@ -4,12 +4,12 @@ import java.util.List;
 
 public class GeneralResponse {
     private int count;
-    private List<Object> posts;
+    private List<PostResponse> posts;
 
     public GeneralResponse() {
     }
 
-    public GeneralResponse(int count, List<Object> posts) {
+    public GeneralResponse(int count, List<PostResponse> posts) {
         this.count = count;
         this.posts = posts;
     }
@@ -22,11 +22,11 @@ public class GeneralResponse {
         this.count = count;
     }
 
-    public List<Object> getPosts() {
+    public List<PostResponse> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Object> list) {
+    public void setPosts(List<PostResponse> list) {
         this.posts = list;
     }
 }

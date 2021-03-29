@@ -1,5 +1,6 @@
 package main.service;
 
+import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
 import main.api.response.ResultResponse;
 import main.entity.*;
@@ -22,7 +23,7 @@ import static java.time.LocalDateTime.now;
 public class PostService {
 
 //    @Autowired
-    ResultResponse resultResponse = new ResultResponse(false);
+//    ResultResponse resultResponse;
 //    ErrorsResponse errorsResponse;
 
     @Autowired
@@ -61,7 +62,7 @@ public class PostService {
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     public ResponseEntity<?> postApiModeration (Integer id, String decision) {
-//        ResultResponse resultResponse = new ResultResponse(false);
+        ResultResponse resultResponse = new ResultResponse(false);
         if (authService.isUserAuthorized()) {
             Optional<Post> optionalPost = postRepository.findById(id);
             if(optionalPost.isPresent()) {
@@ -123,77 +124,74 @@ POST_PREMODERATION - если включен этот режим, то все н
 POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
-    public ResponseEntity<?> postPost (long timestamp, Integer active, String title, List<String> tags, String text) {
-        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
-        User user = userRepository.getOne(authService.getUserId());
-        LinkedHashMap<String, Object> errors = checkTexts(title, text);
-        Post post = new Post();
-        post.setIsActive(active);
-        // назначаем id любого из модераторов при создании нового поста
-        Optional<User> optModerator = userRepository.findAll().stream().filter(User::getIsModerator).findAny();
-        optModerator.ifPresent(value -> post.setModeratorId(value.getUserId()));
-        ////
-        if(timestamp <= currentTimestamp.getTime()/1000) {
-            post.setTimestamp(currentTimestamp);
-        } else {
-            post.setTimestamp(new Timestamp(timestamp*1000));
-        }
-        post.setUserId(authService.getUserId());
-        post.setViewCount(0);
-
-        if (!errors.isEmpty())
-        {
-            resultResponse = new ResultResponse(false);
-            return new ResponseEntity<>(resultResponse, HttpStatus.OK);
-        } else {
-            post.setTitle(title);
-            post.setText(text);
-            if (authService.isUserAuthorized()) {
-                if (globalSettingsReporitory.findAll().stream().
-                        findAny().
-                        orElse(new GlobalSettings()).
-                        isPostPremoderation()) { // проверка POST_PREMODERATION = true
-                    if (!user.getIsModerator()) { // if the user is not moderator
-                        post.setModerationStatus(ModerationStatus.NEW);
-                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.OK);
-                    } else { // if the user is moderator the posy saved
-                        post.setModerationStatus(ModerationStatus.ACCEPTED);
-                        Tag2Post tag2Post;
-                        for (String tag : tags) {
-                            if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
-                                Tag tagNew = new Tag(tag);
-                                tagRepository.save(tagNew);
-                                tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
-                                tag2PostRepository.save(tag2Post);
-                            }
-                        }
-                        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-                    }
-                } else { // if POST_PREMODERATION = false
-                    if (active == 1) {
-                        post.setModerationStatus(ModerationStatus.ACCEPTED);
-                        Tag2Post tag2Post;
-                        for (String tag : tags) {
-                            if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
-                                Tag tagNew = new Tag(tag);
-                                tagRepository.save(tagNew);
-                                tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
-                                tag2PostRepository.save(tag2Post);
-                            }
-                        }
-                        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-                    } else { //  if (active != 1)
-                        post.setModerationStatus(ModerationStatus.NEW);
-                        responseEntity =  new ResponseEntity<>("Waiting for moderation.", HttpStatus.OK);
+public ResponseEntity<?> postPost(long timestamp, Integer active, String title, List<String> tags, String text) {
+    Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
+    User user = userRepository.getOne(authService.getUserId());
+    Map<String, String> errors = checkTexts(title, text);
+    if (!errors.isEmpty()) {
+        ErrorsResponse errorsResponse = new ErrorsResponse(errors);
+        return new ResponseEntity<>(errorsResponse, HttpStatus.OK);
+    }
+    Post post = new Post();
+    post.setIsActive(active);
+    // назначаем id любого из модераторов при создании нового поста
+    Optional<User> optModerator = userRepository.findAll().stream().filter(User::getIsModerator).findAny();
+    optModerator.ifPresent(value -> post.setModeratorId(value.getUserId()));
+    ////
+    if (timestamp <= currentTimestamp.getTime() / 1000) {
+        post.setTimestamp(currentTimestamp);
+    } else {
+        post.setTimestamp(new Timestamp(timestamp * 1000));
+    }
+    post.setUserId(authService.getUserId());
+    post.setViewCount(0);
+    post.setTitle(title);
+    post.setText(text);
+    if (authService.isUserAuthorized()) {
+        if (globalSettingsReporitory.findAll().stream().
+                findAny().
+                orElse(new GlobalSettings()).
+                isPostPremoderation()) { // проверка POST_PREMODERATION = true
+            if (!user.getIsModerator()) { // if the user is not moderator
+                post.setModerationStatus(ModerationStatus.NEW);
+                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+            } else { // if the user is moderator the posy saved
+                post.setModerationStatus(ModerationStatus.ACCEPTED);
+                Tag2Post tag2Post;
+                for (String tag : tags) {
+                    if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
+                        Tag tagNew = new Tag(tag);
+                        tagRepository.save(tagNew);
+                        tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
+                        tag2PostRepository.save(tag2Post);
                     }
                 }
-                postRepository.save(post);
-            } else {
-                responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
             }
-            return responseEntity;
+        } else { // if POST_PREMODERATION = false
+            if (active == 1) {
+                post.setModerationStatus(ModerationStatus.ACCEPTED);
+                Tag2Post tag2Post;
+                for (String tag : tags) {
+                    if (tagRepository.findAll().stream().map(t -> t.getTagName().equals(tag)).findAny().isEmpty()) {
+                        Tag tagNew = new Tag(tag);
+                        tagRepository.save(tagNew);
+                        tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
+                        tag2PostRepository.save(tag2Post);
+                    }
+                }
+                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+            } else { //  if (active != 1)
+                post.setModerationStatus(ModerationStatus.NEW);
+                responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+            }
         }
+        postRepository.save(post);
+    } else {
+        responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
     }
+    return responseEntity;
+}
 
 //    public ResponseEntity<?> postImage (String origin) throws IOException {
 //        String destination = "/avatars/";
@@ -237,17 +235,17 @@ POST_PREMODERATION = false (режим премодерации выключен
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(Integer ID,  Long timestamp, Integer isActive, String title, List<String> tags, String text) {
-        LinkedHashMap<String, Object> errors = checkTexts(title, text);
+    public ResponseEntity<?> putPost(Long timestamp, Integer isActive, String title, List<String> tags, String text) {
+        Map<String, String> errors = checkTexts(title, text);
         Map<String, Object> responseMap = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             System.out.println("putService: " + title); // test
-            Post post = postRepository.getOne(ID);
-//                Optional<Post> optionalPost = postRepository.findAll().stream()
-//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
-//                    if(optionalPost.isPresent()) {
-//                        Post post = optionalPost.get();
-//                        int ID = post.getPostId();
+//            Post post = postRepository.getOne(ID);
+                Optional<Post> optionalPost = postRepository.findAll().stream()
+                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
+                    if(optionalPost.isPresent()) {
+                        Post post = optionalPost.get();
+                        int ID = post.getPostId();
                         post.setText(text);
                         post.setTitle(title);
                         post.setActive(isActive);
@@ -273,11 +271,11 @@ POST_PREMODERATION = false (режим премодерации выключен
                                 tag2PostRepository.delete(t2p);
                             }
                         }
-//                    } else {
-//                       errors.put("post", "Not found!");
-//                    }
+                    } else {
+                       errors.put("post", "Not found!");
+                    }
             if (!errors.isEmpty()) {
-                resultResponse = new ResultResponse(false);
+                ResultResponse resultResponse = new ResultResponse(false);
                 responseMap.put("result", resultResponse);
                 responseMap.put("errors", errors);
                 return new ResponseEntity<>(responseMap, HttpStatus.OK);
@@ -290,19 +288,19 @@ POST_PREMODERATION = false (режим премодерации выключен
         return responseEntity;
     }
 
-    private LinkedHashMap<String, Object> checkTexts (String title, String text) {
-        LinkedHashMap<String, Object> errors = new LinkedHashMap<> ();
+    private Map<String, String> checkTexts (String title, String text) {
+        Map<String, String> errors = new LinkedHashMap<> ();
         if (title.length() < 3) {
-            errors.put("Title", "Заголовок слишком короткий");
+            errors.put("title", "Заголовок слишком короткий");
         } else
             if (title.length()  > 100) {
-            errors.put("Title", "Заголовок слишком длинный!");
+            errors.put("title", "Заголовок слишком длинный!");
         }
         if (text.length() < 50) {
-            errors.put("Text", "Текст публикации слишком короткий");
+            errors.put("text", "Текст публикации слишком короткий");
         } else
             if(text.length() > 1000) {
-            errors.put("Text", "Текст публикации слишком длинный!");
+            errors.put("text", "Текст публикации слишком длинный!");
         }
             return errors;
     }
@@ -311,7 +309,7 @@ POST_PREMODERATION = false (режим премодерации выключен
         boolean result = true;
 //        Post post = postRepository.getOne(post_id);
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
+        Map<String, String> errors = new LinkedHashMap<>();
         if (authService.isUserAuthorized()) {
             Integer userId = authService.getUserId();
             PostComment postComment = new PostComment();
@@ -326,12 +324,12 @@ POST_PREMODERATION = false (режим премодерации выключен
                 }
                 postComment.setPostId(post_id);
                 postComment.setText(text);
-                postComment.setTime(Timestamp.valueOf(now()));
+                postComment.setTime(Timestamp.valueOf(now()).getTime()/1000);
                 postComment.setUserId(userId);
                 postCommentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
             } else {
-                map.put("result", resultResponse);
+                map.put("result", new ResultResponse(false));
                 map.put("errors", errors);
             }
             responseEntity = new ResponseEntity<>(map, HttpStatus.OK);

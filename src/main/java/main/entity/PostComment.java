@@ -25,7 +25,7 @@ public class PostComment {
 
     @Column(name = "user_id")
     private Integer userId;
-    private Timestamp time;
+    private long time;
     private String text;
 
     public PostComment() {
@@ -68,11 +68,11 @@ public class PostComment {
         this.postId = postId;
     }
 
-    public Timestamp getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

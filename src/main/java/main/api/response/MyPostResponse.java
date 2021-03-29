@@ -13,7 +13,7 @@ public class MyPostResponse {
     private Integer likeCount;
     private Integer dislikeCount;
     private final Integer viewCount;
-    private TreeMap<String, Object> user;
+    private TreeMap<String, UserResponse> user;
 
     public MyPostResponse(Post post) {
         this.id = post.getUserId();
@@ -31,7 +31,7 @@ public class MyPostResponse {
         return timestamp;
     }
 
-    public TreeMap<String, Object> getUser() {
+    public TreeMap<String, UserResponse> getUser() {
         return user;
     }
 
@@ -63,7 +63,7 @@ public class MyPostResponse {
         this.dislikeCount = dislikeCount;
     }
 
-    public void setUser(TreeMap<String, Object> user) {
+    public void setUser(TreeMap<String, UserResponse> user) {
         this.user = user;
     }
 }
