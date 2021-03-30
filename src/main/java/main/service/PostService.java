@@ -49,7 +49,7 @@ public class PostService {
     Tag2PostRepository tag2PostRepository;
 
     @Autowired
-    PostCommentRepository postCommentRepository;
+    CommentRepository commentRepository;
 
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
@@ -235,11 +235,18 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(Long timestamp, Integer isActive, String title, List<String> tags, String text) {
-        Map<String, String> errors = checkTexts(title, text);
+    public ResponseEntity<?> putPost(long timestamp, Integer isActive, String title, List<String> tags, String text) {
+        System.out.println("putService: " + title); // test
+         if (!authService.isUserAuthorized()) {
+            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
         Map<String, Object> responseMap = new LinkedHashMap<>();
-        if (authService.isUserAuthorized()) {
-            System.out.println("putService: " + title); // test
+        Map<String, String> errors = checkTexts(title, text);
+        if (!errors.isEmpty()) {
+            ErrorsResponse errorsResponse = new ErrorsResponse(errors);
+            return new ResponseEntity<>(errorsResponse, HttpStatus.OK);
+        }
+//        Tag2Post tag2Post = new Tag2Post();
 //            Post post = postRepository.getOne(ID);
                 Optional<Post> optionalPost = postRepository.findAll().stream()
                         .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
@@ -282,9 +289,6 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             } else {
                     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
             }
-        } else {
-            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-        }
         return responseEntity;
     }
 
@@ -326,7 +330,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
                 postComment.setText(text);
                 postComment.setTime(Timestamp.valueOf(now()).getTime()/1000);
                 postComment.setUserId(userId);
-                postCommentRepository.save(postComment);
+                commentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
             } else {
                 map.put("result", new ResultResponse(false));

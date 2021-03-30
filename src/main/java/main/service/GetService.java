@@ -73,28 +73,28 @@ public class GetService {
         var postList = getActivePosts();
         var postListSorted = getPostsFilteredByMode(postList, mode);
         var commentList = commentRepository.findAll();
-        List<PostResponse> responseList = new ArrayList<>();
+        List<Map<String, Object>> postMapList = new ArrayList<>();
         for (Post post : postListSorted) {
-            UserResponse userResponse = new UserResponse();
+            Map<String, Object> responseMap = new LinkedHashMap<>();
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
-            var postResponse = new PostResponse ();
-            postResponse.setId(post.getPostId());
-            postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-            userResponse.setId(post.getUserId());
+            responseMap.put("id", post.getPostId());
+            responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+            Map<String, Object> userMap = new LinkedHashMap<>();
+            userMap.put("id", post.getUserId());
             Optional<User> userOptional = userRepository.findById(post.getUserId());
-            userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-            userOptional.ifPresent(user -> userResponse.setPhoto(user.getPhoto()));
-            postResponse.setUserResponse(userResponse);
-            postResponse.setTitle(post.getTitle());
-            postResponse.setAnnounce(post.getAnnounce());
-            postResponse.setCommentCount(commentCountByPost);
-            postResponse.setViewCount(post.getViewCount());
-            postResponse.setLikeCount(extractLikeCount(post));
-            postResponse.setDislikeCount(extractDislikeCount(post));
-            responseList.add(postResponse);
+            userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+            userOptional.ifPresent(user -> userMap.put("photo", user.getPhoto()));
+            responseMap.put("user", userMap);
+            responseMap.put("title", post.getTitle());
+            responseMap.put("announce", post.getAnnounce());
+            responseMap.put("likeCount", extractLikeCount(post));
+            responseMap.put("dislikeCount", extractDislikeCount(post));
+            responseMap.put("commentCount", commentCountByPost);
+            responseMap.put("viewCount", post.getViewCount());
+            postMapList.add(responseMap);
         }
-        generalResponse.setCount(responseList.size());
-        generalResponse.setPosts(getOffsetLimitOutput(responseList, offset, limit));
+        generalResponse.setCount(postListSorted.size());
+        generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
         responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
         return responseEntity;
     }
@@ -107,78 +107,66 @@ public class GetService {
         var postList = getActivePosts();
         var sortedPosts = getPostsFilteredByMode(postList, mode);
         var commentList = commentRepository.findAll();
-        List<PostResponse> responseList = new ArrayList<>();
+
+        List<Map<String, Object>> postMapList = new ArrayList<>();
         List<Post> postsList = sortedPosts.stream().
                 filter(p -> p.getText().contains(query)).collect(Collectors.toList());
         int count = postsList.size();
 
-//                map(p -> {
-//            int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(p.getPostId())).count();
-//            var postAnnounceResponse =  new PostResponse(p.getPostId(), p.getTimestamp().getTime()/1000,
-//                    p.getTitle(), p.getAnnounce(), commentCountByPost, p.getViewCount(), getUserOfPost(p));
-//            postAnnounceResponse.setLikeCount(extractLikeCount(p));
-//            postAnnounceResponse.setDislikeCount(extractDislikeCount(p));
-//            return postAnnounceResponse;
-//        }).
-//                collect(Collectors.toList());
 
         postsList.forEach(post -> {
-            UserResponse userResponse = new UserResponse();
-            userResponse.setId(post.getUserId());
+            Map<String, Object> responseMap = new LinkedHashMap<>();
+            Map<String, Object> userMap = new LinkedHashMap<>();
+            responseMap.put("id", post.getPostId());
+            responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
             Optional<User> userOptional = userRepository.findById(post.getUserId());
-            userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-            PostResponse postResponse = new PostResponse();
-            postResponse.setId(post.getPostId());
-            postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-            postResponse.setUserResponse(userResponse);
-            postResponse.setTitle(post.getTitle());
-            postResponse.setAnnounce(post.getAnnounce());
-            postResponse.setLikeCount(extractLikeCount(post));
-            postResponse.setDislikeCount(extractDislikeCount(post));
-            postResponse.setCommentCount(commentCountByPost);
-            postResponse.setViewCount(post.getViewCount());
-
-            responseList.add(postResponse);
+            userOptional.ifPresent(user -> userMap.put("id", user.getUserId()));
+            userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+            responseMap.put("user", userMap);
+            responseMap.put("title", post.getTitle());
+            responseMap.put("announce", post.getAnnounce());
+            responseMap.put("likeCount", extractLikeCount(post));
+            responseMap.put("dislikeCount", extractDislikeCount(post));
+            responseMap.put("commentCount", commentCountByPost);
+            responseMap.put("viewCount", post.getViewCount());
+            postMapList.add(responseMap);
         });
         generalResponse.setCount(count);
-        generalResponse.setPosts(getOffsetLimitOutput(responseList, offset, limit));
+        generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
         return  new ResponseEntity<>(generalResponse, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getPostsByDate(LocalDateTime time, Integer offset, Integer limit, String mode) {
         var postList = getActivePosts();
         var sortedPosts = getPostsFilteredByMode(postList, mode);
-        List<PostResponse> posts = new ArrayList<>();
+        List<Map<String, Object>> postMapList = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : sortedPosts) {
-            PostResponse postResponse = new PostResponse();
-            UserResponse userResponse = new UserResponse();
-
             if (time.equals(post.getTimestamp().toLocalDateTime()))
 //                    .toInstant().atZone(ZoneId.of("UTC")).toLocalDate().equals(time))
             {
-                userResponse.setId(post.getUserId());
+                Map<String, Object> responseMap = new LinkedHashMap<>();
+                int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
+                responseMap.put("id", post.getPostId());
+                responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+                responseMap.put("title", post.getTitle());
+                responseMap.put("announce", post.getAnnounce());
+                responseMap.put("likeCount", extractLikeCount(post));
+                responseMap.put("dislikeCount", extractDislikeCount(post));
+                responseMap.put("commentCount", commentCountByPost);
+                responseMap.put("viewCount", post.getViewCount());
+                Map<String, Object> userMap = new LinkedHashMap<>();
                 Optional<User> userOptional = userRepository.findById(post.getUserId());
-                userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-                int commentCountByPost = (int) commentList.stream().
-                        filter(a -> a.getPostId().equals(post.getPostId())).
-                        count();
-                postResponse.setId(post.getPostId());
-                postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-                postResponse.setTitle(post.getTitle());
-                postResponse.setAnnounce(post.getAnnounce());
-                postResponse.setLikeCount(extractLikeCount(post));
-                postResponse.setDislikeCount(extractDislikeCount(post));
-                postResponse.setCommentCount(commentCountByPost);
-                postResponse.setViewCount(post.getViewCount());
-                postResponse.setUserResponse(userResponse);
-                posts.add(postResponse);
+                userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+                userOptional.ifPresent(user -> userMap.put("id", user.getUserId()));
+                responseMap.put("user", userMap);
+                postMapList.add(responseMap);
             }
         }
         generalResponse = new GeneralResponse();
-        generalResponse.setCount(posts.size());
-        generalResponse.setPosts(getOffsetLimitOutput(posts, offset, limit));
+        generalResponse.setCount(sortedPosts.size());
+        generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
             responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
         return responseEntity;
     }
@@ -188,7 +176,7 @@ public class GetService {
         int tagId;
         List<Integer> postsIdList = new ArrayList<>();
         List<Post> posts;
-        List<PostResponse> postsResponseList = new ArrayList<>();
+        List<Map<String, Object>> postMapList = new ArrayList<>();
         List<Tag2Post> tag2PostList = tag2PostRepository.findAll();
         if(tagList.size() > 0 && tag2PostList.size() > 0) {
             if (tagList.stream().map(Tag::getTagName).collect(Collectors.toList()).contains(tagName.trim())) {
@@ -202,28 +190,26 @@ public class GetService {
                 posts = postsIdList.stream().map( s -> postRepository.getOne(s)).collect(Collectors.toList());
                 var sortedPosts = getPostsFilteredByMode(posts, mode);
                 for (Post post: sortedPosts) {
-                    PostResponse postResponse = new PostResponse();
-                    UserResponse userResponse = new UserResponse();
-                    int commentCountByPost = getCommentCountByPost(commentList, post);
-                    userResponse.setId(post.getUserId());
+                    Map<String, Object> responseMap = new LinkedHashMap<>();
+                    int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
+                    responseMap.put("id", post.getPostId());
+                    responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+                    responseMap.put("title", post.getTitle());
+                    responseMap.put("announce", post.getAnnounce());
+                    responseMap.put("likeCount", extractLikeCount(post));
+                    responseMap.put("dislikeCount", extractDislikeCount(post));
+                    responseMap.put("commentCount", commentCountByPost);
+                    responseMap.put("viewCount", post.getViewCount());
+                    Map<String, Object> userMap = new LinkedHashMap<>();
+                    userMap.put("id", post.getUserId());
                     Optional<User> userOptional = userRepository.findById(post.getUserId());
-                    userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-                    postResponse.setId(post.getPostId());
-                    postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-                    postResponse.setTitle(post.getTitle());
-                    postResponse.setAnnounce(post.getAnnounce());
-                    postResponse.setLikeCount(extractLikeCount(post));
-                    postResponse.setDislikeCount(extractDislikeCount(post));
-                    postResponse.setCommentCount(commentCountByPost);
-                    postResponse.setViewCount(post.getViewCount());
-                    postResponse.setUserResponse(userResponse);
-                    postsResponseList.add(postResponse);
-//                    postsResponseList.add(new PostResponse(post.getPostId(), post.getTimestamp().getTime() / 1000,
-//                            post.getTitle(), post.getAnnounce(), commentCountByPost, post.getViewCount(), getUserOfPost(post)));
+                    userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+                    responseMap.put("user", userMap);
+                    postMapList.add(responseMap);
                 }
                 generalResponse = new GeneralResponse();
-                generalResponse.setCount(postsResponseList.size());
-                generalResponse.setPosts(getOffsetLimitOutput(postsResponseList, offset, limit));
+                generalResponse.setCount(sortedPosts.size());
+                generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
                 responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
             } else {
                 responseEntity = new ResponseEntity<>("Tag " + tagName + " not found!", HttpStatus.NOT_FOUND);
@@ -234,10 +220,13 @@ public class GetService {
         return responseEntity;
     }
 
-    private int getCommentCountByPost(List<PostComment> commentList, Post post) {
-        var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
-                collect(Collectors.toList());
-        int commentCountByPost = postComments.size();
+    private int getCommentCountByPost(Post post) {
+//        var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
+//                collect(Collectors.toList());
+        int commentCountByPost = (int) commentRepository.findAll().stream()
+                .filter(a -> a.getPostId().equals(post.getPostId()))
+                .count();
+// postComments.size();
         return commentCountByPost;
     }
 
@@ -246,8 +235,9 @@ public class GetService {
             return new ResponseEntity<>("User not authorized", HttpStatus.NOT_FOUND);
         }
         generalResponse = new GeneralResponse();
+        List<Map<String, Object>> postMapList = new ArrayList<>();
         int userId = authService.getUserId();
-        List<PostResponse> postsResponseList = new ArrayList<>();
+//        List<PostResponse> postsResponseList = new ArrayList<>();
         List<Post> posts = postRepository.findAll();//getOffsetLimitOutput(, offset, limit);
             int count = 0;
             for (Post post : posts) {
@@ -257,106 +247,139 @@ public class GetService {
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.DECLINED))
 //                    || (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED)))))
                 {
-                    PostResponse postResponse = new PostResponse();
-                    UserResponse userResponse = new UserResponse();
-                    var commentList = commentRepository.findAll();
-                    int commentCountByPost = getCommentCountByPost(commentList, post);
-                    userResponse.setId(post.getUserId());
+                    Map<String, Object> responseMap = new LinkedHashMap<>();
+                    int commentCountByPost = getCommentCountByPost(post);
+                            //(int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
+                    responseMap.put("id", post.getPostId());
+                    responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+                    responseMap.put("title", post.getTitle());
+                    responseMap.put("announce", post.getAnnounce());
+                    responseMap.put("likeCount", extractLikeCount(post));
+                    responseMap.put("dislikeCount", extractDislikeCount(post));
+                    responseMap.put("commentCount", commentCountByPost);
+                    responseMap.put("viewCount", post.getViewCount());
+                    Map<String, Object> userMap = new LinkedHashMap<>();
+                    userMap.put("id", post.getUserId());
                     Optional<User> userOptional = userRepository.findById(post.getUserId());
-                    userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-                    postResponse.setId(post.getPostId());
-                    postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-                    postResponse.setTitle(post.getTitle());
-                    postResponse.setAnnounce(post.getAnnounce());
-                    postResponse.setLikeCount(extractLikeCount(post));
-                    postResponse.setDislikeCount(extractDislikeCount(post));
-                    postResponse.setCommentCount(commentCountByPost);
-                    postResponse.setViewCount(post.getViewCount());
-                    postResponse.setUserResponse(userResponse);
-                    postsResponseList.add(postResponse);
+                    userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+                    responseMap.put("user", userMap);
+                    postMapList.add(responseMap);
+//                    PostResponse postResponse = new PostResponse();
+//                    UserResponse userResponse = new UserResponse();
+//                    var commentList = commentRepository.findAll();
+//                    int commentCountByPost = getCommentCountByPost(commentList, post);
+//                    userResponse.setId(post.getUserId());
+//                    Optional<User> userOptional = userRepository.findById(post.getUserId());
+//                    userOptional.ifPresent(user -> userResponse.setName(user.getName()));
+//                    postResponse.setId(post.getPostId());
+//                    postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
+//                    postResponse.setTitle(post.getTitle());
+//                    postResponse.setAnnounce(post.getAnnounce());
+//                    postResponse.setLikeCount(extractLikeCount(post));
+//                    postResponse.setDislikeCount(extractDislikeCount(post));
+//                    postResponse.setCommentCount(commentCountByPost);
+//                    postResponse.setViewCount(post.getViewCount());
+//                    postResponse.setUserResponse(userResponse);
+//                    postsResponseList.add(postResponse);
                     count++;
                 }
                generalResponse.setCount(count);
-               generalResponse.setPosts(getOffsetLimitOutput(postsResponseList, offset, limit));
+               generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
                responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
             }
             return responseEntity;
     }
 
     public ResponseEntity<?> getPostById(Integer postId) {
-        if(postRepository.findById(postId).isPresent()){//findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(postId)) {
-            var post = postRepository.getOne(postId);
-            var postByIdResponse = new PostByIdResponse();
-            postByIdResponse.setId(postId);
-            postByIdResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-            postByIdResponse.setActive(post.isActive() == 1);
-            postByIdResponse.setUserResponse(new UserResponse(post));
-            postByIdResponse.setTitle(post.getTitle());
-            postByIdResponse.setText(post.getText());
-            postByIdResponse.setLikeCount(extractLikeCount(post));
-            postByIdResponse.setDislikeCount(extractDislikeCount(post));
-            postByIdResponse.setViewCount(post.getViewCount() + 1);
-            post.setViewCount(post.getViewCount() + 1);
-            postRepository.save(post);
-            if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
-                    post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
-                Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-                var tagsIdList = new ArrayList<>();
-                ArrayList<String> tags = new ArrayList<>();
-                for (Tag2Post tag2Post : tag2PostIterable) {
-                    if (tag2Post.getPostId().equals(postId)) {
-                        tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
-                    }
-                }
-//                ArrayList<String> tags = tagsIdList.stream().map((s -> tagRepository.getOne(s).getTagName()).Collect;
-                var iterableTags = tagRepository.findAll();
-                for (Tag tag : iterableTags) {
-                    if (tagsIdList.contains(tag.getId())) {
-                       tags.add(tag.getTagName()); // добавляем тэги в объект вывода
-                    }
-                }
-                postByIdResponse.setTags(tags);
-                List<CommentsResponse> comments = getCommentsList(postId);
-                postByIdResponse.setComments(comments);
-            }
-            return new ResponseEntity<>(postByIdResponse, HttpStatus.OK);
-        } else {
+        if (postRepository.findById(postId).isEmpty()) {//findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(postId)) {
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
+        List<Map<String, Object>> commentsMapList = new ArrayList<>();
+        Map<String, Object> responseMap = new LinkedHashMap<>();
+        var post = postRepository.getOne(postId);
+        Map<String, Object> userMap = new LinkedHashMap<>();
+        responseMap.put("id", post.getPostId());
+        responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+        responseMap.put("active", post.getIsActive());
+
+        Optional<User> userOptional = userRepository.findById(post.getUserId());
+        userOptional.ifPresent(user -> userMap.put("name", user.getName()));
+        userOptional.ifPresent(user -> userMap.put("id", user.getUserId()));
+        responseMap.put("user", userMap);
+        responseMap.put("title", post.getTitle());
+        responseMap.put("announce", post.getAnnounce());
+        responseMap.put("likeCount", extractLikeCount(post));
+        responseMap.put("dislikeCount", extractDislikeCount(post));
+        responseMap.put("viewCount", post.getViewCount());
+
+        List<PostComment> postCommentList = commentRepository.findAll().stream()
+                .filter(c -> c.getPostId().equals(postId))
+                .collect(Collectors.toList());
+        postCommentList.forEach(c -> {
+            Map<String, Object> commentMap = new LinkedHashMap<>();
+            commentMap.put("id", c.getCommentId());
+            commentMap.put("timestamp", c.getTime());
+            commentMap.put("text", c.getText());
+            if(userOptional.isPresent()) {
+                UserResponse userResponse = new UserResponse();
+                userResponse.setId(userOptional.get().getUserId());
+                userResponse.setName(userOptional.get().getName());
+                userResponse.setPhoto(userOptional.get().getPhoto());
+                commentMap.put("user", userResponse);
+            }
+            commentsMapList.add(commentMap);
+            responseMap.put("comments", commentsMapList);
+        });
+        if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
+                post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
+            Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
+            var tagsIdList = new ArrayList<>();
+            List<String> tags = new ArrayList<>();
+            for (Tag2Post tag2Post : tag2PostIterable) {
+                if (tag2Post.getPostId().equals(postId)) {
+                    tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
+                }
+            }
+            var iterableTags = tagRepository.findAll();
+            for (Tag tag : iterableTags) {
+                if (tagsIdList.contains(tag.getId())) {
+                    tags.add(tag.getTagName()); // добавляем тэги в объект вывода
+                }
+            }
+            responseMap.put("tags", iterableTags);
+        }
+        return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String status) {
         if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User is UNAUTHORIZED.", HttpStatus.UNAUTHORIZED);
         }
-        User us = userRepository.getOne(authService.getUserId());
-        UserResponse userResponse = new UserResponse();
-//        generalResponse = new GeneralResponse();
+        User user = userRepository.getOne(authService.getUserId());
+        List<Map<String, Object>> posts = new ArrayList<>();
         int count;
-       List<PostResponse> posts = new ArrayList<>();
-        userResponse.setId(us.getUserId());
-        userResponse.setName(us.getName());
         var postList = postRepository.findAll();
         var postsFiltered = postList.stream()
                 .filter(p -> p.isActive() == 1 && p.getModerationStatus().equals(ModerationStatus.NEW) && status.equals("new"))
                 .collect(Collectors.toList());
-        List<PostComment> commentList = commentRepository.findAll();
         count = postsFiltered.size();
         for (Post post : postsFiltered) {
-            int commentCountByPost = (int) commentList.stream().
-                    filter(a -> a.getPostId().equals(post.getPostId())).
-                    count();
-            PostResponse postResponse = new PostResponse();
-            postResponse.setId(post.getPostId());
-            postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-            postResponse.setTitle(post.getTitle());
-            postResponse.setAnnounce(post.getAnnounce());
-            postResponse.setLikeCount(extractLikeCount(post));
-            postResponse.setDislikeCount(extractDislikeCount(post));
-            postResponse.setCommentCount(commentCountByPost);
-            postResponse.setViewCount(post.getViewCount());
-            postResponse.setUserResponse(userResponse);
-            posts.add(postResponse);
+            Map<String, Object> responseMap = new LinkedHashMap<>();
+            Map<String, Object> userMap = new LinkedHashMap<>();
+            int commentCountByPost = getCommentCountByPost(post);
+            responseMap.put("id", post.getPostId());
+            responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
+            responseMap.put("active", post.getIsActive());
+            responseMap.put("title", post.getTitle());
+            responseMap.put("announce", post.getAnnounce());
+            responseMap.put("likeCount", extractLikeCount(post));
+            responseMap.put("dislikeCount", extractDislikeCount(post));
+            responseMap.put("commentCount", commentCountByPost);
+            responseMap.put("viewCount", post.getViewCount());
+            userMap.put("name", user.getName());
+            userMap.put("id", user.getUserId());
+            responseMap.put("user", userMap);
+            posts.add(responseMap);
         }
         generalResponse.setCount(count);
         generalResponse.setPosts(getOffsetLimitOutput(posts, offset, limit));
@@ -364,8 +387,8 @@ public class GetService {
         return responseEntity;
     }
 
-    private List<PostResponse> getOffsetLimitOutput (List<PostResponse> list, Integer offset, Integer limit) {
-        List<PostResponse> listResult;
+    private List<Map<String, Object>> getOffsetLimitOutput (List<Map<String, Object>> list, Integer offset, Integer limit) {
+        List<Map<String, Object>> listResult;
         if (offset > list.size()) {
             return new ArrayList<>();
         }

@@ -2,20 +2,24 @@ package main.api.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import main.entity.Post;
 
-import java.util.TreeMap;
+import java.util.List;
+import java.util.Map;
 
 public class PostResponse {
     @JsonProperty
-    private  Integer id;
+    private Integer id;
 
     @JsonProperty
-    private  long timestamp;
+    private long timestamp;
 
     @JsonProperty
     private UserResponse userResponse;
-//        private final TreeMap<String, Object> user;
+
     @JsonProperty
     private  String title;
+
+    @JsonProperty
+    private String text;
 
     @JsonProperty
     private  String announce;
@@ -32,26 +36,21 @@ public class PostResponse {
     @JsonProperty
     private  Integer viewCount;
 
+    @JsonProperty
+    private boolean active;
 
-//    public PostResponse(Integer postId, long timestamp, String title, String announce,
-//                        Integer commentCount, Integer viewCount, UserResponse userResponse) {
-//        this.id = postId;
-//        this.timestamp = timestamp;
-//        this.title = title;
-//        this.announce = announce;
-//        this.commentCount = commentCount;
-//        this.viewCount = viewCount;
-//        this.userResponse = userResponse;
-//    }
+    @JsonProperty
+    private List<String> tags;
 
-        public Integer getId() {
+    @JsonProperty
+    private List<CommentsResponse> comments;
+    public Integer getId() {
             return id;
         }
 
         public long getTimestamp() {
             return timestamp;
         }
-
 
         public String getTitle() {
             return title;
@@ -115,6 +114,38 @@ public class PostResponse {
 
     public void setUserResponse(UserResponse userResponse) {
         this.userResponse = userResponse;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<CommentsResponse> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsResponse> comments) {
+        this.comments = comments;
     }
 }
 

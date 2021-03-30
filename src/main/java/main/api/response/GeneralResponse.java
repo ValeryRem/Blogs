@@ -1,15 +1,16 @@
 package main.api.response;
 
 import java.util.List;
+import java.util.Map;
 
 public class GeneralResponse {
     private int count;
-    private List<PostResponse> posts;
+    private List<Map<String, Object>> posts;
 
     public GeneralResponse() {
     }
 
-    public GeneralResponse(int count, List<PostResponse> posts) {
+    public GeneralResponse(int count, List<Map<String, Object>> posts) {
         this.count = count;
         this.posts = posts;
     }
@@ -22,11 +23,11 @@ public class GeneralResponse {
         this.count = count;
     }
 
-    public List<PostResponse> getPosts() {
+    public List<Map<String, Object>> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<PostResponse> list) {
+    public void setPosts(List<Map<String, Object>> list) {
         this.posts = list;
     }
 }
