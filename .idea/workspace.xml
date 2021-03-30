@@ -22,14 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="PostResponse set up instead of use of Object.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Use of Map &lt;String, Object&gt; restored.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/GeneralResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/GeneralResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,13 +130,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00086" summary="Timestamp time used everywhere.">
-      <created>1608470877731</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1608470877731</updated>
     </task>
     <task id="LOCAL-00087" summary="Time in sec in ResponseEntity.">
       <created>1608489172068</created>
@@ -476,7 +467,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617009588182</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="Use of Map &lt;String, Object&gt; restored.">
+      <created>1617091832830</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1617091832834</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -499,7 +497,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Problems in postAuthRegister: not readable captcha image." />
     <MESSAGE value="Updates in postAuthRegister." />
     <MESSAGE value="Methods getAllStatistics &amp; getMyStatistics updated." />
     <MESSAGE value="Methods postPost updated by  timestamp parameter added." />
@@ -524,7 +521,8 @@
     <MESSAGE value="The bug found out and avoided in postPost method (nullable moderatorId changed to NN)." />
     <MESSAGE value="Appears an error: &quot;Method Not Allowed&quot;, &quot;Request method 'PUT' not supported&quot;" />
     <MESSAGE value="PostResponse set up instead of use of Object." />
-    <option name="LAST_COMMIT_MESSAGE" value="PostResponse set up instead of use of Object." />
+    <MESSAGE value="Use of Map &lt;String, Object&gt; restored." />
+    <option name="LAST_COMMIT_MESSAGE" value="Use of Map &lt;String, Object&gt; restored." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

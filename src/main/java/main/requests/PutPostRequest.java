@@ -2,7 +2,6 @@ package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,7 +10,7 @@ public class PutPostRequest implements Serializable {
     private Long timestamp;
 
     @JsonProperty
-    private Integer isActive;
+    private Integer active;
 
     @JsonProperty
     private String title;
@@ -30,12 +29,12 @@ public class PutPostRequest implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Integer getIsActive() {
-        return isActive;
+    public Integer getActive() {
+        return active;
     }
 
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
     public String getTitle() {

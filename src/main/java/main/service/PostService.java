@@ -235,7 +235,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(long timestamp, Integer isActive, String title, List<String> tags, String text) {
+    public ResponseEntity<?> putPost(long timestamp, Integer active, String title, List<String> tags, String text) {
         System.out.println("putService: " + title); // test
          if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -255,7 +255,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
                         int ID = post.getPostId();
                         post.setText(text);
                         post.setTitle(title);
-                        post.setActive(isActive);
+                        post.setActive(active);
                         post.setTimestamp(new Timestamp(timestamp * 1000));
                         postRepository.save(post);
                         List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());

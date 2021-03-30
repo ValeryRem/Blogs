@@ -99,22 +99,19 @@ public class GetService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostsBySearch(String query, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsBySearch(Integer offset, Integer limit, String query) {
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
         generalResponse = new GeneralResponse();
         var postList = getActivePosts();
-        var sortedPosts = getPostsFilteredByMode(postList, mode);
         var commentList = commentRepository.findAll();
 
         List<Map<String, Object>> postMapList = new ArrayList<>();
-        List<Post> postsList = sortedPosts.stream().
+        List<Post> posts = postList.stream().
                 filter(p -> p.getText().contains(query)).collect(Collectors.toList());
-        int count = postsList.size();
-
-
-        postsList.forEach(post -> {
+        int count = posts.size();
+        posts.forEach(post -> {
             Map<String, Object> responseMap = new LinkedHashMap<>();
             Map<String, Object> userMap = new LinkedHashMap<>();
             responseMap.put("id", post.getPostId());
@@ -137,15 +134,18 @@ public class GetService {
         return  new ResponseEntity<>(generalResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPostsByDate(LocalDateTime time, Integer offset, Integer limit, String mode) {
-        var postList = getActivePosts();
-        var sortedPosts = getPostsFilteredByMode(postList, mode);
+    public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, LocalDateTime date) {
+        var posts = getActivePosts();
+        int count = 0;
+//        List<Post> posts = postRepository.findAll();
+//        var sortedPosts = getPostsFilteredByMode(postList, mode);
         List<Map<String, Object>> postMapList = new ArrayList<>();
         var commentList = commentRepository.findAll();
-        for (Post post : sortedPosts) {
-            if (time.equals(post.getTimestamp().toLocalDateTime()))
+        for (Post post : posts) {
+            if (date.equals(post.getTimestamp().toLocalDateTime()))
 //                    .toInstant().atZone(ZoneId.of("UTC")).toLocalDate().equals(time))
             {
+                count++;
                 Map<String, Object> responseMap = new LinkedHashMap<>();
                 int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
                 responseMap.put("id", post.getPostId());
@@ -165,13 +165,13 @@ public class GetService {
             }
         }
         generalResponse = new GeneralResponse();
-        generalResponse.setCount(sortedPosts.size());
+        generalResponse.setCount(count);
         generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
             responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
         return responseEntity;
     }
 
-    public ResponseEntity<?> getPostsByTag(String tagName, Integer offset, Integer limit, String mode) {
+    public ResponseEntity<?> getPostsByTag(Integer offset, Integer limit, String tag) {
         var tagList = tagRepository.findAll();
         int tagId;
         List<Integer> postsIdList = new ArrayList<>();
@@ -179,8 +179,8 @@ public class GetService {
         List<Map<String, Object>> postMapList = new ArrayList<>();
         List<Tag2Post> tag2PostList = tag2PostRepository.findAll();
         if(tagList.size() > 0 && tag2PostList.size() > 0) {
-            if (tagList.stream().map(Tag::getTagName).collect(Collectors.toList()).contains(tagName.trim())) {
-                tagId = tagList.stream().filter(t -> t.getTagName().equals(tagName)).findFirst().orElse(new Tag()).getId();
+            if (tagList.stream().map(Tag::getTagName).collect(Collectors.toList()).contains(tag.trim())) {
+                tagId = tagList.stream().filter(t -> t.getTagName().equals(tag)).findFirst().orElse(new Tag()).getId();
                 for (Tag2Post tag2Post : tag2PostList) {
                     if (tag2Post.getTagId().equals(tagId)) {
                         postsIdList.add(tag2Post.getPostId());
@@ -188,8 +188,9 @@ public class GetService {
                 }
                 var commentList = commentRepository.findAll();
                 posts = postsIdList.stream().map( s -> postRepository.getOne(s)).collect(Collectors.toList());
-                var sortedPosts = getPostsFilteredByMode(posts, mode);
-                for (Post post: sortedPosts) {
+//                var sortedPosts = getPostsFilteredByMode(posts, mode);
+
+                for (Post post: posts) {
                     Map<String, Object> responseMap = new LinkedHashMap<>();
                     int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
                     responseMap.put("id", post.getPostId());
@@ -208,11 +209,11 @@ public class GetService {
                     postMapList.add(responseMap);
                 }
                 generalResponse = new GeneralResponse();
-                generalResponse.setCount(sortedPosts.size());
+                generalResponse.setCount(posts.size());
                 generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
                 responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<>("Tag " + tagName + " not found!", HttpStatus.NOT_FOUND);
+                responseEntity = new ResponseEntity<>("Tag " + tag + " not found!", HttpStatus.NOT_FOUND);
             }
         } else {
             responseEntity = new ResponseEntity<>("No tags or tag2Post yet registered.", HttpStatus.NO_CONTENT);
@@ -294,9 +295,12 @@ public class GetService {
         if (postRepository.findById(postId).isEmpty()) {//findAll().stream().map(Post::getPostId).collect(Collectors.toList()).contains(postId)) {
             return new ResponseEntity<>("Post with ID = " + postId + " not found.", HttpStatus.NOT_FOUND);
         }
+
         List<Map<String, Object>> commentsMapList = new ArrayList<>();
         Map<String, Object> responseMap = new LinkedHashMap<>();
         var post = postRepository.getOne(postId);
+        post.setViewCount(post.getViewCount() + 1);
+        postRepository.save(post);
         Map<String, Object> userMap = new LinkedHashMap<>();
         responseMap.put("id", post.getPostId());
         responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
@@ -670,25 +674,25 @@ public class GetService {
         return commentsResponseList;
     }
 
-    private UserResponse getUserOfPost(Post post){
-        UserResponse userResponse = new UserResponse();
-        TreeMap<String, UserResponse> map = new TreeMap<>();
-//        map.put("id", userResponse.getId());
-        try{
-           User user  = userRepository.getOne(post.getUserId());
-           userResponse.setName(user.getName());
-           userResponse.setId(user.getUserId());
-//           map.put("name", userResponse.getName());
-           if(user.getPhoto() != null) {
-               userResponse.setPhoto( user.getPhoto());
-//               map.put("photo", user.getPhoto());
-           }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return map.put("user", userResponse);
-    }
+//    private UserResponse getUserOfPost(Post post){
+//        UserResponse userResponse = new UserResponse();
+//        TreeMap<String, UserResponse> map = new TreeMap<>();
+////        map.put("id", userResponse.getId());
+//        try{
+//           User user  = userRepository.getOne(post.getUserId());
+//           userResponse.setName(user.getName());
+//           userResponse.setId(user.getUserId());
+////           map.put("name", userResponse.getName());
+//           if(user.getPhoto() != null) {
+//               userResponse.setPhoto( user.getPhoto());
+////               map.put("photo", user.getPhoto());
+//           }
+//        }
+//        catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return map.put("user", userResponse);
+//    }
 
     private Integer extractLikeCount(Post post) {
         try {

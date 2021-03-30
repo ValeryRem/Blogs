@@ -6,14 +6,10 @@ import main.repository.UserRepository;
 import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -55,33 +51,32 @@ public class PostController {
         return getService.getPostById(postId);
     }
 
-    @GetMapping("/post/search/{query:\\s+}")
+    @GetMapping("/post/search")
     private ResponseEntity<?> getPostsBySearch (
-            @PathVariable("query") String query,
+//            @PathVariable("query") String query,
             @RequestParam(defaultValue="0") Integer offset,
             @RequestParam(defaultValue="4") Integer limit,
-            @RequestParam(defaultValue="recent") String mode) {
+            @RequestParam String query) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
-        return getService.getPostsBySearch(query, offset, limit, mode);
+        return getService.getPostsBySearch(offset, limit, query);
     }
 
-    @GetMapping("/post/byDate/{date}")
+    @GetMapping("/post/byDate")
     private ResponseEntity<?> getPostsByDate (
-            @PathVariable("date") LocalDateTime date,
             @RequestParam(defaultValue="0") Integer offset,
             @RequestParam(defaultValue="5") Integer limit,
-            @RequestParam(defaultValue="recent") String mode) {
+            @RequestParam LocalDateTime date){
         System.out.println("Method getPostsByDate activated. Date:" + date );
-        return getService.getPostsByDate(date, offset, limit, mode);
+        return getService.getPostsByDate(offset, limit, date);
     }
 
-    @GetMapping("/post/byTag/{tag}")
-    private ResponseEntity<?> getPostsByTag(@PathVariable("tag") String tag,
-                                            @RequestParam(defaultValue="0") Integer offset,
-                                            @RequestParam(defaultValue="1") Integer limit,
-                                            @RequestParam(defaultValue="recent") String mode) {
+    @GetMapping("/post/byTag")
+    private ResponseEntity<?> getPostsByTag(
+                                            @RequestParam Integer offset,
+                                            @RequestParam Integer limit,
+                                            @RequestParam String tag){
         System.out.println("Method getPostsByTag uses tag name:" + tag);
-        return getService.getPostsByTag(tag, offset, limit, mode);
+        return getService.getPostsByTag( offset, limit, tag);
     }
 
     @GetMapping("/post/moderation")
@@ -116,23 +111,16 @@ public class PostController {
 
     @PostMapping("/post")
     private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
-        System.out.println("userId: " + authService.getUserId());
         System.out.println("Method postPost is activated");
         return postService.postPost(postRequest.getTimestamp(), postRequest.getActive(), postRequest.getTitle(),
                 postRequest.getTags(), postRequest.getText());
     }
 
     @PutMapping("/post/{ID: \\d+}")
-    private ResponseEntity<?> putPost (@RequestBody PutPostRequest putPostRequest
-//            @PathVariable("ID") Integer ID,
-//            @RequestParam Long timestamp, @RequestParam Integer active, @RequestParam String title,
-//            @RequestParam List<String> tags, @RequestParam String text
-    )
-    {
+    public ResponseEntity<?> putPost (@RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
         System.out.println("controller: " + putPostRequest.getTitle()); // test
-//        return postService.putPost(ID, timestamp, active, title, tags, text);
-        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getIsActive(), putPostRequest.getTitle(),
+        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
     }
 
