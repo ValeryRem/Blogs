@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class GetService {
-//    private Integer tagId;
 
     @Autowired
     private PostRepository postRepository;
@@ -48,9 +46,6 @@ public class GetService {
     @Autowired
     GlobalSettingsReporitory globalSettingsReporitory;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
-
-//    @Autowired
-//    PostByIdResponse postByIdResponse;
 
     private boolean result = false;
 
@@ -146,7 +141,6 @@ public class GetService {
 //            if (date == post.getTimestamp().getTime()/1000)
           if(post.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(date))
                   //equals(Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()))
-                // timestamp.toInstant().atZone(zoneId).toLocalDate()
             {
                 count++;
                 Map<String, Object> responseMap = new LinkedHashMap<>();
@@ -191,7 +185,6 @@ public class GetService {
                 }
                 var commentList = commentRepository.findAll();
                 posts = postsIdList.stream().map( s -> postRepository.getOne(s)).collect(Collectors.toList());
-//                var sortedPosts = getPostsFilteredByMode(posts, mode);
 
                 for (Post post: posts) {
                     Map<String, Object> responseMap = new LinkedHashMap<>();
@@ -230,7 +223,6 @@ public class GetService {
         int commentCountByPost = (int) commentRepository.findAll().stream()
                 .filter(a -> a.getPostId().equals(post.getPostId()))
                 .count();
-// postComments.size();
         return commentCountByPost;
     }
 
@@ -241,7 +233,6 @@ public class GetService {
         generalResponse = new GeneralResponse();
         List<Map<String, Object>> postMapList = new ArrayList<>();
         int userId = authService.getUserId();
-//        List<PostResponse> postsResponseList = new ArrayList<>();
         List<Post> posts = postRepository.findAll();//getOffsetLimitOutput(, offset, limit);
             int count = 0;
             for (Post post : posts) {
@@ -425,7 +416,6 @@ public class GetService {
             tagResponseList.add(new TagResponse(tagNameList.get(i), partialWeights.get(i)));
         }
         return  Map.of("tags", tagResponseList);
-
     }
 
     public ResponseEntity<?> getMyStatistics () {

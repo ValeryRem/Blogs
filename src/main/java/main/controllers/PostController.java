@@ -7,6 +7,7 @@ import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
@@ -47,7 +48,7 @@ public class PostController {
     }
 
     @GetMapping("/{ID:\\d+}")
-    //@RequestMapping(value = "/post/{id: \\d+}", produces = "application/json", method = RequestMethod.GET)
+    //@RequestMapping(value = "/{ID: \\d+}", produces = "application/json", method = RequestMethod.GET)
     private ResponseEntity<?> getPostById (@PathVariable("ID") Integer ID) {
         System.out.println("Method getPostById activated. ID requested: " + ID);
         return getService.getPostById(ID);
@@ -117,9 +118,10 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/post/{ID}") //: \\d+}")
+    @PutMapping(value = "/{ID: \\d+}", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
 //    @RequestMapping(value = "/{ID: \\d+}",method=RequestMethod.PUT)
-    public @ResponseBody ResponseEntity<?> putPost (@PathVariable("ID") int ID, @RequestBody PutPostRequest putPostRequest){
+    public ResponseEntity<?> putPost (@PathVariable("ID") int ID, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
         return postService.putPost(ID, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
