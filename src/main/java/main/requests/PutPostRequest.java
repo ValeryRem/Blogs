@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PutPostRequest implements Serializable {
+//    @JsonProperty
+//    private int ID;
+
     @JsonProperty
     private Long timestamp;
 
@@ -20,6 +23,17 @@ public class PutPostRequest implements Serializable {
 
     @JsonProperty
     private String text;
+
+    public PutPostRequest() {
+    }
+
+//    public int getID() {
+//        return ID;
+//    }
+//
+//    public void setID(int ID) {
+//        this.ID = ID;
+//    }
 
     public Long getTimestamp() {
         return timestamp;

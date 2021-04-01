@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -235,60 +236,63 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(long timestamp, Integer active, String title, List<String> tags, String text) {
-        System.out.println("putService: " + title); // test
-         if (!authService.isUserAuthorized()) {
+    public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, List<String> tags, String text) {
+//        System.out.println("putService: " + title); // test
+        if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         Map<String, Object> responseMap = new LinkedHashMap<>();
         Map<String, String> errors = checkTexts(title, text);
+        generalResponse = new GeneralResponse();
         if (!errors.isEmpty()) {
             ErrorsResponse errorsResponse = new ErrorsResponse(errors);
-            return new ResponseEntity<>(errorsResponse, HttpStatus.OK);
+            responseMap.put("result", new ResultResponse(false));
+            responseMap.put("errors", errorsResponse);
+            return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
 //        Tag2Post tag2Post = new Tag2Post();
-//            Post post = postRepository.getOne(ID);
-                Optional<Post> optionalPost = postRepository.findAll().stream()
-                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
-                    if(optionalPost.isPresent()) {
-                        Post post = optionalPost.get();
-                        int ID = post.getPostId();
-                        post.setText(text);
-                        post.setTitle(title);
-                        post.setActive(active);
-                        post.setTimestamp(new Timestamp(timestamp * 1000));
-                        postRepository.save(post);
-                        List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
-                        List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
-                                filter(t -> t.getPostId().equals(ID)).
-                                collect(Collectors.toList());
-                        List<Tag2Post> newItems = new ArrayList<>();
-                        for (String tagName : tags) {
-                            if (!tagNames.contains(tagName)) {
-                                Tag tag = new Tag(tagName);
-                                tagRepository.save(tag);
-                                Integer tagId = tag.getId();
-                                Tag2Post tag2Post = new Tag2Post(ID, tagId);
-                                tag2PostRepository.save(tag2Post);
-                                newItems.add(new Tag2Post(ID, tagId));
-                            }
-                        }
-                        for (Tag2Post t2p : oldItems) {
-                            if (!newItems.contains(t2p)) {
-                                tag2PostRepository.delete(t2p);
-                            }
-                        }
-                    } else {
-                       errors.put("post", "Not found!");
-                    }
-            if (!errors.isEmpty()) {
-                ResultResponse resultResponse = new ResultResponse(false);
-                responseMap.put("result", resultResponse);
-                responseMap.put("errors", errors);
-                return new ResponseEntity<>(responseMap, HttpStatus.OK);
-            } else {
-                    responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+        Post post = postRepository.getOne(ID);
+//                Optional<Post> optionalPost = postRepository.findAll().stream()
+//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
+//                    if(optionalPost.isPresent()) {
+//                        Post post = optionalPost.get();
+//                        int ID = post.getPostId();
+        User user = userRepository.getOne(post.getUserId());
+        post.setText(text);
+        post.setTitle(title);
+        post.setActive(active);
+        long currentTime = Instant.now().toEpochMilli();
+        if (timestamp <= currentTime) {
+            post.setTimestamp(new Timestamp(currentTime));
+        }
+        if(!user.getIsModerator()) {
+            post.setModerationStatus(ModerationStatus.NEW);
+        }
+        postRepository.save(post);
+        List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
+        List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
+                filter(t -> t.getPostId().equals(ID)).
+                collect(Collectors.toList());
+        List<Tag2Post> newItems = new ArrayList<>();
+        for (String tagName : tags) {
+            if (!tagNames.contains(tagName)) {
+                Tag tag = new Tag(tagName);
+                tagRepository.save(tag);
+                Integer tagId = tag.getId();
+                Tag2Post tag2Post = new Tag2Post(ID, tagId);
+                tag2PostRepository.save(tag2Post);
+                newItems.add(new Tag2Post(ID, tagId));
             }
+        }
+        for (Tag2Post t2p : oldItems) {
+            if (!newItems.contains(t2p)) {
+                tag2PostRepository.delete(t2p);
+            }
+        }
+//                    } else {
+//                       errors.put("post", "Not found!");
+//                    }
+            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
 
@@ -300,7 +304,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             if (title.length()  > 100) {
             errors.put("title", "Заголовок слишком длинный!");
         }
-        if (text.length() < 50) {
+        if (text.length() < 30) {
             errors.put("text", "Текст публикации слишком короткий");
         } else
             if(text.length() > 1000) {

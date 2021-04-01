@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -134,7 +135,7 @@ public class GetService {
         return  new ResponseEntity<>(generalResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, LocalDateTime date) {
+    public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, LocalDate date) {
         var posts = getActivePosts();
         int count = 0;
 //        List<Post> posts = postRepository.findAll();
@@ -142,8 +143,10 @@ public class GetService {
         List<Map<String, Object>> postMapList = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : posts) {
-            if (date.equals(post.getTimestamp().toLocalDateTime()))
-//                    .toInstant().atZone(ZoneId.of("UTC")).toLocalDate().equals(time))
+//            if (date == post.getTimestamp().getTime()/1000)
+          if(post.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(date))
+                  //equals(Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()))
+                // timestamp.toInstant().atZone(zoneId).toLocalDate()
             {
                 count++;
                 Map<String, Object> responseMap = new LinkedHashMap<>();
@@ -265,23 +268,6 @@ public class GetService {
                     userOptional.ifPresent(user -> userMap.put("name", user.getName()));
                     responseMap.put("user", userMap);
                     postMapList.add(responseMap);
-//                    PostResponse postResponse = new PostResponse();
-//                    UserResponse userResponse = new UserResponse();
-//                    var commentList = commentRepository.findAll();
-//                    int commentCountByPost = getCommentCountByPost(commentList, post);
-//                    userResponse.setId(post.getUserId());
-//                    Optional<User> userOptional = userRepository.findById(post.getUserId());
-//                    userOptional.ifPresent(user -> userResponse.setName(user.getName()));
-//                    postResponse.setId(post.getPostId());
-//                    postResponse.setTimestamp(post.getTimestamp().getTime()/1000);
-//                    postResponse.setTitle(post.getTitle());
-//                    postResponse.setAnnounce(post.getAnnounce());
-//                    postResponse.setLikeCount(extractLikeCount(post));
-//                    postResponse.setDislikeCount(extractDislikeCount(post));
-//                    postResponse.setCommentCount(commentCountByPost);
-//                    postResponse.setViewCount(post.getViewCount());
-//                    postResponse.setUserResponse(userResponse);
-//                    postsResponseList.add(postResponse);
                     count++;
                 }
                generalResponse.setCount(count);
@@ -652,47 +638,12 @@ public class GetService {
                 UserResponse userResponse = new UserResponse(a.getUserId(), user.getName(),  user.getPhoto());
                 CommentsResponse commentsResponse = new CommentsResponse(a.getCommentId(), a.getTime(),  a.getText(), userResponse);
                 commentsResponseList.add(commentsResponse);
-//                comments.setId(a.getCommentId());
-//                comments
-//                comments.setText( a.getText());
-//                TreeMap<String, Object> treeMap = new TreeMap<>();
-//                treeMap.put("id", a.getCommentId());
-//                treeMap.put("timestamp", a.getTime());
-//                treeMap.put("text", a.getText());
-//                LinkedHashMap<String, Object> mapUser =  new LinkedHashMap<>();
-//                mapUser.put("id", a.getUserId());
-//
-//                mapUser.put("name", user.getName());
-//                mapUser.put("photo", user.getPhoto());
-//                treeMap.put("user", mapUser);
-//                comments.putAll(treeMap);
-//                list.add(comments);com
             });
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
         return commentsResponseList;
     }
-
-//    private UserResponse getUserOfPost(Post post){
-//        UserResponse userResponse = new UserResponse();
-//        TreeMap<String, UserResponse> map = new TreeMap<>();
-////        map.put("id", userResponse.getId());
-//        try{
-//           User user  = userRepository.getOne(post.getUserId());
-//           userResponse.setName(user.getName());
-//           userResponse.setId(user.getUserId());
-////           map.put("name", userResponse.getName());
-//           if(user.getPhoto() != null) {
-//               userResponse.setPhoto( user.getPhoto());
-////               map.put("photo", user.getPhoto());
-//           }
-//        }
-//        catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return map.put("user", userResponse);
-//    }
 
     private Integer extractLikeCount(Post post) {
         try {

@@ -6,13 +6,15 @@ import main.repository.UserRepository;
 import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 public class PostController {
     @Autowired
     private GetService getService;
@@ -35,7 +37,7 @@ public class PostController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/post")
+    @GetMapping("")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
                                         @RequestParam(defaultValue="7") Integer limit,
@@ -44,16 +46,15 @@ public class PostController {
         return getService.getPosts (offset, limit, mode);
     }
 
-    @GetMapping("/post/{id:\\d+}")
+    @GetMapping("/{ID:\\d+}")
     //@RequestMapping(value = "/post/{id: \\d+}", produces = "application/json", method = RequestMethod.GET)
-    private ResponseEntity<?> getPostById (@PathVariable("id") Integer postId) {
-        System.out.println("Method getPostById activated. ID requested: " + postId);
-        return getService.getPostById(postId);
+    private ResponseEntity<?> getPostById (@PathVariable("ID") Integer ID) {
+        System.out.println("Method getPostById activated. ID requested: " + ID);
+        return getService.getPostById(ID);
     }
 
-    @GetMapping("/post/search")
+    @GetMapping("/search")
     private ResponseEntity<?> getPostsBySearch (
-//            @PathVariable("query") String query,
             @RequestParam(defaultValue="0") Integer offset,
             @RequestParam(defaultValue="4") Integer limit,
             @RequestParam String query) {
@@ -61,16 +62,16 @@ public class PostController {
         return getService.getPostsBySearch(offset, limit, query);
     }
 
-    @GetMapping("/post/byDate")
+    @GetMapping("/byDate")
     private ResponseEntity<?> getPostsByDate (
             @RequestParam(defaultValue="0") Integer offset,
             @RequestParam(defaultValue="5") Integer limit,
-            @RequestParam LocalDateTime date){
-        System.out.println("Method getPostsByDate activated. Date:" + date );
+            @RequestParam (defaultValue = "2021-03-30") LocalDate date){
+        System.out.println("Method getPostsByDate activated by the date: " + date );
         return getService.getPostsByDate(offset, limit, date);
     }
 
-    @GetMapping("/post/byTag")
+    @GetMapping("/byTag")
     private ResponseEntity<?> getPostsByTag(
                                             @RequestParam Integer offset,
                                             @RequestParam Integer limit,
@@ -79,7 +80,7 @@ public class PostController {
         return getService.getPostsByTag( offset, limit, tag);
     }
 
-    @GetMapping("/post/moderation")
+    @GetMapping("/moderation")
     private ResponseEntity<?> getPostsForModeration(@RequestParam(defaultValue="0") Integer offset,
                                                     @RequestParam(defaultValue="3") Integer limit,
                                                     @RequestParam(defaultValue="new") String status) {
@@ -87,7 +88,7 @@ public class PostController {
         return getService.getPostsForModeration(offset, limit, status);
     }
 
-    @GetMapping("/post/my")
+    @GetMapping("/my")
     private ResponseEntity<?> getMyPosts (
                                           @RequestParam(defaultValue="0") Integer offset,
                                           @RequestParam(defaultValue="5") Integer limit) {
@@ -95,40 +96,35 @@ public class PostController {
         return getService.getMyPosts(offset, limit);
     }
 
-    @PostMapping("/post/like")
+    @PostMapping("/like")
     private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest)
                                         {
         System.out.println("Method postLike activated");
         return postService.postLike(likeRequest.getPost_id());
     }
 
-    @PostMapping("/post/dislike")
+    @PostMapping("/dislike")
     private ResponseEntity<?> postDislike (@RequestBody DislikeRequest dislikeRequest)
     {
         System.out.println("Method postDislike activated");
         return postService.postDislike(dislikeRequest.getPost_id());
     }
 
-    @PostMapping("/post")
+    @PostMapping("")
     private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
         System.out.println("Method postPost is activated");
         return postService.postPost(postRequest.getTimestamp(), postRequest.getActive(), postRequest.getTitle(),
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping("/post/{ID: \\d+}")
-    public ResponseEntity<?> putPost (@RequestBody PutPostRequest putPostRequest){
+    @PutMapping("/post/{ID}") //: \\d+}")
+//    @RequestMapping(value = "/{ID: \\d+}",method=RequestMethod.PUT)
+    public @ResponseBody ResponseEntity<?> putPost (@PathVariable("ID") int ID, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
-        System.out.println("controller: " + putPostRequest.getTitle()); // test
-        return postService.putPost(putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
+        return postService.putPost(ID, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
     }
 
-    @PostMapping("/comment")
-    private ResponseEntity<?> postComment (@RequestBody CommentRequest commentRequest){
-        System.out.println("Method postComment is activated.");
-        return postService.postComment(commentRequest.getParent_id(), commentRequest.getPostId(), commentRequest.getText());
-    }
 //    private void registerSession () {
 //        Session session = new Session();
 //        session.setSessionName(httpSession.getId());

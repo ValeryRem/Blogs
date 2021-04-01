@@ -1,6 +1,7 @@
 package main.controllers;
 
 import main.api.response.InitResponse;
+import main.requests.CommentRequest;
 import main.requests.PostModerationRequest;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,12 @@ public class GeneralController {
     ResponseEntity<?> postApiImage(@RequestBody MultipartFile image) throws IOException {
         System.out.println("Method postApiImage is activated.");
         return userService.postApiImage(image);
+    }
+
+    @PostMapping("/comment")
+    private ResponseEntity<?> postComment (@RequestBody CommentRequest commentRequest){
+        System.out.println("Method postComment is activated.");
+        return postService.postComment(commentRequest.getParent_id(), commentRequest.getPostId(), commentRequest.getText());
     }
 
 

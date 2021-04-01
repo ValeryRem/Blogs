@@ -22,12 +22,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Use of Map &lt;String, Object&gt; restored.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method getPostsBySearch updated.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +49,7 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="XHTML File" />
       </list>
     </option>
   </component>
@@ -70,6 +75,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -90,6 +96,7 @@
       <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static\img" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\.idea" />
       <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static\img" />
       <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\templates" />
       <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\static" />
@@ -130,13 +137,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00087" summary="Time in sec in ResponseEntity.">
-      <created>1608489172068</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1608489172068</updated>
     </task>
     <task id="LOCAL-00088" summary="TimeZone.setDefault(TimeZone.getTimeZone(&quot;UTC&quot;));">
       <created>1608495623532</created>
@@ -474,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617091832834</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="Method getPostsBySearch updated.">
+      <created>1617143225933</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1617143225934</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -497,7 +504,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Updates in postAuthRegister." />
     <MESSAGE value="Methods getAllStatistics &amp; getMyStatistics updated." />
     <MESSAGE value="Methods postPost updated by  timestamp parameter added." />
     <MESSAGE value="Methods postPost updated." />
@@ -522,7 +528,8 @@
     <MESSAGE value="Appears an error: &quot;Method Not Allowed&quot;, &quot;Request method 'PUT' not supported&quot;" />
     <MESSAGE value="PostResponse set up instead of use of Object." />
     <MESSAGE value="Use of Map &lt;String, Object&gt; restored." />
-    <option name="LAST_COMMIT_MESSAGE" value="Use of Map &lt;String, Object&gt; restored." />
+    <MESSAGE value="Method getPostsBySearch updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method getPostsBySearch updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
