@@ -48,7 +48,7 @@ public class AuthService{
     private JavaMailSender javaMailSender;
 
     @Autowired
-    private GlobalSettingsReporitory globalSettingsReporitory;
+    private GlobalSettingsRepository globalSettingsRepository;
 
 
 
@@ -195,7 +195,7 @@ public class AuthService{
     public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha, String captchaSecret) {
         Map<String, Object>  output = new LinkedHashMap<>();
         ResponseEntity<?> responseEntity;
-        if (globalSettingsReporitory.findAll().stream().
+        if (globalSettingsRepository.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
                 isMultiuserMode()) { // if MULTIUSER_MODE = true
             User user = new User();

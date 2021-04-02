@@ -2,7 +2,7 @@ package main.service;
 
 import main.api.response.ResultResponse;
 import main.entity.GlobalSettings;
-import main.repository.GlobalSettingsReporitory;
+import main.repository.GlobalSettingsRepository;
 import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class SettingsService {
     UserRepository userRepository;
 
     @Autowired
-    GlobalSettingsReporitory globalSettingsRepository;
+    GlobalSettingsRepository globalSettingsRepository;
 
     GlobalSettings globalSettings;
 

@@ -44,7 +44,7 @@ public class GetService {
     AuthService authService;
 
     @Autowired
-    GlobalSettingsReporitory globalSettingsReporitory;
+    GlobalSettingsRepository globalSettingsRepository;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     private boolean result = false;
@@ -444,15 +444,11 @@ public class GetService {
                 filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
                 count();
         map.put("dislikesCount", myPostsDislikeCount);
-//        List<Integer> list = postRepository.findAllById(Collections.singleton(userId)).stream().
-//                map(Post::getViewCount).
-//                collect(Collectors.toList());
         int viewMyPostsCount = (int) postVoteRepository.findAll().stream()
                 .filter(p -> p.getUserId().equals(userId))
                 .count();
         map.put("viewsCount", viewMyPostsCount);
         List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-//                map(p -> p.getTimestamp().getTime()/1000).collect(Collectors.toList());
         map(Post::getTimestamp).collect(Collectors.toList());
         Timestamp minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder()).get();
@@ -486,7 +482,7 @@ public class GetService {
                 .min(Comparator.naturalOrder()).get();
 //                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
         map.put("firstPublication", minLocalDate.getTime()/1000);
-        if(globalSettingsReporitory.findAll().stream().
+        if(globalSettingsRepository.findAll().stream().
                 findAny().
                 orElse(new GlobalSettings()).
                 isStatisticsIsPublic()) { // if STATISTICS_IS_PUBLIC = true
@@ -530,7 +526,13 @@ public class GetService {
         }
         timestamps.sort(Comparator.naturalOrder());
             for (Timestamp d : timestamps) {
-                postCountAtDate = (int) postsList.stream().filter(p -> p.getTimestamp().equals(d)).count();
+                postCountAtDate = (int) postsList.stream().filter(p ->
+                        (p.getTimestamp().toInstant()
+                                .atZone(ZoneId.of("UTC"))
+                                .toLocalDate()).equals(d.toInstant()
+                                .atZone(ZoneId.of("UTC"))
+                                .toLocalDate()))
+                        .count();
                 posts.put(d.toInstant()
                         .atZone(ZoneId.of("UTC"))
                         .toLocalDate(), postCountAtDate);

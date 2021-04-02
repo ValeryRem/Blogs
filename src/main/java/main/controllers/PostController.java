@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping(value = "/api/post", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class PostController {
     @Autowired
     private GetService getService;
@@ -37,6 +37,9 @@ public class PostController {
 
     @Autowired
     private UserRepository userRepository;
+    private int ID;
+    //    private int id;
+    private PutPostRequest putPostRequest;
 
     @GetMapping("")
     @ResponseBody
@@ -118,34 +121,13 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping(value = "/{ID: \\d+}", //consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = "application/json") // produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{ID: \\d+}")
     public ResponseEntity<?> putPost (@PathVariable(value = "ID") int ID, @RequestBody PutPostRequest putPostRequest){
+        this.ID = ID;
+        this.putPostRequest = putPostRequest;
         System.out.println("Method putPost is activated");
         return postService.putPost(ID, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
     }
-
-//    private void registerSession () {
-//        Session session = new Session();
-//        session.setSessionName(httpSession.getId());
-//        long epochSeconds = Instant.now().getEpochSecond();
-//        session.setTime(epochSeconds);
-//        sessionRepository.save(session);
-//        List<Session> oldSessions = sessionRepository.findAll().stream().
-//                filter(s -> s.getTime() < epochSeconds - 1800).
-//                collect(Collectors.toList());
-//        for (Session s: oldSessions) {
-//            sessionRepository.delete(s);
-//        }
-//    }
-
-//    private Integer getUserId () {
-//        Integer userId = sessionRepository.findAll().stream().
-//                filter(s -> s.getSessionName().equals(httpSession.getId())).
-//                map(Session::getUserId).
-//                findAny().orElse(0);
-//        return userId;
-//    }
 }
 

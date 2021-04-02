@@ -53,7 +53,7 @@ public class PostService {
     CommentRepository commentRepository;
 
     @Autowired
-    GlobalSettingsReporitory globalSettingsReporitory;
+    GlobalSettingsRepository globalSettingsRepository;
     private final Integer PW_MIN_LENGTH = 6;
     private final Integer PW_MAX_LENGTH = 30;
 
@@ -149,7 +149,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
     post.setTitle(title);
     post.setText(text);
     if (authService.isUserAuthorized()) {
-        if (globalSettingsReporitory.findAll().stream().
+        if (globalSettingsRepository.findAll().stream().
                 findAny().
                 orElse(new GlobalSettings()).
                 isPostPremoderation()) { // проверка POST_PREMODERATION = true
@@ -237,7 +237,6 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 //    }
 
     public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, List<String> tags, String text) {
-//        System.out.println("putService: " + title); // test
         if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
@@ -250,13 +249,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             responseMap.put("errors", errorsResponse);
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
-//        Tag2Post tag2Post = new Tag2Post();
         Post post = postRepository.getOne(ID);
-//                Optional<Post> optionalPost = postRepository.findAll().stream()
-//                        .filter(p -> p.getTitle().equals(title) && (p.getTimestamp().getTime()/1000) == timestamp).findAny();
-//                    if(optionalPost.isPresent()) {
-//                        Post post = optionalPost.get();
-//                        int ID = post.getPostId();
         User user = userRepository.getOne(post.getUserId());
         post.setText(text);
         post.setTitle(title);
@@ -289,9 +282,6 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
                 tag2PostRepository.delete(t2p);
             }
         }
-//                    } else {
-//                       errors.put("post", "Not found!");
-//                    }
             responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
