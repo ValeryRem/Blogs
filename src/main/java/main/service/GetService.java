@@ -421,15 +421,9 @@ public class GetService {
     public ResponseEntity<?> getMyStatistics () {
         Integer myId = authService.getUserId();
         if(authService.isUserAuthorized()) {
-            User user = userRepository.getOne(myId);
-            result = user.getIsModerator();
             LinkedHashMap<String, Object> map;
-            if (result) {
                 map = getUserStatistics(myId);
                 responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<>("The user is not moderator!", HttpStatus.OK);
-            }
         } else {
             responseEntity = new ResponseEntity<>("The user is not authorized!", HttpStatus.UNAUTHORIZED);
         }
@@ -449,14 +443,13 @@ public class GetService {
         int myPostsDislikeCount = (int) postVoteRepository.findAll().stream().
                 filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
                 count();
-        map.put("disLikesCount", myPostsDislikeCount);
-        List<Integer> list = postRepository.findAllById(Collections.singleton(userId)).stream().
-                map(Post::getViewCount).
-                collect(Collectors.toList());
-
-        int viewMyPostsCount = list.stream().
-                reduce(Integer::sum).
-                orElse(0);
+        map.put("dislikesCount", myPostsDislikeCount);
+//        List<Integer> list = postRepository.findAllById(Collections.singleton(userId)).stream().
+//                map(Post::getViewCount).
+//                collect(Collectors.toList());
+        int viewMyPostsCount = (int) postVoteRepository.findAll().stream()
+                .filter(p -> p.getUserId().equals(userId))
+                .count();
         map.put("viewsCount", viewMyPostsCount);
         List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
 //                map(p -> p.getTimestamp().getTime()/1000).collect(Collectors.toList());
@@ -478,7 +471,7 @@ public class GetService {
         int likeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == 1).count();
         map.put("likesCount", likeCount);
         int disLikeCount = (int) postVoteRepository.findAll().stream().filter(p -> p.getValue() == -1).count();
-        map.put("disLikesCount", disLikeCount);
+        map.put("dislikesCount", disLikeCount);
         List<Integer> list = postRepository.findAll().stream().
                 map(Post::getViewCount).
                 collect(Collectors.toList());

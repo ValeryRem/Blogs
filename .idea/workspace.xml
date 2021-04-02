@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method putPost is still in processing.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method putPost is updated.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
@@ -131,13 +131,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00089" summary="Updated registerSession(Integer userId) in the class AuthService.">
-      <created>1608676589750</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1608676589751</updated>
     </task>
     <task id="LOCAL-00090" summary="Method getPostProfileMy for POST /api/profile/my request is set up.">
       <created>1608926045427</created>
@@ -475,7 +468,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617283105528</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="Method putPost is updated.">
+      <created>1617289255089</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1617289255089</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -498,7 +498,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postPost updated by  timestamp parameter added." />
     <MESSAGE value="Methods postPost updated." />
     <MESSAGE value="Methods postPost without defaultValue of long timestamp updated." />
     <MESSAGE value="Methods postPost updated with PostRequest new class." />
@@ -523,7 +522,8 @@
     <MESSAGE value="Use of Map &lt;String, Object&gt; restored." />
     <MESSAGE value="Method getPostsBySearch updated." />
     <MESSAGE value="Method putPost is still in processing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method putPost is still in processing." />
+    <MESSAGE value="Method putPost is updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method putPost is updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

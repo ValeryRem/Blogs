@@ -78,7 +78,7 @@ public class PostController {
                                             @RequestParam Integer limit,
                                             @RequestParam String tag){
         System.out.println("Method getPostsByTag uses tag name:" + tag);
-        return getService.getPostsByTag( offset, limit, tag);
+        return getService.getPostsByTag(offset, limit, tag);
     }
 
     @GetMapping("/moderation")
@@ -118,10 +118,9 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping(value = "/{ID: \\d+}", consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @RequestMapping(value = "/{ID: \\d+}",method=RequestMethod.PUT)
-    public ResponseEntity<?> putPost (@PathVariable("ID") int ID, @RequestBody PutPostRequest putPostRequest){
+    @PutMapping(value = "/{ID: \\d+}", //consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = "application/json") // produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> putPost (@PathVariable(value = "ID") int ID, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
         return postService.putPost(ID, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                 putPostRequest.getTags(), putPostRequest.getText());
