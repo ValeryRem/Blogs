@@ -503,9 +503,11 @@ public class GetService {
         List<Integer> years;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         List<Timestamp> timestamps;
-        LinkedHashMap<LocalDate, Integer> posts = new LinkedHashMap<>();
+        Map<String, Object> responseMap =  new LinkedHashMap<>();
+        Map<LocalDate, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
-        List<Post> postsList = postRepository.findAll();
+        List<Post> postsList = postRepository.findAll().stream().filter(p -> p.isActive() == 1 &&
+                p.getModerationStatus().equals(ModerationStatus.ACCEPTED)).collect(Collectors.toList());
         postsList.sort(Comparator.comparing(Post::getTimestamp));
         years = postsList.stream().map(p -> convertTimeToYear(p.getTimestamp())).
                 distinct().
@@ -537,8 +539,10 @@ public class GetService {
                         .atZone(ZoneId.of("UTC"))
                         .toLocalDate(), postCountAtDate);
         }
-        CalendarResponse calendarResponse = new CalendarResponse(years, posts);
-        return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
+            responseMap.put("years", years);
+            responseMap.put("posts", posts);
+//        CalendarResponse calendarResponse = new CalendarResponse(years, posts);
+        return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
 

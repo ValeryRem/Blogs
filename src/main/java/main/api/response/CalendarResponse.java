@@ -1,13 +1,19 @@
 package main.api.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+
 public class CalendarResponse {
+    @JsonProperty
     List<Integer> years;
+
+    @JsonProperty
     LinkedHashMap<LocalDate, Integer> posts;
 
     public CalendarResponse(List<Integer> years, LinkedHashMap<LocalDate, Integer> posts) {
