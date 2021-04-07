@@ -22,11 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods GET /api/calendar updated.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods GET /api/calendar updated #2.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/CalendarResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/CalendarResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,13 +134,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00092" summary="Method postApiImage(@RequestPart(&quot;image&quot;) MultipartFile image) modified by  image.transferTo(getOutputFile(image)).">
-      <created>1609437031989</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1609437031989</updated>
     </task>
     <task id="LOCAL-00093" summary="Method postApiProfileMy set up, but String requestBody unused...">
       <created>1609923647720</created>
@@ -476,7 +471,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617403924846</updated>
     </task>
-    <option name="localTasksCounter" value="141" />
+    <task id="LOCAL-00141" summary="Methods GET /api/calendar updated #2.">
+      <created>1617476379441</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1617476379442</updated>
+    </task>
+    <option name="localTasksCounter" value="142" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -499,7 +501,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postPost updated with PostRequest new class." />
     <MESSAGE value="Methods postAuthRegister updated with String captchaSecret in the parameters." />
     <MESSAGE value="Methods postApiModeration updated." />
     <MESSAGE value="Methods getModerationCount &amp; getAuthCheck updated." />
@@ -524,7 +525,8 @@
     <MESSAGE value="Method putPost is updated." />
     <MESSAGE value="Methods GET /api/statistics/all and GET /api/statistics/my updated." />
     <MESSAGE value="Methods GET /api/calendar updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods GET /api/calendar updated." />
+    <MESSAGE value="Methods GET /api/calendar updated #2." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods GET /api/calendar updated #2." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

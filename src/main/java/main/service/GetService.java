@@ -130,7 +130,7 @@ public class GetService {
         return  new ResponseEntity<>(generalResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, LocalDate date) {
+    public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, String date) {
         var posts = getActivePosts();
         int count = 0;
 //        List<Post> posts = postRepository.findAll();
@@ -139,7 +139,7 @@ public class GetService {
         var commentList = commentRepository.findAll();
         for (Post post : posts) {
 //            if (date == post.getTimestamp().getTime()/1000)
-          if(post.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(date))
+          if(post.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString().equals(date))
                   //equals(Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()))
             {
                 count++;
@@ -501,23 +501,25 @@ public class GetService {
 
     public ResponseEntity<?> getApiCalendar (Integer year) {
         List<Integer> years;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         List<Timestamp> timestamps;
         Map<String, Object> responseMap =  new LinkedHashMap<>();
-        Map<LocalDate, Integer> posts = new LinkedHashMap<>();
+        Map<String, Integer> posts = new LinkedHashMap<>();
         int postCountAtDate;
-        List<Post> postsList = postRepository.findAll().stream().filter(p -> p.isActive() == 1 &&
-                p.getModerationStatus().equals(ModerationStatus.ACCEPTED)).collect(Collectors.toList());
-        postsList.sort(Comparator.comparing(Post::getTimestamp));
-        years = postsList.stream().map(p -> convertTimeToYear(p.getTimestamp())).
-                distinct().
-                collect(Collectors.toList());
-        if (year > 1970 && year <= convertTimeToYear(timestamp)) {
-            timestamps = postRepository.findAll().stream().
-                    map(Post::getTimestamp).
-                    filter(t_stamp -> convertTimeToYear(t_stamp).equals(year)).
-                    distinct().
-                    collect(Collectors.toList());
+        List<Post> postsList = postRepository.findAll().stream()
+                .filter(p -> p.isActive() == 1 && p.getModerationStatus().equals(ModerationStatus.ACCEPTED))
+                .sorted(Comparator.comparing(Post::getTimestamp))
+                .collect(Collectors.toList());
+        years = postsList.stream()
+                .map(p -> convertTimeToYear(p.getTimestamp()))
+                .distinct()
+                .collect(Collectors.toList());
+        if (year > 1970 && year <= convertTimeToYear(currentTimestamp)) {
+            timestamps = postRepository.findAll().stream()
+                    .map(Post::getTimestamp)
+                    .filter(t_stamp -> convertTimeToYear(t_stamp).equals(year))
+                    .distinct()
+                    .collect(Collectors.toList());
         } else {
             int currentYear = LocalDate.now().getYear();
             timestamps = postsList.stream().
@@ -526,19 +528,19 @@ public class GetService {
                     distinct().
                     collect(Collectors.toList());
         }
-        timestamps.sort(Comparator.naturalOrder());
+            timestamps.sort(Comparator.naturalOrder());
             for (Timestamp d : timestamps) {
-                postCountAtDate = (int) postsList.stream().filter(p ->
-                        (p.getTimestamp().toInstant()
+                postCountAtDate = (int) postsList.stream()
+                        .filter(p -> (p.getTimestamp().toInstant()
                                 .atZone(ZoneId.of("UTC"))
                                 .toLocalDate()).equals(d.toInstant()
                                 .atZone(ZoneId.of("UTC"))
                                 .toLocalDate()))
                         .count();
-                posts.put(d.toInstant()
+                posts.put(String.valueOf(d.toInstant()
                         .atZone(ZoneId.of("UTC"))
-                        .toLocalDate(), postCountAtDate);
-        }
+                        .toLocalDate()), postCountAtDate);
+            }
             responseMap.put("years", years);
             responseMap.put("posts", posts);
 //        CalendarResponse calendarResponse = new CalendarResponse(years, posts);

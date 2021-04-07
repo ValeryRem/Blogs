@@ -1,5 +1,6 @@
 package main.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
@@ -7,6 +8,7 @@ import main.requests.*;
 import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +41,7 @@ public class PostController {
     private UserRepository userRepository;
     private int ID;
     //    private int id;
-    private PutPostRequest putPostRequest;
+//    private PutPostRequest putPostRequest;
 
     @GetMapping("")
     @ResponseBody
@@ -70,7 +72,7 @@ public class PostController {
     private ResponseEntity<?> getPostsByDate (
             @RequestParam(defaultValue="0") Integer offset,
             @RequestParam(defaultValue="5") Integer limit,
-            @RequestParam (defaultValue = "2021-03-30") LocalDate date){
+            @RequestParam  String date){
         System.out.println("Method getPostsByDate activated by the date: " + date );
         return getService.getPostsByDate(offset, limit, date);
     }
@@ -121,13 +123,13 @@ public class PostController {
                 postRequest.getTags(), postRequest.getText());
     }
 
-    @PutMapping(value = "/{ID: \\d+}")
-    public ResponseEntity<?> putPost (@PathVariable(value = "ID") int ID, @RequestBody PutPostRequest putPostRequest){
-        this.ID = ID;
-        this.putPostRequest = putPostRequest;
+    @PutMapping(value = "/{id:\\d+}")
+    public ResponseEntity<?> putPost (@PathVariable(value = "id") int id, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
-        return postService.putPost(ID, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
-                putPostRequest.getTags(), putPostRequest.getText());
+//        ResponseEntity<?> responseEntity;
+//        try {
+           return  postService.putPost(id, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
+                    putPostRequest.getTags(), putPostRequest.getText());
     }
 }
 

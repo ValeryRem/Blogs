@@ -7,6 +7,7 @@ import main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,8 +74,8 @@ public class GeneralController {
         return getService.getAllStatistics ();
     }
 
-    @GetMapping("/calendar/{year:\\d{4}}")
-    private ResponseEntity <?> getApiCalendar (@PathVariable Integer year) {
+    @GetMapping("/calendar")
+    private ResponseEntity <?> getApiCalendar (@RequestParam Integer year) {
         return getService.getApiCalendar (year);
     }
 

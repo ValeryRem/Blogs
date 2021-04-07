@@ -3,7 +3,9 @@ package main.requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PutPostRequest implements Serializable {
 //    @JsonProperty
@@ -18,8 +20,8 @@ public class PutPostRequest implements Serializable {
     @JsonProperty
     private String title;
 
-    @JsonProperty
-    private List<String> tags;
+    @JsonProperty("tags")
+    private Map<String, String> tags;
 
     @JsonProperty
     private String text;
@@ -59,11 +61,11 @@ public class PutPostRequest implements Serializable {
         this.title = title;
     }
 
-    public List<String> getTags() {
+    public Map<String, String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Map<String,String> tags) {
         this.tags = tags;
     }
 

@@ -1,5 +1,8 @@
 package main.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.response.ErrorsResponse;
 import main.api.response.GeneralResponse;
 import main.api.response.ResultResponse;
@@ -236,7 +239,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 //        return responseEntity;
 //    }
 
-    public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, List<String> tags, String text) {
+    public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, Map<String, String> tags, String text) {
         if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
@@ -262,13 +265,18 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             post.setModerationStatus(ModerationStatus.NEW);
         }
         postRepository.save(post);
-        List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
+//        List<String> tagNames = tagRepository.findAll().stream().map(Tag::getTagName).collect(Collectors.toList());
+//        String jsonTags = tags.toString();
+//        ObjectMapper mapper = new ObjectMapper();
+//        List<String> tagNames = mapper.reader()
+//                .forType(new TypeReference<List<String>>() {
+//                }).readValue(jsonTags);
         List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
                 filter(t -> t.getPostId().equals(ID)).
                 collect(Collectors.toList());
         List<Tag2Post> newItems = new ArrayList<>();
-        for (String tagName : tags) {
-            if (!tagNames.contains(tagName)) {
+        for (String tagName : tags.values()) {
+            if (!tags.containsValue(tagName)) {
                 Tag tag = new Tag(tagName);
                 tagRepository.save(tag);
                 Integer tagId = tag.getId();
