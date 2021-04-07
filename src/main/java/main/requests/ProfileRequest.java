@@ -1,6 +1,7 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
 public class ProfileRequest implements Serializable {
 //    @JsonProperty
 //    private String photoAddress;
-
+    @Nullable
     private MultipartFile photo;
 
     @JsonProperty
@@ -17,10 +18,10 @@ public class ProfileRequest implements Serializable {
     @JsonProperty
     private String email;
 
-    @JsonProperty("e_mail")
+    @JsonProperty
     private String password;
 
-    @JsonProperty ("remove_photo")
+    @JsonProperty
     private String removePhoto;
 
 //    public String getPhotoAddress() {

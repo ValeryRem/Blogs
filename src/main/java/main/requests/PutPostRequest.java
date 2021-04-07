@@ -21,7 +21,7 @@ public class PutPostRequest implements Serializable {
     private String title;
 
     @JsonProperty("tags")
-    private Map<String, String> tags;
+    private List<String> tags;
 
     @JsonProperty
     private String text;
@@ -61,11 +61,11 @@ public class PutPostRequest implements Serializable {
         this.title = title;
     }
 
-    public Map<String, String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Map<String,String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

@@ -126,9 +126,7 @@ public class PostController {
     @PutMapping(value = "/{id:\\d+}")
     public ResponseEntity<?> putPost (@PathVariable(value = "id") int id, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
-//        ResponseEntity<?> responseEntity;
-//        try {
-           return  postService.putPost(id, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
+        return  postService.putPost(id, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
                     putPostRequest.getTags(), putPostRequest.getText());
     }
 }

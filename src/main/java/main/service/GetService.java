@@ -289,6 +289,7 @@ public class GetService {
         responseMap.put("user", userMap);
         responseMap.put("title", post.getTitle());
         responseMap.put("announce", post.getAnnounce());
+        responseMap.put("text", post.getText());
         responseMap.put("likeCount", extractLikeCount(post));
         responseMap.put("dislikeCount", extractDislikeCount(post));
         responseMap.put("viewCount", post.getViewCount());
@@ -313,21 +314,20 @@ public class GetService {
         });
         if (post.getIsActive() == 1 && post.getModerationStatus().equals(ModerationStatus.ACCEPTED) &&
                 post.getTimestamp().getTime() < Timestamp.valueOf(LocalDateTime.now()).getTime()) {
-            Iterable<Tag2Post> tag2PostIterable = tag2PostRepository.findAll();
-            var tagsIdList = new ArrayList<>();
+            List <Tag2Post> tag2PostList = tag2PostRepository.findAll();
+            var tagsIdList = new ArrayList<Integer>();
             List<String> tags = new ArrayList<>();
-            for (Tag2Post tag2Post : tag2PostIterable) {
+            for (Tag2Post tag2Post : tag2PostList) {
                 if (tag2Post.getPostId().equals(postId)) {
                     tagsIdList.add(tag2Post.getTagId()); // формируем лист id тэгов, связанных с postId
                 }
             }
-            var iterableTags = tagRepository.findAll();
-            for (Tag tag : iterableTags) {
-                if (tagsIdList.contains(tag.getId())) {
-                    tags.add(tag.getTagName()); // добавляем тэги в объект вывода
-                }
+            if (!tagsIdList.isEmpty()) {
+                tags = tagsIdList.stream()
+                        .map(t -> tagRepository.getOne(t).getTagName())
+                        .collect(Collectors.toList());
             }
-            responseMap.put("tags", iterableTags);
+            responseMap.put("tags", tags);
         }
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }

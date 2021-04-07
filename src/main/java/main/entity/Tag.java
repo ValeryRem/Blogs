@@ -18,10 +18,10 @@ public class Tag {
     public Tag(String tagName) {
         this.tagName = tagName;
     }
-
-    public Tag(Integer id) {
-        this.id = id;
-    }
+//
+//    public Tag(Integer id) {
+//        this.id = id;
+//    }
 
     public Integer getId() {
         return id;

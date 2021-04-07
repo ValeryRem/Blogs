@@ -1,6 +1,7 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +16,7 @@ public class PostRequest implements Serializable {
     @JsonProperty
     String title;
 
-    @JsonProperty
+    @JsonProperty @Nullable
     List<String> tags;
 
     @JsonProperty

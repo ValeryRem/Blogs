@@ -63,9 +63,9 @@ public class Post {
         return postId;
     }
 
-    public void setPostId(Integer postId) {
-        this.postId = postId;
-    }
+//    public void setPostId(Integer postId) {
+//        this.postId = postId;
+//    }
 
     public int getIsActive() {
         return isActive;
