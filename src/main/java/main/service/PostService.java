@@ -54,8 +54,6 @@ public class PostService {
 
     @Autowired
     GlobalSettingsRepository globalSettingsRepository;
-    private final Integer PW_MIN_LENGTH = 6;
-    private final Integer PW_MAX_LENGTH = 30;
 
     private ResponseEntity<?> responseEntity;
     private GeneralResponse generalResponse;
@@ -96,11 +94,6 @@ public class PostService {
             postVote.setValue(1);
             postVoteRepository.save(postVote);
             responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-//            } else {
-//                responseEntity = new ResponseEntity<>("result: false", HttpStatus.ALREADY_REPORTED);
-//            }
-//        } else {
-//            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         } else {
             responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
         }
@@ -133,9 +126,12 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
     Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
     User user = userRepository.getOne(authService.getUserId());
     Map<String, String> errors = checkTexts(title, text);
+    Map<String, Object> responseMap = new LinkedHashMap<>();
     if (!errors.isEmpty()) {
+        responseMap.put("result", String.valueOf(false));
         ErrorsResponse errorsResponse = new ErrorsResponse(errors);
-        return new ResponseEntity<>(errorsResponse, HttpStatus.OK);
+        responseMap.put("errors", errorsResponse);
+    return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
     if (!authService.isUserAuthorized()) {
     return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
@@ -171,23 +167,24 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         post.setModerationStatus(ModerationStatus.ACCEPTED);
         postRepository.save(post);
     }
-    processTags(tags, post);
+    processTags(tags, post, title, text);
     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
     return responseEntity;
 }
 
-    private void processTags(List<String> tags, Post post) {
+    private void processTags(List<String> tags, Post post, String title, String text) {
         post.setModerationStatus(ModerationStatus.ACCEPTED);
         for (String tag : tags) {
             if (!tagRepository.findAll().stream()
                     .map(Tag::getTagName)
                     .collect(Collectors.toList())
                     .contains(tag)) {
-                //.equals(tag)).findAny().isEmpty()) {
-                Tag tagNew = new Tag(tag);
-                tagRepository.save(tagNew);
-                Tag2Post tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
-                tag2PostRepository.save(tag2Post);
+                if (title.contains(tag) || text.contains(tag)) {
+                    Tag tagNew = new Tag(tag);
+                    tagRepository.save(tagNew);
+                    Tag2Post tag2Post = new Tag2Post(post.getPostId(), tagNew.getId());
+                    tag2PostRepository.save(tag2Post);
+                }
             }
         }
     }
@@ -243,7 +240,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         generalResponse = new GeneralResponse();
         if (!errors.isEmpty()) {
             ErrorsResponse errorsResponse = new ErrorsResponse(errors);
-            responseMap.put("result", new ResultResponse(false));
+            responseMap.put("result", String.valueOf(false));
             responseMap.put("errors", errorsResponse);
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
@@ -260,28 +257,8 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             post.setModerationStatus(ModerationStatus.NEW);
         }
         postRepository.save(post);
-        List<Tag2Post> oldItems = tag2PostRepository.findAll().stream().
-                filter(t -> t.getPostId().equals(ID)).
-                collect(Collectors.toList());
-        List<Tag2Post> newItems = new ArrayList<>();
-        List<Tag> tagList = tagRepository.findAll();
-        for (String tag : tags) {
-            if (!tagList.toString().contains(tag)) {
-                Tag tagNew = new Tag();
-                tagNew.setTagName(tag);
-                tagRepository.save(tagNew);
-                Integer tagId = tagNew.getId();
-                Tag2Post tag2Post = new Tag2Post(ID, tagId);
-                tag2PostRepository.save(tag2Post);
-                newItems.add(new Tag2Post(ID, tagId));
-            }
-        }
-        for (Tag2Post t2p : oldItems) {
-            if (!newItems.contains(t2p)) {
-                tag2PostRepository.delete(t2p);
-            }
-        }
-            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+        processTags(tags, post, title, text);
+        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
 
@@ -321,7 +298,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
                 }
                 postComment.setPostId(post_id);
                 postComment.setText(text);
-                postComment.setTime(Timestamp.valueOf(now()).getTime()/1000);
+                postComment.setTime(Timestamp.valueOf(now()));
                 postComment.setUserId(userId);
                 commentRepository.save(postComment);
                 map.put("id", postComment.getCommentId());
@@ -337,5 +314,4 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         }
         return responseEntity;
     }
-
 }

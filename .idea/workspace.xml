@@ -22,15 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods putPost in progress.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Methods postPost, getPostById &amp; putPosts updated.">
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/3_12.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/CommentsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/CommentsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ErrorsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/api/response/ErrorsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,13 +135,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00094" summary="Method postApiImage set up in MultiPartForm mode.">
-      <created>1610229302436</created>
-      <option name="number" value="00094" />
-      <option name="presentableId" value="LOCAL-00094" />
-      <option name="project" value="LOCAL" />
-      <updated>1610229302436</updated>
     </task>
     <task id="LOCAL-00095" summary="Method postApiProfileMy set up in MultiPartForm mode.">
       <created>1610297400820</created>
@@ -481,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617805646448</updated>
     </task>
-    <option name="localTasksCounter" value="143" />
+    <task id="LOCAL-00143" summary="Methods postPost, getPostById &amp; putPosts updated.">
+      <created>1617838540593</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1617838540593</updated>
+    </task>
+    <option name="localTasksCounter" value="144" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -504,7 +502,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods postApiModeration updated." />
     <MESSAGE value="Methods getModerationCount &amp; getAuthCheck updated." />
     <MESSAGE value="Methods postApiModeration (@RequestBody PostModerationRequest postModerationRequest) updated." />
     <MESSAGE value="Methods postApiModeration for request POST /api/moderation updated." />
@@ -529,7 +526,8 @@
     <MESSAGE value="Methods GET /api/calendar updated." />
     <MESSAGE value="Methods GET /api/calendar updated #2." />
     <MESSAGE value="Methods putPost in progress." />
-    <option name="LAST_COMMIT_MESSAGE" value="Methods putPost in progress." />
+    <MESSAGE value="Methods postPost, getPostById &amp; putPosts updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Methods postPost, getPostById &amp; putPosts updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

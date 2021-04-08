@@ -2,12 +2,14 @@ package main.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.Timestamp;
+
 public class CommentsResponse {
     @JsonProperty
     private Integer id;
 
     @JsonProperty
-    private long timestamp;
+    private Timestamp timestamp;
 
     @JsonProperty
     private  String text;
@@ -18,7 +20,7 @@ public class CommentsResponse {
     public CommentsResponse() {
     }
 
-    public CommentsResponse(Integer id, long timestamp, String text, UserResponse users) {
+    public CommentsResponse(Integer id, Timestamp timestamp, String text, UserResponse users) {
         this.id = id;
         this.timestamp = timestamp;
         this.text = text;
@@ -33,11 +35,11 @@ public class CommentsResponse {
         this.id = id;
     }
 
-    public long getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
