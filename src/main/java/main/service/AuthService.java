@@ -313,12 +313,12 @@ public class AuthService{
     }
 
     private void sendEmail(String email, String subject, String text) {
-        User user = userRepository.findOneByEmail(email).get();
+//        User user = userRepository.findOneByEmail(email).get();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername(email);
-        mailSender.setPassword("Вставить реальный пароль для GMail!");  /// !!!
+        mailSender.setUsername("Skill21Rem");
+        mailSender.setPassword("k7Dd10r6");  /// !!!
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
