@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -312,11 +313,23 @@ public class AuthService{
     }
 
     private void sendEmail(String email, String subject, String text) {
+        User user = userRepository.findOneByEmail(email).get();
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername(email);
+        mailSender.setPassword("Вставить реальный пароль для GMail!");  /// !!!
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
         msg.setSubject(subject);
         msg.setText(text);
-        javaMailSender.send(msg);
+        mailSender.send(msg);
     }
 
     public Integer getUserId() {
@@ -333,11 +346,11 @@ public class AuthService{
     }
 
     private String generateCode(int length) {
-        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        final String pattern = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         SecureRandom rnd = new SecureRandom();
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            stringBuilder.append(AB.charAt(rnd.nextInt(AB.length())));
+            stringBuilder.append(pattern.charAt(rnd.nextInt(pattern.length())));
         }
         return stringBuilder.toString();
     }
