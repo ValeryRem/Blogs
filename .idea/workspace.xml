@@ -22,11 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method sendEmail in progress at new gmail account.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" afterDir="false" />
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore used with new yandex.ru mail address.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,13 +130,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00098" summary="Method postAuthLogin with @JsonProperty annotated parameters.">
-      <created>1610748026605</created>
-      <option name="number" value="00098" />
-      <option name="presentableId" value="LOCAL-00098" />
-      <option name="project" value="LOCAL" />
-      <updated>1610748026605</updated>
     </task>
     <task id="LOCAL-00099" summary="Method postAuthLogin with @JsonProperty parameters.">
       <created>1610784314520</created>
@@ -476,7 +467,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618175856182</updated>
     </task>
-    <option name="localTasksCounter" value="147" />
+    <task id="LOCAL-00147" summary="Method authRestore used with new yandex.ru mail address.">
+      <created>1618904319582</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1618904319583</updated>
+    </task>
+    <option name="localTasksCounter" value="148" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -499,7 +497,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods of post moderation updated with post_id converted to id." />
     <MESSAGE value="Methods authRestore updated." />
     <MESSAGE value="Method postComment updated." />
     <MESSAGE value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
@@ -524,7 +521,8 @@
     <MESSAGE value="Method authRestore(String email) in progress." />
     <MESSAGE value="Method sendEmail in progress." />
     <MESSAGE value="Method sendEmail in progress at new gmail account." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method sendEmail in progress at new gmail account." />
+    <MESSAGE value="Method authRestore used with new yandex.ru mail address." />
+    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore used with new yandex.ru mail address." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
