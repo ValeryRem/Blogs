@@ -315,10 +315,10 @@ public class AuthService{
     private void sendEmail(String email, String subject, String text) {
 //        User user = userRepository.findOneByEmail(email).get();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("Skill21Rem");
-        mailSender.setPassword("k7Dd10r6");  /// !!!
+        mailSender.setHost("smtp.yandex.ru");
+        mailSender.setPort(465);
+        mailSender.setUsername("remenyuk.valery@yandex.ru");
+        mailSender.setPassword("tuo098$Fd");  /// !!!
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
