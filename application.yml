@@ -15,7 +15,7 @@ blog.copyrightFrom: 1997
 spring:
   mail:
     host: smtp.yandex.ru
-    username: remenyuk.valery@yandex.ru
+    username: remenyuk.valery
     password: tuo098$Fd
     port: 465
     properties:
@@ -25,25 +25,14 @@ spring:
           ssl:
             enable: true
 
-#spring.mail.host: smtp.gmail.com
-#spring.mail.port: 25
-#spring.mail.username: username
-#spring.mail.password: password
-
-  # Other properties
-#spring.mvc.static-path-pattern: /upload/**
 spring.http.multipart.enabled: true
 
-#spring.mail.properties.mail.smtp.auth: true
 spring.mail.properties.mail.smtp.connectiontimeout: 5000
 spring.mail.properties.mail.smtp.timeout: 5000
 spring.mail.properties.mail.smtp.writetimeout: 5000
 spring.mail.properties.mail.smtp.starttls.enable: true
-spring.mail.properties.mail.smtp.auth.mechanisms: NTLM
-spring.mail.properties.mail.smtp.auth.ntlm.domain: DOMAIN
 spring.mail.properties.mail.debug: true
 
 spring.servlet.multipart.max-file-size: 5MB
 spring.servlet.multipart.max-request-size: 5MB
 
-#logging.level.org.springframework.web: DEBUG

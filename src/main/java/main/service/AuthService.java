@@ -65,14 +65,14 @@ public class AuthService{
             return ResponseEntity.ok(new ResultResponse(false));
         }
         User currentUser = user.get();
-        if (!currentUser.getPassword().equals(userPassword)) {
+        if (currentUser.getPassword().equals(userPassword) || currentUser.getCode().equals(userPassword)) {
+            registerSession(currentUser.getUserId()); // put new session id, delete old sessions id
+            authResponse.setResult(true);
+            LinkedHashMap<String, Object> userResponseMap = getUserResponseMap(currentUser);
+            authResponse.setUser(userResponseMap);
+            return new ResponseEntity<>(authResponse, HttpStatus.OK);
+        } else
             return ResponseEntity.ok(new ResultResponse(false));
-        }
-        registerSession(currentUser.getUserId()); // put new session id, delete old sessions id
-        authResponse.setResult(true);
-        LinkedHashMap<String, Object> userResponseMap = getUserResponseMap(currentUser);
-        authResponse.setUser(userResponseMap);
-        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
     private LinkedHashMap<String, Object> getUserResponseMap(User currentUser) {
@@ -314,22 +314,22 @@ public class AuthService{
 
     private void sendEmail(String email, String subject, String text) {
 //        User user = userRepository.findOneByEmail(email).get();
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.yandex.ru");
-        mailSender.setPort(465);
-        mailSender.setUsername("remenyuk.valery@yandex.ru");
-        mailSender.setPassword("tuo098$Fd");  /// !!!
-
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+//        JavaMailSender mailSender = new JavaMailSender();
+//        mailSender.setHost("smtp.yandex.ru");
+//        mailSender.setPort(465);
+//        mailSender.setUsername("remenyuk.valery");
+//        mailSender.setPassword("tuo098$Fd");  /// !!!
+//        Properties props = mailSender.getJavaMailProperties();
+//        props.put("mail.transport.protocol", "smtp");
+//        props.put("mail.smtp.auth", "true");
+//        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.debug", "true");
         SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom("remenyuk.valery@yandex.ru");
         msg.setTo(email);
         msg.setSubject(subject);
         msg.setText(text);
-        mailSender.send(msg);
+        javaMailSender.send(msg);
     }
 
     public Integer getUserId() {
