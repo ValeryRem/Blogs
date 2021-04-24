@@ -1,9 +1,36 @@
-spring.datasource.url: jdbc:mysql://localhost:3306/blogs?serverTimezone=UTC
-spring.datasource.username: root
-spring.datasource.password: valery_56
+#spring.datasource.url: jdbc:mysql://localhost:3306/blogs?serverTimezone=UTC
+#spring.datasource.username: root
+#spring.datasource.password: valery_56
+#spring.datasource.driver-class-name: com.mysql.jdbc.Driver # добавлена 24.04 строка!
 spring.jpa.database-platform: org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto: update
-spring.jpa.show-sql: false
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blogs?serverTimezone=UTC
+    username: root
+    password: valery_56
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#spring.jpa.show-sql: false
+# добавлена 24.04 настройка ниже!
+#spring.jpa.generate-ddl: true
+#spring:
+ # autoconfigure:
+  #  exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+
+#spring.datasource.url=jdbc:mysql://localhost:3306/db
+  #spring.datasource.username=
+  #spring.datasource.password=
+  #spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+  #spring.jpa.database-platform = org.hibernate.dialect.MySQL5Dialect
+#spring.jpa.generate-ddl=true
+#spring.jpa.hibernate.ddl-auto = update
+
 
 blog.title: Developers Stories
 blog.subtitle: Истории разработчиков
@@ -12,7 +39,7 @@ blog.email: rokotoff@tiptop.pl
 blog.copyright: George Rokotoff
 blog.copyrightFrom: 1997
 
-spring:
+
   mail:
     host: smtp.yandex.ru
     username: remenyuk.valery
@@ -35,4 +62,3 @@ spring.mail.properties.mail.debug: true
 
 spring.servlet.multipart.max-file-size: 5MB
 spring.servlet.multipart.max-request-size: 5MB
-

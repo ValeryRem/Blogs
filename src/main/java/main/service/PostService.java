@@ -308,6 +308,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             }
             responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         } else {
+            errors.put("errors", "User is unauthorized!");
             map.put("result", new ResultResponse(false));
             map.put("errors", errors);
             responseEntity = new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);

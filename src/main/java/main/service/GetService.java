@@ -300,7 +300,7 @@ public class GetService {
         postCommentList.forEach(c -> {
             Map<String, Object> commentMap = new LinkedHashMap<>();
             commentMap.put("id", c.getCommentId());
-            commentMap.put("timestamp", c.getTime());
+            commentMap.put("timestamp", c.getTime().getTime()/1000);
             commentMap.put("text", c.getText());
             if(userOptional.isPresent()) {
                 UserResponse userResponse = new UserResponse();
@@ -651,8 +651,8 @@ public class GetService {
 
     private Integer extractDislikeCount(Post post) {
         try {
-            var list = postVoteRepository.findAll();
-            var listVotes = list.stream().
+            List<PostVote> list = postVoteRepository.findAll();
+            List<PostVote> listVotes = list.stream().
                     filter(a -> (a.getPostId().equals(post.getPostId())) && a.getValue() == -1).
                     collect(Collectors.toList());
             return listVotes.size();
