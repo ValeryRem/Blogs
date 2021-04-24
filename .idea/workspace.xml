@@ -22,14 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Method authRestore used with code = password.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Setting jar-start. property.yml tuned.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +59,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="proportion" value="0.15202445" />
+    <option name="proportion" value="0.29182583" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
@@ -136,13 +135,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00101" summary="Methods postAuthLogin &amp; postApiProfileMy improved via LoginRequest entity.">
-      <created>1611042800387</created>
-      <option name="number" value="00101" />
-      <option name="presentableId" value="LOCAL-00101" />
-      <option name="project" value="LOCAL" />
-      <updated>1611042800388</updated>
     </task>
     <task id="LOCAL-00102" summary="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly.">
       <created>1611155657625</created>
@@ -480,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619007706837</updated>
     </task>
-    <option name="localTasksCounter" value="150" />
+    <task id="LOCAL-00150" summary="Setting jar-start. property.yml tuned.">
+      <created>1619268134058</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1619268134059</updated>
+    </task>
+    <option name="localTasksCounter" value="151" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,7 +502,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method authRestore updated as authRestore (@RequestParam (&quot;email&quot;) String email)." />
     <MESSAGE value="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated." />
     <MESSAGE value="Methods postLike &amp; postDislike updated." />
     <MESSAGE value="Methods putPost updated." />
@@ -528,7 +526,8 @@
     <MESSAGE value="Method authRestore used with new yandex.ru mail address." />
     <MESSAGE value="Method authRestore used with new yandex.ru mail address, upd 1." />
     <MESSAGE value="Method authRestore used with code = password." />
-    <option name="LAST_COMMIT_MESSAGE" value="Method authRestore used with code = password." />
+    <MESSAGE value="Setting jar-start. property.yml tuned." />
+    <option name="LAST_COMMIT_MESSAGE" value="Setting jar-start. property.yml tuned." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
