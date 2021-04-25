@@ -1,11 +1,10 @@
 package main.service;
 
-import main.api.response.ErrorsResponse;
-import main.api.response.GeneralResponse;
-import main.api.response.ResultResponse;
+import main.response.ErrorsResponse;
+import main.response.GeneralResponse;
+import main.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,62 +22,51 @@ import static java.time.LocalDateTime.now;
 @Service
 public class PostService {
 
-//    @Autowired
-//    ResultResponse resultResponse;
-//    ErrorsResponse errorsResponse;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    AuthService authService;
-//    private boolean result = false;
-
-    @Autowired
-    HttpSession httpSession;
-
-    @Autowired
-    PostVoteRepository postVoteRepository;
-
-    @Autowired
-    TagRepository tagRepository;
-
-    @Autowired
-    Tag2PostRepository tag2PostRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    GlobalSettingsRepository globalSettingsRepository;
+    final UserRepository userRepository;
+    final PostRepository postRepository;
+    final AuthService authService;
+    final HttpSession httpSession;
+    final PostVoteRepository postVoteRepository;
+    final TagRepository tagRepository;
+    final Tag2PostRepository tag2PostRepository;
+    final CommentRepository commentRepository;
+    final GlobalSettingsRepository globalSettingsRepository;
 
     private ResponseEntity<?> responseEntity;
-    private GeneralResponse generalResponse;
 
-//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
+    public PostService(UserRepository userRepository, PostRepository postRepository, AuthService authService,
+                       HttpSession httpSession, PostVoteRepository postVoteRepository, TagRepository tagRepository,
+                       Tag2PostRepository tag2PostRepository, CommentRepository commentRepository,
+                       GlobalSettingsRepository globalSettingsRepository) {
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.authService = authService;
+        this.httpSession = httpSession;
+        this.postVoteRepository = postVoteRepository;
+        this.tagRepository = tagRepository;
+        this.tag2PostRepository = tag2PostRepository;
+        this.commentRepository = commentRepository;
+        this.globalSettingsRepository = globalSettingsRepository;
+    }
 
-    public ResponseEntity<?> postApiModeration (Integer id, String decision) {
+    public ResponseEntity<?> postApiModeration(Integer id, String decision) {
         ResultResponse resultResponse = new ResultResponse(false);
-        if (authService.isUserAuthorized()) {
-            Optional<Post> optionalPost = postRepository.findById(id);
-            if(optionalPost.isPresent()) {
-                if (decision.equals("accept")) {
-                    optionalPost.get().setModerationStatus(ModerationStatus.ACCEPTED);
-                    resultResponse = new ResultResponse(true);
-                    responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.OK);
-                } else if (decision.equals("decline")) {
-                    optionalPost.get().setModerationStatus(ModerationStatus.DECLINED);
-                    responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_MODIFIED);
-                }
-                postRepository.save(optionalPost.get());
-            } else {
-                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_FOUND);
+        if (!authService.isUserAuthorized()) {
+            return new ResponseEntity<>(resultResponse, HttpStatus.UNAUTHORIZED);
+        }
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()) {
+            if (decision.equals("accept")) {
+                optionalPost.get().setModerationStatus(ModerationStatus.ACCEPTED);
+                resultResponse = new ResultResponse(true);
+                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.OK);
+            } else if (decision.equals("decline")) {
+                optionalPost.get().setModerationStatus(ModerationStatus.DECLINED);
+                responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_MODIFIED);
             }
+            postRepository.save(optionalPost.get());
         } else {
-            responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(resultResponse, HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }
@@ -189,55 +177,13 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         }
     }
 
-//    public ResponseEntity<?> postImage (String origin) throws IOException {
-//        String destination = "/avatars/";
-//        String hashCode = String.valueOf(Math.abs(destination.hashCode()));
-//        String folder1 = hashCode.substring(0, hashCode.length()/3);
-//        String folder2 = hashCode.substring(1 + hashCode.length()/3, 2*hashCode.length()/3);
-//        String folder3 = hashCode.substring(1 + 2*hashCode.length()/3);
-//        if (authService.isUserAuthorized()) {
-//            try {
-//                File originalFile = new File(origin);
-//                BufferedImage image = ImageIO.read(originalFile);
-//                int suffix = (int) (Math.random() * 100);
-//                File destFolder = new File(destination);
-//                if (!destFolder.exists()) {
-//                    destFolder.mkdir();
-//                }
-//                File destFolder1 = new File(destination + folder1);
-//                if (!destFolder1.exists()) {
-//                    destFolder1.mkdir();
-//                }
-//                File destFolder2 = new File (destination + folder1 + File.separator + folder2);
-//                if (!destFolder2.exists()) {
-//                    destFolder2.mkdir();
-//                }
-//                String finalDestination = destination + folder1 + "/" + folder2 + "/" + folder3 + "/";
-//                File destFolder3 = new File (finalDestination);
-//                if (!destFolder3.exists()) {
-//                    destFolder3.mkdir();
-//                }
-//                String fileName =  suffix + "_uploaded.jpg";
-//                    File output = new File(destFolder3, fileName);
-//                    ImageIO.write(image, "jpg", output);
-//                    responseEntity = new ResponseEntity<>(finalDestination + fileName, HttpStatus.OK);
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//                responseEntity = new ResponseEntity<>("No image loaded!", HttpStatus.NOT_FOUND);
-//            }
-//        } else {
-//            responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-//        }
-//        return responseEntity;
-//    }
-
     public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, List<String> tags, String text) {
         if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         Map<String, Object> responseMap = new LinkedHashMap<>();
         Map<String, String> errors = checkTexts(title, text);
-        generalResponse = new GeneralResponse();
+        GeneralResponse generalResponse = new GeneralResponse();
         if (!errors.isEmpty()) {
             ErrorsResponse errorsResponse = new ErrorsResponse(errors);
             responseMap.put("result", String.valueOf(false));
@@ -281,38 +227,35 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
 
     public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {
         boolean result = true;
-//        Post post = postRepository.getOne(post_id);
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         Map<String, String> errors = new LinkedHashMap<>();
-        if (authService.isUserAuthorized()) {
-            Integer userId = authService.getUserId();
-            PostComment postComment = new PostComment();
-            if (text.length() < 10 || text.length() > 300 )
-            {
-                result = false;
-                errors.put("text", "Text's length is out of limit!");
-            }
-            if (result) {
-                if (parent_id != null) {
-                    postComment.setParentId(parent_id);
-                }
-                postComment.setPostId(post_id);
-                postComment.setText(text);
-                postComment.setTime(Timestamp.valueOf(now()));
-                postComment.setUserId(userId);
-                commentRepository.save(postComment);
-                map.put("id", postComment.getCommentId());
-            } else {
-                map.put("result", new ResultResponse(false));
-                map.put("errors", errors);
-            }
-            responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
-        } else {
+        if (!authService.isUserAuthorized()) {
             errors.put("errors", "User is unauthorized!");
             map.put("result", new ResultResponse(false));
             map.put("errors", errors);
-            responseEntity = new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
         }
+        Integer userId = authService.getUserId();
+        PostComment postComment = new PostComment();
+        if (text.length() < 10 || text.length() > 300) {
+            result = false;
+            errors.put("text", "Text's length is out of limit!");
+        }
+        if (result) {
+            if (parent_id != null) {
+                postComment.setParentId(parent_id);
+            }
+            postComment.setPostId(post_id);
+            postComment.setText(text);
+            postComment.setTime(Timestamp.valueOf(now()));
+            postComment.setUserId(userId);
+            commentRepository.save(postComment);
+            map.put("id", postComment.getCommentId());
+        } else {
+            map.put("result", new ResultResponse(false));
+            map.put("errors", errors);
+        }
+        responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         return responseEntity;
     }
 }

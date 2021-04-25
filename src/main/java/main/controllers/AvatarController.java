@@ -28,23 +28,4 @@ public class AvatarController {
         headers.setContentLength(image.length);
         return new HttpEntity<>(image, headers);
     }
-//    public ResponseEntity<?> getAvatar(//byte[] getAvatar(
-//            @PathVariable("folder") String folder,
-//            @PathVariable("dir1") String dir1,
-//            @PathVariable("dir2") String dir2,
-//            @PathVariable("dir2") String dir3,
-//            @PathVariable("filename") String filename) throws IOException {
-//        System.out.printf("%s-%s-%s-%s-%s", folder, dir1, dir2, dir3, filename);
-//        BufferedImage bufferedImage = ImageIO.read(
-//                Class.class.getResourceAsStream("/" + folder + "/" + dir1 + "/" + dir2 + "/" + dir3 + "/" + filename));
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ImageIO.write(bufferedImage, "png", baos);
-//
-//        return ResponseEntity
-//                .ok()
-//                .contentType(MediaType.IMAGE_PNG)
-//                .body(baos.toByteArray());
-//
-//
 }

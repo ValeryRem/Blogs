@@ -19,29 +19,25 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping(value = "/api/post", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class PostController {
-    @Autowired
-    private GetService getService;
-
-    @Autowired
-    private PostService postService;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private SessionRepository sessionRepository;
-
-    @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final GetService getService;
+    private final PostService postService;
+    private final AuthService authService;
+    private final PostRepository postRepository;
+    private final SessionRepository sessionRepository;
+    private final HttpSession httpSession;
+    private final UserRepository userRepository;
     private int ID;
-    //    private int id;
-//    private PutPostRequest putPostRequest;
+
+    public PostController(GetService getService, PostService postService, AuthService authService, PostRepository postRepository,
+                          SessionRepository sessionRepository, HttpSession httpSession, UserRepository userRepository) {
+        this.getService = getService;
+        this.postService = postService;
+        this.authService = authService;
+        this.postRepository = postRepository;
+        this.sessionRepository = sessionRepository;
+        this.httpSession = httpSession;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("")
     @ResponseBody

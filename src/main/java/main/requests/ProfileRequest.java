@@ -24,14 +24,6 @@ public class ProfileRequest implements Serializable {
     @JsonProperty
     private String removePhoto;
 
-//    public String getPhotoAddress() {
-//        return photoAddress;
-//    }
-//
-//    public void setPhotoAddress(String photoAddress) {
-//        this.photoAddress = photoAddress;
-//    }
-
     public MultipartFile getPhoto() {
         return photo;
     }

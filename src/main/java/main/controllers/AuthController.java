@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private GetService getService;
+    private final GetService getService;
+    private final AuthService authService;
 
-    @Autowired
-    private AuthService authService;
+    public AuthController(GetService getService, AuthService authService) {
+        this.getService = getService;
+        this.authService = authService;
+    }
 
     @GetMapping("/check")
     private ResponseEntity<?> getAuthCheck () {
@@ -28,14 +30,6 @@ public class AuthController {
     private ResponseEntity<?> postAuthLogin(@RequestBody LoginRequest loginRequest) {
         System.out.println("Method postAuthLogin is activated.");
         return authService.postAuthLogin(loginRequest.getEmail(), loginRequest.getPassword());
-//    private ResponseEntity<?> postAuthLogin( @JsonProperty ("e_mail")
-//                                              @RequestParam  (name = "e_mail")
-//                                                        String eMail,
-//                                            @JsonProperty ("password")
-//                                            @RequestParam (name = "password")
-//                                                    String userPassword) {
-//        System.out.println("Method postAuthLogin is activated.");
-//        return authService.postAuthLogin(eMail, userPassword);
     }
 
     @GetMapping("/logout")

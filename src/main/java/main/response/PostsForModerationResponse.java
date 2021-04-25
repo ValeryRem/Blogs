@@ -1,7 +1,6 @@
-package main.api.response;
+package main.response;
 
 import java.util.List;
-import java.util.TreeMap;
 
 public class PostsForModerationResponse {
     private Integer count;

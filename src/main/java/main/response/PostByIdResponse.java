@@ -1,14 +1,8 @@
-package main.api.response;
+package main.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import main.entity.*;
-import main.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 public class PostByIdResponse {
     @JsonProperty
@@ -22,7 +16,6 @@ public class PostByIdResponse {
 
     @JsonProperty
     private UserResponse userResponse;
-//    private TreeMap<String, Object> user;
 
     @JsonProperty
     private String title;

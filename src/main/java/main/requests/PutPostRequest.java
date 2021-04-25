@@ -1,15 +1,10 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PutPostRequest implements Serializable {
-//    @JsonProperty
-//    private int ID;
 
     @JsonProperty
     private Long timestamp;
@@ -28,14 +23,6 @@ public class PutPostRequest implements Serializable {
 
     public PutPostRequest() {
     }
-
-//    public int getID() {
-//        return ID;
-//    }
-//
-//    public void setID(int ID) {
-//        this.ID = ID;
-//    }
 
     public Long getTimestamp() {
         return timestamp;

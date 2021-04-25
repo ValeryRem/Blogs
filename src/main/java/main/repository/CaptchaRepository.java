@@ -10,6 +10,4 @@ import java.util.stream.Stream;
 
 @Repository
 public interface CaptchaRepository extends JpaRepository<CaptchaCode, Integer> {
-//    List<CaptchaCode> findAllByTimes();
-//    void clearOldCaptchas();
 }

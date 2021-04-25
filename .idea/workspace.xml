@@ -22,13 +22,48 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Setting jar-start. property.yml tuned.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="yml file tuned correctly.">
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/82_Future.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/MainApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/ApplicationMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/CalendarResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/CalendarResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/CommentsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/CommentsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ErrorsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/ErrorsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/GeneralResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/GeneralResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/InitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/InitResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ModerationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/ModerationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/MyPostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/MyPostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostByIdResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/PostByIdResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/PostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/PostsForModerationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/PostsForModerationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/ResultResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/ResultResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/TagResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/TagResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/api/response/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/response/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AvatarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AvatarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/DefaultController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/SettingsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/InitResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/api/response/UserResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/service/SettingsService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +94,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="proportion" value="0.29182583" />
+    <option name="proportion" value="0.2131398" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
@@ -79,7 +114,7 @@
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="gh\hg" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -101,12 +136,13 @@
       <recent name="C:\Users\valery\Desktop\java_basics\16_Blogs\src\main\resources\templates" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="java" />
       <recent name="" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="MainApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.MainApplication" />
+    <configuration name="ApplicationMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.ApplicationMain" />
       <module name="16_Blogs" />
       <extension name="coverage">
         <pattern>
@@ -120,7 +156,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainApplication" />
+        <item itemvalue="Application.ApplicationMain" />
       </list>
     </recent_temporary>
   </component>
@@ -135,13 +171,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00102" summary="Methods postAuthLogin, postApiImage, postApiProfileMy improved, work correctly.">
-      <created>1611155657625</created>
-      <option name="number" value="00102" />
-      <option name="presentableId" value="LOCAL-00102" />
-      <option name="project" value="LOCAL" />
-      <updated>1611155657625</updated>
     </task>
     <task id="LOCAL-00103" summary="Methods postApiProfileMy developed, image resized to 30x30 pxl.">
       <created>1611306169782</created>
@@ -479,7 +508,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619268134059</updated>
     </task>
-    <option name="localTasksCounter" value="151" />
+    <task id="LOCAL-00151" summary="yml file tuned correctly.">
+      <created>1619298418594</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1619298418595</updated>
+    </task>
+    <option name="localTasksCounter" value="152" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -502,7 +538,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method authRestore (@RequestBody RestoreRequest restoreRequest) updated." />
     <MESSAGE value="Methods postLike &amp; postDislike updated." />
     <MESSAGE value="Methods putPost updated." />
     <MESSAGE value="Methods putPost updated bu ID of post." />
@@ -527,7 +562,8 @@
     <MESSAGE value="Method authRestore used with new yandex.ru mail address, upd 1." />
     <MESSAGE value="Method authRestore used with code = password." />
     <MESSAGE value="Setting jar-start. property.yml tuned." />
-    <option name="LAST_COMMIT_MESSAGE" value="Setting jar-start. property.yml tuned." />
+    <MESSAGE value="yml file tuned correctly." />
+    <option name="LAST_COMMIT_MESSAGE" value="yml file tuned correctly." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

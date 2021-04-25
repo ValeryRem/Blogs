@@ -2,8 +2,8 @@ package main.service;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
-import main.api.response.AuthResponse;
-import main.api.response.ResultResponse;
+import main.response.AuthResponse;
+import main.response.ResultResponse;
 import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -30,33 +29,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthService{
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final HttpSession httpSession;
+    private final CaptchaRepository captchaRepository;
+    private final  SessionRepository sessionRepository;
+    private final  JavaMailSender javaMailSender;
+    private final GlobalSettingsRepository globalSettingsRepository;
 
-    @Autowired
-    PostRepository postRepository;
+    public AuthService(UserRepository userRepository, PostRepository postRepository,
+                       HttpSession httpSession, CaptchaRepository captchaRepository,
+                       SessionRepository sessionRepository, JavaMailSender javaMailSender,
+                       GlobalSettingsRepository globalSettingsRepository) {
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.httpSession = httpSession;
+        this.captchaRepository = captchaRepository;
+        this.sessionRepository = sessionRepository;
+        this.javaMailSender = javaMailSender;
+        this.globalSettingsRepository = globalSettingsRepository;
+    }
 
-    @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
-    CaptchaRepository captchaRepository;
-
-    @Autowired
-    private SessionRepository sessionRepository;
-
-    @Autowired
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    private GlobalSettingsRepository globalSettingsRepository;
-
-
-
-//    private AuthResponse authResponse;
-//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
     private boolean result = false;
-//    private ResponseEntity<?> responseEntity;
 
     public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
         AuthResponse authResponse = new AuthResponse();

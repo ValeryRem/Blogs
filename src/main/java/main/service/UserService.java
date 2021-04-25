@@ -1,6 +1,6 @@
 package main.service;
 
-import main.api.response.ResultResponse;
+import main.response.ResultResponse;
 import main.entity.User;
 import main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +18,15 @@ import java.util.Map;
 
 @Service
 public class UserService {
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+    private final  UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public UserService(AuthService authService, UserRepository userRepository) {
+        this.authService = authService;
+        this.userRepository = userRepository;
+    }
 
-    private ResultResponse resultResponse = new ResultResponse(false);
-
-    private boolean result;
-
-    private final int PW_MIN_LENGTH = 6;
-    private final int PW_MAX_LENGTH = 30;
-    private final int MAX_IMAGE_SIZE = 5_000_000;
-    private final int HEIGHT_MAX = 100;
-    private final int WIDTH_MAX = 100;
+    private final ResultResponse resultResponse = new ResultResponse(false);
 
     public ResponseEntity<?> postApiImage(MultipartFile image) throws IOException {
         User user = userRepository.getOne(authService.getUserId());
@@ -49,14 +43,14 @@ public class UserService {
 
     public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
                                               String password, String removePhoto) throws IOException {
-//        ErrorsResponse errorsResponse;
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        result = true;
+        boolean result = true;
         User currentUser = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
         if(photo != null) {
+            int MAX_IMAGE_SIZE = 5_000_000;
             if (photo.getBytes().length <= MAX_IMAGE_SIZE) {
                 if (removePhoto.equals("1")) {
                     currentUser.setPhoto("");
@@ -72,6 +66,8 @@ public class UserService {
             }
         }
         if (password != null) {
+            int PW_MIN_LENGTH = 6;
+            int PW_MAX_LENGTH = 30;
             if (password.length() < PW_MIN_LENGTH && password.length() > PW_MAX_LENGTH) {
                 result = false;
                 errors.put("password", "Длина пароля с ошибкой");
@@ -83,8 +79,6 @@ public class UserService {
         }
         if (!result) {
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
-//            errorsResponse = new ErrorsResponse(false, errors);
-//            return new ResponseEntity<>(errorsResponse, HttpStatus.BAD_REQUEST);
         } else {
             currentUser.setName(name);
             if(email != null && !currentUser.getEmail().equals(email)) {
@@ -125,10 +119,9 @@ public class UserService {
         String finalDestination = targetFolder + folder1 + "/" + folder2 + "/" + folder3 + "/" + fileName;
         photo.transferTo(Path.of(finalDestination));
         File destFile = new File(finalDestination);// Windows separators ("\") are replaced by simple slashes.
-//        if (!destFile.exists()) {
-//            destFile.createNewFile();
-//        }
         Image image = ImageIO.read(photo.getInputStream());
+        int HEIGHT_MAX = 100;
+        int WIDTH_MAX = 100;
         BufferedImage tempPNG = resizeImage(image, WIDTH_MAX, HEIGHT_MAX);
         ImageIO.write(tempPNG, "png", destFile);
         return destFile;

@@ -1,7 +1,6 @@
 package main.controllers;
 
 import main.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +11,11 @@ import java.time.LocalDateTime;
 @RestController
 public class EmailController {
     private final JavaMailSender mailSender;
+    private final AuthService authService;
 
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    public EmailController(JavaMailSender mailSender) {
+    public EmailController(JavaMailSender mailSender, AuthService authService) {
         this.mailSender = mailSender;
+        this.authService = authService;
     }
 
     @RequestMapping(value = "/send")

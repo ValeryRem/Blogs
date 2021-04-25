@@ -1,9 +1,10 @@
 package main.service;
 
-import main.api.response.*;
 import main.entity.*;
 import main.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.response.GeneralResponse;
+import main.response.TagResponse;
+import main.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,32 +20,24 @@ import java.util.stream.Collectors;
 @Service
 public class GetService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    private Tag2PostRepository tag2PostRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final Tag2PostRepository tag2PostRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final TagRepository tagRepository;
 
-    @Autowired
-    HttpSession session;
+    private final UserRepository userRepository;
 
-    @Autowired
-    CommentRepository commentRepository;
+    private final HttpSession session;
 
-    @Autowired
-    PostVoteRepository postVoteRepository;
+    private final CommentRepository commentRepository;
 
-    @Autowired
-    AuthService authService;
+    private final PostVoteRepository postVoteRepository;
 
-    @Autowired
-    GlobalSettingsRepository globalSettingsRepository;
+    private final AuthService authService;
+
+    private final GlobalSettingsRepository globalSettingsRepository;
 //    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
 
     private boolean result = false;
@@ -52,7 +45,19 @@ public class GetService {
     private ResponseEntity<?> responseEntity;
     private GeneralResponse generalResponse;
 
-    public GetService() {
+
+    public GetService(PostRepository postRepository, Tag2PostRepository tag2PostRepository, TagRepository tagRepository,
+                      UserRepository userRepository, HttpSession session, CommentRepository commentRepository,
+                      PostVoteRepository postVoteRepository, AuthService authService, GlobalSettingsRepository globalSettingsRepository) {
+        this.postRepository = postRepository;
+        this.tag2PostRepository = tag2PostRepository;
+        this.tagRepository = tagRepository;
+        this.userRepository = userRepository;
+        this.session = session;
+        this.commentRepository = commentRepository;
+        this.postVoteRepository = postVoteRepository;
+        this.authService = authService;
+        this.globalSettingsRepository = globalSettingsRepository;
     }
 
     private List<Post> getActivePosts() {
@@ -133,14 +138,10 @@ public class GetService {
     public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, String date) {
         var posts = getActivePosts();
         int count = 0;
-//        List<Post> posts = postRepository.findAll();
-//        var sortedPosts = getPostsFilteredByMode(postList, mode);
         List<Map<String, Object>> postMapList = new ArrayList<>();
         var commentList = commentRepository.findAll();
         for (Post post : posts) {
-//            if (date == post.getTimestamp().getTime()/1000)
           if(post.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString().equals(date))
-                  //equals(Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()))
             {
                 count++;
                 Map<String, Object> responseMap = new LinkedHashMap<>();
@@ -334,7 +335,7 @@ public class GetService {
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String status) {
         if (!authService.isUserAuthorized()) {
-            responseEntity = new ResponseEntity<>("User is UNAUTHORIZED.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("User is UNAUTHORIZED.", HttpStatus.UNAUTHORIZED);
         }
         User user = userRepository.getOne(authService.getUserId());
         List<Map<String, Object>> posts = new ArrayList<>();
@@ -565,49 +566,6 @@ public class GetService {
         return postList;
     }
 
-//    private List<Post> getPostsFilteredByStatus(List<Post> postList, String status) {
-//        if(status.equals("new")) {
-//           postList = postList.stream()
-//                   .filter(p -> p.getModerationStatus().equals(ModerationStatus.NEW))
-//                   .collect(Collectors.toList());
-//        }
-//        if (status.equals("accepted")) {
-//            postList = postList.stream()
-//                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.ACCEPTED))
-//                    .collect(Collectors.toList());
-//        }
-//        if (status.equals("declined")) {
-//            postList = postList.stream()
-//                    .filter(p -> p.getModerationStatus().equals(ModerationStatus.DECLINED))
-//                    .collect(Collectors.toList());
-//        }
-//        return postList;
-//    }
-
-//    private ResponseEntity<?> getResponseEntity(PostsListResponse postsListResponse, Integer offset, Integer limit) {
-//        try {
-//            ResponseEntity<?> responseEntity;
-//            List<PostAnnounceResponse> responseListToShow = new ArrayList<>();
-//            var countOfPosts = postsListResponse.getCount();
-//            if (limit <= 0) {
-//                responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//            } else if (limit == 1) {
-//                responseListToShow.add(postsListResponse.getPosts().get(0));
-//                responseEntity = new ResponseEntity<>(new PostsListResponse(1, responseListToShow), HttpStatus.PARTIAL_CONTENT);
-//            } else if (limit < countOfPosts) {
-//                responseListToShow = postsListResponse.getPosts().subList(offset, limit);
-//                responseEntity = new ResponseEntity<>(new PostsListResponse(postsListResponse.getCount(), responseListToShow), HttpStatus.OK);
-//            } else {
-//                responseListToShow = postsListResponse.getPosts().subList(offset, countOfPosts);
-//                responseEntity = new ResponseEntity<>(new PostsListResponse(postsListResponse.getCount(), responseListToShow), HttpStatus.OK);
-//            }
-//            return responseEntity;
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return new ResponseEntity<>("Something goes wrong...", HttpStatus.NOT_FOUND);
-//        }
-//    }
-
     public Integer getCount() {
         int count;
         try {
@@ -619,22 +577,22 @@ public class GetService {
         return count;
     }
 
-    private List<CommentsResponse> getCommentsList (Integer postId) {
-        List<CommentsResponse> commentsResponseList = new ArrayList<>();
-        try {
-            var postComment  =  commentRepository.findAll();
-            var listComments = postComment.stream().filter(a -> (a.getPostId().equals(postId))).collect(Collectors.toList());
-            listComments.forEach(a -> {
-                User user = userRepository.findById(a.getUserId()).orElse(new User());
-                UserResponse userResponse = new UserResponse(a.getUserId(), user.getName(),  user.getPhoto());
-                CommentsResponse commentsResponse = new CommentsResponse(a.getCommentId(), a.getTime(),  a.getText(), userResponse);
-                commentsResponseList.add(commentsResponse);
-            });
-        } catch (NullPointerException npe) {
-            npe.printStackTrace();
-        }
-        return commentsResponseList;
-    }
+//    private List<CommentsResponse> getCommentsList (Integer postId) {
+//        List<CommentsResponse> commentsResponseList = new ArrayList<>();
+//        try {
+//            var postComment  =  commentRepository.findAll();
+//            var listComments = postComment.stream().filter(a -> (a.getPostId().equals(postId))).collect(Collectors.toList());
+//            listComments.forEach(a -> {
+//                User user = userRepository.findById(a.getUserId()).orElse(new User());
+//                UserResponse userResponse = new UserResponse(a.getUserId(), user.getName(),  user.getPhoto());
+//                CommentsResponse commentsResponse = new CommentsResponse(a.getCommentId(), a.getTime(),  a.getText(), userResponse);
+//                commentsResponseList.add(commentsResponse);
+//            });
+//        } catch (NullPointerException npe) {
+//            npe.printStackTrace();
+//        }
+//        return commentsResponseList;
+//    }
 
     private Integer extractLikeCount(Post post) {
         try {

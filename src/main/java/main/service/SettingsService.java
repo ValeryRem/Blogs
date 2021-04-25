@@ -1,6 +1,6 @@
 package main.service;
 
-import main.api.response.ResultResponse;
+import main.response.ResultResponse;
 import main.entity.GlobalSettings;
 import main.repository.GlobalSettingsRepository;
 import main.repository.UserRepository;
@@ -14,19 +14,19 @@ import java.util.Map;
 
 @Service
 public class SettingsService {
-
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    GlobalSettingsRepository globalSettingsRepository;
-
-    GlobalSettings globalSettings;
+    private final AuthService authService;
+    private final UserRepository userRepository;
+    private final GlobalSettingsRepository globalSettingsRepository;
+    private GlobalSettings globalSettings;
 
     ResponseEntity<?> responseEntity;
+
+    public SettingsService(AuthService authService, UserRepository userRepository,
+                           GlobalSettingsRepository globalSettingsRepository) {
+        this.authService = authService;
+        this.userRepository = userRepository;
+        this.globalSettingsRepository = globalSettingsRepository;
+    }
 
     public ResponseEntity<?> putApiSettings (boolean multiuserMode, boolean postPremoderation, boolean statisticsIsPublic) {
         Integer userId = authService.getUserId();

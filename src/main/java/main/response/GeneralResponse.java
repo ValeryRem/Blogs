@@ -1,4 +1,4 @@
-package main.api.response;
+package main.response;
 
 import java.util.List;
 import java.util.Map;

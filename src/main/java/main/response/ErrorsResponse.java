@@ -1,4 +1,4 @@
-package main.api.response;
+package main.response;
 import java.util.Map;
 
 public class ErrorsResponse {
@@ -11,10 +11,6 @@ public class ErrorsResponse {
     public ErrorsResponse(Map<String, String> errors) {
         this.errors = errors;
     }
-
-//    public boolean isResult() {
-//        return result;
-//    }
 
     public Map<String, String> getErrors() {
         return errors;

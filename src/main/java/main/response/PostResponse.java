@@ -1,9 +1,7 @@
-package main.api.response;
+package main.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import main.entity.Post;
 
 import java.util.List;
-import java.util.Map;
 
 public class PostResponse {
     @JsonProperty
