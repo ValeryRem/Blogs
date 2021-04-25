@@ -5,37 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class PostByIdResponse {
-    @JsonProperty
     private Integer id;
-
-    @JsonProperty
     private long timestamp;
-
-    @JsonProperty
     private boolean active;
-
-    @JsonProperty
     private UserResponse userResponse;
-
-    @JsonProperty
     private String title;
-
-    @JsonProperty
     private String text;
-
-    @JsonProperty
     private Integer likeCount;
-
-    @JsonProperty
     private Integer dislikeCount;
-
-    @JsonProperty
     private Integer viewCount;
-
-    @JsonProperty
     private List<CommentsResponse> comments;
-
-    @JsonProperty
     private List<String> tags;
 
     public PostByIdResponse() {

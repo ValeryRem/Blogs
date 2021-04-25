@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class RestoreRequest implements Serializable {
-    @JsonProperty
     private String email;
 
     public String getEmail() {

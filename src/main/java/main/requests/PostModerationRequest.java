@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class PostModerationRequest implements Serializable {
-    @JsonProperty//("post_id")
     Integer id;
-
-    @JsonProperty
     String decision;
 
     public Integer getPost_id() {

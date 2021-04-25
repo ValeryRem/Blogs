@@ -10,10 +10,7 @@ import java.util.List;
 
 
 public class CalendarResponse {
-    @JsonProperty
     List<Integer> years;
-
-    @JsonProperty
     LinkedHashMap<LocalDate, Integer> posts;
 
     public CalendarResponse(List<Integer> years, LinkedHashMap<LocalDate, Integer> posts) {

@@ -5,13 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class CommentRequest implements Serializable {
-    @JsonProperty
     Integer post_id;
-
-    @JsonProperty
     Integer parent_id;
-
-    @JsonProperty
     String text;
 
     public Integer getPostId() {

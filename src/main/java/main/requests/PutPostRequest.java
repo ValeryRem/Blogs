@@ -5,20 +5,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PutPostRequest implements Serializable {
-
-    @JsonProperty
     private Long timestamp;
-
-    @JsonProperty
     private Integer active;
-
-    @JsonProperty
     private String title;
-
-    @JsonProperty("tags")
     private List<String> tags;
-
-    @JsonProperty
     private String text;
 
     public PutPostRequest() {

@@ -7,17 +7,9 @@ import java.io.Serializable;
 public class LoginRequest implements Serializable {
     @JsonProperty("e_mail")
     private String email;
-
-    @JsonProperty
     private String password;
-
-    @JsonProperty
     private String name;
-
-    @JsonProperty
     private String captcha;
-
-    @JsonProperty
     private String captchaSecret;
     public String getEmail() {
         return email;

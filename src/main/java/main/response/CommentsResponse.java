@@ -5,16 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.sql.Timestamp;
 
 public class CommentsResponse {
-    @JsonProperty
     private Integer id;
-
-    @JsonProperty
     private Timestamp timestamp;
-
-    @JsonProperty
     private  String text;
-
-    @JsonProperty
     private UserResponse users;
 
     public CommentsResponse() {

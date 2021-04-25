@@ -7,28 +7,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
 
 public class ProfileRequest implements Serializable {
-//    @JsonProperty
-//    private String photoAddress;
     @Nullable
     private MultipartFile photo;
-
-    @JsonProperty
     private String name;
-
-    @JsonProperty
     private String email;
-
-    @JsonProperty
     private String password;
-
-    @JsonProperty
     private String removePhoto;
 
+    @Nullable
     public MultipartFile getPhoto() {
         return photo;
     }
 
-    public void setPhoto(MultipartFile photo) {
+    public void setPhoto(@Nullable MultipartFile photo) {
         this.photo = photo;
     }
 

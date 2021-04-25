@@ -20,7 +20,6 @@ public class PostComment {
     private Integer parentId;
 
     @Column(name = "post_id", nullable = false)
-    @JsonProperty
     private Integer postId;
 
     @Column(name = "user_id")
@@ -29,7 +28,6 @@ public class PostComment {
     private String text;
 
     public PostComment() {
-//        userId = new Post(postId).getUserId();
     }
 
     @Override

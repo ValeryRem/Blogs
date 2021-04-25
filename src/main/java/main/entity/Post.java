@@ -13,11 +13,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     @JoinTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
-    @JsonProperty
     private Integer postId;
 
     @Column(name ="is_active")
-    @JsonProperty
     private int isActive;
 
     @Column(name ="moderation_status")
@@ -28,23 +26,15 @@ public class Post {
     private Integer moderatorId;
 
     @Column(name ="user_id")
-    @JsonProperty
     private Integer userId;
-
-    @JsonProperty
     private Timestamp timestamp;
-
-    @JsonProperty
     private String title;
-
-    @JsonProperty
     private String text;
 
     @Column(name ="view_count")
     private Integer viewCount;
 
     public Post() {
-//        timestamp = Timestamp.valueOf(now());
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -62,10 +52,6 @@ public class Post {
     public Integer getPostId() {
         return postId;
     }
-
-//    public void setPostId(Integer postId) {
-//        this.postId = postId;
-//    }
 
     public int getIsActive() {
         return isActive;

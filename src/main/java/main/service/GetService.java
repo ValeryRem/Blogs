@@ -21,27 +21,15 @@ import java.util.stream.Collectors;
 public class GetService {
 
     private final PostRepository postRepository;
-
-
     private final Tag2PostRepository tag2PostRepository;
-
     private final TagRepository tagRepository;
-
     private final UserRepository userRepository;
-
     private final HttpSession session;
-
     private final CommentRepository commentRepository;
-
     private final PostVoteRepository postVoteRepository;
-
     private final AuthService authService;
-
     private final GlobalSettingsRepository globalSettingsRepository;
-//    private final ZoneId zid1 = ZoneId.of("Europe/Moscow");
-
     private boolean result = false;
-
     private ResponseEntity<?> responseEntity;
     private GeneralResponse generalResponse;
 
@@ -185,7 +173,7 @@ public class GetService {
                     }
                 }
                 var commentList = commentRepository.findAll();
-                posts = postsIdList.stream().map( s -> postRepository.getOne(s)).collect(Collectors.toList());
+                posts = postsIdList.stream().map(postRepository::getOne).collect(Collectors.toList());
 
                 for (Post post: posts) {
                     Map<String, Object> responseMap = new LinkedHashMap<>();
@@ -221,10 +209,9 @@ public class GetService {
     private int getCommentCountByPost(Post post) {
 //        var postComments = commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).
 //                collect(Collectors.toList());
-        int commentCountByPost = (int) commentRepository.findAll().stream()
+        return (int) commentRepository.findAll().stream()
                 .filter(a -> a.getPostId().equals(post.getPostId()))
                 .count();
-        return commentCountByPost;
     }
 
     public ResponseEntity<?> getMyPosts(Integer offset, Integer limit) {
@@ -477,11 +464,8 @@ public class GetService {
         map.put("viewsCount", viewCount);
         List<Timestamp> localDates =  postRepository.findAll().stream().
                 map(Post::getTimestamp).collect(Collectors.toList());
-//        List<Long> localDates =  postRepository.findAll().stream().
-//                map(p -> p.getTimestamp().getTime()).collect(Collectors.toList());
         Timestamp minLocalDate = localDates.stream()
                 .min(Comparator.naturalOrder()).get();
-//                .orElse(Timestamp.valueOf(LocalDateTime.now()).getTime()/1000);
         map.put("firstPublication", minLocalDate.getTime()/1000);
         if(globalSettingsRepository.findAll().stream().
                 findAny().

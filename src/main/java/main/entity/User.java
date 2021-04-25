@@ -20,35 +20,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
-    @JsonProperty
     private Integer userId;
 
     @Column(name = "is_moderator")
-    @JsonProperty
     private boolean isModerator;
 
     @Column(name = "reg_time")
     @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
-    @JsonProperty
     private Timestamp regTime;
 
     @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
-    @JsonProperty
     private String name;
 
     @Email
-    @JsonProperty
     @Column(name = "e_mail", unique = true)
     private String email;
 
-    @JsonProperty
     @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
 
-    @JsonProperty
     private String code;
 
-    @JsonProperty
     @Nullable
     private String photo;
 
@@ -96,7 +88,6 @@ public class User {
         return email;
     }
 
-//    @UniqueElements
     public void setEmail(String email) {
         this.email = email;
     }
@@ -117,11 +108,12 @@ public class User {
         this.code = code;
     }
 
+    @Nullable
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(@Nullable String photo) {
         this.photo = photo;
     }
 }

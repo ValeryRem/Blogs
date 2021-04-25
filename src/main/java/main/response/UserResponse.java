@@ -4,16 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import main.entity.Post;
 
 public class UserResponse {
-    @JsonProperty
     private Integer id;
-
-    @JsonProperty
     private String name;
-
-    @JsonProperty
     private String photo;
-//    private User user = new User(userId);
-
 
     public UserResponse() {
     }

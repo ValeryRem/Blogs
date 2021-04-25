@@ -7,19 +7,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PostRequest implements Serializable {
-    @JsonProperty
     long timestamp;
-
-    @JsonProperty
     Integer active;
-
-    @JsonProperty
     String title;
 
-    @JsonProperty @Nullable
+    @Nullable
     List<String> tags;
-
-    @JsonProperty
     String text;
 
     public long getTimestamp() {
@@ -46,11 +39,12 @@ public class PostRequest implements Serializable {
         this.title = title;
     }
 
+    @Nullable
     public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(@Nullable List<String> tags) {
         this.tags = tags;
     }
 
