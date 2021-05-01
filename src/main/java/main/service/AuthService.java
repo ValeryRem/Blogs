@@ -2,6 +2,7 @@ package main.service;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
+import main.requests.LoginRequest;
 import main.response.AuthResponse;
 import main.response.ResultResponse;
 import main.entity.*;
@@ -15,6 +16,7 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -36,11 +38,12 @@ public class AuthService{
     private final  SessionRepository sessionRepository;
     private final  JavaMailSender javaMailSender;
     private final GlobalSettingsRepository globalSettingsRepository;
+    private final LoginRequest loginRequest;
 
     public AuthService(UserRepository userRepository, PostRepository postRepository,
                        HttpSession httpSession, CaptchaRepository captchaRepository,
                        SessionRepository sessionRepository, JavaMailSender javaMailSender,
-                       GlobalSettingsRepository globalSettingsRepository) {
+                       GlobalSettingsRepository globalSettingsRepository, LoginRequest loginRequest) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.httpSession = httpSession;
@@ -48,18 +51,20 @@ public class AuthService{
         this.sessionRepository = sessionRepository;
         this.javaMailSender = javaMailSender;
         this.globalSettingsRepository = globalSettingsRepository;
+        this.loginRequest = loginRequest;
     }
 
     private boolean result = false;
 
-    public ResponseEntity<?> postAuthLogin(String eMail, String userPassword) {
+    public ResponseEntity<?> postAuthLogin(LoginRequest loginRequest) {
         AuthResponse authResponse = new AuthResponse();
-        Optional<User> user = userRepository.findOneByEmail(eMail);
+        Optional<User> user = userRepository.findOneByEmail(loginRequest.getEmail());
         if (user.isEmpty()) {
             return ResponseEntity.ok(new ResultResponse(false));
         }
         User currentUser = user.get();
-        if (currentUser.getPassword().equals(userPassword) || currentUser.getCode().equals(userPassword)) {
+        if (currentUser.getPassword().equals(loginRequest.getPassword()) ||
+                currentUser.getCode().equals(loginRequest.getPassword())) {
             registerSession(currentUser.getUserId()); // put new session id, delete old sessions id
             authResponse.setResult(true);
             LinkedHashMap<String, Object> userResponseMap = getUserResponseMap(currentUser);
@@ -187,7 +192,8 @@ public class AuthService{
     регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
     Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
      */
-    public ResponseEntity<?> postAuthRegister(String email, String password, String nameString, String captcha, String captchaSecret) {
+    public ResponseEntity<?> postAuthRegister(LoginRequest loginRequest){
+        //String email, String password, String nameString, String captcha, String captchaSecret) {
         Map<String, Object>  output = new LinkedHashMap<>();
         ResponseEntity<?> responseEntity;
         if (globalSettingsRepository.findAll().stream().
@@ -197,32 +203,32 @@ public class AuthService{
             LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
             List<User> users = userRepository.findAll();
             Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
-                    .filter(c -> c.getSecretCode().equals(captchaSecret))
+                    .filter(c -> c.getSecretCode().equals(loginRequest.getCaptcha()))
                     .findAny();
             result = true;
-            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(email)) {
+            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(loginRequest.getEmail())) {
                 errors.put("email", "Этот e-mail уже зарегистрирован!");
                 result = false;
             }
-            if (users.stream().map(User::getName).collect(Collectors.toList()).contains(nameString)) {
+            if (users.stream().map(User::getName).collect(Collectors.toList()).contains(loginRequest.getName())) {
                 errors.put("name", "Данное имя уже зарегистрировано!");
                 result = false;
             }
-            if (password.length() < 6) {
+            if (loginRequest.getPassword().length() < 6) {
                 errors.put("password", "Пароль короче 6 символов!");
                 result = false;
             }
             if (captchaCodeOptional.isPresent()) {
-                if(!captchaCodeOptional.get().getCode().equals(captcha)) {
+                if(!captchaCodeOptional.get().getCode().equals(loginRequest.getCaptcha())) {
                     errors.put("captcha", "Код с картинки введён неверно");
                     result = false;
                 }
             }
             if (result) {
                 String code = generateCode(16);
-                user.setEmail(email);
-                user.setName(nameString);
-                user.setPassword(password);
+                user.setEmail(loginRequest.getEmail());
+                user.setName(loginRequest.getName());
+                user.setPassword(loginRequest.getPassword());
                 user.setRegTime(Timestamp.valueOf(LocalDateTime.now()));
                 user.setCode(code);
                 user.setIsModerator(false);

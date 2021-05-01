@@ -26,10 +26,12 @@ public class PostController {
     private final SessionRepository sessionRepository;
     private final HttpSession httpSession;
     private final UserRepository userRepository;
+    private final PostRequest postRequest;
     private int ID;
 
     public PostController(GetService getService, PostService postService, AuthService authService, PostRepository postRepository,
-                          SessionRepository sessionRepository, HttpSession httpSession, UserRepository userRepository) {
+                          SessionRepository sessionRepository, HttpSession httpSession, UserRepository userRepository,
+                          PostRequest postRequest) {
         this.getService = getService;
         this.postService = postService;
         this.authService = authService;
@@ -37,6 +39,7 @@ public class PostController {
         this.sessionRepository = sessionRepository;
         this.httpSession = httpSession;
         this.userRepository = userRepository;
+        this.postRequest = postRequest;
     }
 
     @GetMapping("")
@@ -99,31 +102,28 @@ public class PostController {
     }
 
     @PostMapping("/like")
-    private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest)
-                                        {
+    private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest) {
         System.out.println("Method postLike activated");
-        return postService.postLike(likeRequest.getPost_id());
+        return postService.postLike(likeRequest);
     }
 
     @PostMapping("/dislike")
     private ResponseEntity<?> postDislike (@RequestBody DislikeRequest dislikeRequest)
     {
         System.out.println("Method postDislike activated");
-        return postService.postDislike(dislikeRequest.getPost_id());
+        return postService.postDislike(dislikeRequest);
     }
 
     @PostMapping("")
     private ResponseEntity<?> postPost (@RequestBody PostRequest postRequest) {
         System.out.println("Method postPost is activated");
-        return postService.postPost(postRequest.getTimestamp(), postRequest.getActive(), postRequest.getTitle(),
-                postRequest.getTags(), postRequest.getText());
+        return postService.postPost(postRequest);
     }
 
     @PutMapping(value = "/{id:\\d+}")
     public ResponseEntity<?> putPost (@PathVariable(value = "id") int id, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
-        return  postService.putPost(id, putPostRequest.getTimestamp(), putPostRequest.getActive(), putPostRequest.getTitle(),
-                    putPostRequest.getTags(), putPostRequest.getText());
+        return  postService.putPost(id, putPostRequest);
     }
 }
 

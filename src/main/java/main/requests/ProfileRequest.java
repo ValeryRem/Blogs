@@ -2,10 +2,12 @@ package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
+@Service
 public class ProfileRequest implements Serializable {
     @Nullable
     private MultipartFile photo;

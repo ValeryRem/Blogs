@@ -1,5 +1,6 @@
 package main.service;
 
+import main.requests.ProfileRequest;
 import main.response.ResultResponse;
 import main.entity.User;
 import main.repository.UserRepository;
@@ -41,21 +42,20 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
-                                              String password, String removePhoto) throws IOException {
+    public ResponseEntity<?> getPostProfileMy(ProfileRequest profileRequest) throws IOException {
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         boolean result = true;
         User currentUser = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
-        if(photo != null) {
+        if(profileRequest.getPhoto() != null) {
             int MAX_IMAGE_SIZE = 5_000_000;
-            if (photo.getBytes().length <= MAX_IMAGE_SIZE) {
-                if (removePhoto.equals("1")) {
+            if (profileRequest.getPhoto().getBytes().length <= MAX_IMAGE_SIZE) {
+                if (profileRequest.getRemovePhoto().equals("1")) {
                     currentUser.setPhoto("");
                 } else {
-                    File convertFile = getOutputFile(photo); //аватара форматируется и записывается в папку upload
+                    File convertFile = getOutputFile(profileRequest.getPhoto()); //аватара форматируется и записывается в папку upload
                     String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
                     currentUser.setPhoto("/" + photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
@@ -65,27 +65,27 @@ public class UserService {
                 errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
             }
         }
-        if (password != null) {
+        if (profileRequest.getPassword() != null) {
             int PW_MIN_LENGTH = 6;
             int PW_MAX_LENGTH = 30;
-            if (password.length() < PW_MIN_LENGTH && password.length() > PW_MAX_LENGTH) {
+            if (profileRequest.getPassword().length() < PW_MIN_LENGTH && profileRequest.getPassword().length() > PW_MAX_LENGTH) {
                 result = false;
                 errors.put("password", "Длина пароля с ошибкой");
             }
         }
-        if (!name.matches("[a-zA-Z]*") || name.length() > 100 || name.length() < 2) {
+        if (!profileRequest.getName().matches("[a-zA-Z]*") || profileRequest.getName().length() > 100 || profileRequest.getName().length() < 2) {
             result = false;
             errors.put("name", "Имя указано неверно.");
         }
         if (!result) {
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         } else {
-            currentUser.setName(name);
-            if(email != null && !currentUser.getEmail().equals(email)) {
-                currentUser.setEmail(email);
+            currentUser.setName(profileRequest.getName());
+            if(profileRequest.getEmail() != null && !currentUser.getEmail().equals(profileRequest.getEmail())) {
+                currentUser.setEmail(profileRequest.getEmail());
             }
-            if(password != null) {
-                currentUser.setPassword(password);
+            if(profileRequest.getPassword() != null) {
+                currentUser.setPassword(profileRequest.getPassword());
             }
             userRepository.save(currentUser);
             return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final GetService getService;
     private final AuthService authService;
+    private final LoginRequest loginRequest;
 
-    public AuthController(GetService getService, AuthService authService) {
+    public AuthController(GetService getService, AuthService authService, LoginRequest loginRequest) {
         this.getService = getService;
         this.authService = authService;
+        this.loginRequest = loginRequest;
     }
 
     @GetMapping("/check")
@@ -29,7 +31,7 @@ public class AuthController {
     @PostMapping (value = "/login")//, consumes = {"application/json", "application/x-www-form-urlencoded;charset=UTF-8"})
     private ResponseEntity<?> postAuthLogin(@RequestBody LoginRequest loginRequest) {
         System.out.println("Method postAuthLogin is activated.");
-        return authService.postAuthLogin(loginRequest.getEmail(), loginRequest.getPassword());
+        return authService.postAuthLogin(loginRequest);
     }
 
     @GetMapping("/logout")
@@ -47,8 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     private ResponseEntity<?> postAuthRegister(@RequestBody LoginRequest loginRequest){
         System.out.println("Method postAuthRegister is activated.");
-        return authService.postAuthRegister(loginRequest.getEmail(), loginRequest.getPassword(),
-                loginRequest.getName(), loginRequest.getCaptcha(), loginRequest.getCaptchaSecret());
+        return authService.postAuthRegister(loginRequest);
     }
 
     @PostMapping("/restore")

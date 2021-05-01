@@ -2,16 +2,18 @@ package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Service
 public class PostRequest implements Serializable {
     long timestamp;
     Integer active;
     String title;
 
-    @Nullable
+//    @Nullable
     List<String> tags;
     String text;
 
@@ -39,12 +41,12 @@ public class PostRequest implements Serializable {
         this.title = title;
     }
 
-    @Nullable
+//    @Nullable
     public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(@Nullable List<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

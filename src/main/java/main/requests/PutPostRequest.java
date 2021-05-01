@@ -1,9 +1,12 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.stereotype.Service;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Service
 public class PutPostRequest implements Serializable {
     private Long timestamp;
     private Integer active;

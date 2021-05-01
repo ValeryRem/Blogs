@@ -18,7 +18,7 @@ public class EmailController {
         this.authService = authService;
     }
 
-    @RequestMapping(value = "/send")
+    @RequestMapping("/send")
     public String send() {
 // адрес который увидит получатель в поле ОТ:
         String from = "remenyuk.valery@yandex.ru";

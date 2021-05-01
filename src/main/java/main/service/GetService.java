@@ -5,11 +5,13 @@ import main.repository.*;
 import main.response.GeneralResponse;
 import main.response.TagResponse;
 import main.response.UserResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -561,23 +563,6 @@ public class GetService {
         return count;
     }
 
-//    private List<CommentsResponse> getCommentsList (Integer postId) {
-//        List<CommentsResponse> commentsResponseList = new ArrayList<>();
-//        try {
-//            var postComment  =  commentRepository.findAll();
-//            var listComments = postComment.stream().filter(a -> (a.getPostId().equals(postId))).collect(Collectors.toList());
-//            listComments.forEach(a -> {
-//                User user = userRepository.findById(a.getUserId()).orElse(new User());
-//                UserResponse userResponse = new UserResponse(a.getUserId(), user.getName(),  user.getPhoto());
-//                CommentsResponse commentsResponse = new CommentsResponse(a.getCommentId(), a.getTime(),  a.getText(), userResponse);
-//                commentsResponseList.add(commentsResponse);
-//            });
-//        } catch (NullPointerException npe) {
-//            npe.printStackTrace();
-//        }
-//        return commentsResponseList;
-//    }
-
     private Integer extractLikeCount(Post post) {
         try {
             var list = postVoteRepository.findAll();
@@ -610,5 +595,15 @@ public class GetService {
         String curTime = String.valueOf(cal.get(Calendar.YEAR));
         //String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
         return Integer.parseInt(curTime);
+    }
+
+    public HttpEntity<byte[]> getPhoto(String folder, String dir1, String dir2, String dir3, String filename)
+            throws IOException {
+        String source = folder + "/" + dir1 + "/" + dir2 + "/" + dir3 + "/" + filename;
+        byte[] image = org.apache.commons.io.FileUtils.readFileToByteArray(new File(source));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setContentLength(image.length);
+        return new HttpEntity<>(image, headers);
     }
 }

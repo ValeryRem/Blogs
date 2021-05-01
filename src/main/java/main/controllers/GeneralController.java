@@ -88,6 +88,6 @@ public class GeneralController {
     @PostMapping("/comment")
     private ResponseEntity<?> postComment (@RequestBody CommentRequest commentRequest){
         System.out.println("Method postComment is activated.");
-        return postService.postComment(commentRequest.getParent_id(), commentRequest.getPostId(), commentRequest.getText());
+        return postService.postComment(commentRequest);
     }
 }

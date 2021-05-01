@@ -1,7 +1,10 @@
 package main.requests;
 
+import org.springframework.stereotype.Service;
+
 import java.io.Serializable;
 
+@Service
 public class LikeRequest implements Serializable {
     Integer post_id;
 

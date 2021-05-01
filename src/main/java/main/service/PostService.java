@@ -1,5 +1,6 @@
 package main.service;
 
+import main.requests.*;
 import main.response.ErrorsResponse;
 import main.response.GeneralResponse;
 import main.response.ResultResponse;
@@ -7,6 +8,7 @@ import main.entity.*;
 import main.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -22,22 +24,29 @@ import static java.time.LocalDateTime.now;
 @Service
 public class PostService {
 
-    final UserRepository userRepository;
-    final PostRepository postRepository;
-    final AuthService authService;
-    final HttpSession httpSession;
-    final PostVoteRepository postVoteRepository;
-    final TagRepository tagRepository;
-    final Tag2PostRepository tag2PostRepository;
-    final CommentRepository commentRepository;
-    final GlobalSettingsRepository globalSettingsRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final AuthService authService;
+    private final HttpSession httpSession;
+    private final PostVoteRepository postVoteRepository;
+    private final TagRepository tagRepository;
+    private final Tag2PostRepository tag2PostRepository;
+    private final CommentRepository commentRepository;
+    private final GlobalSettingsRepository globalSettingsRepository;
+    private final CommentRequest commentRequest;
+    private final PostRequest postRequest;
+    private final PutPostRequest putPostRequest;
+    private final LikeRequest likeRequest;
+    private  final DislikeRequest dislikeRequest;
 
     private ResponseEntity<?> responseEntity;
 
     public PostService(UserRepository userRepository, PostRepository postRepository, AuthService authService,
                        HttpSession httpSession, PostVoteRepository postVoteRepository, TagRepository tagRepository,
                        Tag2PostRepository tag2PostRepository, CommentRepository commentRepository,
-                       GlobalSettingsRepository globalSettingsRepository) {
+                       GlobalSettingsRepository globalSettingsRepository, CommentRequest commentRequest,
+                       PostRequest postRequest, PutPostRequest putPostRequest, LikeRequest likeRequest,
+                       DislikeRequest dislikeRequest) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.authService = authService;
@@ -47,6 +56,11 @@ public class PostService {
         this.tag2PostRepository = tag2PostRepository;
         this.commentRepository = commentRepository;
         this.globalSettingsRepository = globalSettingsRepository;
+        this.commentRequest = commentRequest;
+        this.postRequest = postRequest;
+        this.putPostRequest = putPostRequest;
+        this.likeRequest = likeRequest;
+        this.dislikeRequest = dislikeRequest;
     }
 
     public ResponseEntity<?> postApiModeration(Integer id, String decision) {
@@ -71,12 +85,12 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLike (Integer post_id) {
+    public ResponseEntity<?> postLike (LikeRequest likeRequest) {
         User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(post_id);
+        Post post = postRepository.getOne(likeRequest.getPost_id());
         if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
             PostVote postVote = new PostVote();
-            postVote.setPostId(post_id);
+            postVote.setPostId(likeRequest.getPost_id());
             postVote.setTime(Timestamp.valueOf(now()));
             postVote.setUserId(authService.getUserId());
             postVote.setValue(1);
@@ -88,12 +102,12 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postDislike (Integer post_id) {
+    public ResponseEntity<?> postDislike (DislikeRequest dislikeRequest) {
         User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(post_id);
+        Post post = postRepository.getOne(dislikeRequest.getPost_id());
         if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
             PostVote postVote = new PostVote();
-            postVote.setPostId(post_id);
+            postVote.setPostId(dislikeRequest.getPost_id());
             postVote.setTime(Timestamp.valueOf(now()));
             postVote.setUserId(authService.getUserId());
             postVote.setValue(-1);
@@ -110,10 +124,10 @@ POST_PREMODERATION - если включен этот режим, то все н
 POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
 установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
 */
-public ResponseEntity<?> postPost(long timestamp, Integer active, String title, List<String> tags, String text) {
+public ResponseEntity<?> postPost(PostRequest postRequest) {
     Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
     User user = userRepository.getOne(authService.getUserId());
-    Map<String, String> errors = checkTexts(title, text);
+    Map<String, String> errors = checkTexts(postRequest.getTitle(), postRequest.getText());
     Map<String, Object> responseMap = new LinkedHashMap<>();
     if (!errors.isEmpty()) {
         responseMap.put("result", String.valueOf(false));
@@ -125,28 +139,28 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
     return new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
     }
     Post post = new Post();
-    post.setIsActive(active);
+    post.setIsActive(postRequest.getActive());
     // назначаем id любого из модераторов при создании нового поста
     Optional<User> optModerator = userRepository.findAll().stream().filter(User::getIsModerator).findAny();
     optModerator.ifPresent(value -> post.setModeratorId(value.getUserId()));
     ////
-    if (timestamp <= currentTimestamp.getTime() / 1000) {
+    if (postRequest.getTimestamp() <= currentTimestamp.getTime() / 1000) {
         post.setTimestamp(currentTimestamp);
     } else {
-        post.setTimestamp(new Timestamp(timestamp * 1000));
+        post.setTimestamp(new Timestamp(postRequest.getTimestamp() * 1000));
     }
     post.setUserId(authService.getUserId());
     post.setViewCount(0);
-    post.setTitle(title);
-    post.setText(text);
+    post.setTitle(postRequest.getTitle());
+    post.setText(postRequest.getText());
     if (globalSettingsRepository.findAll().stream().
             findAny().
             orElse(new GlobalSettings()).
             isPostPremoderation()) {
-        if (!user.getIsModerator() || active != 1) { // if the user is not moderator
+        if (!user.getIsModerator() || postRequest.getActive() != 1) { // if the user is not moderator
             post.setModerationStatus(ModerationStatus.NEW);
         }
-        if (user.getIsModerator() && active == 1) {
+        if (user.getIsModerator() && postRequest.getActive() == 1) {
             post.setModerationStatus(ModerationStatus.ACCEPTED);
         }
         postRepository.save(post);
@@ -155,7 +169,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         post.setModerationStatus(ModerationStatus.ACCEPTED);
         postRepository.save(post);
     }
-    processTags(tags, post, title, text);
+    processTags(postRequest.getTags(), post, postRequest.getTitle(), postRequest.getText());
     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
     return responseEntity;
 }
@@ -164,9 +178,9 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         post.setModerationStatus(ModerationStatus.ACCEPTED);
         for (String tag : tags) {
             if (!tagRepository.findAll().stream()
-                    .map(Tag::getTagName)
-                    .collect(Collectors.toList())
-                    .contains(tag)) {
+                                .map(Tag::getTagName)
+                                .collect(Collectors.toList())
+                                .contains(tag)){
                 if (title.contains(tag) || text.contains(tag)) {
                     Tag tagNew = new Tag(tag);
                     tagRepository.save(tagNew);
@@ -177,33 +191,36 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         }
     }
 
-    public ResponseEntity<?> putPost(int ID, long timestamp, Integer active, String title, List<String> tags, String text) {
+    public ResponseEntity<?> putPost(int id, PutPostRequest putPostRequest) {
         if (!authService.isUserAuthorized()) {
             responseEntity = new ResponseEntity<>("User UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
         Map<String, Object> responseMap = new LinkedHashMap<>();
-        Map<String, String> errors = checkTexts(title, text);
-        GeneralResponse generalResponse = new GeneralResponse();
+        Map<String, String> errors = checkTexts(putPostRequest.getTitle(), putPostRequest.getText());
         if (!errors.isEmpty()) {
             ErrorsResponse errorsResponse = new ErrorsResponse(errors);
             responseMap.put("result", String.valueOf(false));
             responseMap.put("errors", errorsResponse);
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
-        Post post = postRepository.getOne(ID);
+        Optional<Post> postOptional = postRepository.findById(id);
+        if(postOptional.isEmpty()) {
+            return new ResponseEntity<>(new ResultResponse(false), HttpStatus.NOT_FOUND);
+        }
+        Post post = postOptional.get();
         User user = userRepository.getOne(post.getUserId());
-        post.setText(text);
-        post.setTitle(title);
-        post.setActive(active);
+        post.setText(putPostRequest.getText());
+        post.setTitle(putPostRequest.getTitle());
+        post.setActive(putPostRequest.getActive());
         long currentTime = Instant.now().toEpochMilli();
-        if (timestamp <= currentTime) {
+        if (putPostRequest.getTimestamp() <= currentTime) {
             post.setTimestamp(new Timestamp(currentTime));
         }
         if(!user.getIsModerator()) {
             post.setModerationStatus(ModerationStatus.NEW);
         }
         postRepository.save(post);
-        processTags(tags, post, title, text);
+        processTags(putPostRequest.getTags(), post, putPostRequest.getTitle(), putPostRequest.getText());
         responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
@@ -225,7 +242,7 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
             return errors;
     }
 
-    public ResponseEntity<?> postComment(Integer parent_id, Integer post_id, String text) {
+    public ResponseEntity<?> postComment(CommentRequest commentRequest) {
         boolean result = true;
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         Map<String, String> errors = new LinkedHashMap<>();
@@ -237,16 +254,16 @@ public ResponseEntity<?> postPost(long timestamp, Integer active, String title, 
         }
         Integer userId = authService.getUserId();
         PostComment postComment = new PostComment();
-        if (text.length() < 10 || text.length() > 300) {
+        if (commentRequest.getText().length() < 10 || commentRequest.getText().length() > 300) {
             result = false;
             errors.put("text", "Text's length is out of limit!");
         }
         if (result) {
-            if (parent_id != null) {
-                postComment.setParentId(parent_id);
+            if (commentRequest.getParent_id() != null) {
+                postComment.setParentId(commentRequest.getParent_id());
             }
-            postComment.setPostId(post_id);
-            postComment.setText(text);
+            postComment.setPostId(commentRequest.getPostId());
+            postComment.setText(commentRequest.getText());
             postComment.setTime(Timestamp.valueOf(now()));
             postComment.setUserId(userId);
             commentRepository.save(postComment);

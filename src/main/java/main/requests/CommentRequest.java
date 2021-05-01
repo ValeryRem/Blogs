@@ -1,9 +1,11 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 
+@Service
 public class CommentRequest implements Serializable {
     Integer post_id;
     Integer parent_id;

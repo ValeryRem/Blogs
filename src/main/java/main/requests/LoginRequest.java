@@ -1,9 +1,13 @@
 package main.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
 
+@Service
 public class LoginRequest implements Serializable {
     @JsonProperty("e_mail")
     private String email;
