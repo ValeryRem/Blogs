@@ -22,31 +22,27 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Project cleaned for deploy.">
-      <change afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/48_House.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/59_Tango pa.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload/226/43/78/97_20210323_164018.jpg" afterDir="false" />
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="Update 2 for deployment.">
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/16_VVM.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/20_Eve.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/22_903.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/28_BB.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/35_Winner.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/74_Eve.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/226/43/78/83_Useful.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/AvatarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/AvatarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/EmailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/GeneralController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/image.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/CommentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/CaptchaCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/CaptchaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/GlobalSettingsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/GlobalSettingsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/LoginRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/ProfileRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PutPostRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/controllers/DefaultController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +73,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="proportion" value="0.2131398" />
+    <option name="proportion" value="0.2582124" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
@@ -97,9 +93,9 @@
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="gh\hg" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.side.proportion" value="0.5850966" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="ReaderModeSettings">
@@ -154,13 +150,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00105" summary="ProfileController set up.">
-      <created>1614409285779</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1614409285780</updated>
     </task>
     <task id="LOCAL-00106" summary="ProfileController set up but (Системе не удается найти указанный путь).">
       <created>1614414496436</created>
@@ -498,7 +487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619383011894</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <task id="LOCAL-00154" summary="Method updateProfile unified &amp; developed.">
+      <created>1619903807639</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1619903807639</updated>
+    </task>
+    <option name="localTasksCounter" value="155" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -521,8 +517,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Methods putPost updated bu ID of post." />
-    <MESSAGE value="The method getPostById takes ID of the current user by attempt of implement PUT /api/post/{ID}." />
     <MESSAGE value="Parameter viewCount enabled." />
     <MESSAGE value="The bug found out and avoided in postPost method (nullable moderatorId changed to NN)." />
     <MESSAGE value="Appears an error: &quot;Method Not Allowed&quot;, &quot;Request method 'PUT' not supported&quot;" />
@@ -546,7 +540,9 @@
     <MESSAGE value="yml file tuned correctly." />
     <MESSAGE value="Pom.xml &amp; application.yml updated, all files cleaned." />
     <MESSAGE value="Project cleaned for deploy." />
-    <option name="LAST_COMMIT_MESSAGE" value="Project cleaned for deploy." />
+    <MESSAGE value="Method updateProfile unified &amp; developed." />
+    <MESSAGE value="Update 2 for deployment." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 2 for deployment." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

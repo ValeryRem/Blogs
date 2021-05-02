@@ -10,4 +10,5 @@ import java.util.stream.Stream;
 
 @Repository
 public interface CaptchaRepository extends JpaRepository<CaptchaCode, Integer> {
+    Optional<CaptchaCode> findBySecretCode (String secretCode);
 }

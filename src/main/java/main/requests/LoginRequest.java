@@ -14,7 +14,9 @@ public class LoginRequest implements Serializable {
     private String password;
     private String name;
     private String captcha;
+    @JsonProperty("captcha_secret")
     private String captchaSecret;
+
     public String getEmail() {
         return email;
     }

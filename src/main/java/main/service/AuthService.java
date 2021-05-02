@@ -9,15 +9,12 @@ import main.entity.*;
 import main.entity.Session;
 import main.repository.*;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.SecureRandom;
@@ -26,8 +23,6 @@ import java.time.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 
 @Service
 public class AuthService{
@@ -187,40 +182,34 @@ public class AuthService{
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    /*
-    MULTIUSER_MODE — если включен этот режим, в блоге разрешена регистрация новых пользователей. Если режим выключен,
-    регистрация пользователей не доступна, на фронте на месте ссылки на страницу регистрации появляется текст
-    Регистрация закрыта. При запросе на /api/auth/register необходимо возвращать статус 404 (NOT FOUND).
-     */
     public ResponseEntity<?> postAuthRegister(LoginRequest loginRequest){
-        //String email, String password, String nameString, String captcha, String captchaSecret) {
         Map<String, Object>  output = new LinkedHashMap<>();
         ResponseEntity<?> responseEntity;
         if (globalSettingsRepository.findAll().stream().
                 findAny().orElse(new GlobalSettings()).
                 isMultiuserMode()) { // if MULTIUSER_MODE = true
             User user = new User();
-            LinkedHashMap<String, Object> errors = new LinkedHashMap<>();
-            List<User> users = userRepository.findAll();
-            Optional<CaptchaCode> captchaCodeOptional = captchaRepository.findAll().stream()
-                    .filter(c -> c.getSecretCode().equals(loginRequest.getCaptcha()))
-                    .findAny();
+            Map<String, String> errors = new LinkedHashMap<>();
+            Optional<User> userOptional = userRepository.findOneByEmail(loginRequest.getEmail());
+
             result = true;
-            if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(loginRequest.getEmail())) {
+            if (userOptional.isPresent()) {
                 errors.put("email", "Этот e-mail уже зарегистрирован!");
                 result = false;
             }
-            if (users.stream().map(User::getName).collect(Collectors.toList()).contains(loginRequest.getName())) {
-                errors.put("name", "Данное имя уже зарегистрировано!");
+            if (loginRequest.getName().length() > 30) {
+                errors.put("name", "Ошибка: длина имени превышает 30 знаков!");
                 result = false;
             }
-            if (loginRequest.getPassword().length() < 6) {
-                errors.put("password", "Пароль короче 6 символов!");
+            if (loginRequest.getPassword().length() < 6 || loginRequest.getPassword().length() > 12) {
+                errors.put("password", "Пароль имеет недопустимую длину!");
                 result = false;
             }
-            if (captchaCodeOptional.isPresent()) {
-                if(!captchaCodeOptional.get().getCode().equals(loginRequest.getCaptcha())) {
-                    errors.put("captcha", "Код с картинки введён неверно");
+
+            Optional<CaptchaCode> codeOptional = captchaRepository.findBySecretCode(loginRequest.getCaptchaSecret());
+            if(codeOptional.isPresent()) {
+                if(!loginRequest.getCaptcha().equals(codeOptional.get().getCode())) {
+                    errors.put("captcha", "Код с картинки введён неверно!");
                     result = false;
                 }
             }
@@ -234,13 +223,14 @@ public class AuthService{
                 user.setIsModerator(false);
                 userRepository.save(user);
                 output.put("result", true);
+                responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
             } else {
                 output.put("result", false);
                 output.put("errors", errors);
+                responseEntity = new ResponseEntity<>(output, HttpStatus.BAD_REQUEST);
             }
-            responseEntity = new ResponseEntity<>(output, HttpStatus.OK);
         } else { // if MULTIUSER_MODE = false
-            responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>("New users forbidden", HttpStatus.NOT_ACCEPTABLE);
         }
         return responseEntity;
     }
@@ -297,7 +287,6 @@ public class AuthService{
     private int getModerationCount(Integer userId) {
         int moderCount = 0;
         List<Post> posts = postRepository.findAll();
-//        User user = userRepository.getOne(userId);
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -313,17 +302,6 @@ public class AuthService{
     }
 
     private void sendEmail(String email, String subject, String text) {
-//        User user = userRepository.findOneByEmail(email).get();
-//        JavaMailSender mailSender = new JavaMailSender();
-//        mailSender.setHost("smtp.yandex.ru");
-//        mailSender.setPort(465);
-//        mailSender.setUsername("remenyuk.valery");
-//        mailSender.setPassword("tuo098$Fd");  /// !!!
-//        Properties props = mailSender.getJavaMailProperties();
-//        props.put("mail.transport.protocol", "smtp");
-//        props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.starttls.enable", "true");
-//        props.put("mail.debug", "true");
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("remenyuk.valery@yandex.ru");
         msg.setTo(email);
@@ -355,29 +333,11 @@ public class AuthService{
         return stringBuilder.toString();
     }
 
-
-    public void clearOldCaptchas() {
+    private void clearOldCaptchas() {
         List<CaptchaCode> oldCaptchas = captchaRepository.findAll().stream()
                 .filter(c -> c.getTimestamp().getTime() < (Timestamp.valueOf(LocalDateTime.now()).getTime() - 3_600_000))
                 .collect(Collectors.toList());
         captchaRepository.deleteInBatch(oldCaptchas);
     }
-//    private static BufferedImage resizeImageWithHint(BufferedImage originalImage,
-//                                                     int IMG__WIDTH, int IMG__HEIGHT, int type){
-//
-//        BufferedImage resizedImage = new BufferedImage(IMG__WIDTH, IMG__HEIGHT, type);
-//        Graphics2D g = resizedImage.createGraphics();
-//        g.drawImage(originalImage, 0, 0, IMG__WIDTH, IMG__HEIGHT, null);
-//        g.dispose();
-//        g.setComposite(AlphaComposite.Src);
-//
-//        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-//                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//        g.setRenderingHint(RenderingHints.KEY_RENDERING,
-//                RenderingHints.VALUE_RENDER_QUALITY);
-//        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//                RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//        return resizedImage;
-//    }
+
 }

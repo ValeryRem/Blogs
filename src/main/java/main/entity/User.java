@@ -36,7 +36,7 @@ public class User {
     @Column(name = "e_mail", unique = true)
     private String email;
 
-    @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
+//    @Size(min=6, max=20, message = "Password to be between 6 & 20 chars' number")
     private String password;
 
     private String code;

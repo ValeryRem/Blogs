@@ -42,20 +42,21 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<?> getPostProfileMy(ProfileRequest profileRequest) throws IOException {
+    public ResponseEntity<?> getPostProfileMy(MultipartFile photo, String email, String name,
+                                              String password, String removePhoto) throws IOException {
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         boolean result = true;
         User currentUser = userRepository.getOne(authService.getUserId());
         Map<String, Object> errors = new LinkedHashMap<>();
-        if(profileRequest.getPhoto() != null) {
+        if(photo != null) {
             int MAX_IMAGE_SIZE = 5_000_000;
-            if (profileRequest.getPhoto().getBytes().length <= MAX_IMAGE_SIZE) {
-                if (profileRequest.getRemovePhoto().equals("1")) {
+            if (photo.getBytes().length <= MAX_IMAGE_SIZE) {
+                if (removePhoto.equals("1")) {
                     currentUser.setPhoto("");
                 } else {
-                    File convertFile = getOutputFile(profileRequest.getPhoto()); //аватара форматируется и записывается в папку upload
+                    File convertFile = getOutputFile(photo); //аватара форматируется и записывается в папку upload
                     String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
                     currentUser.setPhoto("/" + photoDestination);
                     System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
@@ -65,32 +66,83 @@ public class UserService {
                 errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
             }
         }
-        if (profileRequest.getPassword() != null) {
+        if (password != null) {
             int PW_MIN_LENGTH = 6;
             int PW_MAX_LENGTH = 30;
-            if (profileRequest.getPassword().length() < PW_MIN_LENGTH && profileRequest.getPassword().length() > PW_MAX_LENGTH) {
+            if (password.length() < PW_MIN_LENGTH && password.length() > PW_MAX_LENGTH) {
                 result = false;
                 errors.put("password", "Длина пароля с ошибкой");
             }
         }
-        if (!profileRequest.getName().matches("[a-zA-Z]*") || profileRequest.getName().length() > 100 || profileRequest.getName().length() < 2) {
+        if (!name.matches("[a-zA-Z]*") || name.length() > 100 || name.length() < 2) {
             result = false;
             errors.put("name", "Имя указано неверно.");
         }
         if (!result) {
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         } else {
-            currentUser.setName(profileRequest.getName());
-            if(profileRequest.getEmail() != null && !currentUser.getEmail().equals(profileRequest.getEmail())) {
-                currentUser.setEmail(profileRequest.getEmail());
+            currentUser.setName(name);
+            if(email != null && !currentUser.getEmail().equals(email)) {
+                currentUser.setEmail(email);
             }
-            if(profileRequest.getPassword() != null) {
-                currentUser.setPassword(profileRequest.getPassword());
+            if(password != null) {
+                currentUser.setPassword(password);
             }
             userRepository.save(currentUser);
             return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         }
     }
+
+
+//    public ResponseEntity<?> getPostProfileMy(ProfileRequest profileRequest) throws IOException {
+//        if (!authService.isUserAuthorized()) {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//        boolean result = true;
+//        User currentUser = userRepository.getOne(authService.getUserId());
+//        Map<String, Object> errors = new LinkedHashMap<>();
+//        if(profileRequest.getPhoto() != null) {
+//            int MAX_IMAGE_SIZE = 5_000_000;
+//            if (profileRequest.getPhoto().getBytes().length <= MAX_IMAGE_SIZE) {
+//                if (profileRequest.getRemovePhoto().equals("1")) {
+//                    currentUser.setPhoto("");
+//                } else {
+//                    File convertFile = getOutputFile(profileRequest.getPhoto()); //аватара форматируется и записывается в папку upload
+//                    String photoDestination = StringUtils.cleanPath(convertFile.getPath());//getImageAddress(photo);//
+//                    currentUser.setPhoto("/" + photoDestination);
+//                    System.out.println("avatarAddress: " + photoDestination);//((ImageOutputStream) image).readLine());
+//                }
+//            } else {
+//                result = false;
+//                errors.put("photo", "Фото слишком большое, нужно не более 5 Мб.");
+//            }
+//        }
+//        if (profileRequest.getPassword() != null) {
+//            int PW_MIN_LENGTH = 6;
+//            int PW_MAX_LENGTH = 30;
+//            if (profileRequest.getPassword().length() < PW_MIN_LENGTH && profileRequest.getPassword().length() > PW_MAX_LENGTH) {
+//                result = false;
+//                errors.put("password", "Длина пароля с ошибкой");
+//            }
+//        }
+//        if (!profileRequest.getName().matches("[a-zA-Z]*") || profileRequest.getName().length() > 100 || profileRequest.getName().length() < 2) {
+//            result = false;
+//            errors.put("name", "Имя указано неверно.");
+//        }
+//        if (!result) {
+//            return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+//        } else {
+//            currentUser.setName(profileRequest.getName());
+//            if(profileRequest.getEmail() != null && !currentUser.getEmail().equals(profileRequest.getEmail())) {
+//                currentUser.setEmail(profileRequest.getEmail());
+//            }
+//            if(profileRequest.getPassword() != null) {
+//                currentUser.setPassword(profileRequest.getPassword());
+//            }
+//            userRepository.save(currentUser);
+//            return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+//        }
+//    }
 
     private File getOutputFile (MultipartFile photo) throws IOException {
         String targetFolder = "upload/";

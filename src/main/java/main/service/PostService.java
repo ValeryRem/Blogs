@@ -6,6 +6,7 @@ import main.response.GeneralResponse;
 import main.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
+import org.jsoup.Jsoup;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -118,21 +119,14 @@ public class PostService {
         }
         return responseEntity;
     }
-/*
-POST_PREMODERATION - если включен этот режим, то все новые посты пользователей с moderation = true обязательно
-должны попадать на модерацию, у постов при создании должен быть установлен moderation_status = NEW. Eсли значения
-POST_PREMODERATION = false (режим премодерации выключен), то все новые посты должны сразу публиковаться (если у них
-установлен параметр active = 1), у постов при создании должен быть установлен moderation_status = ACCEPTED.
-*/
 public ResponseEntity<?> postPost(PostRequest postRequest) {
     Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
     User user = userRepository.getOne(authService.getUserId());
     Map<String, String> errors = checkTexts(postRequest.getTitle(), postRequest.getText());
     Map<String, Object> responseMap = new LinkedHashMap<>();
     if (!errors.isEmpty()) {
-        responseMap.put("result", String.valueOf(false));
-        ErrorsResponse errorsResponse = new ErrorsResponse(errors);
-        responseMap.put("errors", errorsResponse);
+        responseMap.put("result", false);
+        responseMap.put("errors", errors);
     return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
     if (!authService.isUserAuthorized()) {
@@ -140,10 +134,8 @@ public ResponseEntity<?> postPost(PostRequest postRequest) {
     }
     Post post = new Post();
     post.setIsActive(postRequest.getActive());
-    // назначаем id любого из модераторов при создании нового поста
     Optional<User> optModerator = userRepository.findAll().stream().filter(User::getIsModerator).findAny();
     optModerator.ifPresent(value -> post.setModeratorId(value.getUserId()));
-    ////
     if (postRequest.getTimestamp() <= currentTimestamp.getTime() / 1000) {
         post.setTimestamp(currentTimestamp);
     } else {
@@ -152,23 +144,18 @@ public ResponseEntity<?> postPost(PostRequest postRequest) {
     post.setUserId(authService.getUserId());
     post.setViewCount(0);
     post.setTitle(postRequest.getTitle());
-    post.setText(postRequest.getText());
-    if (globalSettingsRepository.findAll().stream().
-            findAny().
-            orElse(new GlobalSettings()).
-            isPostPremoderation()) {
+    post.setText(cleanedOffHtml(postRequest.getText()));
+    if (globalSettingsRepository.findAll().stream().findAny().orElse(new GlobalSettings()).isPostPremoderation()) {
         if (!user.getIsModerator() || postRequest.getActive() != 1) { // if the user is not moderator
             post.setModerationStatus(ModerationStatus.NEW);
         }
         if (user.getIsModerator() && postRequest.getActive() == 1) {
             post.setModerationStatus(ModerationStatus.ACCEPTED);
         }
-        postRepository.save(post);
-
     } else {
         post.setModerationStatus(ModerationStatus.ACCEPTED);
-        postRepository.save(post);
     }
+    postRepository.save(post);
     processTags(postRequest.getTags(), post, postRequest.getTitle(), postRequest.getText());
     responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
     return responseEntity;
@@ -209,7 +196,7 @@ public ResponseEntity<?> postPost(PostRequest postRequest) {
         }
         Post post = postOptional.get();
         User user = userRepository.getOne(post.getUserId());
-        post.setText(putPostRequest.getText());
+        post.setText(cleanedOffHtml(putPostRequest.getText()));
         post.setTitle(putPostRequest.getTitle());
         post.setActive(putPostRequest.getActive());
         long currentTime = Instant.now().toEpochMilli();
@@ -275,4 +262,9 @@ public ResponseEntity<?> postPost(PostRequest postRequest) {
         responseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         return responseEntity;
     }
+
+    public String cleanedOffHtml (String input) {
+        return Jsoup.parse(input).text();
+    }
+
 }
