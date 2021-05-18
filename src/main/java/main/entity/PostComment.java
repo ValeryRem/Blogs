@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.TreeMap;
 
 @Entity
@@ -27,9 +28,20 @@ public class PostComment {
     private Timestamp time;
     private String text;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name="post_id", unique = true, nullable = false, updatable = false)
+    private Post post;
+
     public PostComment() {
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

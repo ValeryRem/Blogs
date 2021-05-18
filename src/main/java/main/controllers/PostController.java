@@ -45,7 +45,7 @@ public class PostController {
     @GetMapping("")
     @ResponseBody
     private ResponseEntity<?> getPosts (@RequestParam(defaultValue="0") Integer offset,
-                                        @RequestParam(defaultValue="7") Integer limit,
+                                        @RequestParam(defaultValue="10") Integer limit,
                                         @RequestParam(defaultValue="recent") String mode){
         System.out.println("Method getPosts activated. Number of posts: " + getService.getCount());
         return getService.getPosts (offset, limit, mode);

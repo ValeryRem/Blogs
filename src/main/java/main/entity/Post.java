@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Entity
 @Table(name = "posts")
@@ -34,7 +35,19 @@ public class Post {
     @Column(name ="view_count")
     private Integer viewCount;
 
+    @OneToMany (mappedBy="post_id", fetch=FetchType.EAGER)
+    private Collection<PostComment> postComments;
+
+
     public Post() {
+    }
+
+    public Collection<PostComment> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComment(Collection<PostComment> postComments) {
+        this.postComments = postComments;
     }
 
     public Post(ModerationStatus moderationStatus) {

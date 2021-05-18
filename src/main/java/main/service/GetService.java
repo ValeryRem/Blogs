@@ -5,6 +5,10 @@ import main.repository.*;
 import main.response.GeneralResponse;
 import main.response.TagResponse;
 import main.response.UserResponse;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +37,7 @@ public class GetService {
     private final GlobalSettingsRepository globalSettingsRepository;
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
-    private GeneralResponse generalResponse;
+//    private GeneralResponse generalResponse;
 
 
     public GetService(PostRepository postRepository, Tag2PostRepository tag2PostRepository, TagRepository tagRepository,
@@ -51,21 +55,32 @@ public class GetService {
     }
 
     private List<Post> getActivePosts() {
-        return  postRepository.findAll().stream().
-                filter(a -> (a.isActive() == 1 && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
-                collect(Collectors.toList());
+        return (List<Post>) postRepository.findAllActivePosts();
+//                posts.stream().filter(p -> p.isActive() == 1 && ModerationStatus.ACCEPTED.equals(p.getModerationStatus())).
+//                collect(Collectors.toList());
+
+//                postRepository.findAll().stream().
+//                filter(a -> (a.isActive() == 1 && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
+//                collect(Collectors.toList());
     }
 
     public ResponseEntity<?> getPosts(Integer offset, Integer limit, String mode) {
-        generalResponse = new GeneralResponse();
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
-        var postList = getActivePosts();
-        var postListSorted = getPostsFilteredByMode(postList, mode);
-        var commentList = commentRepository.findAll();
+
+        GeneralResponse generalResponse = new GeneralResponse();
+
+        List<Post> postList = getActivePosts();
+        //getActivePosts();
+//        var postListSorted = getPostsFilteredByMode(postList, mode);
+        var commentList = new ArrayList<PostComment>();
+        for (Post p : postList) {
+            commentList.addAll(p.getPostComments());
+        }
         List<Map<String, Object>> postMapList = new ArrayList<>();
-        for (Post post : postListSorted) {
+
+        for (Post post : postList) {
             Map<String, Object> responseMap = new LinkedHashMap<>();
             int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
             responseMap.put("id", post.getPostId());
@@ -84,17 +99,37 @@ public class GetService {
             responseMap.put("viewCount", post.getViewCount());
             postMapList.add(responseMap);
         }
-        generalResponse.setCount(postListSorted.size());
+        generalResponse.setCount(postList.size());
         generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
         responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
         return responseEntity;
+    }
+
+    @NotNull
+    private List<Post> getOrderedPosts(Integer offset, Integer limit, String mode) {
+        Page<Post> posts;
+        PageRequest pageRequest = PageRequest.of(offset / limit, limit);
+
+        if (mode.equals("recent")){
+            posts = postRepository.getRecentPosts(pageRequest);
+        } else if (mode.equals("popular")) {
+            posts = postRepository.getPopularPosts(pageRequest);
+        } else if (mode.equals("best")){
+            posts = postRepository.getBestPosts(pageRequest);
+        } else if (mode.equals("early")) {
+            posts = postRepository.getEarlyPosts(pageRequest);
+        } else {
+            posts = postRepository.getRecentPosts(pageRequest);
+        }
+
+        return posts.stream().filter(p -> p.isActive() == 1).collect(Collectors.toList());
     }
 
     public ResponseEntity<?> getPostsBySearch(Integer offset, Integer limit, String query) {
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
-        generalResponse = new GeneralResponse();
+        GeneralResponse generalResponse = new GeneralResponse();
         var postList = getActivePosts();
         var commentList = commentRepository.findAll();
 
@@ -152,7 +187,7 @@ public class GetService {
                 postMapList.add(responseMap);
             }
         }
-        generalResponse = new GeneralResponse();
+        GeneralResponse generalResponse = new GeneralResponse();
         generalResponse.setCount(count);
         generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
             responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
@@ -195,7 +230,7 @@ public class GetService {
                     responseMap.put("user", userMap);
                     postMapList.add(responseMap);
                 }
-                generalResponse = new GeneralResponse();
+                GeneralResponse generalResponse = new GeneralResponse();
                 generalResponse.setCount(posts.size());
                 generalResponse.setPosts(getOffsetLimitOutput(postMapList, offset, limit));
                 responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
@@ -220,7 +255,7 @@ public class GetService {
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>("User not authorized", HttpStatus.NOT_FOUND);
         }
-        generalResponse = new GeneralResponse();
+        GeneralResponse generalResponse = new GeneralResponse();
         List<Map<String, Object>> postMapList = new ArrayList<>();
         int userId = authService.getUserId();
         List<Post> posts = postRepository.findAll();//getOffsetLimitOutput(, offset, limit);
@@ -352,6 +387,7 @@ public class GetService {
             responseMap.put("user", userMap);
             posts.add(responseMap);
         }
+        GeneralResponse generalResponse = new GeneralResponse();
         generalResponse.setCount(count);
         generalResponse.setPosts(getOffsetLimitOutput(posts, offset, limit));
         responseEntity = new ResponseEntity<>(generalResponse, HttpStatus.OK);
