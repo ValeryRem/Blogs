@@ -12,13 +12,13 @@ import java.util.Collection;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-  @Query (value = "SELECT p FROM Post p ORDER BY post_id DESC")
+  @Query (value = "SELECT p FROM Post p ORDER BY p.postId DESC")
   Page<Post> getRecentPosts (PageRequest pageRequest);
 
-  @Query (value = "SELECT p FROM Post p JOIN p.postComments pc ORDER BY size(pc) DESC")
+  @Query (value = "SELECT p FROM Post p JOIN p.postComments pc ORDER BY SIZE(pc) DESC")
   Page<Post> getPopularPosts(PageRequest pageRequest);
 
-  @Query (value = "SELECT p, COUNT(pv) AS cnt FROM Post p JOIN p.postVote pv WHERE pv == 1 ORDER BY cnt DESC")
+  @Query (value = "SELECT p FROM Post p JOIN p.postVote pv WHERE pv == 1 ORDER BY COUNT(pv)")
   Page<Post> getBestPosts(PageRequest pageRequest);
 
   @Query (value = "SELECT p FROM Post p ORDER BY p.timestamp")

@@ -71,7 +71,7 @@ public class GetService {
 
         GeneralResponse generalResponse = new GeneralResponse();
 
-        List<Post> postList = getActivePosts();
+        List<Post> postList = getOrderedPosts(offset, limit, mode);
         //getActivePosts();
 //        var postListSorted = getPostsFilteredByMode(postList, mode);
         var commentList = new ArrayList<PostComment>();
@@ -195,12 +195,12 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsByTag(Integer offset, Integer limit, String tag) {
-        var tagList = tagRepository.findAll();
+        var tagList = tagRepository.findAllTags();
         int tagId;
         List<Integer> postsIdList = new ArrayList<>();
         List<Post> posts;
         List<Map<String, Object>> postMapList = new ArrayList<>();
-        List<Tag2Post> tag2PostList = tag2PostRepository.findAll();
+        List<Tag2Post> tag2PostList = tag2PostRepository.findAllTag2Posts();
         if(tagList.size() > 0 && tag2PostList.size() > 0) {
             if (tagList.stream().map(Tag::getTagName).collect(Collectors.toList()).contains(tag.trim())) {
                 tagId = tagList.stream().filter(t -> t.getTagName().equals(tag)).findFirst().orElse(new Tag()).getId();
