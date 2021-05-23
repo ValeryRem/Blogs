@@ -70,14 +70,13 @@ public class GetService {
         }
 
         GeneralResponse generalResponse = new GeneralResponse();
-
         List<Post> postList = getOrderedPosts(offset, limit, mode);
-        //getActivePosts();
-//        var postListSorted = getPostsFilteredByMode(postList, mode);
         var commentList = new ArrayList<PostComment>();
+
         for (Post p : postList) {
             commentList.addAll(p.getPostComments());
         }
+
         List<Map<String, Object>> postMapList = new ArrayList<>();
 
         for (Post post : postList) {
@@ -129,6 +128,7 @@ public class GetService {
         if (offset > limit) {
             return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
         }
+
         GeneralResponse generalResponse = new GeneralResponse();
         var postList = getActivePosts();
         var commentList = commentRepository.findAll();
@@ -161,6 +161,10 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsByDate(Integer offset, Integer limit, String date) {
+        if (offset > limit) {
+            return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
+        }
+
         var posts = getActivePosts();
         int count = 0;
         List<Map<String, Object>> postMapList = new ArrayList<>();
@@ -195,6 +199,10 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsByTag(Integer offset, Integer limit, String tag) {
+        if (offset > limit) {
+            return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
+        }
+
         var tagList = tagRepository.findAllTags();
         int tagId;
         List<Integer> postsIdList = new ArrayList<>();
@@ -252,9 +260,14 @@ public class GetService {
     }
 
     public ResponseEntity<?> getMyPosts(Integer offset, Integer limit) {
+        if (offset > limit) {
+            return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
+        }
+
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>("User not authorized", HttpStatus.NOT_FOUND);
         }
+
         GeneralResponse generalResponse = new GeneralResponse();
         List<Map<String, Object>> postMapList = new ArrayList<>();
         int userId = authService.getUserId();
@@ -358,6 +371,10 @@ public class GetService {
     }
 
     public ResponseEntity<?> getPostsForModeration(Integer offset, Integer limit, String status) {
+        if (offset > limit) {
+            return new ResponseEntity<>("Wrong input parameters!", HttpStatus.BAD_REQUEST);
+        }
+
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>("User is UNAUTHORIZED.", HttpStatus.UNAUTHORIZED);
         }
@@ -396,7 +413,7 @@ public class GetService {
 
     private List<Map<String, Object>> getOffsetLimitOutput (List<Map<String, Object>> list, Integer offset, Integer limit) {
         List<Map<String, Object>> listResult;
-        if (offset > list.size()) {
+        if (offset > list.size() || offset > limit) {
             return new ArrayList<>();
         }
         if (limit + offset <= list.size()) {
@@ -458,28 +475,35 @@ public class GetService {
 
     private LinkedHashMap<String, Object> getUserStatistics(Integer userId) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        int myPostsCount = (int) postRepository.findAll().stream().
-                filter(a -> a.getUserId().equals(userId)).
-                count();
-        map.put("postsCount", myPostsCount);
-        int myPostsLikeCount = (int) postVoteRepository.findAll().stream().
-                filter(p -> p.getUserId().equals(userId) && p.getValue() == 1).
-                count();
-        map.put("likesCount", myPostsLikeCount);
-        int myPostsDislikeCount = (int) postVoteRepository.findAll().stream().
-                filter(p -> p.getUserId().equals(userId) && p.getValue() == -1).
-                count();
-        map.put("dislikesCount", myPostsDislikeCount);
-        int viewMyPostsCount = (int) postVoteRepository.findAll().stream()
-                .filter(p -> p.getUserId().equals(userId))
-                .count();
-        map.put("viewsCount", viewMyPostsCount);
-        List<Timestamp> localDates =  postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
-        map(Post::getTimestamp).collect(Collectors.toList());
-        Timestamp minLocalDate = localDates.stream()
-                .min(Comparator.naturalOrder()).get();
-        map.put("firstPublication", minLocalDate.getTime()/1000);
-        return map;
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isEmpty()) {
+            return map;
+        } else {
+            int myPostsCount = postRepository.findAllPostsByUser(userOptional.get()).size();
+//                findAll().stream().
+//                filter(a -> a.getUserId().equals(userId)).
+//                count();
+            map.put("postsCount", myPostsCount);
+            int myPostsLikeCount = (int) postVoteRepository.findAllPostVotesByUserId(userId).stream().
+                    filter(pv -> pv.getValue() == 1).
+                    count();
+            map.put("likesCount", myPostsLikeCount);
+            int myPostsDislikeCount = (int) postVoteRepository.findAllPostVotesByUserId(userId).stream().
+                    filter(pv -> pv.getValue() == -1).
+                    count();
+            map.put("dislikesCount", myPostsDislikeCount);
+            int viewMyPostsCount = postVoteRepository.findAllPostVotesByUserId(userId).size();
+//                    .stream()
+//                    .filter(p -> p.getUserId().equals(userId))
+//                    .count();
+            map.put("viewsCount", viewMyPostsCount);
+            List<Timestamp> localDates = postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+                    map(Post::getTimestamp).collect(Collectors.toList());
+            Timestamp minLocalDate = localDates.stream()
+                    .min(Comparator.naturalOrder()).get();
+            map.put("firstPublication", minLocalDate.getTime() / 1000);
+            return map;
+        }
     }
 
     /*

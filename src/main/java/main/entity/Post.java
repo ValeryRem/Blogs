@@ -35,11 +35,25 @@ public class Post {
     @Column(name ="view_count")
     private Integer viewCount;
 
-    @OneToMany (mappedBy="post_id", fetch=FetchType.EAGER)
+    @OneToMany (mappedBy="postId", fetch=FetchType.EAGER)
     private Collection<PostComment> postComments;
+
+    @OneToMany (mappedBy="postId", fetch=FetchType.EAGER)
+    private Collection<PostVote> postVotes;
+
+    @ManyToOne (cascade = CascadeType.ALL)
+    private User user;
 
 
     public Post() {
+    }
+
+    public Collection<PostVote> getPostVotes() {
+        return postVotes;
+    }
+
+    public void setPostVotes(Collection<PostVote> postVotes) {
+        this.postVotes = postVotes;
     }
 
     public Collection<PostComment> getPostComments() {
@@ -150,5 +164,13 @@ public class Post {
 
     public void setActive(int activityMode) {
         isActive = activityMode;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

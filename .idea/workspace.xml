@@ -22,12 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query use in repositories.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query used in the repositories, upd2.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/Tag2PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/Tag2PostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +79,7 @@
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="gh\hg" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.5850966" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -135,13 +136,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00108" summary="The bugs fixed in the method getPostProfileMy.">
-      <created>1614590087134</created>
-      <option name="number" value="00108" />
-      <option name="presentableId" value="LOCAL-00108" />
-      <option name="project" value="LOCAL" />
-      <updated>1614590087134</updated>
     </task>
     <task id="LOCAL-00109" summary="AvatarController set up.">
       <created>1614856741083</created>
@@ -479,7 +473,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621369632986</updated>
     </task>
-    <option name="localTasksCounter" value="157" />
+    <task id="LOCAL-00157" summary="@Query used in the repositories, upd2.">
+      <created>1621419280220</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1621419280221</updated>
+    </task>
+    <option name="localTasksCounter" value="158" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -502,7 +503,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="The bug found out and avoided in postPost method (nullable moderatorId changed to NN)." />
     <MESSAGE value="Appears an error: &quot;Method Not Allowed&quot;, &quot;Request method 'PUT' not supported&quot;" />
     <MESSAGE value="PostResponse set up instead of use of Object." />
     <MESSAGE value="Use of Map &lt;String, Object&gt; restored." />
@@ -527,7 +527,8 @@
     <MESSAGE value="Method updateProfile unified &amp; developed." />
     <MESSAGE value="Update 2 for deployment." />
     <MESSAGE value="@Query use in repositories." />
-    <option name="LAST_COMMIT_MESSAGE" value="@Query use in repositories." />
+    <MESSAGE value="@Query used in the repositories, upd2." />
+    <option name="LAST_COMMIT_MESSAGE" value="@Query used in the repositories, upd2." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

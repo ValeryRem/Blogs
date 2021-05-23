@@ -20,14 +20,15 @@ public class PostComment {
     @Column(name = "parent_id")
     private Integer parentId;
 
-    @Column(name = "post_id", nullable = false)
+    @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
     private Integer postId;
 
     @Column(name = "user_id")
     private Integer userId;
     private Timestamp time;
     private String text;
-
+//Repeated column in mapping for entity:
+// main.entity.PostComment column: post_id (should be mapped with insert="false" update="false")
     @OneToOne(optional = false)
     @JoinColumn(name="post_id", unique = true, nullable = false, updatable = false)
     private Post post;
