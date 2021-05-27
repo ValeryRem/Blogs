@@ -5,13 +5,12 @@ import main.repository.*;
 import main.response.GeneralResponse;
 import main.response.TagResponse;
 import main.response.UserResponse;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -37,7 +36,6 @@ public class GetService {
     private final GlobalSettingsRepository globalSettingsRepository;
     private boolean result = false;
     private ResponseEntity<?> responseEntity;
-//    private GeneralResponse generalResponse;
 
 
     public GetService(PostRepository postRepository, Tag2PostRepository tag2PostRepository, TagRepository tagRepository,
@@ -480,9 +478,6 @@ public class GetService {
             return map;
         } else {
             int myPostsCount = postRepository.findAllPostsByUser(userOptional.get()).size();
-//                findAll().stream().
-//                filter(a -> a.getUserId().equals(userId)).
-//                count();
             map.put("postsCount", myPostsCount);
             int myPostsLikeCount = (int) postVoteRepository.findAllPostVotesByUserId(userId).stream().
                     filter(pv -> pv.getValue() == 1).
@@ -493,9 +488,6 @@ public class GetService {
                     count();
             map.put("dislikesCount", myPostsDislikeCount);
             int viewMyPostsCount = postVoteRepository.findAllPostVotesByUserId(userId).size();
-//                    .stream()
-//                    .filter(p -> p.getUserId().equals(userId))
-//                    .count();
             map.put("viewsCount", viewMyPostsCount);
             List<Timestamp> localDates = postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
                     map(Post::getTimestamp).collect(Collectors.toList());
@@ -590,27 +582,26 @@ public class GetService {
             }
             responseMap.put("years", years);
             responseMap.put("posts", posts);
-//        CalendarResponse calendarResponse = new CalendarResponse(years, posts);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
 
-    private List<Post> getPostsFilteredByMode(List<Post> postList, String mode) {
-        if ("popular".equals(mode)) {
-            postList.sort(Comparator.comparing(Post::getViewCount).reversed());
-        } else if ("best".equals(mode)) {
-            postList.sort((fp, sp) -> {
-                if (extractLikeCount(fp).equals(extractLikeCount(sp))) return 0;
-                else if (extractLikeCount(fp) < extractLikeCount(sp)) return 1;
-                else return -1;
-            });
-        } else if ("early".equals(mode)) {
-            postList.sort(Comparator.comparing(Post::getTimestamp));
-        } else {
-            postList.sort(Comparator.comparing(Post::getTimestamp).reversed());
-        }
-        return postList;
-    }
+//    private List<Post> getPostsFilteredByMode(List<Post> postList, String mode) {
+//        if ("popular".equals(mode)) {
+//            postList.sort(Comparator.comparing(Post::getViewCount).reversed());
+//        } else if ("best".equals(mode)) {
+//            postList.sort((fp, sp) -> {
+//                if (extractLikeCount(fp).equals(extractLikeCount(sp))) return 0;
+//                else if (extractLikeCount(fp) < extractLikeCount(sp)) return 1;
+//                else return -1;
+//            });
+//        } else if ("early".equals(mode)) {
+//            postList.sort(Comparator.comparing(Post::getTimestamp));
+//        } else {
+//            postList.sort(Comparator.comparing(Post::getTimestamp).reversed());
+//        }
+//        return postList;
+//    }
 
     public Integer getCount() {
         int count;
@@ -653,7 +644,6 @@ public class GetService {
         cal.setTimeZone(TimeZone.getTimeZone("UTC+3"));
         cal.setTimeInMillis(time.getTime());
         String curTime = String.valueOf(cal.get(Calendar.YEAR));
-        //String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
         return Integer.parseInt(curTime);
     }
 

@@ -1,39 +1,47 @@
 package main.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "post_votes")
 public class PostVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer voteId;
 
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "post_id")
-    @JsonProperty("post_id")
+    @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
+//    @JsonProperty
     private Integer postId;
     private Timestamp time;
     private Integer value;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="post_id")
+    public Post post;
+
     public PostVote() {
     }
 
-    public Integer getId() {
-        return id;
+    public Post getPost() {
+        return post;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPost(Post post) {
+        this.post = post;
     }
+
+    public Integer getVoteId() {
+        return voteId;
+    }
+
+//    public void setVoteId(Integer voteId) {
+//        this.voteId = voteId;
+//    }
 
     public Integer getUserId() {
         return userId;

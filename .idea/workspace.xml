@@ -22,13 +22,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query used in the repositories, upd2.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query used in the repositories, upd3.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,13 +141,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00109" summary="AvatarController set up.">
-      <created>1614856741083</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1614856741083</updated>
     </task>
     <task id="LOCAL-00110" summary="Problems in postAuthRegister: not readable captcha image.">
       <created>1615280267920</created>
@@ -480,7 +478,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621419280221</updated>
     </task>
-    <option name="localTasksCounter" value="158" />
+    <task id="LOCAL-00158" summary="@Query used in the repositories, upd3.">
+      <created>1621775588680</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1621775588681</updated>
+    </task>
+    <option name="localTasksCounter" value="159" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,7 +508,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Appears an error: &quot;Method Not Allowed&quot;, &quot;Request method 'PUT' not supported&quot;" />
     <MESSAGE value="PostResponse set up instead of use of Object." />
     <MESSAGE value="Use of Map &lt;String, Object&gt; restored." />
     <MESSAGE value="Method getPostsBySearch updated." />
@@ -528,7 +532,8 @@
     <MESSAGE value="Update 2 for deployment." />
     <MESSAGE value="@Query use in repositories." />
     <MESSAGE value="@Query used in the repositories, upd2." />
-    <option name="LAST_COMMIT_MESSAGE" value="@Query used in the repositories, upd2." />
+    <MESSAGE value="@Query used in the repositories, upd3." />
+    <option name="LAST_COMMIT_MESSAGE" value="@Query used in the repositories, upd3." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,6 +1,8 @@
 package main.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -27,11 +29,10 @@ public class PostComment {
     private Integer userId;
     private Timestamp time;
     private String text;
-//Repeated column in mapping for entity:
-// main.entity.PostComment column: post_id (should be mapped with insert="false" update="false")
-    @OneToOne(optional = false)
-    @JoinColumn(name="post_id", unique = true, nullable = false, updatable = false)
-    private Post post;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="post_id")
+    public Post post;
 
     public PostComment() {
     }
@@ -43,6 +44,9 @@ public class PostComment {
     public void setPost(Post post) {
         this.post = post;
     }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

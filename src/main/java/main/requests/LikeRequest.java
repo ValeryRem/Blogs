@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 @Service
 public class LikeRequest implements Serializable {
-    Integer post_id;
+    Integer postId;
 
-    public Integer getPost_id() {
-        return post_id;
+    public Integer getPostId() {
+        return postId;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setPostId(Integer postId) {
+        this.postId = postId;
     }
 }

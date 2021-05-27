@@ -2,14 +2,12 @@ package main.service;
 
 import main.requests.*;
 import main.response.ErrorsResponse;
-import main.response.GeneralResponse;
 import main.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
 import org.jsoup.Jsoup;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -86,29 +84,37 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLike (LikeRequest likeRequest) {
+    public ResponseEntity<?> postLike(LikeRequest likeRequest) {
         User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(likeRequest.getPost_id());
-        if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
-            PostVote postVote = new PostVote();
-            postVote.setPostId(likeRequest.getPost_id());
-            postVote.setTime(Timestamp.valueOf(now()));
-            postVote.setUserId(authService.getUserId());
-            postVote.setValue(1);
-            postVoteRepository.save(postVote);
-            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
+        Post post = postRepository.getOne(likeRequest.getPostId());
+
+        if (!authService.isUserAuthorized()) {
+            return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
         }
+
+        if (post.getUserId().equals(user.getUserId())) {
+            return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
+        }
+        postVoteRepository.save(createLike(likeRequest));
+        responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
+    }
+
+    private PostVote createLike(LikeRequest likeRequest) {
+        PostVote postVote = new PostVote();
+        postVote.setPostId(likeRequest.getPostId());
+        postVote.setTime(Timestamp.valueOf(now()));
+        postVote.setUserId(authService.getUserId());
+        postVote.setValue(1);
+        return postVote;
     }
 
     public ResponseEntity<?> postDislike (DislikeRequest dislikeRequest) {
         User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(dislikeRequest.getPost_id());
+        Post post = postRepository.getOne(dislikeRequest.getPostId());
         if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
             PostVote postVote = new PostVote();
-            postVote.setPostId(dislikeRequest.getPost_id());
+            postVote.setPostId(dislikeRequest.getPostId());
             postVote.setTime(Timestamp.valueOf(now()));
             postVote.setUserId(authService.getUserId());
             postVote.setValue(-1);

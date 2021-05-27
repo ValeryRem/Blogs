@@ -1,6 +1,9 @@
 package main.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -35,33 +38,23 @@ public class Post {
     @Column(name ="view_count")
     private Integer viewCount;
 
-    @OneToMany (mappedBy="postId", fetch=FetchType.EAGER)
+    @OneToMany (mappedBy="commentId", fetch=FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     private Collection<PostComment> postComments;
 
-    @OneToMany (mappedBy="postId", fetch=FetchType.EAGER)
+    @OneToMany (mappedBy="voteId", fetch=FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     private Collection<PostVote> postVotes;
+
+    @OneToMany (mappedBy="voteId", fetch=FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA) // это позволяет без лишнего запроса получить количество
+    @Where(clause = "value = 1") // в этой коллекции будут только лайки
+    private Collection<PostVote> postLikes;
 
     @ManyToOne (cascade = CascadeType.ALL)
     private User user;
 
-
     public Post() {
-    }
-
-    public Collection<PostVote> getPostVotes() {
-        return postVotes;
-    }
-
-    public void setPostVotes(Collection<PostVote> postVotes) {
-        this.postVotes = postVotes;
-    }
-
-    public Collection<PostComment> getPostComments() {
-        return postComments;
-    }
-
-    public void setPostComment(Collection<PostComment> postComments) {
-        this.postComments = postComments;
     }
 
     public Post(ModerationStatus moderationStatus) {
@@ -75,6 +68,31 @@ public class Post {
     public Post(Integer postId) {
         this.postId = postId;
     }
+
+    public Collection<PostVote> getPostLikes() {
+        return postLikes;
+    }
+
+    public void setPostLikes(Collection<PostVote> postLikes) {
+        this.postLikes = postLikes;
+    }
+
+//    public Collection<PostVote> getPostVotes() {
+//        return postVotes;
+//    }
+//
+//    public void setPostVotes(Collection<PostVote> postVotes) {
+//        this.postVotes = postVotes;
+//    }
+
+    public Collection<PostComment> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComment(Collection<PostComment> postComments) {
+        this.postComments = postComments;
+    }
+
 
     public Integer getPostId() {
         return postId;
@@ -172,5 +190,17 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setPostComments(Collection<PostComment> postComments) {
+        this.postComments = postComments;
+    }
+
+    public Collection<PostVote> getPostVotes() {
+        return postVotes;
+    }
+
+    public void setPostVotes(Collection<PostVote> postVotes) {
+        this.postVotes = postVotes;
     }
 }

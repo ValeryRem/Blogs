@@ -11,6 +11,6 @@ import java.util.Collection;
 
 @Repository
 public interface PostVoteRepository extends JpaRepository<PostVote, Integer> {
-    @Query(value = "SELECT pv FROM PostVote pv WHERE pv.userId = ?1")
+    @Query(value = "FROM PostVote pv WHERE pv.userId = ?1")
     Collection<PostVote> findAllPostVotesByUserId (int userId);
 }
