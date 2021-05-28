@@ -63,8 +63,8 @@ public class PostComment {
         return commentId;
     }
 
-    public void setCommentId(Integer id) {
-        this.commentId = id;
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 
     public Integer getParentId() {

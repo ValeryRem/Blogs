@@ -252,8 +252,8 @@ public ResponseEntity<?> postPost(PostRequest postRequest) {
             errors.put("text", "Text's length is out of limit!");
         }
         if (result) {
-            if (commentRequest.getParent_id() != null) {
-                postComment.setParentId(commentRequest.getParent_id());
+            if (commentRequest.getParentId() != null) {
+                postComment.setParentId(commentRequest.getParentId());
             }
             postComment.setPostId(commentRequest.getPostId());
             postComment.setText(commentRequest.getText());

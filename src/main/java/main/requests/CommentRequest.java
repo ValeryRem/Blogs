@@ -1,6 +1,5 @@
 package main.requests;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -15,16 +14,16 @@ public class CommentRequest implements Serializable {
         return post_id;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setPostId(Integer postId) {
+        this.post_id = postId;
     }
 
-    public Integer getParent_id() {
+    public Integer getParentId() {
         return parent_id;
     }
 
-    public void setParent_id(Integer parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(Integer parentId) {
+        this.parent_id = parentId;
     }
 
     public String getText() {

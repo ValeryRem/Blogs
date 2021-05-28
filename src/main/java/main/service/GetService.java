@@ -56,7 +56,6 @@ public class GetService {
         return (List<Post>) postRepository.findAllActivePosts();
 //                posts.stream().filter(p -> p.isActive() == 1 && ModerationStatus.ACCEPTED.equals(p.getModerationStatus())).
 //                collect(Collectors.toList());
-
 //                postRepository.findAll().stream().
 //                filter(a -> (a.isActive() == 1 && ModerationStatus.ACCEPTED.equals(a.getModerationStatus()))).
 //                collect(Collectors.toList());
@@ -489,7 +488,7 @@ public class GetService {
             map.put("dislikesCount", myPostsDislikeCount);
             int viewMyPostsCount = postVoteRepository.findAllPostVotesByUserId(userId).size();
             map.put("viewsCount", viewMyPostsCount);
-            List<Timestamp> localDates = postRepository.findAll().stream().filter(p -> p.getUserId().equals(userId)).
+            List<Timestamp> localDates = postRepository.findAllPostsByUser(userOptional.get()).stream().
                     map(Post::getTimestamp).collect(Collectors.toList());
             Timestamp minLocalDate = localDates.stream()
                     .min(Comparator.naturalOrder()).get();

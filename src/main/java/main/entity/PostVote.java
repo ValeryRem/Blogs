@@ -39,9 +39,9 @@ public class PostVote {
         return voteId;
     }
 
-//    public void setVoteId(Integer voteId) {
-//        this.voteId = voteId;
-//    }
+    public void setVoteId(Integer voteId) {
+        this.voteId = voteId;
+    }
 
     public Integer getUserId() {
         return userId;
