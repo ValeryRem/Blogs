@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Service
 public class DislikeRequest implements Serializable {
-    Integer post_id;
+    public Integer post_id;
 
     public Integer getPostId() {
         return post_id;

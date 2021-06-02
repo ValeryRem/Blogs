@@ -12,21 +12,22 @@ import java.util.Collection;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-  @Query (value ="FROM Post p ORDER BY p.postId DESC")
+  @Query ("SELECT p FROM Post p ORDER BY p.postId DESC")
   Page<Post> getRecentPosts (PageRequest pageRequest);
 
-  @Query (value ="FROM Post p ORDER BY SIZE(p.postComments) DESC")
+  @Query ("SELECT p FROM Post p ORDER BY SIZE(p.postComments) DESC")
   Page<Post> getPopularPosts(PageRequest pageRequest);
 
-  @Query (value ="FROM Post p ORDER BY SIZE(p.postLikes) DESC")
+  @Query ("SELECT p FROM Post p ORDER BY SIZE(p.postLikes) DESC")
   Page<Post> getBestPosts(PageRequest pageRequest);
 
-  @Query (value ="FROM Post p ORDER BY p.timestamp")
+  @Query ("SELECT p FROM Post p ORDER BY p.timestamp")
   Page<Post> getEarlyPosts(PageRequest pageRequest);
 
-  @Query(value ="FROM Post p WHERE p.isActive = 1 AND p.moderationStatus = 'ACCEPTED'")
+  @Query("SELECT p FROM Post p WHERE p.isActive = 1 AND p.moderationStatus = 'ACCEPTED'")
   Collection<Post> findAllActivePosts ();
 
-  @Query(value ="FROM Post p WHERE p.user = ?1")
+  @Query("SELECT p FROM Post p WHERE p.user = ?1")
   Collection<Post> findAllPostsByUser (User user);
+
 }

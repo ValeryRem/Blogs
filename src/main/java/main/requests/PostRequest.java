@@ -1,7 +1,5 @@
 package main.requests;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -9,13 +7,11 @@ import java.util.List;
 
 @Service
 public class PostRequest implements Serializable {
-    long timestamp;
-    Integer active;
-    String title;
-
-//    @Nullable
-    List<String> tags;
-    String text;
+    private long timestamp;
+    private Integer active;
+    private String title;
+    private List<String> tags;
+    private String text;
 
     public long getTimestamp() {
         return timestamp;
@@ -41,7 +37,6 @@ public class PostRequest implements Serializable {
         this.title = title;
     }
 
-//    @Nullable
     public List<String> getTags() {
         return tags;
     }

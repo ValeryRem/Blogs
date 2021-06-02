@@ -59,27 +59,24 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    private ResponseEntity<?> getPostsBySearch (
-            @RequestParam(defaultValue="0") Integer offset,
-            @RequestParam(defaultValue="4") Integer limit,
-            @RequestParam String query) {
+    private ResponseEntity<?> getPostsBySearch (@RequestParam(defaultValue="0") Integer offset,
+                                                @RequestParam(defaultValue="5") Integer limit,
+                                                @RequestParam String query) {
         System.out.println("Method getPostsBySearch activated. Query:" + query);
         return getService.getPostsBySearch(offset, limit, query);
     }
 
     @GetMapping("/byDate")
-    private ResponseEntity<?> getPostsByDate (
-            @RequestParam(defaultValue="0") Integer offset,
-            @RequestParam(defaultValue="5") Integer limit,
-            @RequestParam  String date){
+    private ResponseEntity<?> getPostsByDate (@RequestParam(defaultValue="0") Integer offset,
+                                                @RequestParam(defaultValue="5") Integer limit,
+                                                @RequestParam  String date){
         System.out.println("Method getPostsByDate activated by the date: " + date );
         return getService.getPostsByDate(offset, limit, date);
     }
 
     @GetMapping("/byTag")
-    private ResponseEntity<?> getPostsByTag(
-                                            @RequestParam Integer offset,
-                                            @RequestParam Integer limit,
+    private ResponseEntity<?> getPostsByTag(@RequestParam(defaultValue="0") Integer offset,
+                                            @RequestParam(defaultValue="5") Integer limit,
                                             @RequestParam String tag){
         System.out.println("Method getPostsByTag uses tag name:" + tag);
         return getService.getPostsByTag(offset, limit, tag);
@@ -88,30 +85,29 @@ public class PostController {
     @GetMapping("/moderation")
     private ResponseEntity<?> getPostsForModeration(@RequestParam(defaultValue="0") Integer offset,
                                                     @RequestParam(defaultValue="3") Integer limit,
-                                                    @RequestParam(defaultValue="new") String status) {
+                                                    @RequestParam(defaultValue="NEW") String status) {
         System.out.println("Method getPostsForModeration activated.");
         return getService.getPostsForModeration(offset, limit, status);
     }
 
     @GetMapping("/my")
-    private ResponseEntity<?> getMyPosts (
-                                          @RequestParam(defaultValue="0") Integer offset,
+    private ResponseEntity<?> getMyPosts (@RequestParam(defaultValue="0") Integer offset,
                                           @RequestParam(defaultValue="5") Integer limit) {
         System.out.println("Method getMyPosts activated.");
         return getService.getMyPosts(offset, limit);
     }
 
     @PostMapping("/like")
-    private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest) {
+    private ResponseEntity<?> postLike (@RequestParam Integer post_id){//@RequestBody LikeRequest likeRequest) {
         System.out.println("Method postLike activated");
-        return postService.postLike(likeRequest);
+        return postService.postLikeDislike(post_id, 1);
     }
 
     @PostMapping("/dislike")
-    private ResponseEntity<?> postDislike (@RequestBody DislikeRequest dislikeRequest)
+    private ResponseEntity<?> postDislike (@RequestParam Integer post_id)//(@RequestBody LikeRequest likeRequest)
     {
         System.out.println("Method postDislike activated");
-        return postService.postDislike(dislikeRequest);
+        return postService.postLikeDislike(post_id, 0);
     }
 
     @PostMapping("")

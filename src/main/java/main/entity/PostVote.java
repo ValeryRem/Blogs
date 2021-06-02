@@ -20,20 +20,20 @@ public class PostVote {
     private Timestamp time;
     private Integer value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="post_id")
-    public Post post;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "post_id")
+//    public Post post;
 
     public PostVote() {
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
+//    public Post getPost() {
+//        return post;
+//    }
+//
+//    public void setPost(Post post) {
+//        this.post = post;
+//    }
 
     public Integer getVoteId() {
         return voteId;

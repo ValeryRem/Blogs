@@ -35,8 +35,8 @@ public class PostService {
     private final CommentRequest commentRequest;
     private final PostRequest postRequest;
     private final PutPostRequest putPostRequest;
-    private final LikeRequest likeRequest;
-    private  final DislikeRequest dislikeRequest;
+//    private final LikeRequest likeRequest;
+//    private final DislikeRequest dislikeRequest;
 
     private ResponseEntity<?> responseEntity;
 
@@ -44,8 +44,8 @@ public class PostService {
                        HttpSession httpSession, PostVoteRepository postVoteRepository, TagRepository tagRepository,
                        Tag2PostRepository tag2PostRepository, CommentRepository commentRepository,
                        GlobalSettingsRepository globalSettingsRepository, CommentRequest commentRequest,
-                       PostRequest postRequest, PutPostRequest putPostRequest, LikeRequest likeRequest,
-                       DislikeRequest dislikeRequest) {
+                       PostRequest postRequest, PutPostRequest putPostRequest){//}, LikeRequest likeRequest,
+                       //DislikeRequest dislikeRequest) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.authService = authService;
@@ -58,8 +58,8 @@ public class PostService {
         this.commentRequest = commentRequest;
         this.postRequest = postRequest;
         this.putPostRequest = putPostRequest;
-        this.likeRequest = likeRequest;
-        this.dislikeRequest = dislikeRequest;
+//        this.likeRequest = likeRequest;
+//        this.dislikeRequest = dislikeRequest;
     }
 
     public ResponseEntity<?> postApiModeration(Integer id, String decision) {
@@ -84,9 +84,10 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLike(LikeRequest likeRequest) {
+    public ResponseEntity<?> postLikeDislike(Integer postId, Integer value) {
         User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(likeRequest.getPostId());
+//        Integer postId = likeRequest.getPostId();
+        Post post = postRepository.getOne(postId);
 
         if (!authService.isUserAuthorized()) {
             return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
@@ -95,37 +96,39 @@ public class PostService {
         if (post.getUserId().equals(user.getUserId())) {
             return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
         }
-        postVoteRepository.save(createLike(likeRequest));
+
+        postVoteRepository.save(createLikeDislike(postId, value));
         responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
 
-    private PostVote createLike(LikeRequest likeRequest) {
+    private PostVote createLikeDislike(Integer postId, Integer value){    //LikeRequest likeRequest) {
         PostVote postVote = new PostVote();
-        postVote.setPostId(likeRequest.getPostId());
+        postVote.setPostId(postId);   //likeRequest.getPostId());
         postVote.setTime(Timestamp.valueOf(now()));
         postVote.setUserId(authService.getUserId());
-        postVote.setValue(1);
+        postVote.setValue(value);
         return postVote;
     }
 
-    public ResponseEntity<?> postDislike (DislikeRequest dislikeRequest) {
-        User user = userRepository.getOne(authService.getUserId());
-        Post post = postRepository.getOne(dislikeRequest.getPostId());
-        if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
-            PostVote postVote = new PostVote();
-            postVote.setPostId(dislikeRequest.getPostId());
-            postVote.setTime(Timestamp.valueOf(now()));
-            postVote.setUserId(authService.getUserId());
-            postVote.setValue(-1);
-            postVoteRepository.save(postVote);
-            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
-        }
-        return responseEntity;
-    }
-public ResponseEntity<?> postPost(PostRequest postRequest) {
+//    public ResponseEntity<?> postDislike (DislikeRequest dislikeRequest) {
+//        User user = userRepository.getOne(authService.getUserId());
+//        Post post = postRepository.getOne(dislikeRequest.getPostId());
+//        if (authService.isUserAuthorized() && !post.getUserId().equals(user.getUserId())) {
+//            PostVote postVote = new PostVote();
+//            postVote.setPostId(dislikeRequest.getPostId());
+//            postVote.setTime(Timestamp.valueOf(now()));
+//            postVote.setUserId(authService.getUserId());
+//            postVote.setValue(-1);
+//            postVoteRepository.save(postVote);
+//            responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+//        } else {
+//            responseEntity = new ResponseEntity<>(new ResultResponse(false), HttpStatus.UNAUTHORIZED);
+//        }
+//        return responseEntity;
+//    }
+
+    public ResponseEntity<?> postPost(PostRequest postRequest) {
     Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
     User user = userRepository.getOne(authService.getUserId());
     Map<String, String> errors = checkTexts(postRequest.getTitle(), postRequest.getText());

@@ -17,23 +17,23 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     @JoinTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
-    private Integer postId;
+    Integer postId;
 
     @Column(name ="is_active")
-    private int isActive;
+    int isActive;
 
     @Column(name ="moderation_status")
     @Enumerated(EnumType.STRING)
-    private ModerationStatus moderationStatus;
+    ModerationStatus moderationStatus;
 
     @Column(name ="moderator_id")
-    private Integer moderatorId;
+    Integer moderatorId;
 
     @Column(name ="user_id")
-    private Integer userId;
-    private Timestamp timestamp;
-    private String title;
-    private String text;
+    Integer userId;
+    Timestamp timestamp;
+    String title;
+    String text;
 
     @Column(name ="view_count")
     private Integer viewCount;
@@ -52,6 +52,7 @@ public class Post {
     private Collection<PostVote> postLikes;
 
     @ManyToOne (cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
     private User user;
 
     public Post() {
