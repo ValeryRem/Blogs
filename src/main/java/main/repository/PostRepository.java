@@ -27,7 +27,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
   @Query("SELECT p FROM Post p WHERE p.isActive = 1 AND p.moderationStatus = 'ACCEPTED'")
   Collection<Post> findAllActivePosts ();
 
-  @Query("SELECT p FROM Post p WHERE p.user = ?1")
-  Collection<Post> findAllPostsByUser (User user);
-
+  @Query("SELECT p FROM Post p WHERE p.userId = ?1")
+  Collection<Post> findAllPostsByUser (int userId);
 }

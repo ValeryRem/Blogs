@@ -1,18 +1,18 @@
 package main.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Where;
-import org.springframework.lang.Nullable;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -51,9 +51,13 @@ public class Post {
     @Where(clause = "value = 1") // в этой коллекции будут только лайки
     private Collection<PostVote> postLikes;
 
-    @ManyToOne (cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany (mappedBy="voteId", fetch=FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @Where(clause = "value = -1")
+    private Collection<PostVote> postDislikes;
+
+//    @ManyToOne (cascade = CascadeType.ALL)
+//    private User user;
 
     public Post() {
     }
@@ -78,13 +82,21 @@ public class Post {
         this.postLikes = postLikes;
     }
 
-//    public Collection<PostVote> getPostVotes() {
-//        return postVotes;
-//    }
-//
-//    public void setPostVotes(Collection<PostVote> postVotes) {
-//        this.postVotes = postVotes;
-//    }
+    public Collection<PostVote> getPostDislikes() {
+        return postDislikes;
+    }
+
+    public void setPostDislikes(Collection<PostVote> postDislikes) {
+        this.postDislikes = postDislikes;
+    }
+
+        public Collection<PostVote> getPostVotes() {
+        return postVotes;
+    }
+
+    public void setPostVotes(Collection<PostVote> postVotes) {
+        this.postVotes = postVotes;
+    }
 
     public Collection<PostComment> getPostComments() {
         return postComments;
@@ -185,23 +197,23 @@ public class Post {
         isActive = activityMode;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public void setPostComments(Collection<PostComment> postComments) {
         this.postComments = postComments;
     }
 
-    public Collection<PostVote> getPostVotes() {
-        return postVotes;
-    }
-
-    public void setPostVotes(Collection<PostVote> postVotes) {
-        this.postVotes = postVotes;
-    }
+//    public Collection<PostVote> getPostVotes() {
+//        return postVotes;
+//    }
+//
+//    public void setPostVotes(Collection<PostVote> postVotes) {
+//        this.postVotes = postVotes;
+//    }
 }

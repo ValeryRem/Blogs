@@ -22,17 +22,21 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query used in the repositories, upd5.">
+    <list default="true" id="7926d56a-8a94-4610-a9da-d8eba408785e" name="Default Changelist" comment="@Query used in the repositories, upd6.">
+      <change afterPath="$PROJECT_DIR$/../dump_Blogs/blogs.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostComment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/PostVote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/CommentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/PostVoteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/repository/SessionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/repository/SessionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/DislikeRequest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/LikeRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/requests/PostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/GetService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/repository/PostRepository.class" afterDir="false" />
     </list>
@@ -65,7 +69,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/main/controllers/AuthController.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="proportion" value="0.18487395" />
+    <option name="proportion" value="0.20015278" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1hZ3PlErUNHKG8qnWGRCAIzUOhM" />
@@ -142,13 +146,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600204764031</updated>
-    </task>
-    <task id="LOCAL-00112" summary="Methods getAllStatistics &amp; getMyStatistics updated.">
-      <created>1615294092027</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1615294092029</updated>
     </task>
     <task id="LOCAL-00113" summary="Methods postPost updated by  timestamp parameter added.">
       <created>1615379588517</created>
@@ -486,7 +483,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622193891923</updated>
     </task>
-    <option name="localTasksCounter" value="161" />
+    <task id="LOCAL-00161" summary="@Query used in the repositories, upd6.">
+      <created>1622615108664</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1622615108664</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -497,7 +501,7 @@
             <State>
               <option name="CUSTOM_BOOLEAN_PROPERTIES">
                 <map>
-                  <entry key="Show.Git.Branches" value="false" />
+                  <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
             </State>
@@ -509,7 +513,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Method getPostsBySearch updated." />
     <MESSAGE value="Method putPost is still in processing." />
     <MESSAGE value="Method putPost is updated." />
     <MESSAGE value="Methods GET /api/statistics/all and GET /api/statistics/my updated." />
@@ -534,7 +537,8 @@
     <MESSAGE value="@Query used in the repositories, upd3." />
     <MESSAGE value="@Query used in the repositories, upd4." />
     <MESSAGE value="@Query used in the repositories, upd5." />
-    <option name="LAST_COMMIT_MESSAGE" value="@Query used in the repositories, upd5." />
+    <MESSAGE value="@Query used in the repositories, upd6." />
+    <option name="LAST_COMMIT_MESSAGE" value="@Query used in the repositories, upd6." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -545,5 +549,10 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/16_Blogs$ApplicationMain.ic" NAME="ApplicationMain Coverage Results" MODIFIED="1622702971502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>.*</FILTER>
+    </SUITE>
   </component>
 </project>

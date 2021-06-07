@@ -29,7 +29,7 @@ public class User {
     @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Timestamp regTime;
 
-    @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
+//    @JoinTable(name = "posts", joinColumns = @JoinColumn(name = "post_id"))
     private String name;
 
     @Email

@@ -286,7 +286,7 @@ public class AuthService{
 
     private int getModerationCount(Integer userId) {
         int moderCount = 0;
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = (List<Post>) postRepository.findAllPostsByUser(userId);
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();

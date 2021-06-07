@@ -101,21 +101,24 @@ public class GetService {
         return responseEntity;
     }
 
-    @NotNull
+//    @NotNull
     private List<Post> getOrderedPosts(Integer offset, Integer limit, String mode) {
         Page<Post> posts;
         PageRequest pageRequest = PageRequest.of(offset / limit, limit);
 
-        if (mode.equals("recent")){
-            posts = postRepository.getRecentPosts(pageRequest);
-        } else if (mode.equals("popular")) {
-            posts = postRepository.getPopularPosts(pageRequest);
-        } else if (mode.equals("best")){
-            posts = postRepository.getBestPosts(pageRequest);
-        } else if (mode.equals("early")) {
-            posts = postRepository.getEarlyPosts(pageRequest);
-        } else {
-            posts = postRepository.getRecentPosts(pageRequest);
+        switch (mode) {
+            case "popular":
+                posts = postRepository.getPopularPosts(pageRequest);
+                break;
+            case "best":
+                posts = postRepository.getBestPosts(pageRequest);
+                break;
+            case "early":
+                posts = postRepository.getEarlyPosts(pageRequest);
+                break;
+            default:
+                posts = postRepository.getRecentPosts(pageRequest);
+                break;
         }
 
         return posts.stream().filter(p -> p.isActive() == 1).collect(Collectors.toList());
@@ -214,12 +217,13 @@ public class GetService {
                         postsIdList.add(tag2Post.getPostId());
                     }
                 }
-                var commentList = commentRepository.findAll();
+//                var commentList = commentRepository.findAll();
                 posts = postsIdList.stream().map(postRepository::getOne).collect(Collectors.toList());
-
+                var commentList = commentRepository.findAll();
                 for (Post post: posts) {
                     Map<String, Object> responseMap = new LinkedHashMap<>();
-                    int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
+                    int commentCountByPost = (int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();//commentRepository.findAllPostCommentsByPostId(post.getPostId()).size();
+                    //(int) commentList.stream().filter(a -> a.getPostId().equals(post.getPostId())).count();
                     responseMap.put("id", post.getPostId());
                     responseMap.put("timestamp", post.getTimestamp().getTime()/1000);
                     responseMap.put("title", post.getTitle());
@@ -476,7 +480,7 @@ public class GetService {
         if(userOptional.isEmpty()) {
             return map;
         } else {
-            int myPostsCount = postRepository.findAllPostsByUser(userOptional.get()).size();
+            int myPostsCount = postRepository.findAllPostsByUser(userId).size();
             map.put("postsCount", myPostsCount);
             int myPostsLikeCount = (int) postVoteRepository.findAllPostVotesByUserId(userId).stream().
                     filter(pv -> pv.getValue() == 1).
@@ -488,7 +492,7 @@ public class GetService {
             map.put("dislikesCount", myPostsDislikeCount);
             int viewMyPostsCount = postVoteRepository.findAllPostVotesByUserId(userId).size();
             map.put("viewsCount", viewMyPostsCount);
-            List<Timestamp> localDates = postRepository.findAllPostsByUser(userOptional.get()).stream().
+            List<Timestamp> localDates = postRepository.findAllPostsByUser(userId).stream().
                     map(Post::getTimestamp).collect(Collectors.toList());
             Timestamp minLocalDate = localDates.stream()
                     .min(Comparator.naturalOrder()).get();

@@ -15,7 +15,7 @@ import java.util.TreeMap;
 @Table(name = "post_comments")
 public class PostComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
     private Integer commentId;
 
@@ -30,20 +30,20 @@ public class PostComment {
     private Timestamp time;
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="post_id")
-    public Post post;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="post_id")
+//    public Post post;
 
     public PostComment() {
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
+//    public Post getPost() {
+//        return post;
+//    }
+//
+//    public void setPost(Post post) {
+//        this.post = post;
+//    }
 
 
 

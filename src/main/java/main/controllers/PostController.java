@@ -1,20 +1,15 @@
 package main.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import main.repository.PostRepository;
 import main.repository.SessionRepository;
 import main.repository.UserRepository;
 import main.requests.*;
 import main.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(value = "/api/post", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -27,11 +22,11 @@ public class PostController {
     private final HttpSession httpSession;
     private final UserRepository userRepository;
     private final PostRequest postRequest;
-    private int ID;
+    private LikeRequest likeRequest;
 
     public PostController(GetService getService, PostService postService, AuthService authService, PostRepository postRepository,
                           SessionRepository sessionRepository, HttpSession httpSession, UserRepository userRepository,
-                          PostRequest postRequest) {
+                          PostRequest postRequest, LikeRequest likeRequest) {
         this.getService = getService;
         this.postService = postService;
         this.authService = authService;
@@ -40,6 +35,7 @@ public class PostController {
         this.httpSession = httpSession;
         this.userRepository = userRepository;
         this.postRequest = postRequest;
+        this.likeRequest = likeRequest;
     }
 
     @GetMapping("")
@@ -98,16 +94,16 @@ public class PostController {
     }
 
     @PostMapping("/like")
-    private ResponseEntity<?> postLike (@RequestParam Integer post_id){//@RequestBody LikeRequest likeRequest) {
+    private ResponseEntity<?> postLike (@RequestBody LikeRequest likeRequest) {
         System.out.println("Method postLike activated");
-        return postService.postLikeDislike(post_id, 1);
+        return postService.postLikeDislike(likeRequest, 1);
     }
 
     @PostMapping("/dislike")
-    private ResponseEntity<?> postDislike (@RequestParam Integer post_id)//(@RequestBody LikeRequest likeRequest)
+    private ResponseEntity<?> postDislike (@RequestBody LikeRequest likeRequest)
     {
         System.out.println("Method postDislike activated");
-        return postService.postLikeDislike(post_id, 0);
+        return postService.postLikeDislike(likeRequest, -1);
     }
 
     @PostMapping("")
@@ -116,10 +112,10 @@ public class PostController {
         return postService.postPost(postRequest);
     }
 
-    @PutMapping(value = "/{id:\\d+}")
-    public ResponseEntity<?> putPost (@PathVariable(value = "id") int id, @RequestBody PutPostRequest putPostRequest){
+    @PutMapping(value = "/{ID:\\d+}")
+    public ResponseEntity<?> putPost (@PathVariable(value = "ID") int ID, @RequestBody PutPostRequest putPostRequest){
         System.out.println("Method putPost is activated");
-        return  postService.putPost(id, putPostRequest);
+        return  postService.putPost(ID, putPostRequest);
     }
 }
 

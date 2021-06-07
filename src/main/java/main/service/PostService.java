@@ -6,6 +6,7 @@ import main.response.ResultResponse;
 import main.entity.*;
 import main.repository.*;
 import org.jsoup.Jsoup;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,7 @@ public class PostService {
     private final CommentRequest commentRequest;
     private final PostRequest postRequest;
     private final PutPostRequest putPostRequest;
-//    private final LikeRequest likeRequest;
-//    private final DislikeRequest dislikeRequest;
+    private final LikeRequest likeRequest;
 
     private ResponseEntity<?> responseEntity;
 
@@ -44,8 +44,7 @@ public class PostService {
                        HttpSession httpSession, PostVoteRepository postVoteRepository, TagRepository tagRepository,
                        Tag2PostRepository tag2PostRepository, CommentRepository commentRepository,
                        GlobalSettingsRepository globalSettingsRepository, CommentRequest commentRequest,
-                       PostRequest postRequest, PutPostRequest putPostRequest){//}, LikeRequest likeRequest,
-                       //DislikeRequest dislikeRequest) {
+                       PostRequest postRequest, PutPostRequest putPostRequest, LikeRequest likeRequest) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.authService = authService;
@@ -58,8 +57,7 @@ public class PostService {
         this.commentRequest = commentRequest;
         this.postRequest = postRequest;
         this.putPostRequest = putPostRequest;
-//        this.likeRequest = likeRequest;
-//        this.dislikeRequest = dislikeRequest;
+        this.likeRequest = likeRequest;
     }
 
     public ResponseEntity<?> postApiModeration(Integer id, String decision) {
@@ -84,29 +82,42 @@ public class PostService {
         return responseEntity;
     }
 
-    public ResponseEntity<?> postLikeDislike(Integer postId, Integer value) {
-        User user = userRepository.getOne(authService.getUserId());
-//        Integer postId = likeRequest.getPostId();
-        Post post = postRepository.getOne(postId);
-
+    public ResponseEntity<?> postLikeDislike(LikeRequest likeRequest, Integer value) {
+//        User user = userRepository.getOne(authService.getUserId());
+        PostVote postVote;
+        int userId = authService.getUserId();
+        int post_id = likeRequest.getPostId();
+        Post post = postRepository.getOne(likeRequest.getPostId());
+        Optional<PostVote> postVoteOptional = postVoteRepository.getOne(post_id, userId);
         if (!authService.isUserAuthorized()) {
+            return new ResponseEntity<>("User unauthorized!", HttpStatus.OK);
+        }
+
+        if (post.getUserId().equals(userId)) {
             return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
         }
 
-        if (post.getUserId().equals(user.getUserId())) {
-            return new ResponseEntity<>(new ResultResponse(false), HttpStatus.OK);
+        if (postVoteOptional.isPresent()) {
+            if (postVoteOptional.get().getValue().equals(value)) {
+                return new ResponseEntity<>("This vote is doubled! Not acceptable.", HttpStatus.OK);
+            } else {
+                postVote =  postVoteOptional.get();
+                postVote.setValue(value);
+                postVoteRepository.save(postVote);
+                return new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
+            }
         }
-
-        postVoteRepository.save(createLikeDislike(postId, value));
+        postVote = createPostVote(post_id, value, userId);
+        postVoteRepository.save(postVote);
         responseEntity = new ResponseEntity<>(new ResultResponse(true), HttpStatus.OK);
         return responseEntity;
     }
 
-    private PostVote createLikeDislike(Integer postId, Integer value){    //LikeRequest likeRequest) {
+    private PostVote createPostVote(Integer postId, Integer value, Integer userId){
         PostVote postVote = new PostVote();
-        postVote.setPostId(postId);   //likeRequest.getPostId());
+        postVote.setPostId(postId);
         postVote.setTime(Timestamp.valueOf(now()));
-        postVote.setUserId(authService.getUserId());
+        postVote.setUserId(userId);
         postVote.setValue(value);
         return postVote;
     }
@@ -249,6 +260,7 @@ public class PostService {
             return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
         }
         Integer userId = authService.getUserId();
+        Integer postId = commentRequest.getPostId();
         PostComment postComment = new PostComment();
         if (commentRequest.getText().length() < 10 || commentRequest.getText().length() > 300) {
             result = false;
@@ -258,7 +270,12 @@ public class PostService {
             if (commentRequest.getParentId() != null) {
                 postComment.setParentId(commentRequest.getParentId());
             }
-            postComment.setPostId(commentRequest.getPostId());
+            try {
+                postComment.setCommentId(commentRepository.findAll().size() + 1);
+            } catch (NullPointerException ex){
+                postComment.setCommentId(1);
+            }
+            postComment.setPostId(postId);
             postComment.setText(commentRequest.getText());
             postComment.setTime(Timestamp.valueOf(now()));
             postComment.setUserId(userId);

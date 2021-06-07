@@ -1,5 +1,7 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -15,25 +17,12 @@ public class PostVote {
     private Integer userId;
 
     @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
-//    @JsonProperty
     private Integer postId;
     private Timestamp time;
     private Integer value;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "post_id")
-//    public Post post;
-
     public PostVote() {
     }
-
-//    public Post getPost() {
-//        return post;
-//    }
-//
-//    public void setPost(Post post) {
-//        this.post = post;
-//    }
 
     public Integer getVoteId() {
         return voteId;
