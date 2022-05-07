@@ -1,4 +1,4 @@
-spring.datasource.url: jdbc:${CLEARDB_DATABASE_URL:eu-cdbr-west-01.cleardb.com/heroku_b55c59d1f40106f}
+spring.datasource.url: jdbc:${CLEARDB_DATABASE_URL:eu-cdbr-west-01.cleardb.com/heroku_b55c59d1f40106f?useUnicode=true&characterEncoding=utf-8&reconnect=true}
 spring.datasource.username: bc2bf3eba93a08
 spring.datasource.password: 7f074a44
 #spring.datasource.url: jdbc:mysql://localhost:3306/blogsj?serverTimezone=UTC
